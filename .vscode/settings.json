@@ -1,0 +1,20 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "Biome.biome",
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "Biome.biome"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "Biome.biome"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "Biome.biome"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "Biome.biome"
+  },
+  "notebook.formatOnSave.enabled": true
+}
