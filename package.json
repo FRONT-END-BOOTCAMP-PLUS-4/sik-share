@@ -9,6 +9,9 @@
     "lint": "biome lint .",
     "format": "biome format . --write"
   },
+  "prisma": {
+    "seed": "npx tsx prisma/seed.ts"
+  },
   "dependencies": {
     "@lottiefiles/dotlottie-react": "^0.13.5",
     "@prisma/client": "^6.7.0",
