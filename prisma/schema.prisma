@@ -18,13 +18,10 @@ model Member {
   deletedAt    DateTime?    @map("deleted_at")
   password     String
   profileImage String?      @map("profile_image")
-
-  // Relations
   categories   Category[]   @relation("RegMemberCategories")
   memberRoles  MemberRole[]
   menuLikes    MenuLike[]
   menus        Menu[]       @relation("RegMemberMenus")
-  // rcmd_menus   rcmd_menus[]
 
   @@map("members")
 }
@@ -34,8 +31,6 @@ model Role {
   name        String
   createdAt   DateTime     @default(now()) @map("created_at")
   description String?
-
-  // Relations
   memberRoles MemberRole[]
 
   @@map("roles")
@@ -45,8 +40,6 @@ model MemberRole {
   memberId  String   @map("member_id")
   roleId    Int      @map("role_id")
   createdAt DateTime @default(now()) @map("created_at")
-
-  // Relations
   member    Member   @relation(fields: [memberId], references: [id])
   role      Role     @relation(fields: [roleId], references: [id])
 
@@ -58,11 +51,9 @@ model Category {
   id          Int      @id @default(autoincrement())
   name        String
   is_public   Boolean  @default(false) @map("is_public")
-  order      Int     @default(0)
+  order       Int      @default(0)
   regMemberId String   @map("reg_member_id")
   createdAt   DateTime @default(now()) @map("created_at")
-
-  // Relations
   regMember   Member   @relation("RegMemberCategories", fields: [regMemberId], references: [id])
   menus       Menu[]
 
@@ -70,37 +61,32 @@ model Category {
 }
 
 model Menu {
-  id          Int          @id @default(autoincrement())
-  korName     String       @map("kor_name")
-  engName     String       @map("eng_name")
+  id          Int         @id @default(autoincrement())
+  korName     String      @map("kor_name")
+  engName     String      @map("eng_name")
   price       Float
-  isPublic    Boolean      @default(false) @map("is_public")
-  hasIce     Boolean      @default(true) @map("has_ice")
-  hasHot     Boolean      @default(true) @map("has_hot")
+  isPublic    Boolean     @default(false) @map("is_public")
+  hasIce      Boolean     @default(true) @map("has_ice")
+  hasHot      Boolean     @default(true) @map("has_hot")
   description String?
-  createdAt   DateTime     @default(now())
-  categoryId  Int          @map("category_id")
-  regMemberId String       @map("reg_member_id")
-  deletedAt   DateTime?    @map("deleted_at")
-  updatedAt   DateTime?    @updatedAt @map("updated_at")
-
-  // Relations
-  images      MenuImage[]  @relation("MenuImages")
+  createdAt   DateTime    @default(now())
+  categoryId  Int         @map("category_id")
+  regMemberId String      @map("reg_member_id")
+  deletedAt   DateTime?   @map("deleted_at")
+  updatedAt   DateTime?   @updatedAt @map("updated_at")
+  images      MenuImage[] @relation("MenuImages")
   likes       MenuLike[]
-  category    Category     @relation(fields: [categoryId], references: [id])
-  regMember   Member       @relation("RegMemberMenus", fields: [regMemberId], references: [id])
-  // rcmd_menus  rcmd_menus[]
+  category    Category    @relation(fields: [categoryId], references: [id])
+  regMember   Member      @relation("RegMemberMenus", fields: [regMemberId], references: [id])
 
   @@map("menus")
 }
 
 model MenuImage {
   id        Int     @id @default(autoincrement())
-  name       String
+  name      String
   isDefault Boolean @default(false) @map("is_default")
   menuId    Int     @map("menu_id")
-
-  // Relations
   menu      Menu    @relation("MenuImages", fields: [menuId], references: [id])
 
   @@map("menu_images")
@@ -116,12 +102,3 @@ model MenuLike {
   @@id([memberId, menuId])
   @@map("menu_likes")
 }
-
-// model rcmd_menus {
-//   id         Int      @id @default(autoincrement())
-//   member_id  String
-//   menu_id    Int
-//   created_at DateTime @default(now())
-//   members    Member   @relation(fields: [member_id], references: [id])
-//   menus      Menu     @relation(fields: [menu_id], references: [id])
-// }
