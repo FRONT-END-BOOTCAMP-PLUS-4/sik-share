@@ -75,9 +75,9 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+  /* --primary: oklch(0.205 0 0); */
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
+  /* --secondary: oklch(0.97 0 0); */
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
@@ -100,6 +100,41 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* size */
+  --space-mobileMax: 430px;
+
+  /* color */
+  --primary: #22774e;
+  --secondary: #179e73;
+  --dark-green: #0b332b;
+  --light-green-50: #fffdee;
+  --light-green-100: #b5d430;
+  --light-green-300: #8fc117;
+  --warning: #ff352a;
+  --orange: #ff812a;
+  --zinc-900-o5: rgba(24, 24, 27, 0.5);
+  --primary-o7: rgba(34, 119, 78, 0.7);
+  
+  
+  /* font-size */
+  --fs-32: 32px;
+  --fs-24: 24px;
+  --fs-20: 20px;
+  --fs-18: 18px;
+  --fs-16: 16px;
+  --fs-14: 14px;
+  --fs-12: 12px;
+  --fs-11: 11px;
+
+  /* line-height */
+  --lh-40: 40px;
+  --lh-32: 32px;
+  --lh-28: 28px;
+  --lh-24: 24px;
+  --lh-20: 20px;
+  --lh-18: 18px;
+  --lh-16: 16px;
 }
 
 .dark {
@@ -136,8 +171,6 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
-
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -149,4 +182,47 @@
 
 body {
   font-family: "GyeonggiTitle", sans-serif;
+}
+
+/* font style */
+.title-lg {
+  font-size: var(--fs-32);
+  line-height: var(--lh-40);
+}
+
+.title-md {
+  font-size: var(--fs-24);
+  line-height: var(--lh-32);
+}
+
+.title-sm {
+  font-size: var(--fs-20);
+  line-height: var(--lh-28);
+}
+
+.body-lg {
+  font-size: var(--fs-18);
+  line-height: var(--lh-24);
+}
+
+.body-md {
+  font-size: var(--fs-16);
+  line-height: var(--lh-24);
+}
+
+.body-sm {
+  font-size: var(--fs-14);
+  line-height: var(--lh-20);
+}
+
+/* etc */
+.badge-12,
+.caption-12 {
+  font-size: var(--fs-12);
+  line-height: var(--lh-18);
+}
+
+.label-11 {
+  font-size: var(--fs-11);
+  line-height: var(--lh-16);
 }
