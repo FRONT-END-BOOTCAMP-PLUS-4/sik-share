@@ -3,6 +3,30 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+  font-family: "GyeonggiTitle";
+  src: url("/fonts/Title_Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "GyeonggiTitle";
+  src: url("/fonts/Title_Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "GyeonggiTitle";
+  src: url("/fonts/Title_Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -112,6 +136,8 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -119,4 +145,8 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+body {
+  font-family: "GyeonggiTitle", sans-serif;
 }

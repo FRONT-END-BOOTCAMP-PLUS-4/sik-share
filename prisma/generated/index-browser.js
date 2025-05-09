@@ -120,9 +120,93 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
+exports.Prisma.MemberScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  username: 'username',
+  phone: 'phone',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt',
+  password: 'password',
+  profileImage: 'profileImage'
+};
+
+exports.Prisma.RoleScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  createdAt: 'createdAt',
+  description: 'description'
+};
+
+exports.Prisma.MemberRoleScalarFieldEnum = {
+  memberId: 'memberId',
+  roleId: 'roleId',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.CategoryScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  is_public: 'is_public',
+  order: 'order',
+  regMemberId: 'regMemberId',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.MenuScalarFieldEnum = {
+  id: 'id',
+  korName: 'korName',
+  engName: 'engName',
+  price: 'price',
+  isPublic: 'isPublic',
+  hasIce: 'hasIce',
+  hasHot: 'hasHot',
+  description: 'description',
+  createdAt: 'createdAt',
+  categoryId: 'categoryId',
+  regMemberId: 'regMemberId',
+  deletedAt: 'deletedAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.MenuImageScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  isDefault: 'isDefault',
+  menuId: 'menuId'
+};
+
+exports.Prisma.MenuLikeScalarFieldEnum = {
+  memberId: 'memberId',
+  menuId: 'menuId',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.SortOrder = {
+  asc: 'asc',
+  desc: 'desc'
+};
+
+exports.Prisma.QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+};
+
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+
 
 exports.Prisma.ModelName = {
-
+  Member: 'Member',
+  Role: 'Role',
+  MemberRole: 'MemberRole',
+  Category: 'Category',
+  Menu: 'Menu',
+  MenuImage: 'MenuImage',
+  MenuLike: 'MenuLike'
 };
 
 /**
