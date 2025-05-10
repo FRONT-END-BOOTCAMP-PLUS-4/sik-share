@@ -9,6 +9,7 @@ import ListCard from "@/components/common/ListCard";
 export default function Home() {
 	return (
 		<>
+<<<<<<< HEAD
 			<h3>Typography</h3>
 			<p className="title-lg">lg 제목을 입력하세요</p>
 			<p className="title-md">md 제목을 입력하세요</p>
@@ -57,6 +58,12 @@ export default function Home() {
 
 			<h3>List</h3>
 			<ListCard />
+=======
+			<h1>H1 h1 제목을 입력하세요</h1>
+			<h2>H2 h2 제목을 입력하세요</h2>
+			<h3>H3 h3 제목을 입력하세요</h3>
+			<Button>Click me!</Button>
+>>>>>>> dev
 		</>
 	);
 }
