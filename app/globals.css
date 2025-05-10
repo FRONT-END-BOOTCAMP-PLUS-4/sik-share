@@ -75,9 +75,9 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+  /* --primary: oklch(0.205 0 0); */
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
+  /* --secondary: oklch(0.97 0 0); */
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
@@ -100,6 +100,65 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* size */
+  --space-mobileMax: 430px;
+  --h-header: 30px;
+  --h-footer: 30px;
+  --space-footer: 30px;
+
+  /* color */
+  --primary: #22774e;
+  --secondary: #179e73;
+  --dark-green: #0b332b;
+  --light-green-50: #fffdee;
+  --light-green-100: #b5d430;
+  --light-green-300: #8fc117;
+  --warning: #ff352a;
+  --orange: #ff812a;
+  --zinc-900-o5: rgba(24, 24, 27, 0.5);
+  --primary-o7: rgba(34, 119, 78, 0.7);
+  --primary-o2: rgba(34, 119, 78, 0.2);
+  --white-o5: rgba(255, 255, 255, 0.5);
+
+
+  /* shadow */
+  --shadow-1:            1px 1px 2px 0px rgba(0, 0, 0, 0.10);
+  --bottom-nav-shadow:   0px -3px 9.6px -3px rgba(0, 0, 0, 0.06);
+  
+  /* font-size */
+  --fs-32: 32px;
+  --fs-24: 24px;
+  --fs-20: 20px;
+  --fs-18: 18px;
+  --fs-16: 16px;
+  --fs-14: 14px;
+  --fs-12: 12px;
+  --fs-11: 11px;
+
+  /* line-height */
+  --space-40: 40px;
+  --space-32: 32px;
+  --space-28: 28px;
+  --space-24: 24px;
+  --space-20: 20px;
+  --space-18: 18px;
+  --space-16: 16px;
+
+  /* Safe Area Insets */
+  --safe-top:    env(safe-area-inset-top)    constant(safe-area-inset-top);
+  --safe-right:  env(safe-area-inset-right)  constant(safe-area-inset-right);
+  --safe-bottom: env(safe-area-inset-bottom) constant(safe-area-inset-bottom);
+  --safe-left:   env(safe-area-inset-left)   constant(safe-area-inset-left);
+}
+
+.safe-container {
+  width: 100%;
+  max-width: var(--space-mobileMax);
+  padding-top: var(--safe-top);
+  padding-right: var(--safe-right);
+  padding-bottom: var(--safe-bottom);
+  padding-left: var(--safe-left);
 }
 
 .dark {
@@ -149,4 +208,76 @@
 
 body {
   font-family: "GyeonggiTitle", sans-serif;
+  background: var(--light-green-50);
+}
+
+/* font style */
+.title-lg {
+  font-size: var(--fs-32);
+  font-weight: 700;
+  line-height: var(--space-40);
+}
+
+.title-md {
+  font-size: var(--fs-24);
+  font-weight: 700;
+  line-height: var(--space-32);
+}
+
+.title-sm {
+  font-size: var(--fs-20);
+  font-weight: 700;
+  line-height: var(--space-28);
+}
+
+.body-lg {
+  font-size: var(--fs-18);
+  font-weight: 500;
+  line-height: var(--space-24);
+}
+
+.body-md {
+  font-size: var(--fs-16);
+  font-weight: 500;
+  line-height: var(--space-24);
+}
+
+.body-sm {
+  font-size: var(--fs-14);
+  font-weight: 500;
+  line-height: var(--space-20);
+}
+
+/* etc */
+.badge-bold {
+  font-size: var(--fs-12);
+  font-weight: 700;
+  line-height: var(--space-18);
+}
+
+.badge-medium {
+  font-size: var(--fs-12);
+  font-weight: 500;
+  line-height: var(--space-18);
+}
+
+.caption {
+  font-size: var(--fs-12);
+  font-weight: 300;
+  line-height: var(--space-18);
+}
+
+.label {
+  font-size: var(--fs-11);
+  font-weight: 300;
+  line-height: var(--space-16);
+}
+
+.button-lg {
+  color: white;
+  font-size: var(--fs-20);
+  line-height: var(--space-20);
+}
+.button-sm {
+  color: var(--light-green-50);
 }
