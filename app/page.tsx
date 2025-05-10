@@ -1,3 +1,4 @@
+import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function Home() {
@@ -15,14 +16,17 @@ export default function Home() {
 
 			<br />
 
-			<div className="flex px-3 py-5">
+			<div className="flex flex-col gap-3">
 				<Button variant="joinBtn">참여하기</Button>
-			</div>
-			<div className="px-3 py-5">
 				<Button variant="joinFullBtn">참여하기</Button>
+				<Button variant="add" className="flex gap-0.5">
+					<Plus />
+					등록하기
+				</Button>
 			</div>
 
 			{Array.from({ length: 50 }, (_, idx) => (
+				// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 				<li key={idx}>item</li>
 			))}
 		</>

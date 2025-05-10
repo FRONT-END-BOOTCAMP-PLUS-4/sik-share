@@ -20,9 +20,10 @@ const buttonVariants = cva(
 				ghost:
 					"hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
 				joinBtn:
-					"bg-primary w-3/4 button-20 hover:bg-primary/90 cursor-pointer",
+					"bg-primary w-3/4 button-lg hover:bg-primary/90 cursor-pointer",
 				joinFullBtn:
-					"bg-primary w-full button-20 hover:bg-primary/90 cursor-pointer",
+					"bg-primary w-full button-lg hover:bg-primary/90 cursor-pointer",
+				add: "bg-primary w-fit button-sm body-sm rounded-[var(--space-20)] hover:bg-primary/90 cursor-pointer",
 			},
 			size: {
 				default: "h-9 px-4 py-2 has-[>svg]:px-3",
