@@ -103,6 +103,9 @@
 
   /* size */
   --space-mobileMax: 430px;
+  --h-header: 30px;
+  --h-footer: 30px;
+  --space-footer: 30px;
 
   /* color */
   --primary: #22774e;
@@ -135,6 +138,21 @@
   --lh-20: 20px;
   --lh-18: 18px;
   --lh-16: 16px;
+
+  /* Safe Area Insets */
+  --safe-top:    env(safe-area-inset-top)    constant(safe-area-inset-top);
+  --safe-right:  env(safe-area-inset-right)  constant(safe-area-inset-right);
+  --safe-bottom: env(safe-area-inset-bottom) constant(safe-area-inset-bottom);
+  --safe-left:   env(safe-area-inset-left)   constant(safe-area-inset-left);
+}
+
+.safe-container {
+  width: 100%;
+  max-width: var(--space-mobileMax);
+  padding-top: var(--safe-top);
+  padding-right: var(--safe-right);
+  padding-bottom: var(--safe-bottom);
+  padding-left: var(--safe-left);
 }
 
 .dark {
@@ -182,6 +200,7 @@
 
 body {
   font-family: "GyeonggiTitle", sans-serif;
+  background: var(--light-green-50);
 }
 
 /* font style */
@@ -225,4 +244,9 @@ body {
 .label-11 {
   font-size: var(--fs-11);
   line-height: var(--lh-16);
+}
+.button-20 {
+  color: white;
+  font-size: var(--fs-20);
+  line-height: var(--lh-20);
 }

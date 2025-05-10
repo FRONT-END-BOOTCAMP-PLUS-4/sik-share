@@ -13,7 +13,18 @@ export default function Home() {
 			<p className="body-md">md 본문 내용입니다.</p>
 			<p className="body-sm">sm 본문 내용입니다.</p>
 
-			<Button>Click me!</Button>
+			<br />
+
+			<div className="flex px-3 py-5">
+				<Button variant="joinBtn">참여하기</Button>
+			</div>
+			<div className="px-3 py-5">
+				<Button variant="joinFullBtn">참여하기</Button>
+			</div>
+
+			{Array.from({ length: 50 }, (_, idx) => (
+				<li key={idx}>item</li>
+			))}
 		</>
 	);
 }
