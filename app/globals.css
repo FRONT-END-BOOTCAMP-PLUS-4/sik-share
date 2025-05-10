@@ -235,13 +235,13 @@ body {
 }
 
 /* etc */
-.badge-12,
-.caption-12 {
+.badge,
+.caption {
   font-size: var(--fs-12);
   line-height: var(--space-18);
 }
 
-.label-11 {
+.label {
   font-size: var(--fs-11);
   line-height: var(--space-16);
 }
