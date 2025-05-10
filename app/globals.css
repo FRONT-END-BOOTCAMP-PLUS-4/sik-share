@@ -208,7 +208,6 @@
 
 body {
   font-family: "GyeonggiTitle", sans-serif;
-<<<<<<< HEAD
   background: var(--light-green-50);
 }
 
@@ -250,9 +249,15 @@ body {
 }
 
 /* etc */
-.badge {
+.badge-bold {
   font-size: var(--fs-12);
   font-weight: 700;
+  line-height: var(--space-18);
+}
+
+.badge-medium {
+  font-size: var(--fs-12);
+  font-weight: 500;
   line-height: var(--space-18);
 }
 
@@ -275,6 +280,4 @@ body {
 }
 .button-sm {
   color: var(--light-green-50);
-=======
->>>>>>> dev
 }

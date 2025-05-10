@@ -7,9 +7,44 @@ import InputCalendar from "@/components/common/InputCalendar";
 import ListCard from "@/components/common/ListCard";
 
 export default function Home() {
+	const data = [
+		{
+			thumbnailSrc: "/assets/images/example/thumbnail.png",
+			title: "토요일 이마트 갈 사람",
+			badgeVariant: "cart" as const,
+			badgeLabel: "같이 장보기",
+			timeLeft: "2025-05-18",
+			location: "서울대입구역 롯데시네마",
+			currentUser: 3,
+			maxUser: 5,
+		},
+		{
+			thumbnailSrc: "/assets/images/example/thumbnail.png",
+			title: "양파 나눔해요요...",
+			badgeVariant: "share" as const,
+			badgeLabel: "나눔",
+			timeLeft: "21시간 남음",
+			location: "서울대입구역 롯데시네마",
+		},
+
+		// 뱃지 없는 케이스
+		{
+			thumbnailSrc: "/assets/images/example/thumbnail.png",
+			title: "양파 나눔해요요...",
+			timeLeft: "21시간 남음",
+			location: "서울대입구역 롯데시네마",
+		},
+
+		// 시간 없는 케이스
+		{
+			thumbnailSrc: "/assets/images/example/thumbnail.png",
+			title: "양파 나눔해요요...",
+			location: "서울대입구역 롯데시네마",
+		},
+	];
+
 	return (
 		<>
-<<<<<<< HEAD
 			<h3>Typography</h3>
 			<p className="title-lg">lg 제목을 입력하세요</p>
 			<p className="title-md">md 제목을 입력하세요</p>
@@ -57,13 +92,10 @@ export default function Home() {
 			<br />
 
 			<h3>List</h3>
-			<ListCard />
-=======
-			<h1>H1 h1 제목을 입력하세요</h1>
-			<h2>H2 h2 제목을 입력하세요</h2>
-			<h3>H3 h3 제목을 입력하세요</h3>
-			<Button>Click me!</Button>
->>>>>>> dev
+			{data.map((item, i) => (
+				// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+				<ListCard key={i} {...item} />
+			))}
 		</>
 	);
 }
