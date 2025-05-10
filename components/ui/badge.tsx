@@ -23,6 +23,7 @@ const badgeVariants = cva(
 				location: "bg-zinc-600 rounded-[15px]",
 				share: "bg-[var(--secondary)] rounded-[15px]",
 				cart: "bg-[var(--orange)] rounded-[15px]",
+				locate: "bg-[var(--white-o5)] text-zinc-900 rounded-[15px]",
 			},
 		},
 		defaultVariants: {
