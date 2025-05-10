@@ -15,12 +15,14 @@ export default function Header() {
 				width={24}
 				height={24}
 				alt="알람 없을 때 아이콘"
+				className="cursor-pointer"
 			/> */}
 			<Image
 				src="/assets/images/lucide/bell-dot.svg"
 				width={24}
 				height={24}
 				alt="알람 있을 때 아이콘"
+				className="cursor-pointer"
 			/>
 		</header>
 	);

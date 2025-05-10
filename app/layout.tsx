@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import "./globals.css";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
+import "./globals.css";
 
 export const metadata: Metadata = {
 	title: "함께 나누는 따뜻한 식생활",
@@ -16,9 +16,9 @@ export default function RootLayout({
 	return (
 		<html lang="ko">
 			<body>
-				<div className="safe-container w-full min-h-screen mx-auto max-w-[var(--space-mobileMax)] bg-white border-zinc-400">
+				<div className="safe-container w-full min-h-screen mx-auto max-w-[var(--space-mobileMax)] bg-white border-t border-x border-zinc-300">
 					<Header />
-					<div className="px-4">{children}</div>
+					<main className="px-4 pb-16">{children}</main>
 					<Footer />
 				</div>
 			</body>

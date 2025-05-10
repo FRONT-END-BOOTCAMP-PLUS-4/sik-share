@@ -30,7 +30,7 @@ export default function Footer() {
 	};
 
 	return (
-		<footer className="z-10 fixed bottom-0 left-1/2 transform -translate-x-1/2 w-[var(--space-mobileMax)] bg-white flex justify-around items-center min-h-[var(--space-header)] px-4 py-2">
+		<footer className="z-10 fixed bottom-0 left-1/2 transform -translate-x-1/2 w-[var(--space-mobileMax)] bg-white flex justify-around items-center min-h-[var(--space-header)] px-4 py-2 shadow-[var(--bottom-nav-shadow)] border-x border-zinc-300">
 			{navItems.map(({ key, Icon, label }) => {
 				const isActive = key === activeTab;
 				const colorClass = isActive ? "text-primary" : "";
@@ -42,7 +42,7 @@ export default function Footer() {
 						className="flex flex-col items-center cursor-pointer"
 						onClick={() => handleClick(key)}
 					>
-						<Icon className={`${colorClass} w-6 h-6`} />
+						<Icon className={`${colorClass}`} />
 						<span className={`${colorClass} label`}>{label}</span>
 					</div>
 				);

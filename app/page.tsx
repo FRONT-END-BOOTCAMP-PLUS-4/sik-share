@@ -1,6 +1,10 @@
-import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+
+import AddButton from "@/components/common/AddButton";
+import { Input } from "@/components/ui/input";
+import InputCalendar from "@/components/common/InputCalendar";
+import ListCard from "@/components/common/ListCard";
 
 export default function Home() {
 	return (
@@ -22,10 +26,7 @@ export default function Home() {
 			<div className="flex flex-col gap-3 mb-5">
 				<Button variant="joinBtn">참여하기</Button>
 				<Button variant="joinFullBtn">참여하기</Button>
-				<Button variant="add" className="flex gap-0.5">
-					<Plus />
-					등록하기
-				</Button>
+				<AddButton />
 			</div>
 
 			<h3>Badge</h3>
@@ -35,6 +36,27 @@ export default function Home() {
 			<Badge variant="location">관악 청년청</Badge>
 			<Badge variant="share">나눔</Badge>
 			<Badge variant="cart">같이 장보기</Badge>
+			<div className="bg-[var(--light-green-300)] py-2 mt-2">
+				<Badge variant="locate">낙성대동</Badge>
+			</div>
+
+			<br />
+			<br />
+
+			<h3 className="p-3">Select</h3>
+			<InputCalendar />
+
+			<br />
+			<br />
+
+			<h3>Input</h3>
+			<Input placeholder="ex. 양파 나눔해요" />
+
+			<br />
+			<br />
+
+			<h3>List</h3>
+			<ListCard />
 		</>
 	);
 }
