@@ -281,3 +281,21 @@ body {
 .button-sm {
   color: var(--light-green-50);
 }
+
+/* react-datepicker */
+.react-datepicker__header {
+  background-color: var(--white) !important;
+  border-bottom: none !important;
+}
+
+.react-datepicker__day {
+  font-weight: medium;
+}
+
+.react-datepicker__day--outside-month {  
+  color: #71717a !important;  /* zinc-500 */
+}
+
+.react-datepicker__current-month {
+  padding-bottom: 16px !important;
+}
