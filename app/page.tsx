@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import InputCalendar from "@/components/common/InputCalendar";
 import ListCard from "@/components/common/ListCard";
 import { MapPin } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function Home() {
   const data = [
@@ -100,6 +101,18 @@ export default function Home() {
         // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
         <ListCard key={i} {...item} />
       ))}
+
+      <br />
+      <h3>Tabs</h3>
+
+      <Tabs defaultValue="share" className="w-full">
+        <TabsList>
+          <TabsTrigger value="share">나눔</TabsTrigger>
+          <TabsTrigger value="together">같이 장보기</TabsTrigger>
+        </TabsList>
+        <TabsContent value="share">나눔은 여기에 그려요</TabsContent>
+        <TabsContent value="together">같이 장보기는 이렇게</TabsContent>
+      </Tabs>
     </>
   );
 }
