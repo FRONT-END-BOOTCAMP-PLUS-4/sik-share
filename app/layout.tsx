@@ -4,6 +4,7 @@ import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import "./globals.css";
 import IntroLottie from "@/components/lotties/IntroLottie";
+import RobotLottie from "@/components/lotties/RobotLottie";
 
 export const metadata: Metadata = {
   title: "함께 나누는 따뜻한 식생활",
@@ -17,12 +18,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body>
+      <body suppressHydrationWarning>
         <div className="flex px-10">
-          <section className="hidden lg:flex flex-col justify-center w-[40%] title-lg mb-[200px]">
+          <section className="hidden lg:flex flex-col justify-center w-[40%] title-lg mt-[50px]">
             <div className="flex flex-col items-end">
               <div className="flex flex-col justify-between items-center space-y-4">
-                <IntroLottie />
+                {/* <IntroLottie /> */}
                 <div className="flex flex-col items-center text-2xl font-bold leading-snug">
                   <div className="flex items-center">
                     <p>까다로운&nbsp;</p>
@@ -42,6 +43,7 @@ export default function RootLayout({
                     <p>와 함께 공유하세요!</p>
                   </div>
                 </div>
+                <RobotLottie />
               </div>
             </div>
           </section>
