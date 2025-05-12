@@ -41,28 +41,38 @@ export default function ListCard({
               <Badge variant={badgeVariant}>{badgeLabel}</Badge>
             )}
           </div>
-          <div className="flex flex-col text-zinc-500">
+          <div className="flex flex-col gap-1 text-zinc-500">
             <div className="flex gap-[5px]">
               {timeLeft && (
                 <div className="flex flex-1/2 items-center gap-1">
                   {badgeVariant === "share" ? (
-                    <ClockFading size={16} strokeWidth={1} />
+                    <>
+                      <ClockFading size={16} strokeWidth={1} />
+                      <p className="caption">
+                        <span className="text-[var(--warning)]">
+                          {timeLeft}
+                        </span>
+                        시간 남음
+                      </p>
+                    </>
                   ) : (
-                    <Clock size={16} strokeWidth={1} />
+                    <>
+                      <Clock size={16} strokeWidth={1} />
+                      <p className="caption">{timeLeft}</p>
+                    </>
                   )}
-                  <p className="label">{timeLeft}</p>
                 </div>
               )}
               {currentUser && maxUser && (
                 <div className="flex flex-1/2 gap-1">
                   <CircleUserRound size={16} strokeWidth={1} />
-                  <p className="label">{`${currentUser}/${maxUser}명`}</p>
+                  <p className="caption">{`${currentUser}/${maxUser}명`}</p>
                 </div>
               )}
             </div>
             <div className="flex items-center gap-1">
               <MapPin size={16} strokeWidth={1} />
-              <p className="label">{location}</p>
+              <p className="caption">{location}</p>
             </div>
           </div>
         </div>

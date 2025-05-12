@@ -25,7 +25,7 @@ export default function Home() {
       title: "양파 나눔해요요...",
       badgeVariant: "share" as const,
       badgeLabel: "나눔",
-      timeLeft: "21시간 남음",
+      timeLeft: "21",
       location: "서울대입구역 롯데시네마",
     },
 
@@ -33,7 +33,8 @@ export default function Home() {
     {
       thumbnailSrc: "/assets/images/example/thumbnail.png",
       title: "양파 나눔해요요...",
-      timeLeft: "21시간 남음",
+      badgeVariant: "share" as const,
+      timeLeft: "21",
       location: "서울대입구역 롯데시네마",
     },
 
