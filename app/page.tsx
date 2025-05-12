@@ -5,6 +5,7 @@ import AddButton from "@/components/common/AddButton";
 import { Input } from "@/components/ui/input";
 import InputCalendar from "@/components/common/InputCalendar";
 import ListCard from "@/components/common/ListCard";
+import { MapPin } from "lucide-react";
 
 export default function Home() {
   const data = [
@@ -73,7 +74,10 @@ export default function Home() {
       <Badge variant="share">나눔</Badge>
       <Badge variant="cart">같이 장보기</Badge>
       <div className="bg-[var(--light-green-300)] py-2 mt-2">
-        <Badge variant="locate">낙성대동</Badge>
+        <Badge variant="locate">
+          <MapPin size={16} strokeWidth={2} />
+          낙성대동
+        </Badge>
       </div>
 
       <br />

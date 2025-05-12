@@ -268,9 +268,9 @@ body {
 }
 
 .label {
-  font-size: var(--fs-11);
+  font-size: var(--fs-12);
   font-weight: 300;
-  line-height: var(--space-16);
+  line-height: var(--space-18);
 }
 
 .button-lg {

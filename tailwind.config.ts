@@ -1,4 +1,9 @@
 module.exports = {
+  content: [
+    "./app/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+    // 필요한 경로 추가
+  ],
   theme: {
     extend: {
       colors: {
@@ -6,4 +11,7 @@ module.exports = {
       },
     },
   },
+  plugins: [
+    require('@tailwindcss/line-clamp'),
+  ],
 };
