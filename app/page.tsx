@@ -5,6 +5,8 @@ import AddButton from "@/components/common/AddButton";
 import { Input } from "@/components/ui/input";
 import InputCalendar from "@/components/common/InputCalendar";
 import ListCard from "@/components/common/ListCard";
+import { MapPin } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function Home() {
   const data = [
@@ -23,7 +25,7 @@ export default function Home() {
       title: "양파 나눔해요요...",
       badgeVariant: "share" as const,
       badgeLabel: "나눔",
-      timeLeft: "21시간 남음",
+      timeLeft: "21",
       location: "서울대입구역 롯데시네마",
     },
 
@@ -31,7 +33,8 @@ export default function Home() {
     {
       thumbnailSrc: "/assets/images/example/thumbnail.png",
       title: "양파 나눔해요요...",
-      timeLeft: "21시간 남음",
+      badgeVariant: "share" as const,
+      timeLeft: "21",
       location: "서울대입구역 롯데시네마",
     },
 
@@ -73,7 +76,10 @@ export default function Home() {
       <Badge variant="share">나눔</Badge>
       <Badge variant="cart">같이 장보기</Badge>
       <div className="bg-[var(--light-green-300)] py-2 mt-2">
-        <Badge variant="locate">낙성대동</Badge>
+        <Badge variant="locate">
+          <MapPin size={16} strokeWidth={2} />
+          낙성대동
+        </Badge>
       </div>
 
       <br />
@@ -96,6 +102,18 @@ export default function Home() {
         // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
         <ListCard key={i} {...item} />
       ))}
+
+      <br />
+      <h3>Tabs</h3>
+
+      <Tabs defaultValue="share" className="w-full">
+        <TabsList>
+          <TabsTrigger value="share">나눔</TabsTrigger>
+          <TabsTrigger value="together">같이 장보기</TabsTrigger>
+        </TabsList>
+        <TabsContent value="share">나눔은 여기에 그려요</TabsContent>
+        <TabsContent value="together">같이 장보기는 이렇게</TabsContent>
+      </Tabs>
     </>
   );
 }
