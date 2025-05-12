@@ -37,7 +37,7 @@ export default function Footer() {
         bg-white flex justify-around items-center
         min-h-[var(--space-header)] px-4 py-2
         shadow-[var(--bottom-nav-shadow)] border-x border-zinc-300
-        lg:absolute lg:inset-x-0 lg:bottom-0"
+        lg:absolute lg:inset-x-0 lg:bottom-0 lg:border-none"
     >
       {navItems.map(({ key, Icon, label }) => {
         const isActive = key === activeTab;
