@@ -3,23 +3,23 @@ import { cn } from "@/lib/utils";
 import { ChevronRight, Users } from "lucide-react";
 import Link from "next/link";
 
-interface historyNavProps {
+interface usersNavProps {
   publicId: string;
   mannerReviews?: []; // 임시
 }
 
-export default function HistoryNav({
+export default function UsersNav({
   publicId,
   mannerReviews,
-}: historyNavProps) {
-  const historyLinks = [
+}: usersNavProps) {
+  const usersLinks = [
     { label: "나눔 내역", path: "shares-history" },
     { label: "같이 장보기 내역", path: "group-buys-history" },
     { label: "나의 참여 내역", path: "participations" },
     { label: "후기", path: "reviews" },
   ];
 
-  const listItems = historyLinks.map(({ label, path }) => {
+  const navItems = usersLinks.map(({ label, path }) => {
     const isReview = label === "후기";
 
     return (
@@ -48,5 +48,5 @@ export default function HistoryNav({
     );
   });
 
-  return <ul>{listItems}</ul>;
+  return <ul>{navItems}</ul>;
 }

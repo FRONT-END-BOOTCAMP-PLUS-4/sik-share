@@ -1,7 +1,7 @@
 import { MapPin, PiggyBank } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { getScoreVisual } from "@/app/users/utils";
-import HistoryNav from "@/app/users/components/UsersNav";
+import UsersNav from "@/app/users/components/UsersNav";
 import Profile from "@/app/users/components/Profile";
 
 export default function userPage() {
@@ -35,7 +35,7 @@ export default function userPage() {
           isMyAccount={isMyAccount}
           memberTitle={levelbyScore.memberBadge}
         />
-        <HistoryNav publicId="1" />
+        <UsersNav publicId="1" />
       </div>
     </section>
   );
