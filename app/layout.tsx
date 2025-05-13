@@ -1,4 +1,3 @@
-// app/layout.tsx
 import type { Metadata } from "next";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
@@ -19,7 +18,7 @@ export default function RootLayout({
     <html lang="ko">
       <body suppressHydrationWarning>
         <div className="flex">
-          <section className="hidden lg:flex flex-col justify-center w-[40%] title-lg">
+          <section className="hidden lg:flex flex-col justify-center w-[40%] title-lg mb-[150px]">
             <div className="flex flex-col items-end">
               <div className="flex flex-col justify-between items-center space-y-4">
                 <div className="flex flex-col items-center text-2xl font-bold leading-snug">
