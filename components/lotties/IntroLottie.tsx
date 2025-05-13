@@ -5,12 +5,12 @@ import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 export default function IntroLottie() {
   return (
     <>
-      <div className="mt-10">
+      <div className="mt-20">
         <DotLottieReact
-          className="w-full"
-          src="/assets/lotties/Intro.lottie"
+          src="/assets/lotties/Ingredient.lottie"
           loop
           autoplay
+          speed={0.7}
         />
       </div>
     </>

@@ -2,8 +2,6 @@
 
 import { motion } from "motion/react";
 import MapLottie from "@/components/lotties/MapLottie";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 
 export default function MapSection() {
   return (
@@ -14,12 +12,15 @@ export default function MapSection() {
       className="relative w-full h-[25vh] flex justify-center items-center"
     >
       <MapLottie />
-      <div className="absolute right-15 flex flex-col title-md">
-        <p>근처 이웃을</p>
-        <p>찾아보세요!</p>
-        <Link href="/map">
-          <Button className="mt-4">시작하기</Button>
-        </Link>
+      <div className="absolute right-15 flex flex-col gap-2 title-md">
+        <div>
+          <p>근처 이웃을</p>
+          <p>찾아보세요!</p>
+        </div>
+        <div className="flex flex-col body-md !font-light !leading-none text-zinc-400">
+          <p>내 주변에 어떤 이웃이</p>
+          <p>활동 중인지 확인해요</p>
+        </div>
       </div>
     </motion.div>
   );
