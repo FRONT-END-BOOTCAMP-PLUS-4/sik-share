@@ -191,7 +191,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/hoon/gitbasic/sik-share/prisma/generated",
+      "value": "/Users/hyunwoo/Desktop/sik-share/prisma/generated",
       "fromEnvVar": null
     },
     "config": {
@@ -205,12 +205,11 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/Users/hoon/gitbasic/sik-share/prisma/schema.prisma",
+    "sourceFilePath": "/Users/hyunwoo/Desktop/sik-share/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null,
-    "schemaEnvPath": "../../.env"
+    "rootEnvPath": null
   },
   "relativePath": "..",
   "clientVersion": "6.7.0",
@@ -219,16 +218,17 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": true,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "postgresql://ncafe:newlion4@new-cafe.com:5433/ncafedb?schema=public"
+        "value": null
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../prisma/generated\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Member {\n  id           String    @id @default(uuid())\n  email        String    @unique\n  username     String    @unique\n  phone        String?\n  createdAt    DateTime  @default(now()) @map(\"created_at\")\n  updatedAt    DateTime  @updatedAt @map(\"updated_at\")\n  deletedAt    DateTime? @map(\"deleted_at\")\n  password     String\n  profileImage String?   @map(\"profile_image\")\n\n  // Relations\n  categories  Category[]   @relation(\"RegMemberCategories\")\n  memberRoles MemberRole[]\n  menuLikes   MenuLike[]\n  menus       Menu[]       @relation(\"RegMemberMenus\")\n  // rcmd_menus   rcmd_menus[]\n\n  @@map(\"members\")\n}\n\nmodel Role {\n  id          Int      @id @default(autoincrement())\n  name        String\n  createdAt   DateTime @default(now()) @map(\"created_at\")\n  description String?\n\n  // Relations\n  memberRoles MemberRole[]\n\n  @@map(\"roles\")\n}\n\nmodel MemberRole {\n  memberId  String   @map(\"member_id\")\n  roleId    Int      @map(\"role_id\")\n  createdAt DateTime @default(now()) @map(\"created_at\")\n\n  // Relations\n  member Member @relation(fields: [memberId], references: [id])\n  role   Role   @relation(fields: [roleId], references: [id])\n\n  @@id([memberId, roleId])\n  @@map(\"member_roles\")\n}\n\nmodel Category {\n  id          Int      @id @default(autoincrement())\n  name        String\n  is_public   Boolean  @default(false) @map(\"is_public\")\n  order       Int      @default(0)\n  regMemberId String   @map(\"reg_member_id\")\n  createdAt   DateTime @default(now()) @map(\"created_at\")\n\n  // Relations\n  regMember Member @relation(\"RegMemberCategories\", fields: [regMemberId], references: [id])\n  menus     Menu[]\n\n  @@map(\"categories\")\n}\n\nmodel Menu {\n  id          Int       @id @default(autoincrement())\n  korName     String    @map(\"kor_name\")\n  engName     String    @map(\"eng_name\")\n  price       Float\n  isPublic    Boolean   @default(false) @map(\"is_public\")\n  hasIce      Boolean   @default(true) @map(\"has_ice\")\n  hasHot      Boolean   @default(true) @map(\"has_hot\")\n  description String?\n  createdAt   DateTime  @default(now())\n  categoryId  Int       @map(\"category_id\")\n  regMemberId String    @map(\"reg_member_id\")\n  deletedAt   DateTime? @map(\"deleted_at\")\n  updatedAt   DateTime? @updatedAt @map(\"updated_at\")\n\n  // Relations\n  images    MenuImage[] @relation(\"MenuImages\")\n  likes     MenuLike[]\n  category  Category    @relation(fields: [categoryId], references: [id])\n  regMember Member      @relation(\"RegMemberMenus\", fields: [regMemberId], references: [id])\n  // rcmd_menus  rcmd_menus[]\n\n  @@map(\"menus\")\n}\n\nmodel MenuImage {\n  id        Int     @id @default(autoincrement())\n  name      String\n  isDefault Boolean @default(false) @map(\"is_default\")\n  menuId    Int     @map(\"menu_id\")\n\n  // Relations\n  menu Menu @relation(\"MenuImages\", fields: [menuId], references: [id])\n\n  @@map(\"menu_images\")\n}\n\nmodel MenuLike {\n  memberId  String   @map(\"member_id\")\n  menuId    Int      @map(\"menu_id\")\n  createdAt DateTime @default(now()) @map(\"created_at\")\n  member    Member   @relation(fields: [memberId], references: [id])\n  menu      Menu     @relation(fields: [menuId], references: [id])\n\n  @@id([memberId, menuId])\n  @@map(\"menu_likes\")\n}\n\n// model rcmd_menus {\n//   id         Int      @id @default(autoincrement())\n//   member_id  String\n//   menu_id    Int\n//   created_at DateTime @default(now())\n//   members    Member   @relation(fields: [member_id], references: [id])\n//   menus      Menu     @relation(fields: [menu_id], references: [id])\n// }\n",
-  "inlineSchemaHash": "e5b23cfdc6484a380d89f23cfaaa2bc1d7b1fc5011573bf078210e705031fb0f",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../prisma/generated\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Member {\n  id           String       @id @default(uuid())\n  email        String       @unique\n  username     String       @unique\n  phone        String?\n  createdAt    DateTime     @default(now()) @map(\"created_at\")\n  updatedAt    DateTime     @updatedAt @map(\"updated_at\")\n  deletedAt    DateTime?    @map(\"deleted_at\")\n  password     String\n  profileImage String?      @map(\"profile_image\")\n  categories   Category[]   @relation(\"RegMemberCategories\")\n  memberRoles  MemberRole[]\n  menuLikes    MenuLike[]\n  menus        Menu[]       @relation(\"RegMemberMenus\")\n\n  @@map(\"members\")\n}\n\nmodel Role {\n  id          Int          @id @default(autoincrement())\n  name        String\n  createdAt   DateTime     @default(now()) @map(\"created_at\")\n  description String?\n  memberRoles MemberRole[]\n\n  @@map(\"roles\")\n}\n\nmodel MemberRole {\n  memberId  String   @map(\"member_id\")\n  roleId    Int      @map(\"role_id\")\n  createdAt DateTime @default(now()) @map(\"created_at\")\n  member    Member   @relation(fields: [memberId], references: [id])\n  role      Role     @relation(fields: [roleId], references: [id])\n\n  @@id([memberId, roleId])\n  @@map(\"member_roles\")\n}\n\nmodel Category {\n  id          Int      @id @default(autoincrement())\n  name        String\n  is_public   Boolean  @default(false) @map(\"is_public\")\n  order       Int      @default(0)\n  regMemberId String   @map(\"reg_member_id\")\n  createdAt   DateTime @default(now()) @map(\"created_at\")\n  regMember   Member   @relation(\"RegMemberCategories\", fields: [regMemberId], references: [id])\n  menus       Menu[]\n\n  @@map(\"categories\")\n}\n\nmodel Menu {\n  id          Int         @id @default(autoincrement())\n  korName     String      @map(\"kor_name\")\n  engName     String      @map(\"eng_name\")\n  price       Float\n  isPublic    Boolean     @default(false) @map(\"is_public\")\n  hasIce      Boolean     @default(true) @map(\"has_ice\")\n  hasHot      Boolean     @default(true) @map(\"has_hot\")\n  description String?\n  createdAt   DateTime    @default(now())\n  categoryId  Int         @map(\"category_id\")\n  regMemberId String      @map(\"reg_member_id\")\n  deletedAt   DateTime?   @map(\"deleted_at\")\n  updatedAt   DateTime?   @updatedAt @map(\"updated_at\")\n  images      MenuImage[] @relation(\"MenuImages\")\n  likes       MenuLike[]\n  category    Category    @relation(fields: [categoryId], references: [id])\n  regMember   Member      @relation(\"RegMemberMenus\", fields: [regMemberId], references: [id])\n\n  @@map(\"menus\")\n}\n\nmodel MenuImage {\n  id        Int     @id @default(autoincrement())\n  name      String\n  isDefault Boolean @default(false) @map(\"is_default\")\n  menuId    Int     @map(\"menu_id\")\n  menu      Menu    @relation(\"MenuImages\", fields: [menuId], references: [id])\n\n  @@map(\"menu_images\")\n}\n\nmodel MenuLike {\n  memberId  String   @map(\"member_id\")\n  menuId    Int      @map(\"menu_id\")\n  createdAt DateTime @default(now()) @map(\"created_at\")\n  member    Member   @relation(fields: [memberId], references: [id])\n  menu      Menu     @relation(fields: [menuId], references: [id])\n\n  @@id([memberId, menuId])\n  @@map(\"menu_likes\")\n}\n",
+  "inlineSchemaHash": "852e4d1d1f0d85b527eab011017c4f7093b35cb9fc67e8eee0586862009d9fd3",
   "copyEngine": true
 }
 config.dirname = '/'
