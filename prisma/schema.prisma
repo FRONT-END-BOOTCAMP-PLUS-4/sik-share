@@ -32,13 +32,13 @@ model User {
   groupBuyChatMessages     GroupBuyChatMessage[]
   groupBuyChatParticipants GroupBuyChatParticipant[]
   groupBuyParticipants     GroupBuyParticipant[]
+  notifications            Notification[]
   receivedReviews          Review[]                  @relation("ReceivedReview")
   writtenReviews           Review[]                  @relation("WrittenReview")
   ownedShares              Share[]                   @relation("OwnedShare")
   receivedShares           Share[]                   @relation("ReceivedShare")
   shareChatMessages        ShareChatMessage[]
   shareChatParticipants    ShareChatParticipant[]
-  notifications            Notification[]
   neighborhood             Neighborhood              @relation(fields: [neighborhoodId], references: [id])
 }
 
@@ -54,7 +54,7 @@ model GroupBuy {
   locationAddress String
   locationNote    String
   description     String
-  status          String
+  status          Int
   neighborhood    Neighborhood          @relation(fields: [neighborhoodId], references: [id])
   organizer       User                  @relation(fields: [organizerId], references: [id])
   chats           GroupBuyChat[]
@@ -92,7 +92,7 @@ model Share {
   locationAddress String
   locationNote    String?
   description     String?
-  status          String
+  status          Int
   reviews         Review[]
   neighborhood    Neighborhood @relation(fields: [neighborhoodId], references: [id])
   owner           User         @relation("OwnedShare", fields: [ownerId], references: [id])
@@ -103,10 +103,10 @@ model Share {
 }
 
 model ShareImage {
-  id         Int      @id @default(autoincrement())
-  shareId    Int
-  url        String
-  share      Share    @relation(fields: [shareId], references: [id])
+  id      Int    @id @default(autoincrement())
+  shareId Int
+  url     String
+  share   Share  @relation(fields: [shareId], references: [id])
 }
 
 model ShareItem {
@@ -144,12 +144,12 @@ model ShortReviewOption {
 }
 
 model Notification {
-  id          Int      @id @default(autoincrement())
-  userId      String
-  isRead      Boolean  @default(false)
-  content     String
-  createdAt   DateTime @default(now())
-  user        User     @relation(fields: [userId], references: [id])
+  id        Int      @id @default(autoincrement())
+  userId    String
+  isRead    Boolean  @default(false)
+  content   String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 model GroupBuyChat {
