@@ -26,7 +26,7 @@ export default function HistoryNav({
       <li key={path}>
         <Link
           className={cn(
-            "flex justify-between w-full px-4 py-3",
+            "flex justify-between w-full px-4 py-3 hover:bg-zinc-50 hover:border-b-transparents",
             !isReview && "border-b-1 border-zinc-200",
           )}
           href={`/users/${publicId}/${path}`}

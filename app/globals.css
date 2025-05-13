@@ -261,6 +261,12 @@ body {
   line-height: var(--space-18);
 }
 
+.badge-sm {
+  font-size: var(--fs-11);
+  font-weight: 500;
+  line-height: var(--space-16);
+}
+
 .caption {
   font-size: var(--fs-12);
   font-weight: 300;
@@ -271,6 +277,9 @@ body {
   font-size: var(--fs-11);
   font-weight: 300;
   line-height: var(--space-16);
+}
+.label.font-bold {
+  font-weight: 700;
 }
 
 .button-lg {
@@ -318,3 +327,25 @@ body {
 .dot:nth-child(1) { animation-delay:   0s;  }
 .dot:nth-child(2) { animation-delay: 0.2s;  }
 .dot:nth-child(3) { animation-delay: 0.4s;  }
+
+/* grade-bg 프로필 배경*/
+.grade-A {
+  background: #EEAECA;
+  background: radial-gradient(circle,rgba(238, 174, 202, 1) 0%, rgba(148, 187, 233, 1) 100%);
+}
+.grade-B {
+  background: #3F5EFB;
+  background: radial-gradient(circle, rgba(63, 94, 251, 1) 0%, rgba(252, 70, 107, 1) 100%);
+}
+.grade-C {
+  background: #2A7B9B;
+  background: radial-gradient(circle, rgba(42, 123, 155, 1) 0%, rgba(87, 199, 133, 1) 50%, rgba(237, 221, 83, 1) 100%);
+}
+.grade-D {
+  background: #833AB4;
+  background: radial-gradient(circle, rgba(131, 58, 180, 1) 0%, rgba(253, 29, 29, 1) 50%, rgba(252, 176, 69, 1) 100%);
+}
+.grade-F {
+  background: #FFD455;
+  background: radial-gradient(circle,rgba(255, 212, 85, 1) 24%, rgba(151, 219, 14, 1) 99%);
+}
