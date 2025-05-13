@@ -22,8 +22,9 @@ model Neighborhood {
 model User {
   id                       String                    @id @default(uuid())
   neighborhoodId           Int
-  email                    String
-  nickname                 String?
+  publicId                 Int                       @unique @default(autoincrement())
+  email                    String                    @unique
+  nickname                 String
   profileUrl               String?
   address                  String
   createdAt                DateTime                  @default(now())
@@ -83,20 +84,20 @@ model Share {
   shareItemId     Int
   neighborhoodId  Int
   ownerId         String
-  recipientId     String
+  recipientId     String?
   title           String
   createdAt       DateTime     @default(now())
-  meetingDate     DateTime
+  meetingDate     DateTime?
   lat             Float
   lng             Float
   locationAddress String
-  locationNote    String?
-  description     String?
+  locationNote    String
+  description     String
   status          Int
   reviews         Review[]
   neighborhood    Neighborhood @relation(fields: [neighborhoodId], references: [id])
   owner           User         @relation("OwnedShare", fields: [ownerId], references: [id])
-  recipient       User         @relation("ReceivedShare", fields: [recipientId], references: [id])
+  recipient       User?         @relation("ReceivedShare", fields: [recipientId], references: [id])
   shareItem       ShareItem    @relation(fields: [shareItemId], references: [id])
   chats           ShareChat[]
   images          ShareImage[]
@@ -121,7 +122,7 @@ model Review {
   recipientId String
   shareId     Int
   grade       Int
-  content     String
+  content     String?
   createdAt   DateTime            @default(now())
   recipient   User                @relation("ReceivedReview", fields: [recipientId], references: [id])
   share       Share               @relation(fields: [shareId], references: [id])
