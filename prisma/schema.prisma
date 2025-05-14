@@ -21,12 +21,12 @@ model Neighborhood {
 
 model User {
   id                       String                    @id @default(uuid())
-  neighborhoodId           Int
+  neighborhoodId           Int?
   publicId                 Int                       @unique @default(autoincrement())
   email                    String                    @unique
   nickname                 String
   profileUrl               String?
-  address                  String
+  address                  String?
   createdAt                DateTime                  @default(now())
   shareScore               Int                       @default(0)
   grouBuys                 GroupBuy[]
@@ -40,7 +40,7 @@ model User {
   receivedShares           Share[]                   @relation("ReceivedShare")
   shareChatMessages        ShareChatMessage[]
   shareChatParticipants    ShareChatParticipant[]
-  neighborhood             Neighborhood              @relation(fields: [neighborhoodId], references: [id])
+  neighborhood             Neighborhood?              @relation(fields: [neighborhoodId], references: [id])
 }
 
 model GroupBuy {
