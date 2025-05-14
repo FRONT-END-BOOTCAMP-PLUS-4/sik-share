@@ -1,4 +1,16 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import Image from "next/image";
 
 interface profileProps {
@@ -22,9 +34,23 @@ export default function Profile({ isMyAccount, memberTitle }: profileProps) {
           <div className="text-2xl/normal pt-1.5">싱그러운 새싹</div>
         </div>
         {isMyAccount && (
-          <Button variant="editProfile" size="xs">
-            프로필 수정
-          </Button>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="editProfile" size="xs">
+                프로필 수정
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <VisuallyHidden>
+                <DialogHeader>
+                  <DialogTitle>프로필 수정 팝업</DialogTitle>
+                </DialogHeader>
+              </VisuallyHidden>
+              <Label htmlFor="nickName">닉네임</Label>
+              <Input id="nickName" placeholder="싱그러운 새싹" />
+              <Button variant="joinFullBtn">프로필 수정하기</Button>
+            </DialogContent>
+          </Dialog>
         )}
       </div>
     </div>
