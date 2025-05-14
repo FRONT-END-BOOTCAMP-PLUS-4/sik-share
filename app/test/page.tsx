@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import AddButton from "@/components/common/AddButton";
 import { Input } from "@/components/ui/input";
 import InputCalendar from "@/components/common/InputCalendar";
-import ListCard from "@/components/common/ListCard";
+import { ListCard } from "@/components/common/ListCard";
 
 export default function Home() {
   const data = [
@@ -94,7 +94,7 @@ export default function Home() {
       <h3>List</h3>
       {data.map((item, i) => (
         // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-        <ListCard key={i} {...item} />
+        <ListCard key={i} id="i" {...item} />
       ))}
     </>
   );

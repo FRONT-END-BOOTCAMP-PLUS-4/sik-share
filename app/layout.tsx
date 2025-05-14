@@ -50,7 +50,7 @@ export default function RootLayout({
 
           <section className="relative safe-container w-[60%] min-h-screen mx-auto max-w-[var(--space-mobileMax)] bg-white border-t border-x border-zinc-300">
             <Header />
-            <main className="px-4 pb-16">{children}</main>
+            <main>{children}</main>
             <Footer />
           </section>
         </div>
