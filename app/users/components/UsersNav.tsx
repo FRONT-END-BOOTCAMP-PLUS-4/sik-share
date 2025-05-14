@@ -8,10 +8,7 @@ interface usersNavProps {
   mannerReviews?: []; // 임시
 }
 
-export default function UsersNav({
-  publicId,
-  mannerReviews,
-}: usersNavProps) {
+export default function UsersNav({ publicId, mannerReviews }: usersNavProps) {
   const usersLinks = [
     { label: "나눔 내역", path: "shares-history" },
     { label: "같이 장보기 내역", path: "group-buys-history" },
@@ -35,7 +32,7 @@ export default function UsersNav({
           <ChevronRight />
         </Link>
         {isReview && (
-          <ul className="px-4">
+          <ul className="px-4 flex flex-col gap-1.5">
             <li className="flex gap-1 items-center">
               <div className="w-[130px] body-sm">나눔 재료가 신선해요</div>
               <Badge variant="review">
@@ -48,5 +45,9 @@ export default function UsersNav({
     );
   });
 
-  return <ul>{navItems}</ul>;
+  return (
+    <div className="max-h-[calc(100%-74px)] overflow-auto">
+      <ul className="h-full pb-6">{navItems}</ul>
+    </div>
+  );
 }

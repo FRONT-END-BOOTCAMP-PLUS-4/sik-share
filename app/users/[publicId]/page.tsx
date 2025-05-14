@@ -1,42 +1,34 @@
-import { MapPin, PiggyBank } from "lucide-react";
+import { PiggyBank } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { getScoreVisual } from "@/app/users/utils";
 import UsersNav from "@/app/users/components/UsersNav";
 import Profile from "@/app/users/components/Profile";
+import UserLocation from "../components/UserLocation";
+import ShareScore from "../components/ShareScore";
+import MyCharacter from "../components/MyCharacter";
+import MyPoint from "../components/MyPoint";
 
 export default function userPage() {
   const isMyAccount = true;
   const levelbyScore = getScoreVisual(19.6);
 
   return (
-    <section className={`grade-${levelbyScore.grade}`}>
-      <div className="px-4 py-6">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-1">
-            <PiggyBank size={18} />
-            <div className="text-base/6">1,080P</div>
-          </div>
-          <Badge variant="locate">
-            <MapPin size={14} strokeWidth={2} />
-            낙성대동
-          </Badge>
+    <div className={`h-[calc(100vh-108px)] grade-${levelbyScore.grade}`}>
+      <section className="h-1/2 px-4 py-6">
+        <div className="flex justify-end items-center">
+          {/* <MyPoint /> */}
+          <UserLocation />
         </div>
-        <div className="h-[150px] flex items-center justify-center">3D</div>
-        <div className="pl-2">
-          <div className="text-xs/3 pb-2">나눔지수</div>
-          <div className="flex items-baseline">
-            <div className="text-3xl/7.5">19.6</div>
-            <div className="text-xl/5 font-bold">°C</div>
-          </div>
-        </div>
-      </div>
-      <div className="pt-6 bg-white rounded-t-[50px]">
+        <MyCharacter grade={levelbyScore.grade} />
+        <ShareScore score={19.6} />
+      </section>
+      <section className="h-1/2 pt-6 bg-white rounded-t-[50px]">
         <Profile
           isMyAccount={isMyAccount}
           memberTitle={levelbyScore.memberBadge}
         />
         <UsersNav publicId="1" />
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }
