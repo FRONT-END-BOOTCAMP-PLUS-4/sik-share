@@ -1,6 +1,7 @@
 import type { UserRepository } from "@/domain/repositories/UserRepository";
 import { type User, PrismaClient } from "@/prisma/generated";
 
+
 export class PrismaUserRepository implements UserRepository {
   private prisma: PrismaClient;
 

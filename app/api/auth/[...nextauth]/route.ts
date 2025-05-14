@@ -26,21 +26,18 @@ export const authOptions:NextAuthOptions = {
 
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id;
         token.email = user.email;
         token.image = user.image;
         token.nickname = user.name;
-        token.publicId = user.publicId;
+        
       }
       return token;
     },
 
     async session({ session, token }) {
-      session.user.id = token.id as string;
       session.user.email = token.email;
       session.user.image = token.image as string;
       session.user.nickname = token.name as string;
-      session.user.publicId = token.publicId as number;
       
       return session;
     },
