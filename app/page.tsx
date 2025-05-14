@@ -2,6 +2,7 @@ import HeroSection from "@/app/components/HeroSection";
 import MapSection from "@/app/components/MapSection";
 import CommunicateSection from "@/app/components/CommunicateSection";
 import ScrollSection from "@/app/components/ScrollSection";
+import EndSection from "./components/EndSection";
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
       <MapSection />
       <CommunicateSection />
       <ScrollSection />
+      <EndSection />
     </div>
   );
 }
