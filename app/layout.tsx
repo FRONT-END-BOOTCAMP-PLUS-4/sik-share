@@ -3,7 +3,7 @@ import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import "./globals.css";
 import RobotLottie from "@/components/lotties/RobotLottie";
-import { SessionProvider } from "next-auth/react";
+import { SessionProvider } from "@/components/common/SessionProvider";
 
 export const metadata: Metadata = {
   title: "함께 나누는 따뜻한 식생활",
