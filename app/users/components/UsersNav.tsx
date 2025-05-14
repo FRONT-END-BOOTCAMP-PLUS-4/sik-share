@@ -32,7 +32,7 @@ export default function UsersNav({ publicId, mannerReviews }: usersNavProps) {
           <ChevronRight />
         </Link>
         {isReview && (
-          <ul className="px-4 flex flex-col gap-1.5">
+          <ul className="px-4 flex flex-col gap-1.5 pt-1">
             <li className="flex gap-1 items-center">
               <div className="w-[130px] body-sm">나눔 재료가 신선해요</div>
               <Badge variant="review">
