@@ -30,15 +30,7 @@ export default function Footer() {
   };
 
   return (
-    <footer
-      className="z-10
-        fixed inset-x-0 bottom-0
-        mx-auto max-w-[var(--space-mobileMax)]
-        bg-white flex justify-around items-center
-        min-h-[var(--space-header)] px-4 py-2
-        shadow-[var(--bottom-nav-shadow)] border-x border-zinc-300
-        lg:absolute lg:inset-x-0 lg:bottom-0 lg:border-none"
-    >
+    <footer className="z-10 fixed bottom-0 mx-auto w-full max-w-[calc(var(--space-mobileMax)-2px)] bg-white flex justify-around items-center min-h-[var(--space-header)] px-4 py-2 shadow-[var(--bottom-nav-shadow)]">
       {navItems.map(({ key, Icon, label }) => {
         const isActive = key === activeTab;
         const colorClass = isActive ? "text-primary" : "";

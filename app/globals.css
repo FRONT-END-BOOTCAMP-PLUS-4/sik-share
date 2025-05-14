@@ -153,8 +153,8 @@
 }
 
 .safe-container {
-  width: 100%;
-  max-width: var(--space-mobileMax);
+  /* width: 100%; */
+  /* max-width: var(--space-mobileMax); */
   padding-top: var(--safe-top);
   padding-right: var(--safe-right);
   padding-bottom: var(--safe-bottom);

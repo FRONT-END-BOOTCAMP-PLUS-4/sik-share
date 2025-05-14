@@ -1,9 +1,7 @@
-// app/layout.tsx
 import type { Metadata } from "next";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import "./globals.css";
-import IntroLottie from "@/components/lotties/IntroLottie";
 import RobotLottie from "@/components/lotties/RobotLottie";
 
 export const metadata: Metadata = {
@@ -19,11 +17,10 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body suppressHydrationWarning>
-        <div className="flex px-10">
-          <section className="hidden lg:flex flex-col justify-center w-[40%] title-lg mt-[50px]">
+        <div className="flex">
+          <section className="hidden lg:flex flex-col justify-center w-[40%] title-lg mb-[150px]">
             <div className="flex flex-col items-end">
               <div className="flex flex-col justify-between items-center space-y-4">
-                {/* <IntroLottie /> */}
                 <div className="flex flex-col items-center text-2xl font-bold leading-snug">
                   <div className="flex items-center">
                     <p>까다로운&nbsp;</p>
@@ -48,9 +45,9 @@ export default function RootLayout({
             </div>
           </section>
 
-          <section className="relative safe-container w-[60%] min-h-screen mx-auto max-w-[var(--space-mobileMax)] bg-white border-t border-x border-zinc-300">
+          <section className="relative safe-container w-full min-h-screen mx-auto  bg-white border-t border-x border-zinc-300 max-w-[var(--space-mobileMax)]">
             <Header />
-            <main className="px-4 pb-16">{children}</main>
+            <main className="pb-16 md:w-full">{children}</main>
             <div className="h-auto" id="drawer-customPortal" />
             <Footer />
           </section>
