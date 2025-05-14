@@ -1,12 +1,9 @@
-import { PiggyBank } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { getScoreVisual } from "@/app/users/utils";
 import UsersNav from "@/app/users/components/UsersNav";
 import Profile from "@/app/users/components/Profile";
 import UserLocation from "../components/UserLocation";
 import ShareScore from "../components/ShareScore";
 import MyCharacter from "../components/MyCharacter";
-import MyPoint from "../components/MyPoint";
 
 export default function userPage() {
   const isMyAccount = true;
