@@ -12,7 +12,7 @@ export default function CartLottie() {
     <div className="-mt-10">
       <DotLottieReact
         src="/assets/lotties/Cart.lottie"
-        className="w-[150px] h-[150px]"
+        className="w-[100px] h-[100px] sm:w-[150px] sm:h-[150px]"
         speed={0.7}
         loop
         autoplay
