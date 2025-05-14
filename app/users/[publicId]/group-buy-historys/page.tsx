@@ -1,31 +1,32 @@
 import { HistorySection } from "../../components/HistorySection";
 
-export default function SharesHistory() {
+export default function GroupBuyHistory() {
   const isMyAccount = true;
   const data = [
     {
       id: "diddididcsfdm",
       thumbnailSrc: "/assets/images/example/thumbnail.png",
       title: "토요일 이마트 갈 사람",
-      badgeVariant: "share" as const,
-      badgeLabel: "예약",
-      timeLeft: "21",
+      timeLeft: "2025-05-18",
       location: "서울대입구역 롯데시네마",
       currentUser: 3,
       maxUser: 5,
     },
+    // 시간 없는 케이스
     {
-      id: "didfidiffdcm",
+      id: "didaaididfffcm",
       thumbnailSrc: "/assets/images/example/thumbnail.png",
-      title: "양파 나눔해요요...",
-      timeLeft: "23",
-      location: "관악구청 앞",
+      timeLeft: "2025-05-23",
+      title: "감자 같이 사러 가실 분",
+      location: "낙성대역 아트박스 앞",
+      currentUser: 3,
+      maxUser: 5,
     },
   ];
 
   return (
     <HistorySection
-      title="나눔 내역"
+      title="같이 장보기 내역"
       tabValues={[
         { label: "진행 중", count: 1, value: "in-progress" },
         { label: "종료", count: 2, value: "completed" },
@@ -38,7 +39,7 @@ export default function SharesHistory() {
         completed: data,
         ...(isMyAccount ? { expired: data } : {}),
       }}
-      type="share"
+      type="group"
     />
   );
 }

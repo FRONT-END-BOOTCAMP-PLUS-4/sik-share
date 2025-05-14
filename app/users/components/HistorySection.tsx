@@ -30,7 +30,7 @@ export function HistorySection({
           <TabsList className="w-full">
             {tabValues.map((tab) => (
               <TabsTrigger key={tab.value} value={tab.value} className="flex-1">
-                {tab.label}
+                {tab.label} {tab.count}
               </TabsTrigger>
             ))}
           </TabsList>

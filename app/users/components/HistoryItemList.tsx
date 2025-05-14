@@ -11,7 +11,7 @@ interface HistoryItemListProps {
 
 export function HistoryItemList({ items, type }: HistoryItemListProps) {
   return (
-    <ul className="mt-4">
+    <ul>
       {items.map((item) => (
         <li key={item.id}>
           {type === "share" ? (
