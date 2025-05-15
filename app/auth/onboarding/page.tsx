@@ -6,9 +6,11 @@ import SubHeader from "@/components/common/SubHeader";
 import ButtonSection from "./components/ButtonSection";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/authStore";
 
 export default function OnboardingPage() {
   const { data: session, status } = useSession();
+  const { setPublicId, setAccessToken } = useAuthStore();
   const router = useRouter();
   const [location, setLocation] = useState<{
     address: string;
@@ -44,6 +46,9 @@ export default function OnboardingPage() {
       });
 
       const { user } = await res.json();
+      setAccessToken(session.accessToken);
+      setPublicId(user.publicId);
+
       router.replace("/map");
     } catch (err) {
       console.error(err);

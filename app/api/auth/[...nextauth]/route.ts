@@ -24,11 +24,12 @@ export const authOptions:NextAuthOptions = {
       return true;
     },
 
-    async jwt({ token, user }) {
+    async jwt({ token, account, user }) {
       if (user) {
         token.email = user.email;
         token.image = user.image;
         token.nickname = user.name;
+        token.accessToken = account?.access_token;
         
       }
       return token;
@@ -38,6 +39,7 @@ export const authOptions:NextAuthOptions = {
       session.user.email = token.email;
       session.user.image = token.image as string;
       session.user.nickname = token.name as string;
+      session.accessToken = token.accessToken as string;
       
       return session;
     },
