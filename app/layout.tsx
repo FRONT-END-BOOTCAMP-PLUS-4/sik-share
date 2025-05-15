@@ -17,8 +17,8 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body suppressHydrationWarning>
-        <div className="flex">
-          <section className="hidden lg:flex flex-col justify-center w-[40%] title-lg mb-[150px]">
+        <div className="flex items-center">
+          <section className="hidden lg:flex fixed top-1/2 left-0 w-1/3 transform -translate-y-1/2">
             <div className="flex flex-col items-end">
               <div className="flex flex-col justify-between items-center space-y-4">
                 <div className="flex flex-col items-center text-2xl font-bold leading-snug">
