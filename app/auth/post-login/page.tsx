@@ -1,5 +1,6 @@
 "use client";
 
+import Loading from "@/components/common/Loading";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -34,5 +35,9 @@ export default function PostLoginPage() {
     checkUser();
   }, [status, session, router]);
 
-  return <p>로그인 처리 중입니다.</p>;
+  return (
+    <section className="flex justify-center items-center h-[calc(100vh-171px)]">
+      <Loading>로그인 중입니다...</Loading>
+    </section>
+  );
 }

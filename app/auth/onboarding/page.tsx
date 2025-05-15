@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import KakaoMap from "./components/KakaoMap";
 import SubHeader from "@/components/common/SubHeader";
 import ButtonSection from "./components/ButtonSection";
@@ -25,7 +25,10 @@ export default function OnboardingPage() {
       return;
     }
 
-    if (status !== "authenticated") router.replace("/login");
+    if (status !== "authenticated") {
+      router.replace("/login");
+      return;
+    }
 
     try {
       const res = await fetch("/api/users/signup", {
