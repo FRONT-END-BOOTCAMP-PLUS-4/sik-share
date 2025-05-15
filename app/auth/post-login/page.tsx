@@ -24,7 +24,7 @@ export default function PostLoginPage() {
         if (exists) {
           router.replace("/map");
         } else {
-          router.replace("/onboarding");
+          router.replace("/auth/onboarding");
         }
       } catch (err) {
         console.error(err);

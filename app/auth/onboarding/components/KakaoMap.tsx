@@ -77,11 +77,11 @@ export default function KakaoMap({ onSelect }: KakaoMapProps) {
             initMap(latitude, longitude);
           },
           () => {
-            initMap(37.5665, 126.978); // fallback to 서울
+            initMap(37.5665, 126.978); // 권한 거부 or 실패 시 : 서울 중심
           },
         );
       } else {
-        initMap(37.5665, 126.978);
+        initMap(37.5665, 126.978); // geolocation 지원 x : 서울 중심
       }
     };
 

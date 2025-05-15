@@ -43,12 +43,12 @@ export const authOptions:NextAuthOptions = {
     },
 
     async redirect(){
-      return '/post-login';
+      return '/auth/post-login';
     }
   },
 
   pages: {
-    signIn: '/auth'
+    signIn: '/login'
   },
   session:{
     strategy: 'jwt'
