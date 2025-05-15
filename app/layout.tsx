@@ -19,8 +19,8 @@ export default function RootLayout({
     <html lang="ko">
       <body suppressHydrationWarning>
         <SessionProvider>
-          <div className="flex">
-            <section className="hidden lg:flex flex-col justify-center w-[40%] title-lg mb-[150px]">
+          <div className="flex items-center">
+            <section className="hidden lg:flex fixed top-1/2 left-0 w-1/3 transform -translate-y-1/2">
               <div className="flex flex-col items-end">
                 <div className="flex flex-col justify-between items-center space-y-4">
                   <div className="flex flex-col items-center text-2xl font-bold leading-snug">
@@ -49,7 +49,8 @@ export default function RootLayout({
 
             <section className="relative safe-container w-full min-h-screen mx-auto  bg-white border-t border-x border-zinc-300 max-w-[var(--space-mobileMax)]">
               <Header />
-              <main className="pb-16 md:w-full">{children}</main>
+              <main className="md:w-full">{children}</main>
+              <div className="h-auto" id="drawer-customPortal" />
               <Footer />
             </section>
           </div>

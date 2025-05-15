@@ -5,7 +5,7 @@ import {
   type VariantProps as BadgeVariantProps,
 } from "@/components/ui/badge";
 
-export interface ListCardProps {
+export interface ShareListCardProps {
   id: string;
   thumbnailSrc: string;
   thumbnailAlt?: string;
@@ -14,11 +14,9 @@ export interface ListCardProps {
   badgeLabel?: string;
   timeLeft?: string;
   location: string;
-  currentUser?: number;
-  maxUser?: number;
 }
 
-export function ListCard({
+export function ShareListCard({
   thumbnailSrc,
   thumbnailAlt = "썸네일",
   title,
@@ -26,9 +24,7 @@ export function ListCard({
   badgeLabel,
   timeLeft,
   location,
-  currentUser,
-  maxUser,
-}: ListCardProps) {
+}: ShareListCardProps) {
   return (
     <div className="w-full flex gap-2 items-start px-4 py-3 cursor-pointer  border-b-1 border-b-zinc-200 hover:bg-zinc-200 hover:border-b-transparents">
       <div className="flex-shrink-0">
@@ -45,26 +41,11 @@ export function ListCard({
           <div className="flex gap-[5px]">
             {timeLeft && (
               <div className="flex flex-1/2 items-center gap-1">
-                {badgeVariant === "share" ? (
-                  <>
-                    <ClockFading size={16} strokeWidth={1} />
-                    <p className="caption">
-                      <span className="text-[var(--warning)]">{timeLeft}</span>
-                      시간 남음
-                    </p>
-                  </>
-                ) : (
-                  <>
-                    <Clock size={16} strokeWidth={1} />
-                    <p className="caption">{timeLeft}</p>
-                  </>
-                )}
-              </div>
-            )}
-            {currentUser && maxUser && (
-              <div className="flex flex-1/2 gap-1">
-                <CircleUserRound size={16} strokeWidth={1} />
-                <p className="caption">{`${currentUser}/${maxUser}명`}</p>
+                <ClockFading size={16} strokeWidth={1} />
+                <p className="caption">
+                  <span className="text-(--warning)">{timeLeft}</span>
+                  시간 남음
+                </p>
               </div>
             )}
           </div>
