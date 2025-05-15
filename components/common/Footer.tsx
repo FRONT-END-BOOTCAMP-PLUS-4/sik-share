@@ -14,14 +14,14 @@ const navItems = [
   { key: "share", Icon: Salad, label: "나눔함" },
   { key: "map", Icon: MapPinned, label: "동네지도" },
   { key: "chat", Icon: MessageCircle, label: "채팅" },
-  { key: "profile", Icon: CircleUserRound, label: "나의 식샤" },
+  { key: "users", Icon: CircleUserRound, label: "나의 식샤" },
 ] as const;
 
 export default function Footer() {
   const pathname = usePathname();
   const router = useRouter();
 
-  const current = pathname?.slice(1) ?? navItems[0].key;
+  const current = pathname?.split("/")[1] ?? navItems[0].key;
   const activeTab =
     navItems.find((item) => item.key === current)?.key ?? navItems[0].key;
 
@@ -33,7 +33,7 @@ export default function Footer() {
     <footer className="z-10 fixed bottom-0 mx-auto w-full max-w-[calc(var(--space-mobileMax)-2px)] bg-white flex justify-around items-center min-h-[var(--space-header)] px-4 py-2 shadow-[var(--bottom-nav-shadow)]">
       {navItems.map(({ key, Icon, label }) => {
         const isActive = key === activeTab;
-        const colorClass = isActive ? "text-primary" : "";
+        const activeClass = isActive ? "text-primary font-bold" : "";
 
         return (
           // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
@@ -42,8 +42,8 @@ export default function Footer() {
             className="flex flex-col items-center cursor-pointer"
             onClick={() => handleClick(key)}
           >
-            <Icon className={`${colorClass}`} />
-            <span className={`${colorClass} label`}>{label}</span>
+            <Icon className={`${activeClass}`} />
+            <span className={`${activeClass} label`}>{label}</span>
           </div>
         );
       })}

@@ -30,7 +30,7 @@ export default function SubHeader({
   return (
     <header
       className={cn(
-        "z-10 sticky top-0 bg-white min-h-[var(--h-header)] px-4 py-3",
+        "z-10 sticky top-0 bg-white min-h-[var(--h-header)] px-4 py-3 border-b border-b-zinc-300",
         titleText && "flex justify-center items-center",
       )}
     >
