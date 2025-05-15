@@ -4,6 +4,7 @@ import Footer from "@/components/common/Footer";
 import "./globals.css";
 import RobotLottie from "@/components/lotties/RobotLottie";
 import { SessionProvider } from "@/components/common/SessionProvider";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "함께 나누는 따뜻한 식생활",
@@ -54,6 +55,12 @@ export default function RootLayout({
               <Footer />
             </section>
           </div>
+
+          <Script
+            type="text/javascript"
+            src={`https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&libraries=services,clusterer&autoload=false`}
+            strategy="beforeInteractive"
+          />
         </SessionProvider>
       </body>
     </html>
