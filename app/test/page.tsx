@@ -1,12 +1,26 @@
+"use client";
+
+import { useForm } from "react-hook-form";
+import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
 import AddButton from "@/components/common/AddButton";
-import { Input } from "@/components/ui/input";
 import InputCalendar from "@/components/common/InputCalendar";
 import { ListCard } from "@/components/common/ListCard";
+import FormInput from "@/components/common/FormInput";
 
 export default function Home() {
+  const form = useForm({
+    defaultValues: {
+      email: "",
+    },
+  });
+
+  const onSubmit = (data: any) => {
+    console.log(data);
+  };
+
   const data = [
     {
       thumbnailSrc: "/assets/images/example/thumbnail.png",
@@ -26,16 +40,12 @@ export default function Home() {
       timeLeft: "21시간 남음",
       location: "서울대입구역 롯데시네마",
     },
-
-    // 뱃지 없는 케이스
     {
       thumbnailSrc: "/assets/images/example/thumbnail.png",
       title: "양파 나눔해요요...",
       timeLeft: "21시간 남음",
       location: "서울대입구역 롯데시네마",
     },
-
-    // 시간 없는 케이스
     {
       thumbnailSrc: "/assets/images/example/thumbnail.png",
       title: "양파 나눔해요요...",
@@ -86,7 +96,18 @@ export default function Home() {
       <br />
 
       <h3>Input</h3>
-      <Input placeholder="ex. 양파 나눔해요" />
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <p>form 양식은 따로 만드세요</p>
+          <FormInput
+            name="email"
+            label="이메일"
+            placeholder="이메일을 입력하세요"
+            type="email"
+          />
+          <button type="submit">임시 제출 버튼</button>
+        </form>
+      </Form>
 
       <br />
       <br />
