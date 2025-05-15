@@ -32,6 +32,7 @@
     "date-fns": "^3.6.0",
     "drawer": "^0.0.2",
     "lucide-react": "^0.507.0",
+    "maplibre-gl": "^5.5.0",
     "motion": "^12.11.0",
     "next": "15.3.1",
     "next-auth": "^4.24.11",
