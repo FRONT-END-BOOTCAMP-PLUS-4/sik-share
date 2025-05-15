@@ -1,7 +1,8 @@
 "use client";
 
 import useKakaoReady from "@/app/hooks/useKakaoReady";
-import { useEffect, useRef } from "react";
+import { Badge } from "@/components/ui/badge";
+import { useEffect, useRef, useState } from "react";
 
 interface KakaoMapProps {
   onSelect: (address: string, neighborhoodName: string) => void;
@@ -10,6 +11,7 @@ interface KakaoMapProps {
 export default function KakaoMap({ onSelect }: KakaoMapProps) {
   const mapRef = useRef<HTMLDivElement>(null);
   const isKakaoReady = useKakaoReady();
+  const [showBadge, setShowBadge] = useState(false);
 
   useEffect(() => {
     if (!isKakaoReady || !mapRef.current) return;
@@ -33,6 +35,7 @@ export default function KakaoMap({ onSelect }: KakaoMapProps) {
     };
 
     const initMap = (lat: number, lng: number) => {
+      setShowBadge(true);
       const center = new window.kakao.maps.LatLng(lat, lng);
       const imageSrc = "/assets/images/map_pin.svg";
       const imageSize = new kakao.maps.Size(40, 40);
@@ -59,6 +62,10 @@ export default function KakaoMap({ onSelect }: KakaoMapProps) {
         updateLocation(map, marker),
       );
 
+      window.kakao.maps.event.addListener(map, "dragstart", () => {
+        setShowBadge(false);
+      });
+
       updateLocation(map, marker);
     };
 
@@ -82,15 +89,20 @@ export default function KakaoMap({ onSelect }: KakaoMapProps) {
   }, [isKakaoReady, onSelect]);
 
   return (
-    <div className="relative w-full h-96">
+    <div className="flex-1 relative">
       {!isKakaoReady && (
         <div className="absolute inset-0 flex items-center justify-center bg-white z-10">
-          <span className="animate-spin w-6 h-6 border-4 border-green-500 border-t-transparent rounded-full" />
+          <span className="animate-spin w-6 h-6 border-4 border-primary border-t-transparent rounded-full" />
         </div>
       )}
-      <div className="absolute top-2 left-1/2 -translate-x-1/2 z-20 bg-black text-white text-xs px-2 py-1 rounded">
-        지도를 움직여서 선택해주세요.
-      </div>
+      {showBadge && (
+        <Badge
+          variant="location"
+          className="absolute left-1/2 top-[calc(50%-60px)] z-10 -translate-x-1/2"
+        >
+          지도를 움직여서 선택해주세요.
+        </Badge>
+      )}
       <div ref={mapRef} className="w-full h-full" />
     </div>
   );
