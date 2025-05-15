@@ -13,6 +13,7 @@
     "seed": "npx tsx prisma/seed.ts"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.0.1",
     "@lottiefiles/dotlottie-react": "^0.13.5",
     "@prisma/client": "^6.7.0",
     "@radix-ui/react-dialog": "^1.1.13",
@@ -37,11 +38,13 @@
     "react": "^19.0.0",
     "react-datepicker": "^8.3.0",
     "react-dom": "^19.0.0",
+    "react-hook-form": "^7.56.3",
     "shadcn": "^2.5.0",
     "swiper": "^11.2.6",
     "tailwind-merge": "^3.2.0",
     "three": "^0.176.0",
     "vaul": "^1.1.2",
+    "zod": "^3.24.4",
     "zustand": "^5.0.4"
   },
   "devDependencies": {
