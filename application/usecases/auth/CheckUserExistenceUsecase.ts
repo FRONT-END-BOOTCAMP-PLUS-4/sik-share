@@ -1,5 +1,4 @@
 import type { UserRepository } from "@/domain/repositories/UserRepository";
-import type { User } from "@/prisma/generated";
 import { CheckUserExistenceResultDto } from "./dto/CheckUserExistenceResultDto";
 
 export class CheckUserExistenceUsecase {
@@ -10,6 +9,6 @@ export class CheckUserExistenceUsecase {
 
     const exists = !!user;
 
-    return new CheckUserExistenceResultDto(exists);
+    return new CheckUserExistenceResultDto(exists, user?.publicId || null);
   }
 }
