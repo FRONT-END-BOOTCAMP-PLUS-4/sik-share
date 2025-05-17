@@ -48,7 +48,9 @@ export default function Profile({ isMyAccount, memberTitle }: profileProps) {
               </VisuallyHidden>
               <Label htmlFor="nickName">닉네임</Label>
               <Input id="nickName" placeholder="싱그러운 새싹" />
-              <Button variant="joinFullBtn">프로필 수정하기</Button>
+              <Button variant="joinFullBtn" size="full">
+                프로필 수정하기
+              </Button>
             </DialogContent>
           </Dialog>
         )}

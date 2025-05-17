@@ -284,8 +284,8 @@ body {
 
 .button-lg {
   color: white;
-  font-size: var(--fs-20);
-  line-height: var(--space-20);
+  font-size: var(--fs-16);
+  line-height: var(--space-24);
 }
 .button-sm {
   color: var(--light-green-50);
