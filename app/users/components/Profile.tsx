@@ -8,10 +8,13 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import Image from "next/image";
+import FormInput from "@/components/common/FormInput";
+import { Form } from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { FormImageUpload } from "@/components/common/FormImageUpload";
 
 interface profileProps {
   isMyAccount: boolean;
@@ -19,6 +22,17 @@ interface profileProps {
 }
 
 export default function Profile({ isMyAccount, memberTitle }: profileProps) {
+  const form = useForm({
+    defaultValues: {
+      nickName: "씩씩한 감자",
+      profileImage: null,
+    },
+  });
+
+  const onSubmit = (data: any) => {
+    console.log(data);
+  };
+
   return (
     <div className="flex gap-2 px-6 items-center pb-[18px]">
       <Image
@@ -31,10 +45,10 @@ export default function Profile({ isMyAccount, memberTitle }: profileProps) {
       <div className="flex justify-between w-full">
         <div>
           <div className="text-sm/3.5 text-zinc-400">{memberTitle}</div>
-          <div className="text-2xl/normal pt-1.5">싱그러운 새싹</div>
+          <div className="text-2xl/6 pt-1.5">싱그러운 새싹</div>
         </div>
         {isMyAccount && (
-          <Dialog>
+          <Dialog onOpenChange={(open) => !open && form.reset()}>
             <DialogTrigger asChild>
               <Button variant="editProfile" size="xs">
                 프로필 수정
@@ -44,13 +58,31 @@ export default function Profile({ isMyAccount, memberTitle }: profileProps) {
               <VisuallyHidden>
                 <DialogHeader>
                   <DialogTitle>프로필 수정 팝업</DialogTitle>
+                  <DialogDescription>
+                    프로필 이미지와 닉네임을 수정합니다.
+                  </DialogDescription>
                 </DialogHeader>
               </VisuallyHidden>
-              <Label htmlFor="nickName">닉네임</Label>
-              <Input id="nickName" placeholder="싱그러운 새싹" />
-              <Button variant="joinFullBtn" size="full">
-                프로필 수정하기
-              </Button>
+              <Form {...form}>
+                <form
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  className="flex flex-col gap-4"
+                >
+                  <FormImageUpload
+                    name="profileImage"
+                    defaultImage="/assets/images/example/default-profile.png"
+                  />
+                  <FormInput
+                    name="nickName"
+                    label="닉네임"
+                    placeholder="변경할 닉네임을 넣어주세요."
+                    type="text"
+                  />
+                  <Button variant="joinFullBtn" size="full" type="submit">
+                    프로필 수정하기
+                  </Button>
+                </form>
+              </Form>
             </DialogContent>
           </Dialog>
         )}
