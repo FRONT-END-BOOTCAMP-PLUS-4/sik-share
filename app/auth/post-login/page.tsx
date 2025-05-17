@@ -1,11 +1,14 @@
 "use client";
 
+import Loading from "@/components/common/Loading";
+import { useAuthStore } from "@/store/authStore";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function PostLoginPage() {
   const { data: session, status } = useSession();
+  const { setAccessToken, setPublicId } = useAuthStore();
   const router = useRouter();
 
   useEffect(() => {
@@ -19,12 +22,14 @@ export default function PostLoginPage() {
           body: JSON.stringify({ email: session.user.email }),
         });
 
-        const { exists } = await res.json();
+        const { exists, publicId } = await res.json();
 
         if (exists) {
           router.replace("/map");
+          setAccessToken(session.accessToken);
+          setPublicId(publicId);
         } else {
-          router.replace("/onboarding");
+          router.replace("/auth/onboarding");
         }
       } catch (err) {
         console.error(err);
@@ -32,7 +37,11 @@ export default function PostLoginPage() {
     };
 
     checkUser();
-  }, [status, session, router]);
+  }, [status, session, router, setAccessToken, setPublicId]);
 
-  return <p>로그인 처리 중입니다.</p>;
+  return (
+    <section className="flex justify-center items-center h-[calc(100vh-171px)]">
+      <Loading>로그인 중입니다...</Loading>
+    </section>
+  );
 }

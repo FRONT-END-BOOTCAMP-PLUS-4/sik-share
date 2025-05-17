@@ -20,10 +20,10 @@ export async function POST(req: Request){
     const neighborRepo = new PrismaNeighborhoodRepository();
     const createUserUsecase = new CreateUserUsecase(userRepo, neighborRepo);
 
-    await createUserUsecase.execute(createUserDto);
+    const result = await createUserUsecase.execute(createUserDto);
 
     return NextResponse.json(
-      {message : '가입 성공'},
+      {message : '가입 성공', user: result},
       {status : 201}
     )
   }
