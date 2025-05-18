@@ -25,6 +25,7 @@
     "@radix-ui/react-visually-hidden": "^1.2.2",
     "@react-three/drei": "^10.0.7",
     "@react-three/fiber": "^9.1.2",
+    "@supabase/supabase-js": "^2.49.4",
     "@tailwindcss/line-clamp": "^0.4.4",
     "add": "^2.0.6",
     "class-variance-authority": "^0.7.1",

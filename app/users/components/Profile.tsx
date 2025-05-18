@@ -19,9 +19,14 @@ import { FormImageUpload } from "@/components/common/FormImageUpload";
 interface profileProps {
   isMyAccount: boolean;
   memberTitle: string;
+  userName: string;
 }
 
-export default function Profile({ isMyAccount, memberTitle }: profileProps) {
+export default function Profile({
+  isMyAccount,
+  memberTitle,
+  userName,
+}: profileProps) {
   const form = useForm({
     defaultValues: {
       nickName: "씩씩한 감자",
@@ -45,7 +50,7 @@ export default function Profile({ isMyAccount, memberTitle }: profileProps) {
       <div className="flex justify-between w-full">
         <div>
           <div className="text-sm/3.5 text-zinc-400">{memberTitle}</div>
-          <div className="text-2xl/6 pt-1.5">싱그러운 새싹</div>
+          <div className="text-2xl/6 pt-1.5">{userName}</div>
         </div>
         {isMyAccount && (
           <Dialog onOpenChange={(open) => !open && form.reset()}>
