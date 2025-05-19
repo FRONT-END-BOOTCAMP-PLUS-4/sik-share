@@ -1,31 +1,48 @@
+"use client";
+
+import { useRouter } from "next/navigation";
 import { UsersRound } from "lucide-react";
 import Image from "next/image";
 
 interface ChatListProps {
+  chatId: string | number;
   type: "share" | "together";
   profileImage?: string;
   title?: string;
   nickname?: string;
   totalPeople?: number;
   temperature?: number;
-  lastChatTime: string;
-  chatMessage: string;
+  lastMessageAt: string;
+  lastMessage: string;
   chatCount: number;
 }
 
 export default function ChatList({
+  chatId,
   type,
   profileImage,
   title,
   nickname,
   totalPeople,
   temperature,
-  lastChatTime,
-  chatMessage,
+  lastMessageAt,
+  lastMessage,
   chatCount,
 }: ChatListProps) {
+  const router = useRouter();
+
+  const handleClick = () => {
+    const path =
+      type === "share" ? `/chat/${chatId}/shares` : `/chat/${chatId}/together`;
+    router.push(path);
+  };
+
   return (
-    <div className="w-full h-[71px] p-4 flex justify-between items-center border-b">
+    <div
+      onClick={handleClick}
+      onKeyDown={handleClick}
+      className="cursor-pointer w-full h-[71px] p-4 flex justify-between items-center border-b hover:bg-zinc-50 transition"
+    >
       <div className="flex items-center gap-2">
         <Image
           width={40}
@@ -52,9 +69,9 @@ export default function ChatList({
               </>
             )}
 
-            <p className="label !text-zinc-400">{lastChatTime}</p>
+            <p className="label !text-zinc-400">{lastMessageAt}</p>
           </div>
-          <p className="caption !text-zinc-500">{chatMessage}</p>
+          <p className="caption !text-zinc-500">{lastMessage}</p>
         </div>
       </div>
       {chatCount > 0 && (
