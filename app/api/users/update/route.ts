@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { UpdateUserProfileUsecase } from "@/application/usecases/user/UpdateUserProfileUsecase";
 import { PrismaUserRepository } from "@/infra/repositories/prisma/PrismaUserRepository";
-import { SupabaseImageStorageRepository } from "@/infra/repositories/supabase/SupabaseProfileImageRepository";
+import { SupabaseImageStorageRepository } from "@/infra/repositories/supabase/SupabaseImageRepository";
 
 export async function POST(req: Request) {
   try {
