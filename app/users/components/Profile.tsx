@@ -14,6 +14,7 @@ export default function Profile({
   userName,
   profileImage,
 }: profileProps) {
+  
   return (
     <div className="flex gap-2 px-6 items-center pb-[18px]">
       <Image
