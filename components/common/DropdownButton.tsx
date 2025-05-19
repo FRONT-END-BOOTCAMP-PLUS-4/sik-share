@@ -61,7 +61,7 @@ export default function DropdownButton({
   }, []);
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative w-fit" ref={dropdownRef}>
       {type === "editProfile" ? (
         <Button variant="editProfile" size="icon" onClick={toggleDropdown}>
           <Settings />
