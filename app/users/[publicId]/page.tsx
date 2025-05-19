@@ -35,7 +35,6 @@ export default function userPage() {
 
         if (!res.ok) throw new Error("유저 정보 조회 실패");
         const data = await res.json();
-        console.log(data);
         setUser(data.userProfile);
       } catch (error) {
         console.error(error);

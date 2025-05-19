@@ -2,7 +2,7 @@ import type { ProfileImage } from "../entities/ProfileImage";
 
 export interface ImageStorageRepository {
   uploadUserProfileImage(
-    userId: string,
+    userPublicId: string,
     file: File,
   ): Promise<ProfileImage>;
 }

@@ -3,9 +3,9 @@ import type { ImageStorageRepository } from "@/domain/repositories/ImageStorageR
 import { ProfileImage } from "@/domain/entities/ProfileImage";
 
 export class SupabaseImageStorageRepository implements ImageStorageRepository {
-  async uploadUserProfileImage(userId: string, file: File): Promise<ProfileImage> {
+  async uploadUserProfileImage(userPublicId: string, file: File): Promise<ProfileImage> {
     const fileExtension = file.name.includes('.') ? file.name.split('.').pop() : 'jpg';
-    const filePath = `profiles/${userId}_profile.${fileExtension}`;
+    const filePath = `${userPublicId}_profile.${fileExtension}`;
 
     const { error } = await supabase.storage
       .from("user-profile")

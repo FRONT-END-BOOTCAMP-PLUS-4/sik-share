@@ -10,7 +10,6 @@ export class CreateUserUsecase {
   ) {}
 
   async execute(user: CreateUserDto): Promise<User> {
-    console.log(user.neighborhoodName);
     const neighborhood = await this.neighborhoodRepo.findByName(
       user.neighborhoodName,
     );

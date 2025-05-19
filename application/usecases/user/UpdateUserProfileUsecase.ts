@@ -12,12 +12,12 @@ export class UpdateUserProfileUsecase {
     let profileImageUrl = user.currentImageUrl;
     
     if (user.newImageFile) {
-        const profileImage = await this.imageStorageRepo.uploadUserProfileImage(user.userId, user.newImageFile);
+        const profileImage = await this.imageStorageRepo.uploadUserProfileImage(user.userPublicId, user.newImageFile);
         profileImageUrl = profileImage.profileUrl;
-        console.log(profileImageUrl);
     }
 
     await this.userRepo.update({
+      publicId: Number(user.userPublicId),
       nickname: user.nickName,
       profileUrl: profileImageUrl,
     });
