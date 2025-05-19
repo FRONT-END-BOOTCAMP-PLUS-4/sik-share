@@ -31,7 +31,7 @@ export default function ChatRoom({ type, roomId }: ChatRoomProps) {
       {type === "share" && <ShareInfo />}
       {type === "together" && <TogetherInfo />}
       <ChatMessageList />
-      <ChatInput />
+      <ChatInput roomId={roomId} />
     </div>
   );
 }
