@@ -12,7 +12,7 @@ interface LoginButtonProps {
 export default function LoginButton({ name, imgPath }: LoginButtonProps) {
   const handleLogin = () => {
     localStorage.setItem("lastLoginProvider", name);
-    signIn(name);
+    signIn(name, { callbackUrl: "/auth/post-login" });
   };
 
   return (
