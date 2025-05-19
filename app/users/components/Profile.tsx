@@ -15,33 +15,65 @@ import FormInput from "@/components/common/FormInput";
 import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { FormImageUpload } from "@/components/common/FormImageUpload";
+import { useAuthStore } from "@/store/authStore";
 
 interface profileProps {
   isMyAccount: boolean;
   memberTitle: string;
   userName: string;
+  profileImage: string;
 }
 
 export default function Profile({
   isMyAccount,
   memberTitle,
   userName,
+  profileImage,
 }: profileProps) {
-  const form = useForm({
+  const userPublicId = useAuthStore((state) => state.publicId);
+  const form = useForm<{
+    nickName: string;
+    profileImage: FileList | undefined;
+  }>({
     defaultValues: {
-      nickName: "씩씩한 감자",
-      profileImage: null,
+      nickName: `${userName}`,
+      profileImage: undefined,
     },
   });
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  console.log(profileImage);
+  const onSubmit = async () => {
+    const fileList = form.watch("profileImage");
+    const selectedFile = fileList?.[0];
+
+    console.log(form.watch("profileImage")); // FileList인지 확인
+    console.log(form.watch("profileImage")?.[0]); // File인지 확인
+
+    const formData = new FormData();
+    formData.append("userId", String(userPublicId));
+    formData.append("nickName", form.getValues("nickName"));
+    formData.append("currentImageUrl", profileImage);
+    if (selectedFile) {
+      formData.append("newImageFile", selectedFile);
+    }
+
+    const res = await fetch("/api/users/update", {
+      method: "POST",
+      body: formData,
+    });
+
+    const result = await res.json();
+    if (result.success) {
+      // 성공 처리
+    } else {
+      // 에러 처리
+    }
   };
 
   return (
     <div className="flex gap-2 px-6 items-center pb-[18px]">
       <Image
-        src="/assets/images/example/default-profile.png"
+        src={profileImage}
         alt="프로필 이미지"
         width={46}
         height={46}
@@ -75,7 +107,7 @@ export default function Profile({
                 >
                   <FormImageUpload
                     name="profileImage"
-                    defaultImage="/assets/images/example/default-profile.png"
+                    defaultImage={profileImage}
                   />
                   <FormInput
                     name="nickName"

@@ -21,7 +21,7 @@ export default function userPage() {
   const params = useParams();
   const publicId = params.publicId;
   const myPublicId = useAuthStore((state) => state.publicId);
-  const isMyAccount = myPublicId === publicId;
+  const isMyAccount = String(myPublicId) === publicId;
 
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -35,6 +35,7 @@ export default function userPage() {
 
         if (!res.ok) throw new Error("유저 정보 조회 실패");
         const data = await res.json();
+        console.log(data);
         setUser(data.userProfile);
       } catch (error) {
         console.error(error);
@@ -66,6 +67,7 @@ export default function userPage() {
           isMyAccount={isMyAccount}
           memberTitle={levelbyScore.memberBadge}
           userName={user.nickName}
+          profileImage={user.profileUrl}
         />
         <UsersNav publicId={publicId as string} />
       </section>

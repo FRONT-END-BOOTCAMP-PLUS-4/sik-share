@@ -19,7 +19,7 @@ interface FormImageUploadProps {
 
 export function FormImageUpload({
   name,
-  defaultImage = "/assets/images/example/thumbnail.png",
+  defaultImage = "/assets/images/example/default-profile.png",
   className = "",
 }: FormImageUploadProps) {
   const [preview, setPreview] = useState<string | null>(null);
