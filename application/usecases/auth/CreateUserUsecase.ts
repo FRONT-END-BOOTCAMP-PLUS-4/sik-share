@@ -1,7 +1,7 @@
 import type { UserRepository } from "@/domain/repositories/UserRepository";
 import type { CreateUserDto } from "./dto/CreateUserDto";
 import type { NeighborhoodRepository } from "@/domain/repositories/NeighborhoodRepository";
-import { CreateUserResultDto } from "./dto/CreateUserResultDto";
+import type { User } from "@/prisma/generated";
 
 export class CreateUserUsecase {
   constructor(
@@ -9,26 +9,17 @@ export class CreateUserUsecase {
     private neighborhoodRepo: NeighborhoodRepository,
   ) {}
 
-  async execute(user: CreateUserDto): Promise<CreateUserResultDto> {
+  async execute(user: CreateUserDto): Promise<User> {
     const neighborhood = await this.neighborhoodRepo.findByName(
       user.neighborhoodName,
     );
 
-    const createdUser = await this.userRepo.save({
+    return await this.userRepo.save({
       email: user.email,
       nickname: user.nickname,
       profileUrl: user.profileUrl,
       address: user.address,
       neighborhoodId: neighborhood?.id,
     });
-
-    return new CreateUserResultDto(
-      createdUser.id,
-      createdUser.nickname,
-      createdUser.profileUrl,
-      neighborhood?.name || user.email,
-      createdUser.shareScore,
-      createdUser.publicId
-    )
   }
 }

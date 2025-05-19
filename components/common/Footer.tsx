@@ -8,7 +8,6 @@ import {
   MessageCircle,
   CircleUserRound,
 } from "lucide-react";
-import { useAuthStore } from "@/store/authStore";
 import { useSession } from "next-auth/react";
 
 const navItems = [
@@ -22,7 +21,7 @@ const navItems = [
 export default function Footer() {
   const pathname = usePathname();
   const router = useRouter();
-  const publicId = useAuthStore((state) => state.publicId);
+  const { data: session, status } = useSession();
 
   const current = pathname?.split("/")[1] ?? navItems[0].key;
   const activeTab =
@@ -30,8 +29,12 @@ export default function Footer() {
 
   const handleClick = (key: string) => {
     if (key === "users") {
-      if (!publicId) router.push("/login");
-      router.push(`/users/${publicId}`);
+      if (status === "loading") return;
+      if (status === "unauthenticated") {
+        router.push("/login");
+        return;
+      }
+      router.push(`/users/${session?.user.publicId}`);
     } else {
       router.push(`/${key}`);
     }

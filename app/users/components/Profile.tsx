@@ -15,7 +15,7 @@ import FormInput from "@/components/common/FormInput";
 import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { FormImageUpload } from "@/components/common/FormImageUpload";
-import { useAuthStore } from "@/store/authStore";
+import { useSession } from "next-auth/react";
 
 interface profileProps {
   isMyAccount: boolean;
@@ -30,7 +30,8 @@ export default function Profile({
   userName,
   profileImage,
 }: profileProps) {
-  const userPublicId = useAuthStore((state) => state.publicId);
+  const { data: session } = useSession();
+  const userPublicId = session?.user.publicId;
   const form = useForm<{
     nickName: string;
     profileImage: FileList | undefined;

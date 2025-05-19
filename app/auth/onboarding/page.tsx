@@ -45,11 +45,9 @@ export default function OnboardingPage() {
         }),
       });
 
-      await signIn(localStorage.getItem("lastLoginProvider")!, {
-        redirect: false,
-        callbackUrl: "/map",
-      });
+      await update({ forceRefresh: true });
       router.replace("/map");
+      router.refresh();
     } catch (err) {
       console.error(err);
     }

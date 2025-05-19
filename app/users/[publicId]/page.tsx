@@ -7,8 +7,8 @@ import Profile from "@/app/users/components/Profile";
 import UserLocation from "../components/UserLocation";
 import ShareScore from "../components/ShareScore";
 import MyCharacter from "../components/MyCharacter";
-import { useAuthStore } from "@/store/authStore";
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 interface User {
   neighborhoodName: string;
@@ -19,9 +19,11 @@ interface User {
 
 export default function userPage() {
   const params = useParams();
+  const { data: session, status } = useSession();
   const publicId = params.publicId;
-  const myPublicId = useAuthStore((state) => state.publicId);
-  const isMyAccount = String(myPublicId) === publicId;
+  const myPublicId = session?.user.publicId;
+  const isMyAccount =
+    status === "authenticated" && String(myPublicId) === publicId;
 
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
