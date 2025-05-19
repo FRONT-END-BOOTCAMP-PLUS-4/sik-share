@@ -1,18 +1,16 @@
 "use client";
 
 import Loading from "@/components/common/Loading";
-import { useAuthStore } from "@/store/authStore";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function PostLoginPage() {
   const { data: session, status } = useSession();
-  const { setAccessToken, setPublicId } = useAuthStore();
   const router = useRouter();
 
   useEffect(() => {
-    if (status !== "authenticated") return;
+    if (status === "loading" || status !== "authenticated") return;
 
     const checkUser = async () => {
       try {
@@ -22,12 +20,10 @@ export default function PostLoginPage() {
           body: JSON.stringify({ email: session.user.email }),
         });
 
-        const { exists, publicId } = await res.json();
+        const data = await res.json();
 
-        if (exists) {
+        if (data.exists) {
           router.replace("/map");
-          setAccessToken(session.accessToken);
-          setPublicId(publicId);
         } else {
           router.replace("/auth/onboarding");
         }
@@ -37,11 +33,11 @@ export default function PostLoginPage() {
     };
 
     checkUser();
-  }, [status, session, router, setAccessToken, setPublicId]);
+  }, [status, session, router]);
 
   return (
     <section className="flex justify-center items-center h-[calc(100vh-171px)]">
-      <Loading>로그인 중입니다...</Loading>
+      <Loading />{" "}
     </section>
   );
 }

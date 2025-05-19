@@ -1,6 +1,5 @@
-export class CheckUserExistenceResultDto {
+export class CreateUserResultDto {
   constructor(
-    public exists: boolean,
     public id: string | null,
     public nickname : string | null,
     public profileUrl: string | null,

@@ -1,4 +1,5 @@
 import { CheckUserExistenceUsecase } from '@/application/usecases/auth/CheckUserExistenceUsecase';
+import { PrismaNeighborhoodRepository } from '@/infra/repositories/prisma/PrismaNeighborhoodRepository';
 import { PrismaUserRepository } from '@/infra/repositories/prisma/PrismaUserRepository';
 import { NextResponse } from 'next/server';
 
@@ -6,7 +7,8 @@ export async function POST(req: Request){
   try{
     const body = await req.json();
     const userRepo = new PrismaUserRepository();
-    const checkUserExistenceUsecase = new CheckUserExistenceUsecase(userRepo);
+    const neighborhoodRepo = new PrismaNeighborhoodRepository();
+    const checkUserExistenceUsecase = new CheckUserExistenceUsecase(userRepo, neighborhoodRepo);
     const result = await checkUserExistenceUsecase.execute(body.email);
     
     return NextResponse.json(

@@ -24,23 +24,37 @@ export const authOptions:NextAuthOptions = {
       return true;
     },
 
-    async jwt({ token, account, user }) {
+    async jwt({ token, user }) {
       if (user) {
-        token.email = user.email;
-        token.image = user.image;
-        token.nickname = user.name;
-        token.accessToken = account?.access_token;
-        
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/exist`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: user.email }),
+        });
+
+        const data = await res.json();
+
+        if (data.exists) {
+          token.id = data.id;
+          token.nickname = data.nickname;
+          token.profileUrl = data.profileUrl;
+          token.neighborhood = data.neighborhood;
+          token.publicId = data.publicId;
+          token.shareScore = data.shareScore;
+        }
       }
       return token;
     },
 
     async session({ session, token }) {
+      session.accessToken = token.accessToken as string;
       session.user.email = token.email;
       session.user.image = token.image as string;
       session.user.nickname = token.name as string;
-      session.accessToken = token.accessToken as string;
-      
+      session.user.shareScore = token.shareScore as number;
+      session.user.neighborhood = token.neighborhood as string;
+      session.user.publicId = token.publicId as number;    
+      session.user.id = token.id as string;  
       return session;
     },
 
