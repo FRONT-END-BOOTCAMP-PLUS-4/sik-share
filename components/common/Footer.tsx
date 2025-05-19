@@ -8,6 +8,8 @@ import {
   MessageCircle,
   CircleUserRound,
 } from "lucide-react";
+import { useAuthStore } from "@/store/authStore";
+import { useSession } from "next-auth/react";
 
 const navItems = [
   { key: "", Icon: House, label: "홈" },
@@ -20,13 +22,19 @@ const navItems = [
 export default function Footer() {
   const pathname = usePathname();
   const router = useRouter();
+  const publicId = useAuthStore((state) => state.publicId);
 
   const current = pathname?.split("/")[1] ?? navItems[0].key;
   const activeTab =
     navItems.find((item) => item.key === current)?.key ?? navItems[0].key;
 
   const handleClick = (key: string) => {
-    router.push(`/${key}`);
+    if (key === "users") {
+      if (!publicId) router.push("/login");
+      router.push(`/users/${publicId}`);
+    } else {
+      router.push(`/${key}`);
+    }
   };
 
   return (
