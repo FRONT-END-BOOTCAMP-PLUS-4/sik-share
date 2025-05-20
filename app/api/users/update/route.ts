@@ -16,16 +16,16 @@ export async function POST(req: Request) {
     const imageStorageRepo = new SupabaseImageStorageRepository();
     const updateUserProfileUsecase = new UpdateUserProfileUsecase(userRepo, imageStorageRepo);
 
-    await updateUserProfileUsecase.execute({
+    const result = await updateUserProfileUsecase.execute({
       userPublicId,
       nickName,
       currentImageUrl,
       newImageFile: file,
     });
 
-    return NextResponse.json({ message: "프로필 수정 완료" }, { status: 200 });
+    return NextResponse.json({ result, success: true, message: "프로필 수정 완료되었습니다." }, { status: 200 });
   } catch (error) {
     console.error("프로필 수정 실패", error);
-    return NextResponse.json({ message: "프로필 수정 실패", error: String(error) }, { status: 500 });
+    return NextResponse.json({ success: false, message: "프로필 수정 실패했습니다.", error: String(error) }, { status: 500 });
   }
 }

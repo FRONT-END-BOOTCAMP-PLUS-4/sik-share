@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import {
@@ -15,19 +15,24 @@ import {
 import FormInput from "@/components/common/FormInput";
 import { Form } from "@/components/ui/form";
 import { FormImageUpload } from "@/components/common/FormImageUpload";
-import { useAuthStore } from "@/store/authStore";
 import DropdownButton, {
   type DropdownOption,
 } from "@/components/common/DropdownButton";
+import { toast } from "sonner";
 
-export interface EditProfileButtonProps {
+interface EditProfileButtonProps {
   userName: string;
   profileImage: string;
+  onUpdateProfile: (updated: {
+    nickName: string;
+    profileImageUrl: string;
+  }) => void;
 }
 
 export default function EditProfileButton({
   userName,
   profileImage,
+  onUpdateProfile,
 }: EditProfileButtonProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const options: DropdownOption[] = [
@@ -49,7 +54,9 @@ export default function EditProfileButton({
     },
   ];
 
-  const userPublicId = useAuthStore((state) => state.publicId);
+  const { data: session } = useSession();
+  const userPublicId = session?.user.publicId;
+
   const form = useForm<{
     nickName: string;
     profileImage: FileList | undefined;
@@ -59,17 +66,21 @@ export default function EditProfileButton({
       profileImage: undefined,
     },
   });
+  const currentNickName = form.watch("nickName");
+  const fileList = form.watch("profileImage");
+  const selectedFile = fileList?.[0];
+  const isChanged = currentNickName !== userName || selectedFile !== undefined;
 
   const onSubmit = async () => {
-    const fileList = form.watch("profileImage");
-    const selectedFile = fileList?.[0];
+    const fileList = form.getValues("profileImage");
+    const file = fileList?.[0];
 
     const formData = new FormData();
     formData.append("userPublicId", String(userPublicId));
     formData.append("nickName", form.getValues("nickName"));
     formData.append("currentImageUrl", profileImage);
-    if (selectedFile) {
-      formData.append("newImageFile", selectedFile);
+    if (file) {
+      formData.append("newImageFile", file);
     }
 
     const res = await fetch("/api/users/update", {
@@ -77,13 +88,18 @@ export default function EditProfileButton({
       body: formData,
     });
 
-    const result = await res.json();
-    if (result.success) {
+    const { result, success, message } = await res.json();
+
+    if (success) {
       setIsDialogOpen(false);
-      alert("프로필 수정이 완료되었습니다.");
-      form.reset();
+      toast.success(message);
+
+      onUpdateProfile({
+        nickName: result.nickname,
+        profileImageUrl: result.profileUrl,
+      });
     } else {
-      alert("프로필 수정에 실패했습니다.");
+      toast.error(message);
     }
   };
 
@@ -121,7 +137,12 @@ export default function EditProfileButton({
                 placeholder="변경할 닉네임을 넣어주세요."
                 type="text"
               />
-              <Button variant="joinFullBtn" size="full" type="submit">
+              <Button
+                variant="joinFullBtn"
+                size="full"
+                type="submit"
+                disabled={!isChanged}
+              >
                 프로필 수정하기
               </Button>
             </form>

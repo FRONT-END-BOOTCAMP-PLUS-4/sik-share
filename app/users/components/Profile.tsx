@@ -1,9 +1,11 @@
 "use client";
 import Image from "next/image";
 import EditProfileButton from "./EditProfileButton";
-import type { EditProfileButtonProps } from "./EditProfileButton";
+import { useState } from "react";
 
-interface profileProps extends EditProfileButtonProps {
+interface profileProps {
+  userName: string;
+  profileImage: string;
   isMyAccount: boolean;
   memberTitle: string;
 }
@@ -14,11 +16,13 @@ export default function Profile({
   userName,
   profileImage,
 }: profileProps) {
-  
+  const [nickName, setNickName] = useState(userName);
+  const [profileUrl, setProfileUrl] = useState(profileImage);
+
   return (
     <div className="flex gap-2 px-6 items-center pb-[18px]">
       <Image
-        src={profileImage}
+        src={profileUrl}
         alt="프로필 이미지"
         width={46}
         height={46}
@@ -27,10 +31,17 @@ export default function Profile({
       <div className="flex justify-between w-full">
         <div>
           <div className="text-sm/3.5 text-zinc-400">{memberTitle}</div>
-          <div className="text-2xl/6 pt-1.5">{userName}</div>
+          <div className="text-2xl/6 pt-1.5">{nickName}</div>
         </div>
         {isMyAccount && (
-          <EditProfileButton userName={userName} profileImage={profileImage} />
+          <EditProfileButton
+            userName={nickName}
+            profileImage={profileUrl}
+            onUpdateProfile={(updated) => {
+              setNickName(updated.nickName);
+              setProfileUrl(updated.profileImageUrl);
+            }}
+          />
         )}
       </div>
     </div>
