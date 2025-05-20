@@ -92,11 +92,15 @@ export default function EditProfileButton({
 
     if (success) {
       setIsDialogOpen(false);
-      toast.success(message);
-
       onUpdateProfile({
         nickName: result.nickname,
         profileImageUrl: result.profileUrl,
+      });
+
+      toast.success(message);
+      form.reset({
+        nickName: form.getValues("nickName"),
+        profileImage: undefined,
       });
     } else {
       toast.error(message);

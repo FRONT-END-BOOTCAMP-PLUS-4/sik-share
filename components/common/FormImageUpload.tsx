@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
+import { toast } from "sonner";
 
 interface FormImageUploadProps {
   name: string;
@@ -23,6 +24,7 @@ export function FormImageUpload({
   className = "",
 }: FormImageUploadProps) {
   const [preview, setPreview] = useState<string | null>(null);
+  const MAX_SIZE = 50 * 1024 * 1024;
 
   return (
     <FormField
@@ -52,8 +54,8 @@ export function FormImageUpload({
                   alt="프로필 이미지"
                   width={96}
                   height={96}
+                  className="w-24 h-24  border-1 border-zinc-100 rounded-full object-cover overflow-hidden"
                   unoptimized
-                  className="w-24 h-24 rounded-full object-cover overflow-hidden"
                 />
                 <div className="absolute bottom-0 right-0 bg-white rounded-full p-1 shadow">
                   <CameraIcon className="w-5 h-5 text-gray-600" />
@@ -64,8 +66,19 @@ export function FormImageUpload({
                   accept="image/*"
                   className="hidden"
                   onChange={(e) => {
-                    if (e.target.files) {
-                      field.onChange(e.target.files);
+                    const files = e.target.files;
+
+                    if (files?.[0]) {
+                      const file = files[0];
+
+                      if (file.size > MAX_SIZE) {
+                        toast.error(
+                          "파일 크기가 너무 큽니다. 50MB 이하로 업로드 해주세요.",
+                        );
+                        return;
+                      }
+
+                      field.onChange(files);
                     }
                   }}
                 />
