@@ -9,6 +9,7 @@ import {
   useFormField,
 } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
+import type { RegisterOptions } from "react-hook-form";
 
 interface FormDetailProps {
   name: string;
@@ -16,6 +17,7 @@ interface FormDetailProps {
   placeholder: string;
   className?: string;
   textareaClassName?: string;
+  rules?: RegisterOptions;
 }
 
 export default function FormDetail({
@@ -24,10 +26,12 @@ export default function FormDetail({
   placeholder,
   className,
   textareaClassName = "",
+  rules,
 }: FormDetailProps) {
   return (
     <FormField
       name={name}
+      rules={rules}
       render={({ field }) => {
         const { formItemId } = useFormField();
 

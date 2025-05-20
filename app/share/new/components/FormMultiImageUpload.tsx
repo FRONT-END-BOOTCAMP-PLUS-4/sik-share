@@ -5,7 +5,6 @@ import {
   FormItem,
   FormControl,
   FormMessage,
-  useFormField,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
@@ -17,9 +16,10 @@ interface FormMultiImageUploadProps {
   name: "images";
 }
 
-export function FormMultiImageUpload({ name }: FormMultiImageUploadProps) {
+export default function FormMultiImageUpload({
+  name,
+}: FormMultiImageUploadProps) {
   const { setValue } = useFormContext();
-  const { formItemId, formMessageId } = useFormField();
 
   const [files, setFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
@@ -28,7 +28,11 @@ export function FormMultiImageUpload({ name }: FormMultiImageUploadProps) {
   useEffect(() => {
     const urls = files.map((file) => URL.createObjectURL(file));
     setPreviews(urls);
-    return () => urls.forEach((url) => URL.revokeObjectURL(url));
+    return () => {
+      for (const url of urls) {
+        URL.revokeObjectURL(url);
+      }
+    };
   }, [files]);
 
   // RHF 상태 동기화
@@ -58,11 +62,19 @@ export function FormMultiImageUpload({ name }: FormMultiImageUploadProps) {
               {/* 업로드 버튼 */}
               <label
                 htmlFor={`${name}-upload`}
-                className="w-24 h-24 border border-input flex flex-col justify-center items-center rounded-md bg-muted/10 cursor-pointer"
+                className="w-19 h-19 border rounded-[6px]  flex flex-col justify-center items-center cursor-pointer"
               >
-                <CameraIcon className="w-6 h-6 text-gray-500" />
-                <span className="text-xs text-gray-500 mt-1">
-                  {`${files.length}/3`}
+                <Image
+                  src="/assets/images/lucide/camera.svg"
+                  alt="camera"
+                  width={40}
+                  height={40}
+                />
+                <span className="body-sm text-zinc-500">
+                  <span
+                    className={`${files.length > 0 ? "text-orange" : "text-zinc-500"}`}
+                  >{`${files.length}`}</span>
+                  /3
                 </span>
                 <Input
                   id={`${name}-upload`}
@@ -79,7 +91,7 @@ export function FormMultiImageUpload({ name }: FormMultiImageUploadProps) {
                 {previews.map((url, idx) => (
                   <li
                     key={idx}
-                    className="relative w-24 h-24 rounded-md overflow-hidden"
+                    className="relative w-19 h-19 rounded-md overflow-hidden"
                   >
                     <Image
                       src={url}
@@ -95,7 +107,7 @@ export function FormMultiImageUpload({ name }: FormMultiImageUploadProps) {
                       <X className="w-4 h-4" />
                     </button>
                     {idx === 0 && (
-                      <span className="absolute bottom-1 left-1 bg-green-600 text-white text-[10px] px-1.5 py-0.5 rounded">
+                      <span className="absolute bottom-0 bg-[var(--dark-green)] text-white badge-bold  w-19 py-0.5 px-3.5">
                         대표 사진
                       </span>
                     )}

@@ -7,6 +7,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import type { RegisterOptions } from "react-hook-form";
 
 interface FormInputProps {
   name: string;
@@ -19,6 +20,7 @@ interface FormInputProps {
   disabled?: boolean;
   onClick?: () => void;
   readOnly?: boolean;
+  rules?: RegisterOptions;
 }
 
 export default function FormInput({
@@ -32,10 +34,12 @@ export default function FormInput({
   disabled,
   onClick,
   readOnly,
+  rules,
 }: FormInputProps) {
   return (
     <FormField
       name={name}
+      rules={rules}
       render={({ field }) => (
         <FormItem className={className}>
           {label && <FormLabel>{label}</FormLabel>}
