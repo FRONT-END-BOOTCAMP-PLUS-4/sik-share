@@ -50,10 +50,9 @@ export function useInfiniteScroll<T>({
     if (!el) return;
 
     const onScroll = () => {
-      if (
-        el.scrollTop + el.clientHeight >=
-        el.scrollHeight - 50
-      ) {
+      const scrolledRatio = el.scrollTop / (el.scrollHeight - el.clientHeight);
+      
+      if (scrolledRatio >= 0.99) {
         loadMore();
       }
     };

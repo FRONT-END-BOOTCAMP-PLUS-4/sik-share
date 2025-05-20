@@ -10,11 +10,9 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerDescription,
-  DrawerClose,
-  DrawerFooter,
 } from "@/components/ui/drawer";
 
-import { useInfiniteScroll } from "@/hooks/useInfinityScroll";
+import { MapList } from "./MapList";
 
 export function MapView() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -27,28 +25,6 @@ export function MapView() {
     { id: 2, lat: 37.4749956, lng: 126.9349995, count: 50 },
     { id: 3, lat: 37.4762971, lng: 126.9583884, count: 13 },
   ];
-
-  const fetcher = async (page: number) => {
-    if (selectedId === null) return [];
-    await new Promise((r) => setTimeout(r, 1000));
-
-    const maxItems = 100;
-    const itemsPerPage = 20;
-    const start = page * itemsPerPage;
-
-    if (start >= maxItems) return [];
-
-    return Array.from(
-      { length: Math.min(itemsPerPage, maxItems - start) },
-      (_, i) => `ID ${selectedId} - 항목 ${start + i + 1}`,
-    );
-  };
-
-  const { items, loading, containerRef, reset } = useInfiniteScroll({
-    fetcher,
-    itemsPerPage: 20,
-    maxItems: 100,
-  });
 
   useEffect(() => {
     const features = locationInfo.map((loc) => ({
@@ -133,7 +109,6 @@ export function MapView() {
       const clusterId = clusterFeature.properties.id;
 
       setSelectedId(clusterId);
-      reset();
       setDrawerOpen(true);
     });
 
@@ -153,35 +128,7 @@ export function MapView() {
             </DrawerDescription>
           </DrawerHeader>
 
-          {/* 무한스크롤 리스트 영역 */}
-          <div
-            ref={containerRef}
-            style={{
-              height: "300px",
-              overflowY: "auto",
-              borderTop: "1px solid #ddd",
-              padding: "0 16px",
-            }}
-          >
-            {items.map((item, i) => (
-              <div
-                key={i}
-                style={{
-                  padding: "12px 0",
-                  borderBottom: "1px solid #eee",
-                  fontSize: "14px",
-                }}
-              >
-                {item}
-              </div>
-            ))}
-
-            {loading && (
-              <div style={{ textAlign: "center", padding: "10px 0" }}>
-                로딩 중...
-              </div>
-            )}
-          </div>
+          <MapList selectedId={selectedId} />
         </DrawerContent>
       </Drawer>
     </>
