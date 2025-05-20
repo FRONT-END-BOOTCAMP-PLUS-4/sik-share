@@ -3,7 +3,7 @@ import KakaoProvider from "next-auth/providers/kakao";
 import NaverProvider from "next-auth/providers/naver";
 import GoogleProvider from "next-auth/providers/google";
 
-export const authOptions: NextAuthOptions = {
+const authOptions: NextAuthOptions = {
   providers: [
     KakaoProvider({ clientId: process.env.KAKAO_CLIENT_ID || "", clientSecret: process.env.KAKAO_CLIENT_SECRET || "" }),
     NaverProvider({ clientId: process.env.NAVER_CLIENT_ID || "", clientSecret: process.env.NAVER_CLIENT_SECRET || "" }),
@@ -16,40 +16,41 @@ export const authOptions: NextAuthOptions = {
     },
 
     async jwt({ token, user, trigger, session }) {
-      if (user) {
-        token.email = user.email;
-        token.image = user.image;
-        token.nickname = user.name;
+  if (user) {
+    token.email = user.email;
+    token.image = user.image;
+    token.nickname = user.name;
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/exist`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: user.email }),
-        });
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/exist`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: user.email }),
+    });
 
-        const data = await res.json();
-        if (data.exists) {
-          token.id = data.id;
-          token.publicId = data.publicId;
-        }
-      }
+    const data = await res.json();
+    if (data.exists) {
+      token.id = data.id;
+      token.publicId = data.publicId;
+    }
+  }
 
-      if (trigger === "update" && session?.forceRefresh) {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/exist`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: token.email }),
-        });
+  if (trigger === "update" && session?.forceRefresh) {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/exist`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: token.email }),
+    });
 
-        const data = await res.json();
-        if (data.exists) {
-          token.id = data.id;
-          token.publicId = data.publicId;
-        }
-      }
+    const data = await res.json();
+    if (data.exists) {
+      token.id = data.id;
+      token.publicId = data.publicId;
+    }
+  }
 
-      return token;
-    },
+  return token;
+}
+,
 
     async session({ session, token }) {
       session.accessToken = token.accessToken as string;

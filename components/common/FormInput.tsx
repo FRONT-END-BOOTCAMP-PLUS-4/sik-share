@@ -17,6 +17,8 @@ interface FormInputProps {
   className?: string;
   inputClassName?: string;
   disabled?: boolean;
+  onClick?: () => void;
+  readOnly?: boolean;
 }
 
 export default function FormInput({
@@ -28,6 +30,8 @@ export default function FormInput({
   className,
   inputClassName,
   disabled,
+  onClick,
+  readOnly,
 }: FormInputProps) {
   return (
     <FormField
@@ -41,6 +45,8 @@ export default function FormInput({
               type={type}
               placeholder={placeholder}
               disabled={disabled}
+              readOnly={readOnly}
+              onClick={onClick}
               {...field}
             />
           </FormControl>
