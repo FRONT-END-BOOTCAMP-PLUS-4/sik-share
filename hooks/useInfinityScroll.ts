@@ -1,29 +1,71 @@
-import { useEffect, useRef, useState } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
-export function useInfiniteScroll(loadMore: () => Promise<void>) {
-  const containerRef = useRef<HTMLDivElement>(null);
+interface UseInfiniteScrollProps<T> {
+  fetcher: (page: number) => Promise<T[]>;
+  itemsPerPage?: number;
+  maxItems?: number;
+}
+
+export function useInfiniteScroll<T>({
+  fetcher,
+  itemsPerPage = 20,
+  maxItems = 100,
+}: UseInfiniteScrollProps<T>) {
+  const [items, setItems] = useState<T[]>([]);
+  const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const loadMore = useCallback(async () => {
+    if (loading || !hasMore) return;
+
+    setLoading(true);
+    try {
+      const newItems = await fetcher(page);
+      if (
+        newItems.length === 0 ||
+        items.length + newItems.length >= maxItems
+      ) {
+        setHasMore(false);
+      }
+
+      setItems((prev) => [
+        ...prev,
+        ...newItems.slice(0, maxItems - prev.length),
+      ]);
+      setPage((prev) => prev + 1);
+    } finally {
+      setLoading(false);
+    }
+  }, [fetcher, page, loading, hasMore, items.length, maxItems]);
 
   useEffect(() => {
+    loadMore();
+  }, [loadMore]);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
     const onScroll = () => {
-      if (!containerRef.current || loading) return;
-
-      const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
-
-      // 스크롤이 바닥에 가까워졌을 때
-      if (scrollHeight - scrollTop <= clientHeight + 50) {
-        setLoading(true);
-        loadMore().finally(() => setLoading(false));
+      if (
+        el.scrollTop + el.clientHeight >=
+        el.scrollHeight - 50
+      ) {
+        loadMore();
       }
     };
+    el.addEventListener("scroll", onScroll);
+    return () => el.removeEventListener("scroll", onScroll);
+  }, [loadMore]);
 
-    const el = containerRef.current;
-    el?.addEventListener("scroll", onScroll);
+  const reset = () => {
+    setItems([]);
+    setPage(0);
+    setHasMore(true);
+  };
 
-    return () => {
-      el?.removeEventListener("scroll", onScroll);
-    };
-  }, [loadMore, loading]);
-
-  return { containerRef, loading };
+  return { items, loading, hasMore, containerRef, reset };
 }
