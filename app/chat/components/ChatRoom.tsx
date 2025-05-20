@@ -45,20 +45,21 @@ export default function ChatRoom({
   useEffect(() => {
     socket.emit("joinRoom", chatId);
 
-    socket.on("message", (msg: Message) => {
+    const handleMessage = (msg: Message) => {
       console.log(`[${chatId}] 메시지 수신:`, msg);
       setMessages((prev) => [...prev, msg]);
-    });
+    };
+
+    socket.on("message", handleMessage);
 
     return () => {
       socket.emit("leaveRoom", chatId);
-      socket.off("message");
+      socket.off("message", handleMessage);
     };
   }, [chatId]);
 
   const handleSendMessage = (newMessage: Message) => {
     setMessages((prev) => [...prev, newMessage]);
-    socket.emit("message", newMessage);
   };
 
   return (

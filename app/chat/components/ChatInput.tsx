@@ -23,22 +23,27 @@ export default function ChatInput({ chatId, onSend }: ChatInputProps) {
   const [text, setText] = useState("");
 
   const handleSend = () => {
-    if (!text.trim()) return;
+    const trimmed = text.trim();
+    if (!trimmed) return;
 
     const newMessage: Message = {
       type: "me",
-      nickname: "나", // 실제 로그인 사용자 정보로 교체 필요
+      nickname: "나",
       imageUrl: "/assets/images/example/thumbnail.png",
-      message: text,
+      message: trimmed,
       count: 0,
-      time: new Date().toLocaleTimeString(), // 또는 dayjs
+      time: new Date().toLocaleTimeString("ko-KR", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
     };
-    onSend(newMessage);
-    socket.emit("message", {
+
+    socket.emit("chat message", {
       chatId,
       ...newMessage,
     });
 
+    onSend(newMessage);
     setText("");
   };
 

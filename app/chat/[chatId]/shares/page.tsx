@@ -61,7 +61,7 @@ export default function ShareChat() {
   return (
     <ChatRoom
       type="share"
-      roomId={chatId}
+      chatId={chatId}
       messages={chatData.messages}
       otherUser={chatData.otherUser}
       shareInfo={chatData.shareInfo}
