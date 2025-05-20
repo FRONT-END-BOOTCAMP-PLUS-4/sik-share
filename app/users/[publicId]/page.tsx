@@ -1,14 +1,16 @@
 "use client";
 
 import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import { getScoreVisual } from "@/app/users/utils";
 import UsersNav from "@/app/users/components/UsersNav";
 import Profile from "@/app/users/components/Profile";
-import UserLocation from "../components/UserLocation";
-import ShareScore from "../components/ShareScore";
-import MyCharacter from "../components/MyCharacter";
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import UserLocation from "@/app/users/components/UserLocation";
+import ShareScore from "@/app/users/components/ShareScore";
+import MyCharacter from "@/app/users/components/MyCharacter";
+import Header from "@/components/common/Header";
+import Footer from "@/components/common/Footer";
 
 interface User {
   neighborhoodName: string;
@@ -19,9 +21,10 @@ interface User {
 
 export default function userPage() {
   const params = useParams();
-  const { data: session, status } = useSession();
   const publicId = params.publicId;
+  const { data: session, status } = useSession();
   const myPublicId = session?.user.publicId;
+
   const isMyAccount =
     status === "authenticated" && String(myPublicId) === publicId;
 
@@ -54,24 +57,31 @@ export default function userPage() {
   const levelbyScore = getScoreVisual(user.score);
 
   return (
-    <div className={`h-[calc(100vh-108px)] grade-${levelbyScore.grade}`}>
-      <section className="h-1/2 px-4 py-6">
-        <div className="flex justify-end items-center">
-          {/* <MyPoint /> */}
-          <UserLocation location={user.neighborhoodName} />
-        </div>
-        <MyCharacter grade={levelbyScore.grade} />
-        <ShareScore score={user.score} />
-      </section>
-      <section className="h-1/2 pt-6 bg-white rounded-t-[50px]">
-        <Profile
-          isMyAccount={isMyAccount}
-          memberTitle={levelbyScore.memberBadge}
-          userName={user.nickName}
-          profileImage={user.profileUrl}
-        />
-        <UsersNav publicId={publicId as string} />
-      </section>
-    </div>
+    <>
+      <Header />
+      <div className={`h-[calc(100vh-108px)] grade-${levelbyScore.grade}`}>
+        <section className="h-1/2 px-4 py-6">
+          <div className="flex justify-end items-center">
+            {/* <MyPoint /> */}
+            <UserLocation
+              isMyAccount={isMyAccount}
+              location={user.neighborhoodName}
+            />
+          </div>
+          <MyCharacter grade={levelbyScore.grade} />
+          <ShareScore score={user.score} />
+        </section>
+        <section className="h-1/2 pt-6 bg-white rounded-t-[50px]">
+          <Profile
+            isMyAccount={isMyAccount}
+            memberTitle={levelbyScore.memberBadge}
+            userName={user.nickName}
+            profileImage={user.profileUrl}
+          />
+          <UsersNav publicId={publicId as string} />
+        </section>
+      </div>
+      <Footer />
+    </>
   );
 }
