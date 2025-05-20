@@ -59,7 +59,7 @@ export default function userPage() {
       <section className="h-1/2 px-4 py-6">
         <div className="flex justify-end items-center">
           {/* <MyPoint /> */}
-          <UserLocation location={user.neighborhoodName} />
+          <UserLocation isMyAccount={isMyAccount} location={user.neighborhoodName} />
         </div>
         <MyCharacter grade={levelbyScore.grade} />
         <ShareScore score={user.score} />
