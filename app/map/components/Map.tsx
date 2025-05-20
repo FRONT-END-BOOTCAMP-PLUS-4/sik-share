@@ -14,7 +14,7 @@ import {
   DrawerFooter,
 } from "@/components/ui/drawer";
 
-import { useInfiniteScroll } from "@/hooks/useInfinityScroll"; // 경로 맞게 조정
+import { useInfiniteScroll } from "@/hooks/useInfinityScroll";
 
 export function MapView() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -28,10 +28,9 @@ export function MapView() {
     { id: 3, lat: 37.4762971, lng: 126.9583884, count: 13 },
   ];
 
-  // fetcher 함수: selectedId, 페이지(=offset) 기반으로 항목 가져오기
   const fetcher = async (page: number) => {
     if (selectedId === null) return [];
-    await new Promise((r) => setTimeout(r, 1000)); // 딜레이 시뮬레이션
+    await new Promise((r) => setTimeout(r, 1000));
 
     const maxItems = 100;
     const itemsPerPage = 20;
@@ -134,7 +133,7 @@ export function MapView() {
       const clusterId = clusterFeature.properties.id;
 
       setSelectedId(clusterId);
-      reset(); // 선택 바뀌면 리스트 초기화
+      reset();
       setDrawerOpen(true);
     });
 
@@ -143,7 +142,7 @@ export function MapView() {
 
   return (
     <>
-      <div ref={mapContainer} style={{ width: "100%", height: "100vh" }} />
+      <div ref={mapContainer} className="w-full h-[calc(100vh-64px)]" />
 
       <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
         <DrawerContent>
@@ -183,10 +182,6 @@ export function MapView() {
               </div>
             )}
           </div>
-
-          <DrawerFooter>
-            <DrawerClose>닫기</DrawerClose>
-          </DrawerFooter>
         </DrawerContent>
       </Drawer>
     </>
