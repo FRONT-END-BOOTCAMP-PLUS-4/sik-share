@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 
@@ -10,37 +10,38 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerDescription,
-  DrawerClose,
-  DrawerFooter,
 } from "@/components/ui/drawer";
+
+import { useInfiniteScroll } from "@/hooks/useInfinityScroll";
 
 export function MapView() {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [selectedId, setSelectedId] = useState(null);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [items, setItems] = useState<string[]>([]);
 
-  const mapContainer = useRef(null);
+  const mapContainer = useRef<HTMLDivElement>(null);
 
-  // 추후 DB 매핑 필요
   const locationInfo = [
-    {
-      id: 1,
-      lat: 37.4779619,
-      lng: 126.9534602,
-      count: 130,
-    },
-    {
-      id: 2,
-      lat: 37.4749956,
-      lng: 126.9349995,
-      count: 50,
-    },
-    {
-      id: 3,
-      lat: 37.4762971,
-      lng: 126.9583884,
-      count: 13,
-    },
+    { id: 1, lat: 37.4779619, lng: 126.9534602, count: 130 },
+    { id: 2, lat: 37.4749956, lng: 126.9349995, count: 50 },
+    { id: 3, lat: 37.4762971, lng: 126.9583884, count: 13 },
   ];
+
+  const loadMore = useCallback(async () => {
+    if (selectedId === null) return;
+
+    await new Promise((r) => setTimeout(r, 1000));
+
+    setItems((prevItems) => {
+      const moreItems = Array.from(
+        { length: 20 },
+        (_, i) => `ID ${selectedId} - 항목 ${prevItems.length + i + 1}`,
+      );
+      return [...prevItems, ...moreItems];
+    });
+  }, [selectedId]);
+
+  const { containerRef, loading } = useInfiniteScroll(loadMore);
 
   useEffect(() => {
     const features = locationInfo.map((loc) => ({
@@ -63,7 +64,7 @@ export function MapView() {
     const map = new maplibregl.Map({
       container: mapContainer.current || "",
       style: `https://api.maptiler.com/maps/basic/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`,
-      center: [126.9534602, 37.4779619], // 로그인 한 user의 위치 데이터 매핑 필요
+      center: [126.9534602, 37.4779619],
       zoom: 14,
     });
 
@@ -117,40 +118,68 @@ export function MapView() {
       map.getCanvas().style.cursor = "";
     });
 
-    map.on("click", "clusters", async (e) => {
+    map.on("click", "clusters", (e) => {
       const features = map.queryRenderedFeatures(e.point, {
         layers: ["clusters"],
       });
       const clusterFeature = features[0];
-      const clusterId = clusterFeature.properties.id; // DB neightborhood - share id 매핑 필요
-      // share - neighthood id(clusterId)에 해당하는 리스트 출력 필요
+      const clusterId = clusterFeature.properties.id;
 
       setSelectedId(clusterId);
+      setItems([]); // 초기화
       setDrawerOpen(true);
     });
 
     return () => map.remove();
   }, []);
 
+  useEffect(() => {
+    if (drawerOpen && selectedId !== null && items.length === 0) {
+      loadMore();
+    }
+  }, [drawerOpen, selectedId, items.length, loadMore]);
+
   return (
     <>
-      <div ref={mapContainer} style={{ width: "100%", height: "100vh" }} />
+      <div ref={mapContainer} className="w-full h-[calc(100vh-64px)]" />
+
       <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
         <DrawerContent>
           <DrawerHeader>
-            <DrawerTitle>
-              <div>
-                <p>선택된 ID: {selectedId}</p>
-              </div>
-            </DrawerTitle>
+            <DrawerTitle>선택된 ID: {selectedId ?? "없음"}</DrawerTitle>
             <DrawerDescription className="!font-light">
-              리스트를 출력해보자 리스트를 출력해보자 리스트를 출력해보자
-              리스트를 출력해보자 리스트를 출력해보자 리스트를 출력해보자
+              클러스터에 연결된 리스트를 무한 스크롤로 출력합니다.
             </DrawerDescription>
           </DrawerHeader>
-          <DrawerFooter>
-            <DrawerClose>닫기</DrawerClose>
-          </DrawerFooter>
+
+          <div
+            ref={containerRef}
+            style={{
+              height: "300px",
+              overflowY: "auto",
+              borderTop: "1px solid #ddd",
+              padding: "0 16px",
+            }}
+          >
+            {items.map((item, i) => (
+              <div
+                key={i}
+                style={{
+                  padding: "12px 0",
+                  borderBottom: "1px solid #eee",
+                  fontSize: "14px",
+                }}
+              >
+                {item}
+              </div>
+            ))}
+
+            {loading && (
+              <div style={{ textAlign: "center", padding: "10px 0" }}>
+                로딩 중...
+              </div>
+            )}
+          </div>
         </DrawerContent>
       </Drawer>
     </>
