@@ -1,8 +1,7 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 interface UseInfiniteScrollProps<T> {
   fetcher: (page: number) => Promise<T[]>;
-  itemsPerPage?: number;
   maxItems?: number;
 }
 
@@ -15,49 +14,27 @@ export function useInfiniteScroll<T>({
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
-  const containerRef = useRef<HTMLDivElement>(null);
-
   const loadMore = useCallback(async () => {
     if (loading || !hasMore) return;
-
     setLoading(true);
+
     try {
       const newItems = await fetcher(page);
+      setItems((prev) => [
+        ...prev,
+        ...newItems.slice(0, maxItems - prev.length),
+      ]);
+      setPage((prev) => prev + 1);
       if (
         newItems.length === 0 ||
         items.length + newItems.length >= maxItems
       ) {
         setHasMore(false);
       }
-
-      setItems((prev) => [
-        ...prev,
-        ...newItems.slice(0, maxItems - prev.length),
-      ]);
-      setPage((prev) => prev + 1);
     } finally {
       setLoading(false);
     }
-  }, [fetcher, page, loading, hasMore, items.length, maxItems]);
-
-  useEffect(() => {
-    loadMore();
-  }, [loadMore]);
-
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-
-    const onScroll = () => {
-      const scrolledRatio = el.scrollTop / (el.scrollHeight - el.clientHeight);
-      
-      if (scrolledRatio >= 0.99) {
-        loadMore();
-      }
-    };
-    el.addEventListener("scroll", onScroll);
-    return () => el.removeEventListener("scroll", onScroll);
-  }, [loadMore]);
+  }, [fetcher, loading, hasMore, page, items.length, maxItems]);
 
   const reset = () => {
     setItems([]);
@@ -65,5 +42,5 @@ export function useInfiniteScroll<T>({
     setHasMore(true);
   };
 
-  return { items, loading, hasMore, containerRef, reset };
+  return { items, loading, hasMore, loadMore, reset };
 }

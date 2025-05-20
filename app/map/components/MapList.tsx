@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useInfiniteScroll } from "@/hooks/useInfinityScroll";
+import { useInView } from "react-intersection-observer";
 import Loading from "@/components/common/Loading";
 
 interface MapListProps {
@@ -9,7 +10,7 @@ interface MapListProps {
 export function MapList({ selectedId }: MapListProps) {
   const fetcher = async (page: number) => {
     if (selectedId === null) return [];
-    await new Promise((r) => setTimeout(r, 1500));
+    await new Promise((r) => setTimeout(r, 1000));
 
     const maxItems = 100;
     const itemsPerPage = 20;
@@ -23,34 +24,35 @@ export function MapList({ selectedId }: MapListProps) {
     );
   };
 
-  const { items, loading, containerRef, reset } = useInfiniteScroll({
+  const { items, loading, hasMore, loadMore, reset } = useInfiniteScroll({
     fetcher,
-    itemsPerPage: 20,
     maxItems: 100,
   });
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  const { ref, inView } = useInView();
+
   useEffect(() => {
     reset();
   }, [selectedId]);
 
+  useEffect(() => {
+    if (inView && hasMore) {
+      loadMore();
+    }
+  }, [inView, hasMore, loadMore]);
+
   return (
-    <div
-      ref={containerRef}
-      className="min-h-[60vh] max-h-[60vh] overflow-y-auto border-t border-gray-200 px-4 py-2 flex-1"
-    >
+    <div className="min-h-[50vh] max-h-[50vh] overflow-y-auto border-t border-gray-200 px-4 py-2 flex-1">
       {items.map((item, index) => (
         <div
-          key={`${item}-${
-            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-            index
-          }`}
+          key={item}
           className="py-3 border-b border-gray-100 text-sm text-gray-700"
         >
           {item}
         </div>
       ))}
       {loading && <Loading />}
+      <div ref={ref} className="h-1" /> {/* 관찰 대상 */}
     </div>
   );
 }
