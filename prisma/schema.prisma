@@ -22,13 +22,13 @@ model Neighborhood {
 model User {
   id                       String                    @id @default(uuid())
   neighborhoodId           Int
-  publicId                 Int                       @unique @default(autoincrement())
   email                    String                    @unique
   nickname                 String
   profileUrl               String?
   address                  String
   createdAt                DateTime                  @default(now())
   shareScore               Int                       @default(0)
+  publicId                 Int                       @unique @default(autoincrement())
   grouBuys                 GroupBuy[]
   groupBuyChatMessages     GroupBuyChatMessage[]
   groupBuyChatParticipants GroupBuyChatParticipant[]
@@ -97,7 +97,7 @@ model Share {
   reviews         Review[]
   neighborhood    Neighborhood @relation(fields: [neighborhoodId], references: [id])
   owner           User         @relation("OwnedShare", fields: [ownerId], references: [id])
-  recipient       User?         @relation("ReceivedShare", fields: [recipientId], references: [id])
+  recipient       User?        @relation("ReceivedShare", fields: [recipientId], references: [id])
   shareItem       ShareItem    @relation(fields: [shareItemId], references: [id])
   chats           ShareChat[]
   images          ShareImage[]

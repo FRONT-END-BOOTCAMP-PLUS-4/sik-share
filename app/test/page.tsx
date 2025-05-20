@@ -9,6 +9,9 @@ import AddButton from "@/components/common/AddButton";
 import InputCalendar from "@/components/common/InputCalendar";
 import { ListCard } from "@/components/common/ListCard";
 import FormInput from "@/components/common/FormInput";
+import DropdownButton, {
+  type DropdownOption,
+} from "@/components/common/DropdownButton";
 
 export default function Home() {
   const form = useForm({
@@ -53,6 +56,19 @@ export default function Home() {
     },
   ];
 
+  const options: DropdownOption[] = [
+    {
+      id: "group-buy",
+      label: "공동 장보기",
+      onClick: () => {},
+    },
+    {
+      id: "share",
+      label: "나눔",
+      onClick: () => {},
+    },
+  ];
+
   return (
     <>
       <h3>Typography</h3>
@@ -72,7 +88,7 @@ export default function Home() {
       <div className="flex flex-col gap-3 mb-5">
         <Button variant="joinBtn">참여하기</Button>
         <Button variant="joinFullBtn">참여하기</Button>
-        <AddButton />
+        <DropdownButton options={options} type="register" align="top" />
       </div>
 
       <h3>Badge</h3>
