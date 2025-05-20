@@ -37,7 +37,7 @@ export function MapList({ selectedId }: MapListProps) {
   return (
     <div
       ref={containerRef}
-      className="min-h-[50vh] max-h-[50vh] overflow-y-auto border-t border-gray-200 px-4 py-2 flex-1"
+      className="min-h-[60vh] max-h-[60vh] overflow-y-auto border-t border-gray-200 px-4 py-2 flex-1"
     >
       {items.map((item, index) => (
         <div

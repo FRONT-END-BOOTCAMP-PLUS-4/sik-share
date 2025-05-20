@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/drawer";
 
 import { MapList } from "./MapList";
+import { MapPin } from "lucide-react";
 
 export function MapView() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -120,11 +121,14 @@ export function MapView() {
       <div ref={mapContainer} className="w-full h-[calc(100vh-64px)]" />
 
       <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
-        <DrawerContent>
-          <DrawerHeader>
-            <DrawerTitle>선택된 ID: {selectedId ?? "없음"}</DrawerTitle>
-            <DrawerDescription className="!font-light">
-              클러스터에 연결된 리스트를 무한 스크롤로 출력합니다.
+        <DrawerContent className="!pt-1">
+          <DrawerHeader className="text-center">
+            <DrawerTitle className="title-sm flex justify-center items-center gap-1">
+              <MapPin />
+              <p>관악구 봉천동</p>
+            </DrawerTitle>
+            <DrawerDescription className="body-md">
+              근처에 {0}명의 나누미가 있어요!
             </DrawerDescription>
           </DrawerHeader>
 

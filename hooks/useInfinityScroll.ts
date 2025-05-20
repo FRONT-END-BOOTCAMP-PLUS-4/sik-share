@@ -8,7 +8,6 @@ interface UseInfiniteScrollProps<T> {
 
 export function useInfiniteScroll<T>({
   fetcher,
-  itemsPerPage = 20,
   maxItems = 100,
 }: UseInfiniteScrollProps<T>) {
   const [items, setItems] = useState<T[]>([]);
