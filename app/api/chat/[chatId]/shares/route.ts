@@ -1,20 +1,23 @@
-import { NextResponse } from "next/server";
+export const dynamic = 'force-dynamic';
+
+import { type NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { PrismaChatMessageRepository } from "@/infra/repositories/prisma/PrismaChatMessageRepository";
+import { PrismaChatMessageRepository } from "@/infra/repositories/prisma/PrismaChatMessageListRepository";
 import { GetChatMessagesUsecase } from "@/application/usecases/Chat/GetChatMessagesUsecase";
 
 export async function GET(
-  req: Request,
-  { params }: { params: { chatId: string } }
+  req: NextRequest,
+  { params }: { params: { chatId: string } },
 ) {
+    console.log(params);
   const session = await getServerSession(authOptions);
+  const chatId = Number(params.chatId);
 
-  if (!session || !session.user?.email) {
+  if (!session || !session.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const chatId = Number(params.chatId);
   if (Number.isNaN(chatId)) {
     return NextResponse.json({ error: "Invalid chatId" }, { status: 400 });
   }
@@ -23,13 +26,10 @@ export async function GET(
   const usecase = new GetChatMessagesUsecase(repo);
 
   try {
-    const messages = await usecase.execute(session.user.id, chatId);
-    return NextResponse.json(messages);
+    const chatDetail = await usecase.execute(chatId, session.user.id);
+    return NextResponse.json(chatDetail);
   } catch (err) {
     console.error("메시지 불러오기 실패:", err);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

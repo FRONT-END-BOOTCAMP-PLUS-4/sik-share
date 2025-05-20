@@ -7,7 +7,7 @@ import Image from "next/image";
 interface ChatListProps {
   chatId: string | number;
   type: "share" | "together";
-  profileImage?: string;
+  imageUrl?: string;
   title?: string;
   nickname?: string;
   totalPeople?: number;
@@ -20,7 +20,7 @@ interface ChatListProps {
 export default function ChatList({
   chatId,
   type,
-  profileImage,
+  imageUrl,
   title,
   nickname,
   totalPeople,
@@ -47,7 +47,7 @@ export default function ChatList({
         <Image
           width={40}
           height={40}
-          src={profileImage ?? "/assets/images/example/thumbnail.png"}
+          src={imageUrl ?? "/assets/images/example/thumbnail.png"}
           className="rounded-full"
           alt="profile"
         />

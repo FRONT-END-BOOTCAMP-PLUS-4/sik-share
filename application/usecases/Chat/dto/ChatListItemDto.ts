@@ -1,7 +1,7 @@
 export class ShareChatListItemDto {
   constructor(
     public chatId: number,
-    public profileImage: string,
+    public imageUrl: string,
     public nickname: string,
     public temperature: number,
     public lastMessage: string,

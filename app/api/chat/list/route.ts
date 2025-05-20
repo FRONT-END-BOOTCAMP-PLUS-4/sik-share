@@ -10,26 +10,18 @@ const prisma = new PrismaClient();
 export async function GET(req: NextRequest) {
   const session = await getServerSession(authOptions);
 
-  if (!session || !session.user?.email) {
+  if (!session || !session.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  const user = await prisma.user.findUnique({
-    where: { email: session.user.email },
-  });
-
-  if (!user) {
-    return NextResponse.json({ error: "User not found" }, { status: 404 });
   }
 
   const repo = new PrismaChatListRepository();
   const usecase = new GetChatListUsecase(repo);
 
   try {
-    const chatList = await usecase.execute(user.id);
+    const chatList = await usecase.execute(session.user.id);
     return NextResponse.json(chatList);
   } catch (err) {
-    console.error("❌ 채팅 리스트 불러오기 실패:", err);
+    console.error("채팅 리스트 불러오기 실패:", err);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

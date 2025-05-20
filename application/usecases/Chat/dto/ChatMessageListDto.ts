@@ -2,10 +2,10 @@ export type ChatSenderType = "me" | "other";
 
 export class ChatMessageListDto {
   constructor(
-    public id: string,
+    public id: number,
     public type: ChatSenderType,
     public nickname: string,
-    public profileImage: string,
+    public imageUrl: string,
     public message: string,
     public time: string,
   ) {}

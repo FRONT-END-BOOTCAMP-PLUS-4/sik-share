@@ -5,9 +5,14 @@ import { UsersRound } from "lucide-react";
 
 interface ChatHeaderProps {
   type: "share" | "together";
+  otherUser: {
+    nickname: string;
+    imageUrl: string;
+    temperature: number;
+  };
 }
 
-export default function ChatHeader({ type }: ChatHeaderProps) {
+export default function ChatHeader({ type, otherUser }: ChatHeaderProps) {
   return (
     <div className="flex items-center justify-between px-4 py-2">
       <Link href="/chat">
@@ -16,15 +21,17 @@ export default function ChatHeader({ type }: ChatHeaderProps) {
       {type === "share" && (
         <div className="flex items-center gap-2">
           <Image
-            src="/assets/images/example/thumbnail.png"
+            src={otherUser.imageUrl ?? "/assets/images/example/thumbnail.png"}
             width={38}
             height={38}
             alt="profile"
             className="rounded-full"
           />
           <div className="flex flex-col justify-center items-start h-[38px]">
-            <span className="body-md">씩씩한 감자</span>
-            <span className="badge-medium text-primary">19.5°C</span>
+            <span className="body-md">{otherUser.nickname}</span>
+            <span className="badge-medium text-primary">
+              {otherUser.temperature}°C
+            </span>
           </div>
         </div>
       )}
@@ -39,7 +46,7 @@ export default function ChatHeader({ type }: ChatHeaderProps) {
           </div>
         </div>
       )}
-      <div></div>
+      <div />
     </div>
   );
 }

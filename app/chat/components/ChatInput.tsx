@@ -5,32 +5,52 @@ import { Button } from "@/components/ui/button";
 import { Send } from "lucide-react";
 import socket from "@/lib/socket";
 
-interface ChatInputProps {
-  roomId: string;
+interface Message {
+  type: "other" | "me";
+  nickname: string;
+  imageUrl: string;
+  message: string;
+  count: number;
+  time: string;
 }
 
-export default function ChatInput({ roomId }: ChatInputProps) {
-  const [message, setMessage] = useState("");
+interface ChatInputProps {
+  chatId: string;
+  onSend: (message: Message) => void;
+}
+
+export default function ChatInput({ chatId, onSend }: ChatInputProps) {
+  const [text, setText] = useState("");
 
   const handleSend = () => {
-    if (!message.trim()) return;
+    if (!text.trim()) return;
 
-    socket.emit("sendMessage", {
-      roomId,
-      content: message,
+    const newMessage: Message = {
+      type: "me",
+      nickname: "나", // 실제 로그인 사용자 정보로 교체 필요
+      imageUrl: "/assets/images/example/thumbnail.png",
+      message: text,
+      count: 0,
+      time: new Date().toLocaleTimeString(), // 또는 dayjs
+    };
+    onSend(newMessage);
+    socket.emit("message", {
+      chatId,
+      ...newMessage,
     });
-    console.log(message);
-    setMessage("");
+
+    setText("");
   };
 
   return (
     <div className="flex items-center px-4 py-4 gap-[10px] h-[68px] w-full border-t">
       <input
         type="text"
-        placeholder="메시지를 입력하세요..."
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        onKeyDown={(e) => e.key === "Enter" && handleSend()}
         className="flex-1 body-sm px-3 py-2 border rounded-full outline-none"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
+        placeholder="메시지를 입력하세요"
       />
       <Button onClick={handleSend}>
         <Send size={20} />

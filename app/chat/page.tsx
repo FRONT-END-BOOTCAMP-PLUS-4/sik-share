@@ -16,7 +16,7 @@ export default function ChatList() {
     fetch("/api/chat/list")
       .then((res) => res.json())
       .then((data) => {
-        console.log("💬 받아온 채팅 리스트 데이터:", data);
+        console.log("받아온 채팅 리스트 데이터:", data);
         setShareData(data);
       });
 
