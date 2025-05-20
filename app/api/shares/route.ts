@@ -1,13 +1,19 @@
 import { CreateShareUsecase } from './../../../application/usecases/share/CreateShareUsecase';
 import { CreateShareDto } from '@/application/usecases/share/dto/CreateShareDto';
 import { PrismaNeighborhoodRepository } from '@/infra/repositories/prisma/PrismaNeighborhoodRepository';
-import { PrismaUserRepository } from '@/infra/repositories/prisma/PrismaUserRepository';
+import { PrismaShareImageRepository } from '@/infra/repositories/prisma/share/PrismaShareImageRepository';
 import { PrismaShareRepository } from '@/infra/repositories/prisma/share/PrismaShareRepository';
+import { SupabaseImageStorageRepository } from '@/infra/repositories/supabase/SupabaseImageRepository';
 import { NextResponse } from 'next/server';
 
 export async function POST(req: Request){
   try{
     const body = await req.json();
+
+    if(body.images.length === 0) {
+      throw new Error('이미지를 등록해야 합니다.');
+    }
+
     const createShareDto = new CreateShareDto(
       body.shareItemId,
       body.ownerPublicId,
@@ -21,11 +27,12 @@ export async function POST(req: Request){
       body.images
     );
 
-    const userRepo = new PrismaUserRepository();
     const neighborhoodRepo = new PrismaNeighborhoodRepository();
     const shareRepo = new PrismaShareRepository();
+    const shareImageRepo = new PrismaShareImageRepository();
+    const imageStorageRepo = new SupabaseImageStorageRepository();
 
-    const createShareUsecase = new CreateShareUsecase(shareRepo, neighborhoodRepo, userRepo);
+    const createShareUsecase = new CreateShareUsecase(shareRepo, neighborhoodRepo, shareImageRepo, imageStorageRepo);
 
     const result = await createShareUsecase.execute(createShareDto);
 

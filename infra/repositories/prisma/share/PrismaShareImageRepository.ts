@@ -8,8 +8,8 @@ export class PrismaShareImageRepository implements ShareImageRepository {
     this.prisma = new PrismaClient();
   }
 
-  async save(images: ShareImage): Promise<void> {
-    await this.prisma.shareImage.create({data : images});
+  async save(images: ShareImage[]): Promise<void> {
+    await this.prisma.shareImage.createMany({data : images});
   }
 
   async findByShareId(shareId : number): Promise<ShareImage[]> {
