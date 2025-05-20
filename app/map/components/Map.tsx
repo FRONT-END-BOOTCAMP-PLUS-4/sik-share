@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState, useCallback } from "react";
+import { useRef, useEffect, useState } from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 
@@ -10,14 +10,15 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerDescription,
+  DrawerClose,
+  DrawerFooter,
 } from "@/components/ui/drawer";
 
-import { useInfiniteScroll } from "@/hooks/useInfinityScroll";
+import { useInfiniteScroll } from "@/hooks/useInfinityScroll"; // 경로 맞게 조정
 
 export function MapView() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<number | null>(null);
-  const [items, setItems] = useState<string[]>([]);
 
   const mapContainer = useRef<HTMLDivElement>(null);
 
@@ -27,21 +28,28 @@ export function MapView() {
     { id: 3, lat: 37.4762971, lng: 126.9583884, count: 13 },
   ];
 
-  const loadMore = useCallback(async () => {
-    if (selectedId === null) return;
+  // fetcher 함수: selectedId, 페이지(=offset) 기반으로 항목 가져오기
+  const fetcher = async (page: number) => {
+    if (selectedId === null) return [];
+    await new Promise((r) => setTimeout(r, 1000)); // 딜레이 시뮬레이션
 
-    await new Promise((r) => setTimeout(r, 1000));
+    const maxItems = 100;
+    const itemsPerPage = 20;
+    const start = page * itemsPerPage;
 
-    setItems((prevItems) => {
-      const moreItems = Array.from(
-        { length: 20 },
-        (_, i) => `ID ${selectedId} - 항목 ${prevItems.length + i + 1}`,
-      );
-      return [...prevItems, ...moreItems];
-    });
-  }, [selectedId]);
+    if (start >= maxItems) return [];
 
-  const { containerRef, loading } = useInfiniteScroll(loadMore);
+    return Array.from(
+      { length: Math.min(itemsPerPage, maxItems - start) },
+      (_, i) => `ID ${selectedId} - 항목 ${start + i + 1}`,
+    );
+  };
+
+  const { items, loading, containerRef, reset } = useInfiniteScroll({
+    fetcher,
+    itemsPerPage: 20,
+    maxItems: 100,
+  });
 
   useEffect(() => {
     const features = locationInfo.map((loc) => ({
@@ -126,22 +134,16 @@ export function MapView() {
       const clusterId = clusterFeature.properties.id;
 
       setSelectedId(clusterId);
-      setItems([]); // 초기화
+      reset(); // 선택 바뀌면 리스트 초기화
       setDrawerOpen(true);
     });
 
     return () => map.remove();
   }, []);
 
-  useEffect(() => {
-    if (drawerOpen && selectedId !== null && items.length === 0) {
-      loadMore();
-    }
-  }, [drawerOpen, selectedId, items.length, loadMore]);
-
   return (
     <>
-      <div ref={mapContainer} className="w-full h-[calc(100vh-64px)]" />
+      <div ref={mapContainer} style={{ width: "100%", height: "100vh" }} />
 
       <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
         <DrawerContent>
@@ -152,6 +154,7 @@ export function MapView() {
             </DrawerDescription>
           </DrawerHeader>
 
+          {/* 무한스크롤 리스트 영역 */}
           <div
             ref={containerRef}
             style={{
@@ -180,6 +183,10 @@ export function MapView() {
               </div>
             )}
           </div>
+
+          <DrawerFooter>
+            <DrawerClose>닫기</DrawerClose>
+          </DrawerFooter>
         </DrawerContent>
       </Drawer>
     </>
