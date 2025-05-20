@@ -16,15 +16,26 @@ interface Message {
 
 interface ChatInputProps {
   chatId: string;
+  senderId: string;
   onSend: (message: Message) => void;
 }
 
-export default function ChatInput({ chatId, onSend }: ChatInputProps) {
+export default function ChatInput({
+  chatId,
+  senderId,
+  onSend,
+}: ChatInputProps) {
   const [text, setText] = useState("");
 
   const handleSend = () => {
     const trimmed = text.trim();
     if (!trimmed) return;
+
+    socket.emit("chat message", {
+      chatId,
+      senderId,
+      content: trimmed,
+    });
 
     const newMessage: Message = {
       type: "me",
@@ -37,11 +48,6 @@ export default function ChatInput({ chatId, onSend }: ChatInputProps) {
         minute: "2-digit",
       }),
     };
-
-    socket.emit("chat message", {
-      chatId,
-      ...newMessage,
-    });
 
     onSend(newMessage);
     setText("");

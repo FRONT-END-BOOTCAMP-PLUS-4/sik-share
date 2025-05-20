@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import socket from "@/lib/socket";
 import ChatHeader from "./ChatHeader";
 import ShareInfo from "./ShareInfo";
@@ -40,6 +41,8 @@ export default function ChatRoom({
   otherUser,
   shareInfo,
 }: ChatRoomProps) {
+  const { data: session } = useSession();
+
   const [messages, setMessages] = useState<Message[]>(initialMessages);
 
   useEffect(() => {
@@ -50,11 +53,11 @@ export default function ChatRoom({
       setMessages((prev) => [...prev, msg]);
     };
 
-    socket.on("message", handleMessage);
+    socket.on("chat message", handleMessage);
 
     return () => {
       socket.emit("leaveRoom", chatId);
-      socket.off("message", handleMessage);
+      socket.off("chat message", handleMessage);
     };
   }, [chatId]);
 
@@ -62,13 +65,21 @@ export default function ChatRoom({
     setMessages((prev) => [...prev, newMessage]);
   };
 
+  if (!session?.user?.id) {
+    return <div>로그인이 필요합니다.</div>;
+  }
+
   return (
     <div className="flex flex-col h-full">
       <ChatHeader otherUser={otherUser} type={type} />
       {type === "share" && shareInfo && <ShareInfo info={shareInfo} />}
       {type === "together" && <TogetherInfo />}
       <ChatMessageList messages={messages} />
-      <ChatInput chatId={chatId} onSend={handleSendMessage} />
+      <ChatInput
+        chatId={chatId}
+        senderId={session.user.id}
+        onSend={handleSendMessage}
+      />
     </div>
   );
 }
