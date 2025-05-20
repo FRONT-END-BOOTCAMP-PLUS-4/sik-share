@@ -5,6 +5,7 @@ import "./globals.css";
 import RobotLottie from "@/components/lotties/RobotLottie";
 import { SessionProvider } from "@/components/common/SessionProvider";
 import Script from "next/script";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "함께 나누는 따뜻한 식생활",
@@ -52,6 +53,7 @@ export default function RootLayout({
               <Header />
               <main className="md:w-full">{children}</main>
               <div className="h-auto" id="drawer-customPortal" />
+              <Toaster position="bottom-center" richColors />
               <Footer />
             </section>
           </div>
