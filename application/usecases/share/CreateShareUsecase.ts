@@ -24,7 +24,6 @@ export class CreateShareUsecase {
       title: share.title,
       lat: share.lat,
       lng: share.lng,
-      locationAddress: share.locationAddress,
       locationNote: share.locationNote,
       description: share.description,
       status: share.status,

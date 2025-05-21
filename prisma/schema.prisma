@@ -91,7 +91,6 @@ model Share {
   meetingDate     DateTime?
   lat             Float
   lng             Float
-  locationAddress String
   locationNote    String
   description     String
   status          Int
@@ -169,6 +168,7 @@ model GroupBuyChatMessage {
   senderId       String
   groupBuyChatId Int
   content        String
+  count          Int
   createdAt      DateTime     @default(now())
   groupBuyChat   GroupBuyChat @relation(fields: [groupBuyChatId], references: [id])
   sender         User         @relation(fields: [senderId], references: [id])
@@ -198,6 +198,7 @@ model ShareChatMessage {
   senderId    String
   shareChatId Int
   content     String
+  readCount   Int       @default(1)
   createdAt   DateTime  @default(now())
   sender      User      @relation(fields: [senderId], references: [id])
   shareChat   ShareChat @relation(fields: [shareChatId], references: [id])
@@ -205,8 +206,8 @@ model ShareChatMessage {
 
 model ShareChatParticipant {
   id             Int       @id @default(autoincrement())
-  lastReadItemId Int?
   userId         String
+  lastReadItemId Int?
   shareChatId    Int
   joinedAt       DateTime  @default(now())
   shareChat      ShareChat @relation(fields: [shareChatId], references: [id])

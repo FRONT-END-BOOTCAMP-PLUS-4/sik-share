@@ -10,6 +10,9 @@ import FormDetail from "./components/FormDetail";
 import FormSelect from "./components/FormSelect";
 import FormMultiImageUpload from "./components/FormMultiImageUpload";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import LocationSelectModal from "./components/LocationSelectModal";
+import type { LocationData } from "@/types/types";
 
 type ShareForm = {
   title: string;
@@ -28,7 +31,7 @@ export default function CreateSharePage() {
     mode: "onBlur",
     defaultValues: {
       title: "",
-      shareItem: undefined,
+      shareItem: -1,
       description: "",
       locationNote: "",
       locationAddress: "",
@@ -38,6 +41,8 @@ export default function CreateSharePage() {
     },
   });
 
+  const [showMapModal, setShowMapModal] = useState(false);
+
   const onSubmit = (data: ShareForm) => {
     console.log(data);
   };
@@ -45,19 +50,19 @@ export default function CreateSharePage() {
   return (
     <>
       <SubHeader titleText="나눔 등록하기" iconType="close" />
-      {loading && (
-        <section className="h-[calc(100vh-180px)] py-6 px-4 flex flex-col justify-center">
-          <Loading />
-        </section>
-      )}
-      {!loading && (
-        <section className="h-[calc(100vh-180px)] py-6 px-4">
+      {loading ? (
+        <Loading />
+      ) : (
+        <section className="h-[calc(100vh-124px)] py-6 px-4">
           <Form {...form}>
             <form
               className="flex flex-col gap-4"
               onSubmit={form.handleSubmit(onSubmit)}
             >
-              <FormMultiImageUpload name="images" />
+              <FormMultiImageUpload
+                name="images"
+                rules={{ required: "사진을 넣어주세요." }}
+              />
               <FormInput
                 name="title"
                 label="제목"
@@ -81,11 +86,11 @@ export default function CreateSharePage() {
                 rules={{ required: "자세한 설명을 적어주세요." }}
               />
               <FormInput
-                name="address"
+                name="locationNote"
                 label="나눔 희망 장소"
                 placeholder="+ 위치 추가"
                 readOnly
-                onClick={() => console.log("클릭")}
+                onClick={() => setShowMapModal(true)}
                 inputClassName="cursor-pointer"
                 rules={{ required: "나눔 희망 장소를 설정해주세요." }}
               />
@@ -97,6 +102,18 @@ export default function CreateSharePage() {
             </form>
           </Form>
         </section>
+      )}
+      {showMapModal && (
+        <LocationSelectModal
+          onClose={() => setShowMapModal(false)}
+          onConfirm={(locationData: LocationData) => {
+            form.setValue("locationAddress", locationData.locationAddress);
+            form.setValue("locationNote", locationData.locationNote);
+            form.setValue("lat", locationData.lat!);
+            form.setValue("lng", locationData.lng!);
+            setShowMapModal(false);
+          }}
+        />
       )}
     </>
   );
