@@ -7,7 +7,7 @@ interface ChatMessageProps {
   nickname?: string;
   imageUrl?: string;
   message: string;
-  count: number;
+  readCount: number;
   time: string;
 }
 
@@ -16,7 +16,7 @@ export default function ChatMessage({
   nickname,
   imageUrl,
   message,
-  count,
+  readCount,
   time,
 }: ChatMessageProps) {
   return (
@@ -37,7 +37,7 @@ export default function ChatMessage({
                 {message}
               </div>
               <div className="flex flex-col items-start justify-center">
-                <div className="label text-primary">{count}</div>
+                <div className="label text-primary">{readCount}</div>
                 <div className="label self-end mb-1">
                   {time.trim() ? dayjs(time).locale("ko").format("A h:mm") : ""}
                 </div>
@@ -52,7 +52,7 @@ export default function ChatMessage({
           <div className="flex flex-col items-end">
             <div className="flex items-end gap-1">
               <div className="flex flex-col items-end justify-center">
-                <div className="label text-primary">{count}</div>
+                <div className="label text-primary">{readCount}</div>
                 <div className="label mb-1">
                   {time.trim() ? dayjs(time).locale("ko").format("A h:mm") : ""}
                 </div>

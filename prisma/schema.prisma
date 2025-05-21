@@ -76,6 +76,7 @@ model GroupBuyImage {
   id         Int      @id @default(autoincrement())
   groupBuyId Int
   url        String
+  order      Int
   groupBuy   GroupBuy @relation(fields: [groupBuyId], references: [id])
 }
 
@@ -107,12 +108,13 @@ model ShareImage {
   id      Int    @id @default(autoincrement())
   shareId Int
   url     String
+  order   Int
   share   Share  @relation(fields: [shareId], references: [id])
 }
 
 model ShareItem {
   id     Int     @id @default(autoincrement())
-  name   String
+  name   String  @unique
   shares Share[]
 }
 
@@ -168,16 +170,17 @@ model GroupBuyChatMessage {
   groupBuyChatId Int
   content        String
   createdAt      DateTime     @default(now())
+  count          Int
   groupBuyChat   GroupBuyChat @relation(fields: [groupBuyChatId], references: [id])
   sender         User         @relation(fields: [senderId], references: [id])
 }
 
 model GroupBuyChatParticipant {
   id             Int          @id @default(autoincrement())
-  lastReadItemId Int?
   userId         String
   groupBuyChatId Int
   joinedAt       DateTime     @default(now())
+  lastReadItemId Int?
   groupBuyChat   GroupBuyChat @relation(fields: [groupBuyChatId], references: [id])
   user           User         @relation(fields: [userId], references: [id])
 }
@@ -197,16 +200,17 @@ model ShareChatMessage {
   shareChatId Int
   content     String
   createdAt   DateTime  @default(now())
+  readCount   Int       @default(1)
   sender      User      @relation(fields: [senderId], references: [id])
   shareChat   ShareChat @relation(fields: [shareChatId], references: [id])
 }
 
 model ShareChatParticipant {
   id             Int       @id @default(autoincrement())
-  lastReadItemId Int?
   userId         String
   shareChatId    Int
   joinedAt       DateTime  @default(now())
+  lastReadItemId Int?
   shareChat      ShareChat @relation(fields: [shareChatId], references: [id])
   user           User      @relation(fields: [userId], references: [id])
 }

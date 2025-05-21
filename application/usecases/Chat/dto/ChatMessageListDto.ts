@@ -8,5 +8,6 @@ export class ChatMessageListDto {
     public imageUrl: string,
     public message: string,
     public time: string,
+    public readCount?: number,
   ) {}
 }

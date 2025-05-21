@@ -18,7 +18,9 @@ interface Message {
   sender?: {
     nickname: string;
     imageUrl: string;
+    profileUrl: string;
   };
+  readCount: number;
 }
 
 interface ChatRoomProps {
@@ -28,6 +30,7 @@ interface ChatRoomProps {
   otherUser: {
     nickname: string;
     imageUrl: string;
+    profileUrl: string;
     temperature: number;
   };
   shareInfo?: {
@@ -50,21 +53,23 @@ function toFormattedMessage(
     type: msg.senderId === currentUserId ? "me" : "other",
     nickname: msg.sender?.nickname || "알 수 없음",
     imageUrl:
-      msg.sender?.imageUrl || "/assets/images/example/default-profile.png",
+      msg.sender?.imageUrl ||
+      msg.sender?.profileUrl ||
+      "/assets/images/example/default-profile.png",
     message: msg.content,
-    count: 0,
+    readCount: msg.readCount,
     time: msg.createdAt,
   };
 }
 
 interface FormattedMessage {
-  id?: string;
+  id?: string | number;
   tempId?: string;
   type: "other" | "me";
   nickname: string;
   imageUrl: string;
   message: string;
-  count: number;
+  readCount: number;
   time: string;
 }
 
@@ -96,20 +101,21 @@ export default function ChatRoom({
 
   // 소켓 연결
   useEffect(() => {
-    // 1. 소켓이 연결될 때마다 joinRoom
+    // 소켓이 연결될 때마다 joinRoom
     const join = () => {
-      console.log("소켓 연결됨, joinRoom!");
-      socket.emit("joinRoom", chatId);
+      if (session?.user?.id) {
+        console.log("소켓 연결됨, joinRoom!");
+        socket.emit("joinRoom", { chatId, userId: session.user.id });
+      }
     };
     socket.on("connect", join);
-    console.log("소켓 연결", socket.connected);
 
-    // 2. 이미 연결돼 있으면 바로 joinRoom
-    if (socket.connected) {
-      socket.emit("joinRoom", chatId);
+    // 이미 연결돼 있으면 바로 joinRoom
+    if (socket.connected && session?.user?.id) {
+      socket.emit("joinRoom", { chatId, userId: session.user.id });
     }
 
-    // 3. 메시지 수신 핸들러
+    // 메시지 수신 핸들러
     const handleMessage = (msg: Message) => {
       setMessages((prev) => {
         if (prev.some((m) => m.id === msg.id)) return prev;
@@ -123,7 +129,7 @@ export default function ChatRoom({
       socket.off("chat message", handleMessage);
       socket.off("connect", join);
     };
-  }, [chatId]);
+  }, [chatId, session?.user?.id]);
 
   // 🔥 Optimistic UI: tempId로 구분
   const handleSendMessage = (msg: Message) => {

@@ -7,7 +7,7 @@ interface FormattedMessage {
   nickname: string;
   imageUrl: string;
   message: string;
-  count: number;
+  readCount: number;
   time: string;
 }
 
@@ -27,7 +27,7 @@ export default function ChatMessageList({ messages }: ChatMessageListProps) {
   return (
     <div
       ref={scrollRef}
-      className="w-full px-4 py-4 flex flex-col gap-4 h-[calc(100vh-380px)] overflow-y-scroll"
+      className="w-full px-4 py-4 flex flex-col gap-4 h-[calc(100vh-240px)] overflow-y-scroll"
     >
       {messages.map((msg, index) => (
         <ChatMessage
@@ -36,7 +36,7 @@ export default function ChatMessageList({ messages }: ChatMessageListProps) {
           nickname={msg.nickname}
           imageUrl={msg.imageUrl}
           message={msg.message}
-          count={msg.count}
+          readCount={msg.readCount}
           time={msg.time}
         />
       ))}

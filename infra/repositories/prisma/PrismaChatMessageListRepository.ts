@@ -30,6 +30,7 @@ return messages.map((msg) => {
     msg.sender.profileUrl ?? "/assets/images/example/thumbnail.png",
     msg.content,
     msg.createdAt.toISOString(),
+    msg.readCount,
   );
 });
   }

@@ -11,7 +11,7 @@ interface ChatMessage {
   imageUrl: string;
   message: string;
   time: string;
-  count: number;
+  readCount: number;
 }
 
 interface OtherUser {
