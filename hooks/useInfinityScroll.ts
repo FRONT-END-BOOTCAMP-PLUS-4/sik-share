@@ -1,46 +1,56 @@
 import { useCallback, useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
 
-interface UseInfiniteScrollProps<T> {
-  fetcher: (page: number) => Promise<T[]>;
-  maxItems?: number;
+interface UseInfiniteScrollOptions<T> {
+  fetcher: (page: number, itemsPerPage: number) => Promise<T[]>;
+  itemsPerPage?: number;
+  delay?: number;
 }
 
 export function useInfiniteScroll<T>({
   fetcher,
-  maxItems = 100,
-}: UseInfiniteScrollProps<T>) {
+  itemsPerPage = 20,
+  delay = 2000,
+}: UseInfiniteScrollOptions<T>) {
   const [items, setItems] = useState<T[]>([]);
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
+  const { ref, inView } = useInView({ threshold: 1.0 });
+
   const loadMore = useCallback(async () => {
     if (loading || !hasMore) return;
-    setLoading(true);
 
+    setLoading(true);
     try {
-      const newItems = await fetcher(page);
-      setItems((prev) => [
-        ...prev,
-        ...newItems.slice(0, maxItems - prev.length),
-      ]);
-      setPage((prev) => prev + 1);
-      if (
-        newItems.length === 0 ||
-        items.length + newItems.length >= maxItems
-      ) {
+      if (delay > 0) {
+        await new Promise((resolve) => setTimeout(resolve, delay));
+      }
+
+      const newItems = await fetcher(page, itemsPerPage);
+      if (newItems.length === 0) {
         setHasMore(false);
       }
+
+      setItems((prev) => [...prev, ...newItems]);
+      setPage((prev) => prev + 1);
     } finally {
       setLoading(false);
     }
-  }, [fetcher, loading, hasMore, page, items.length, maxItems]);
+  }, [fetcher, page, loading, hasMore, delay, itemsPerPage]);
 
-  const reset = () => {
+  useEffect(() => {
+    if (inView) {
+      loadMore();
+    }
+  }, [inView, loadMore]);
+
+  const reset = useCallback(() => {
     setItems([]);
     setPage(0);
     setHasMore(true);
-  };
+  }, []);
 
-  return { items, loading, hasMore, loadMore, reset };
+  return { items, loading, hasMore, ref, reset };
 }
