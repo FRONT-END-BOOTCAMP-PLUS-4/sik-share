@@ -1,16 +1,18 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import socket from "@/lib/socket";
 import ChatHeader from "./ChatHeader";
 import ShareInfo from "./ShareInfo";
 import ChatMessageList from "./ChatMessageList";
 import ChatInput from "./ChatInput";
 import TogetherInfo from "./TogetherInfo";
+import { v4 as uuidv4 } from "uuid"; // npm install uuid
 
 interface Message {
-  id: number;
+  id?: number; // id가 없을 수도 있음!
+  tempId?: string; // optimistic 메시지에만 사용
   senderId: string;
   content: string;
   createdAt: string;
@@ -36,7 +38,6 @@ interface ChatRoomProps {
   };
 }
 
-// 변환 함수
 function toFormattedMessage(
   msg: Message | FormattedMessage,
   currentUserId: string,
@@ -45,6 +46,8 @@ function toFormattedMessage(
     return msg as FormattedMessage;
   }
   return {
+    id: msg.id,
+    tempId: msg.tempId,
     type: msg.senderId === currentUserId ? "me" : "other",
     nickname: msg.sender?.nickname || "알 수 없음",
     imageUrl:
@@ -56,6 +59,8 @@ function toFormattedMessage(
 }
 
 interface FormattedMessage {
+  id?: number;
+  tempId?: string;
   type: "other" | "me";
   nickname: string;
   imageUrl: string;
@@ -74,21 +79,28 @@ export default function ChatRoom({
   const { data: session } = useSession();
   const [messages, setMessages] = useState<Message[]>(initialMessages);
 
-  // 소켓 처리
+  // 🔥 handleMessage를 useCallback으로 고정
+  const handleMessage = useCallback((msg: Message) => {
+    setMessages((prev) => {
+      // 만약 이 메시지와 같은 id를 가진 낙관적 메시지가 있으면 치환
+      if (msg.id) {
+        // tempId는 없는 서버 메시지임
+        return [
+          ...prev.filter((m) => m.id !== msg.id && m.tempId !== msg.tempId),
+          msg,
+        ];
+      }
+      // id가 없는 경우(거의 없음)
+      return [...prev, msg];
+    });
+  }, []);
+
+  // 소켓 연결
   useEffect(() => {
     // 소켓 연결될 때마다 joinRoom 확실히!
     const join = () => socket.emit("joinRoom", chatId);
     socket.on("connect", join);
 
-    // 채팅 메시지 수신 핸들러
-    const handleMessage = (msg: Message) => {
-      console.log("[클라] 수신된 메시지:", msg);
-      setMessages((prev) => {
-        if (prev.some((m) => m.id === msg.id)) return prev;
-        return [...prev, msg];
-      });
-    };
-    socket.off("chat message", handleMessage);
     socket.on("chat message", handleMessage);
 
     // 최초에도 joinRoom 실행!
@@ -99,11 +111,14 @@ export default function ChatRoom({
       socket.off("chat message", handleMessage);
       socket.off("connect", join);
     };
-  }, [chatId]);
+  }, [chatId, handleMessage]);
 
+  // 🔥 Optimistic UI: tempId로 구분
   const handleSendMessage = (msg: Message) => {
+    const tempId = uuidv4();
+    // id 없이 임시 메시지 추가
+    setMessages((prev) => [...prev, { ...msg, tempId }]);
     socket.emit("chat message", msg);
-    setMessages((prev) => [...prev, msg]); // ❌ Optimistic UI 중복 방지용으로 주석처리
   };
 
   // 메시지 변환

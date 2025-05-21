@@ -17,7 +17,6 @@ interface ChatMessageListProps {
 
 export default function ChatMessageList({ messages }: ChatMessageListProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
-  console.log(messages);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -32,7 +31,7 @@ export default function ChatMessageList({ messages }: ChatMessageListProps) {
     >
       {messages.map((msg, index) => (
         <ChatMessage
-          key={msg.id || `tmp-${index}`}
+          key={msg.id ?? msg.tempId ?? `tmp-${index}`}
           type={msg.type}
           nickname={msg.nickname}
           imageUrl={msg.imageUrl}

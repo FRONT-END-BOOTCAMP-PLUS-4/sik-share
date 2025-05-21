@@ -3,7 +3,6 @@
 import { useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Send } from "lucide-react";
-import socket from "@/lib/socket";
 
 interface ChatInputProps {
   chatId: string;
