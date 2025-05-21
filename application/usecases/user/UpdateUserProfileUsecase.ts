@@ -1,6 +1,7 @@
 import type { UserRepository } from "@/domain/repositories/UserRepository";
 import type { ImageStorageRepository } from "@/domain/repositories/ImageStorageRepository";
 import type { UpdateUserProfileDto } from "./dto/UpdateUserProfileDto";
+import type { User } from "@/prisma/generated";
 
 export class UpdateUserProfileUsecase {
   constructor(
@@ -8,7 +9,7 @@ export class UpdateUserProfileUsecase {
     private imageStorageRepo: ImageStorageRepository
   ) {}
 
-  async execute(user: UpdateUserProfileDto): Promise<void> {
+  async execute(user: UpdateUserProfileDto): Promise<Partial<User>> {
     let profileImageUrl = user.currentImageUrl;
     
     if (user.newImageFile) {
@@ -16,10 +17,15 @@ export class UpdateUserProfileUsecase {
         profileImageUrl = profileImage.profileUrl;
     }
 
-    await this.userRepo.update({
+    const result = await this.userRepo.update({
       publicId: Number(user.userPublicId),
       nickname: user.nickName,
       profileUrl: profileImageUrl,
     });
+    
+    return {
+      nickname: result.nickname,
+      profileUrl: result.profileUrl,
+    }
   }
 }

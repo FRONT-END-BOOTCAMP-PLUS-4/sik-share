@@ -59,11 +59,19 @@ export default function KakaoMap({ onSelect }: KakaoMapProps) {
         image: markerImage,
       });
 
+      const zoomControl = new window.kakao.maps.ZoomControl();
+
+      map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+
       window.kakao.maps.event.addListener(map, "dragend", () =>
         updateLocation(map, marker),
       );
 
       window.kakao.maps.event.addListener(map, "dragstart", () => {
+        setShowBadge(false);
+      });
+
+      window.kakao.maps.event.addListener(map, "idle", () => {
         setShowBadge(false);
       });
 

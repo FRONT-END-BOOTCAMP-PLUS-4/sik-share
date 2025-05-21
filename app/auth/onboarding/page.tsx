@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import KakaoMap from "./components/KakaoMap";
+import KakaoMap from "@/components/common/KakaoMap";
 import SubHeader from "@/components/common/SubHeader";
 import ButtonSection from "./components/ButtonSection";
 import { signIn, useSession } from "next-auth/react";
