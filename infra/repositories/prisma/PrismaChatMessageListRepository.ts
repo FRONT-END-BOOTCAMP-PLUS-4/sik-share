@@ -86,7 +86,7 @@ return messages.map((msg) => {
     where: { id: shareId },
     select: {
       title: true,
-      locationAddress: true,
+      locationNote: true,
     },
   });
 
@@ -102,7 +102,7 @@ return messages.map((msg) => {
 
   return {
     title: share.title,
-    location: share.locationAddress ?? "장소 정보 없음",
+    location: share.locationNote ?? "장소 정보 없음",
     thumbnailUrl: image?.url ?? "/assets/images/example/thumbnail.png",
   };
 }
