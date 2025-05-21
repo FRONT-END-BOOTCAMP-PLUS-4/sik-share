@@ -79,15 +79,16 @@ export default function ChatRoom({
     socket.emit("joinRoom", chatId);
 
     const handleMessage = (msg: Message) => {
+      console.log("수신된 메시지:", msg);
       setMessages((prev) => {
         if (prev.some((m) => m.id === msg.id)) return prev;
         return [...prev, msg];
       });
     };
+    socket.on("chat message", handleMessage);
 
-    socket.on("chat message", (msg) => {
-      console.log("수신된 메시지:", msg);
-    });
+    console.log("소켓 객체:", socket);
+    console.log("소켓 연결 상태:", socket.connected, socket.id);
 
     return () => {
       socket.emit("leaveRoom", chatId);
@@ -95,7 +96,6 @@ export default function ChatRoom({
     };
   }, [chatId]);
 
-  // Optimistic UI
   const handleSendMessage = (msg: Message) => {
     socket.emit("chat message", msg);
     setMessages((prev) => [...prev, msg]);

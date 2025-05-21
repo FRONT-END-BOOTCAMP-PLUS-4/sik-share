@@ -20,7 +20,7 @@ export default function ChatInput({
 
   // **핵심: form submit에서만 handleSend 호출**
   const handleSend = (e: FormEvent) => {
-    e.preventDefault(); // Enter/버튼 모두 중복 방지!
+    e.preventDefault();
     const trimmed = text.trim();
     if (!trimmed) return;
 
