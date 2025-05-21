@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import ChatMessage from "./ChatMessage";
 
 interface FormattedMessage {
-  id: number;
+  id: string;
   type: "other" | "me";
   nickname: string;
   imageUrl: string;
@@ -31,7 +31,7 @@ export default function ChatMessageList({ messages }: ChatMessageListProps) {
     >
       {messages.map((msg, index) => (
         <ChatMessage
-          key={msg.id ?? msg.tempId ?? `tmp-${index}`}
+          key={msg.id ?? `tmp-${index}`}
           type={msg.type}
           nickname={msg.nickname}
           imageUrl={msg.imageUrl}

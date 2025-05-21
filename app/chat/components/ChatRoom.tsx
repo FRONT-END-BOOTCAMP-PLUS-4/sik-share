@@ -8,11 +8,10 @@ import ShareInfo from "./ShareInfo";
 import ChatMessageList from "./ChatMessageList";
 import ChatInput from "./ChatInput";
 import TogetherInfo from "./TogetherInfo";
-import { v4 as uuidv4 } from "uuid"; // npm install uuid
 
 interface Message {
-  id?: number; // id가 없을 수도 있음!
-  tempId?: string; // optimistic 메시지에만 사용
+  id?: number;
+  tempId?: string;
   senderId: string;
   content: string;
   createdAt: string;
@@ -59,7 +58,7 @@ function toFormattedMessage(
 }
 
 interface FormattedMessage {
-  id?: number;
+  id?: string;
   tempId?: string;
   type: "other" | "me";
   nickname: string;
@@ -97,27 +96,40 @@ export default function ChatRoom({
 
   // 소켓 연결
   useEffect(() => {
-    // 소켓 연결될 때마다 joinRoom 확실히!
-    const join = () => socket.emit("joinRoom", chatId);
+    // 1. 소켓이 연결될 때마다 joinRoom
+    const join = () => {
+      console.log("소켓 연결됨, joinRoom!");
+      socket.emit("joinRoom", chatId);
+    };
     socket.on("connect", join);
+    console.log("소켓 연결", socket.connected);
 
+    // 2. 이미 연결돼 있으면 바로 joinRoom
+    if (socket.connected) {
+      socket.emit("joinRoom", chatId);
+    }
+
+    // 3. 메시지 수신 핸들러
+    const handleMessage = (msg: Message) => {
+      setMessages((prev) => {
+        if (prev.some((m) => m.id === msg.id)) return prev;
+        return [...prev, msg];
+      });
+    };
     socket.on("chat message", handleMessage);
-
-    // 최초에도 joinRoom 실행!
-    socket.emit("joinRoom", chatId);
 
     return () => {
       socket.emit("leaveRoom", chatId);
       socket.off("chat message", handleMessage);
       socket.off("connect", join);
     };
-  }, [chatId, handleMessage]);
+  }, [chatId]);
 
   // 🔥 Optimistic UI: tempId로 구분
   const handleSendMessage = (msg: Message) => {
-    const tempId = uuidv4();
+    // const tempId = uuidv4();
     // id 없이 임시 메시지 추가
-    setMessages((prev) => [...prev, { ...msg, tempId }]);
+    // setMessages((prev) => [...prev, { ...msg, tempId }]);
     socket.emit("chat message", msg);
   };
 

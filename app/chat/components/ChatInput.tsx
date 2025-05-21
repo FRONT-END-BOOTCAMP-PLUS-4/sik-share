@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Send } from "lucide-react";
+import socket from "@/lib/socket";
 
 interface ChatInputProps {
   chatId: string;
@@ -17,14 +18,13 @@ export default function ChatInput({
 }: ChatInputProps) {
   const [text, setText] = useState("");
 
-  // **핵심: form submit에서만 handleSend 호출**
   const handleSend = (e: FormEvent) => {
     e.preventDefault();
     const trimmed = text.trim();
     if (!trimmed) return;
 
     const msg = {
-      chatId: Number(chatId),
+      chatId: chatId,
       senderId,
       content: trimmed,
       createdAt: new Date().toISOString(),

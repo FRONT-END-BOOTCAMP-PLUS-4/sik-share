@@ -5,7 +5,7 @@ import { UsersRound } from "lucide-react";
 import Image from "next/image";
 
 interface ChatListProps {
-  chatId: string | number;
+  chatId: string;
   type: "share" | "together";
   imageUrl?: string;
   title?: string;
