@@ -2,8 +2,9 @@
 
 import { useCallback, useEffect } from "react";
 import { useInfiniteScroll } from "@/hooks/useInfinityScroll";
-import Loading from "@/components/common/Loading";
 import { useMapFilterStore } from "@/stores/useMapFilterStore";
+import { LoadingLottie } from "./LoadingLottie";
+import { ListCard } from "@/components/common/ListCard";
 
 interface MapListProps {
   selectedId: number | null;
@@ -26,7 +27,7 @@ export function MapList({ selectedId }: MapListProps) {
     [selectedId, filterType],
   );
 
-  const { items, loading, hasMore, ref } = useInfiniteScroll({
+  const { items, loading, ref } = useInfiniteScroll({
     fetcher,
     itemsPerPage: 20,
     delay: 2000,
@@ -36,11 +37,15 @@ export function MapList({ selectedId }: MapListProps) {
   return (
     <div className="max-h-[55vh] min-h-[55vh] overflow-y-auto px-4 py-2">
       {items.map((item) => (
-        <div key={item} className="py-2 border-b text-sm text-gray-800">
-          {item}
-        </div>
+        <ListCard
+          key={item}
+          thumbnailSrc={item.src}
+          thumbnailAlt={item.alt}
+          title={"제목입니당"}
+          location="관악청년청"
+        />
       ))}
-      {loading && <Loading />}
+      {loading && <LoadingLottie />}
       <div ref={ref} className="h-4/5" />
     </div>
   );
