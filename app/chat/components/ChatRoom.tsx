@@ -83,34 +83,29 @@ export default function ChatRoom({
   const { data: session } = useSession();
   const [messages, setMessages] = useState<Message[]>(initialMessages);
 
-  // 🔥 handleMessage를 useCallback으로 고정
+  // 메시지 추가/업데이트 함수 (id 기준)
   const handleMessage = useCallback((msg: Message) => {
     setMessages((prev) => {
-      // 만약 이 메시지와 같은 id를 가진 낙관적 메시지가 있으면 치환
-      if (msg.id) {
-        // tempId는 없는 서버 메시지임
-        return [
-          ...prev.filter((m) => m.id !== msg.id && m.tempId !== msg.tempId),
-          msg,
-        ];
+      const idx = prev.findIndex((m) => m.id === msg.id);
+      if (idx !== -1) {
+        const copy = [...prev];
+        copy[idx] = { ...copy[idx], ...msg };
+        return copy;
       }
-      // id가 없는 경우(거의 없음)
       return [...prev, msg];
     });
   }, []);
 
-  // 소켓 연결
   useEffect(() => {
-    // 소켓이 연결될 때마다 joinRoom
+    // joinRoom
     const join = () => {
       if (session?.user?.id) {
-        console.log("소켓 연결됨, joinRoom!");
         socket.emit("joinRoom", { chatId, userId: session.user.id });
       }
     };
     socket.on("connect", join);
 
-    // 이미 연결돼 있으면 바로 joinRoom
+    // 이미 연결되어 있으면 바로 joinRoom
     if (socket.connected && session?.user?.id) {
       socket.emit("joinRoom", { chatId, userId: session.user.id });
     }
@@ -118,24 +113,39 @@ export default function ChatRoom({
     // 메시지 수신 핸들러
     const handleMessage = (msg: Message) => {
       setMessages((prev) => {
-        if (prev.some((m) => m.id === msg.id)) return prev;
+        const idx = prev.findIndex((m) => m.id === msg.id);
+        if (idx !== -1) {
+          const copy = [...prev];
+          copy[idx] = { ...copy[idx], ...msg };
+          return copy;
+        }
         return [...prev, msg];
       });
     };
     socket.on("chat message", handleMessage);
 
+    // 읽음 처리 메시지 핸들러
+    const handleMessagesRead = ({ readIds }: { readIds: number[] }) => {
+      setMessages((prev) =>
+        prev.map((m) =>
+          readIds.includes(m.id as number) && m.readCount !== 0
+            ? { ...m, readCount: 0 }
+            : m,
+        ),
+      );
+    };
+    socket.on("messagesRead", handleMessagesRead);
+
     return () => {
       socket.emit("leaveRoom", chatId);
       socket.off("chat message", handleMessage);
       socket.off("connect", join);
+      socket.off("messagesRead", handleMessagesRead);
     };
   }, [chatId, session?.user?.id]);
 
-  // 🔥 Optimistic UI: tempId로 구분
+  // 메시지 보내기
   const handleSendMessage = (msg: Message) => {
-    // const tempId = uuidv4();
-    // id 없이 임시 메시지 추가
-    // setMessages((prev) => [...prev, { ...msg, tempId }]);
     socket.emit("chat message", msg);
   };
 
