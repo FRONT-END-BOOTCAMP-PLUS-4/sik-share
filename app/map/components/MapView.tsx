@@ -3,7 +3,6 @@
 import { useRef, useEffect, useState } from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
-
 import {
   Drawer,
   DrawerContent,
@@ -11,13 +10,14 @@ import {
   DrawerTitle,
   DrawerDescription,
 } from "@/components/ui/drawer";
-
-import { MapList } from "./MapList";
 import { MapPin } from "lucide-react";
+import { MapList } from "./MapList";
+import { MapListSelect } from "./MapListSelect";
 
 export function MapView() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [filterType, setFilterType] = useState<string>("all");
 
   const mapContainer = useRef<HTMLDivElement>(null);
 
@@ -118,7 +118,7 @@ export function MapView() {
 
   return (
     <>
-      <div ref={mapContainer} className="w-full h-[calc(100vh-64px)]" />
+      <div ref={mapContainer} className="w-full h-[calc(100vh-56px)]" />
 
       <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
         <DrawerContent className="!pt-1">
@@ -130,9 +130,11 @@ export function MapView() {
             <DrawerDescription className="body-md">
               근처에 {0}명의 나누미가 있어요!
             </DrawerDescription>
+            <div className="w-full mt-6">
+              <MapListSelect onChange={setFilterType} />
+            </div>
           </DrawerHeader>
-
-          <MapList selectedId={selectedId} />
+          <MapList selectedId={selectedId} filterType={filterType} />
         </DrawerContent>
       </Drawer>
     </>
