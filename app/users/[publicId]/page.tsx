@@ -11,6 +11,7 @@ import ShareScore from "@/app/users/components/ShareScore";
 import MyCharacter from "@/app/users/components/MyCharacter";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
+import Loading from "@/components/common/Loading";
 
 interface User {
   neighborhoodName: string;
@@ -51,7 +52,7 @@ export default function userPage() {
     fetchUserProfile();
   }, [publicId]);
 
-  if (loading) return <div>로딩 중...</div>;
+  if (loading) return <Loading />;
   if (!user) return <div>유저 정보를 찾을 수 없습니다.</div>;
 
   const levelbyScore = getScoreVisual(user.score);
