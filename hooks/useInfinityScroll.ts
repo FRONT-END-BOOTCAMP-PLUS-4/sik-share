@@ -5,7 +5,7 @@ interface UseInfiniteScrollOptions<T> {
   fetcher: (page: number, itemsPerPage: number) => Promise<T[]>;
   itemsPerPage?: number;
   delay?: number;
-  deps?: any[]; // 새로 초기화할 조건 (ex. filterType)
+  deps?: ReadonlyArray<string | number | null>;
 }
 
 export function useInfiniteScroll<T>({
@@ -19,7 +19,7 @@ export function useInfiniteScroll<T>({
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
-  const resetSignal = useRef(0); // fetcher나 filterType 변경 신호 추적
+  const resetSignal = useRef(0);
 
   const { ref, inView } = useInView({ threshold: 0.3 });
 
@@ -36,7 +36,6 @@ export function useInfiniteScroll<T>({
           setHasMore(false);
         }
 
-        // 현재 요청이 최신 요청일 때만 결과 반영
         if (resetSignal.current === currentSignal) {
           setItems((prev) => [...prev, ...newItems]);
           setPage((prev) => prev + 1);
@@ -54,9 +53,8 @@ export function useInfiniteScroll<T>({
     }
   }, [inView, loadMore]);
 
-  // 외부 deps(filterType 등) 변경 시 초기화
   useEffect(() => {
-    resetSignal.current += 1; // fetcher가 바뀌면 무조건 증가
+    resetSignal.current += 1;
     setItems([]);
     setPage(0);
     setHasMore(true);
