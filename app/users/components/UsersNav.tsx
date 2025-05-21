@@ -10,8 +10,8 @@ interface usersNavProps {
 
 export default function UsersNav({ publicId, mannerReviews }: usersNavProps) {
   const usersLinks = [
-    { label: "나눔 내역", path: "share-historys" },
-    { label: "같이 장보기 내역", path: "group-buy-historys" },
+    { label: "나눔 내역", path: "share-histoies" },
+    { label: "같이 장보기 내역", path: "group-buy-histoies" },
     { label: "나의 참여 내역", path: "participations" },
     { label: "후기", path: "reviews" },
   ];
