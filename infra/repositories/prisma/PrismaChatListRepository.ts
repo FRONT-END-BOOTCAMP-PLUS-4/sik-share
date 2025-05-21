@@ -33,25 +33,32 @@ export class PrismaChatListRepository implements ChatListRepository {
       },
     });
 
-    return chats.map((chat) => {
-      const lastMessage = chat.messages[0];
+    return Promise.all(
+      chats.map(async (chat) => {
+        const lastMessage = chat.messages[0];
 
-      const me = chat.participants.find((p) => p.user.id === userId);
-      const other = chat.participants.find((p) => p.user.id !== userId);
+        const me = chat.participants.find((p) => p.user.id === userId);
+        const other = chat.participants.find((p) => p.user.id !== userId);
 
-      const lastReadId = me?.lastReadItemId ?? 0;
-      const unreadCount =
-        lastMessage && lastMessage.id > lastReadId ? 1 : 0;
+        // 안읽은 메시지(상대방이 보낸 readCount === 1인 메시지 개수)
+        const unreadCount = await prisma.shareChatMessage.count({
+          where: {
+            shareChatId: chat.id,
+            senderId: { not: userId },
+            readCount: 1,
+          },
+        });
 
-      return new ShareChatListItemDto(
-        chat.id,
-        other?.user.profileUrl ?? "/assets/images/example/thumbnail.png",
-        other?.user.nickname ?? "알 수 없음",
-        other?.user.shareScore ?? 36.5,
-        lastMessage?.content ?? null,
-        lastMessage?.createdAt ?? null,
-        unreadCount
-      );
-    });
+        return new ShareChatListItemDto(
+          chat.id,
+          other?.user.profileUrl ?? "/assets/images/example/thumbnail.png",
+          other?.user.nickname ?? "알 수 없음",
+          other?.user.shareScore ?? 36.5,
+          lastMessage?.content ?? null,
+          lastMessage?.createdAt ?? null,
+          unreadCount
+        );
+      })
+    );
   }
 }
