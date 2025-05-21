@@ -3,6 +3,8 @@
 import { useRouter } from "next/navigation";
 import { UsersRound } from "lucide-react";
 import Image from "next/image";
+import dayjs from "dayjs";
+import "dayjs/locale/ko";
 
 interface ChatListProps {
   chatId: string;
@@ -68,8 +70,11 @@ export default function ChatList({
                 <p className="badge-medium !text-zinc-400">{temperature}°C</p>
               </>
             )}
-
-            <p className="label !text-zinc-400">{lastMessageAt}</p>
+            <p className="label !text-zinc-400">
+              {lastMessageAt.trim()
+                ? dayjs(lastMessageAt).locale("ko").format("A h:mm")
+                : ""}
+            </p>
           </div>
           <p className="caption !text-zinc-500">{lastMessage}</p>
         </div>

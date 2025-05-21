@@ -35,7 +35,7 @@ interface ChatRoomProps {
   };
   shareInfo?: {
     title: string;
-    location: string;
+    locationNote: string;
     imageUrl: string;
   };
 }

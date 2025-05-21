@@ -70,7 +70,7 @@ return messages.map((msg) => {
 
   async findShareInfoByChatId(
   chatId: number
-): Promise<{ title: string; thumbnailUrl: string; location: string }> {
+): Promise<{ title: string; thumbnailUrl: string; locationNote: string }> {
   const shareChat = await prisma.shareChat.findUnique({
     where: { id: chatId },
     select: { shareId: true },
@@ -102,7 +102,7 @@ return messages.map((msg) => {
 
   return {
     title: share.title,
-    location: share.locationNote ?? "장소 정보 없음",
+    locationNote: share.locationNote ?? "장소 정보 없음",
     thumbnailUrl: image?.url ?? "/assets/images/example/thumbnail.png",
   };
 }

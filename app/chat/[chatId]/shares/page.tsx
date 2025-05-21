@@ -22,7 +22,7 @@ interface OtherUser {
 
 interface ShareInfo {
   title: string;
-  location: string;
+  locationNote: string;
   imageUrl: string;
 }
 

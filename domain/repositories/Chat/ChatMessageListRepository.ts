@@ -20,6 +20,6 @@ export interface ChatMessageRepository {
   ): Promise<{
     title: string;
     thumbnailUrl: string;
-    location: string;
+    locationNote: string;
   }>;
 }

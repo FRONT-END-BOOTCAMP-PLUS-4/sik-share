@@ -5,7 +5,7 @@ import ChatRoom from "../../components/ChatRoom";
 
 export default function TogetherChat() {
   const params = useParams();
-  const roomId = params.roomId as string;
+  const chatId = params.chatId as string;
 
-  return <ChatRoom type="together" roomId={roomId} />;
+  return <ChatRoom type="together" chatId={chatId} />;
 }
