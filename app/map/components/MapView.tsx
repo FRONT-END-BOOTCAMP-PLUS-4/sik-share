@@ -17,6 +17,7 @@ import { MapListSelect } from "./MapListSelect";
 export function MapView() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [filterType, setFilterType] = useState<string>("all");
 
   const mapContainer = useRef<HTMLDivElement>(null);
 
@@ -130,10 +131,10 @@ export function MapView() {
               근처에 {0}명의 나누미가 있어요!
             </DrawerDescription>
             <div className="w-full mt-6">
-              <MapListSelect />
+              <MapListSelect onChange={setFilterType} />
             </div>
           </DrawerHeader>
-          <MapList selectedId={selectedId} />
+          <MapList selectedId={selectedId} filterType={filterType} />
         </DrawerContent>
       </Drawer>
     </>
