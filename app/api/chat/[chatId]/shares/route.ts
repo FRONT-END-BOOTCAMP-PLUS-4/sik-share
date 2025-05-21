@@ -8,12 +8,11 @@ import { GetChatMessagesUsecase } from "@/application/usecases/Chat/GetChatMessa
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { chatId: string } },
+  context: { params: { chatId: string } }
 ) {
-    console.log(params);
-  const session = await getServerSession(authOptions);
+  const params = await context.params;
   const chatId = Number(params.chatId);
-
+  const session = await getServerSession(authOptions);
   if (!session || !session.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }

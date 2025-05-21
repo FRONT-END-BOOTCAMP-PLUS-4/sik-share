@@ -22,16 +22,16 @@ export class PrismaChatMessageRepository implements ChatMessageRepository {
       },
     });
 
-    return messages.map((msg) => {
-      return new ChatMessageListDto(
-        msg.id,
-        msg.senderId === userId ? "me" : "other",
-        msg.sender.nickname,
-        msg.sender.profileUrl ?? "/assets/images/example/thumbnail.png",
-        msg.content,
-        dayjs(msg.createdAt).format("A h:mm")
-      );
-    });
+return messages.map((msg) => {
+  return new ChatMessageListDto(
+    msg.id,
+    msg.senderId === userId ? "me" : "other",
+    msg.sender.nickname,
+    msg.sender.profileUrl ?? "/assets/images/example/thumbnail.png",
+    msg.content,
+    msg.createdAt.toISOString(),
+  );
+});
   }
 
   async findOtherUserByChatId(

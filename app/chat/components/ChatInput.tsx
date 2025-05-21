@@ -5,19 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Send } from "lucide-react";
 import socket from "@/lib/socket";
 
-interface Message {
-  type: "other" | "me";
-  nickname: string;
-  imageUrl: string;
-  message: string;
-  count: number;
-  time: string;
-}
-
 interface ChatInputProps {
   chatId: string;
   senderId: string;
-  onSend: (message: Message) => void;
+  onSend: (message: any) => void;
 }
 
 export default function ChatInput({
@@ -31,26 +22,18 @@ export default function ChatInput({
     const trimmed = text.trim();
     if (!trimmed) return;
 
-    socket.emit("chat message", {
-      chatId,
+    // 메시지 객체를 만듭니다!
+    const msg = {
+      chatId: Number(chatId),
       senderId,
       content: trimmed,
-    });
-
-    const newMessage: Message = {
-      type: "me",
-      nickname: "나",
-      imageUrl: "/assets/images/example/thumbnail.png",
-      message: trimmed,
-      count: 0,
-      time: new Date().toLocaleTimeString("ko-KR", {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
+      createdAt: new Date().toISOString(),
     };
 
-    onSend(newMessage);
+    socket.emit("chat message", msg);
+    onSend(msg);
     setText("");
+    console.log(msg);
   };
 
   return (

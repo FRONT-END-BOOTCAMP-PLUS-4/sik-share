@@ -1,4 +1,6 @@
 import Image from "next/image";
+import dayjs from "dayjs";
+import "dayjs/locale/ko";
 
 interface ChatMessageProps {
   type: "me" | "other";
@@ -6,7 +8,7 @@ interface ChatMessageProps {
   imageUrl?: string;
   message: string;
   count: number;
-  time: number;
+  time: string;
 }
 
 export default function ChatMessage({
@@ -36,7 +38,9 @@ export default function ChatMessage({
               </div>
               <div className="flex flex-col items-start justify-center">
                 <div className="label text-primary">{count}</div>
-                <div className="label self-end mb-1">{time}</div>
+                <div className="label self-end mb-1">
+                  {time.trim() ? dayjs(time).locale("ko").format("A h:mm") : ""}
+                </div>
               </div>
             </div>
           </div>
@@ -49,7 +53,9 @@ export default function ChatMessage({
             <div className="flex items-end gap-1">
               <div className="flex flex-col items-end justify-center">
                 <div className="label text-primary">{count}</div>
-                <div className="label mb-1">{time}</div>
+                <div className="label mb-1">
+                  {time.trim() ? dayjs(time).locale("ko").format("A h:mm") : ""}
+                </div>
               </div>
               <div className="mb-1 bg-blue-200 body-sm rounded-[25px] rounded-tr-none px-4 py-3 max-w-[220px] break-words">
                 {message}
