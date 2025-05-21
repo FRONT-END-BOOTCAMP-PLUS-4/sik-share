@@ -85,7 +85,9 @@ export default function ChatRoom({
       });
     };
 
-    socket.on("chat message", handleMessage);
+    socket.on("chat message", (msg) => {
+      console.log("수신된 메시지:", msg);
+    });
 
     return () => {
       socket.emit("leaveRoom", chatId);
