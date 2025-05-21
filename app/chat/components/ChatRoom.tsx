@@ -76,29 +76,34 @@ export default function ChatRoom({
 
   // 소켓 처리
   useEffect(() => {
-    socket.emit("joinRoom", chatId);
+    // 소켓 연결될 때마다 joinRoom 확실히!
+    const join = () => socket.emit("joinRoom", chatId);
+    socket.on("connect", join);
 
+    // 채팅 메시지 수신 핸들러
     const handleMessage = (msg: Message) => {
-      console.log("수신된 메시지:", msg);
+      console.log("[클라] 수신된 메시지:", msg);
       setMessages((prev) => {
         if (prev.some((m) => m.id === msg.id)) return prev;
         return [...prev, msg];
       });
     };
+    socket.off("chat message", handleMessage);
     socket.on("chat message", handleMessage);
 
-    console.log("소켓 객체:", socket);
-    console.log("소켓 연결 상태:", socket.connected, socket.id);
+    // 최초에도 joinRoom 실행!
+    socket.emit("joinRoom", chatId);
 
     return () => {
       socket.emit("leaveRoom", chatId);
       socket.off("chat message", handleMessage);
+      socket.off("connect", join);
     };
   }, [chatId]);
 
   const handleSendMessage = (msg: Message) => {
     socket.emit("chat message", msg);
-    setMessages((prev) => [...prev, msg]);
+    setMessages((prev) => [...prev, msg]); // ❌ Optimistic UI 중복 방지용으로 주석처리
   };
 
   // 메시지 변환

@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import ChatMessage from "./ChatMessage";
 
 interface FormattedMessage {
+  id: number;
   type: "other" | "me";
   nickname: string;
   imageUrl: string;
@@ -16,6 +17,7 @@ interface ChatMessageListProps {
 
 export default function ChatMessageList({ messages }: ChatMessageListProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  console.log(messages);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -30,7 +32,7 @@ export default function ChatMessageList({ messages }: ChatMessageListProps) {
     >
       {messages.map((msg, index) => (
         <ChatMessage
-          key={index}
+          key={msg.id || `tmp-${index}`}
           type={msg.type}
           nickname={msg.nickname}
           imageUrl={msg.imageUrl}
