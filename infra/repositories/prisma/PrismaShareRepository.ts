@@ -1,26 +1,36 @@
+import { PrismaClient } from "@/prisma/generated";
 import type { ShareRepository } from "@/domain/repositories/ShareRepository";
-import { type Share, PrismaClient } from "@/prisma/generated";
+import type { Share } from "@/prisma/generated";
 
 export class PrismaShareRepository implements ShareRepository {
-  private prisma: PrismaClient;
+  private prisma = new PrismaClient();
 
-  constructor() {
-    this.prisma = new PrismaClient();
-  }
-
-  async getList(offset: number, limit: number, neighborhoodId: number): Promise<Share[]> {
-    return await this.prisma.share.findMany({
+  async getList(
+    offset: number,
+    limit: number,
+    neighborhoodId: number
+  ): Promise<(Partial<Share> & { thumbnailUrl: string | null })[]> {
+    const shares = await this.prisma.share.findMany({
       where: { neighborhoodId },
       orderBy: { createdAt: "desc" },
       skip: offset,
       take: limit,
-      include: {
-        images: true,
-        shareItem: true,
-        owner: {
-          select: { nickname: true, profileUrl: true },
+      select: {
+        id: true,
+        title: true,
+        neighborhoodId: true,
+        locationNote: true,
+        createdAt: true,
+        images: {
+          where: { order: 1 },
+          select: { url: true },
         },
       },
     });
+
+    return shares.map((share) => ({
+      ...share,
+      thumbnailUrl: share.images[0]?.url ?? null,
+    }));
   }
 }

@@ -4,6 +4,6 @@ export interface ShareRepository {
   getList(
     offset: number,
     limit: number,
-    neighborhoodId: number,
-  ): Promise<Share[]>;
+    neighborhoodId: number
+  ): Promise<(Partial<Share> & { thumbnailUrl: string | null })[]>;
 }

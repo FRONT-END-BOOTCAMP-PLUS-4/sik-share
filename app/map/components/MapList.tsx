@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { useInfiniteScroll } from "@/hooks/useInfinityScroll";
 import { useMapFilterStore } from "@/stores/useMapFilterStore";
 import { LoadingLottie } from "./LoadingLottie";
