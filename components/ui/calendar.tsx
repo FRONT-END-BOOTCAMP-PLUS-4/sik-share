@@ -6,7 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 interface CalendarProps {
   selected: Date | null;
-  onSelect: Dispatch<SetStateAction<Date | null>>;
+  onSelect: (date: Date | null) => void;
 }
 
 export function Calendar({ selected, onSelect }: CalendarProps) {
