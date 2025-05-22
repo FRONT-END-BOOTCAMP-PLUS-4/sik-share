@@ -12,6 +12,7 @@ interface SubHeaderProps {
   iconType?: "chevron" | "close";
   DescTitleText?: string;
   DescSubText?: string;
+  onClick?: () => void;
 }
 
 export default function SubHeader({
@@ -20,6 +21,7 @@ export default function SubHeader({
   iconType = "chevron",
   DescTitleText,
   DescSubText,
+  onClick,
 }: SubHeaderProps) {
   const router = useRouter();
 
@@ -41,7 +43,7 @@ export default function SubHeader({
           variant="ghost"
           size="icon"
           className={cn(titleText && "absolute left-4")}
-          onClick={handleBack}
+          onClick={onClick || handleBack}
         >
           <IconComponent size={24} strokeWidth={2} />
         </Button>

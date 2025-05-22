@@ -81,26 +81,26 @@ model GroupBuyImage {
 }
 
 model Share {
-  id             Int          @id @default(autoincrement())
-  shareItemId    Int
-  neighborhoodId Int
-  ownerId        String
-  recipientId    String?
-  title          String
-  createdAt      DateTime     @default(now())
-  meetingDate    DateTime?
-  lat            Float
-  lng            Float
-  locationNote   String
-  description    String
-  status         Int
-  reviews        Review[]
-  neighborhood   Neighborhood @relation(fields: [neighborhoodId], references: [id])
-  owner          User         @relation("OwnedShare", fields: [ownerId], references: [id])
-  recipient      User?        @relation("ReceivedShare", fields: [recipientId], references: [id])
-  shareItem      ShareItem    @relation(fields: [shareItemId], references: [id])
-  chats          ShareChat[]
-  images         ShareImage[]
+  id              Int          @id @default(autoincrement())
+  shareItemId     Int
+  neighborhoodId  Int
+  ownerId         String
+  recipientId     String?
+  title           String
+  createdAt       DateTime     @default(now())
+  meetingDate     DateTime?
+  lat             Float
+  lng             Float
+  locationNote    String
+  description     String
+  status          Int
+  reviews         Review[]
+  neighborhood    Neighborhood @relation(fields: [neighborhoodId], references: [id])
+  owner           User         @relation("OwnedShare", fields: [ownerId], references: [id])
+  recipient       User?        @relation("ReceivedShare", fields: [recipientId], references: [id])
+  shareItem       ShareItem    @relation(fields: [shareItemId], references: [id])
+  chats           ShareChat[]
+  images          ShareImage[]
 }
 
 model ShareImage {
@@ -168,6 +168,7 @@ model GroupBuyChatMessage {
   senderId       String
   groupBuyChatId Int
   content        String
+  count          Int
   createdAt      DateTime     @default(now())
   count          Int
   groupBuyChat   GroupBuyChat @relation(fields: [groupBuyChatId], references: [id])
@@ -198,6 +199,7 @@ model ShareChatMessage {
   senderId    String
   shareChatId Int
   content     String
+  readCount   Int       @default(1)
   createdAt   DateTime  @default(now())
   readCount   Int       @default(1)
   sender      User      @relation(fields: [senderId], references: [id])
@@ -207,6 +209,7 @@ model ShareChatMessage {
 model ShareChatParticipant {
   id             Int       @id @default(autoincrement())
   userId         String
+  lastReadItemId Int?
   shareChatId    Int
   joinedAt       DateTime  @default(now())
   lastReadItemId Int?

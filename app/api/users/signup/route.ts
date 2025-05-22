@@ -1,4 +1,4 @@
-import { CreateUserUsecase } from './../../../../application/usecases/auth/CreateUserUsecase';
+import { CreateUserUsecase } from '@/application/usecases/auth/CreateUserUsecase';
 import { CreateUserDto } from '@/application/usecases/auth/dto/CreateUserDto';
 import { PrismaNeighborhoodRepository } from '@/infra/repositories/prisma/PrismaNeighborhoodRepository';
 import { PrismaUserRepository } from '@/infra/repositories/prisma/PrismaUserRepository';
