@@ -10,6 +10,7 @@ interface ChatListProps {
   chatId: string;
   type: "share" | "together";
   imageUrl?: string;
+  groupBuyTitle?: string;
   title?: string;
   nickname?: string;
   totalPeople?: number;
@@ -17,12 +18,14 @@ interface ChatListProps {
   lastMessageAt: string;
   lastMessage: string;
   chatCount: number;
+  participantCount: number;
 }
 
 export default function ChatList({
   chatId,
   type,
   imageUrl,
+  groupBuyTitle,
   title,
   nickname,
   totalPeople,
@@ -30,6 +33,7 @@ export default function ChatList({
   lastMessageAt,
   lastMessage,
   chatCount,
+  participantCount,
 }: ChatListProps) {
   const router = useRouter();
 
@@ -57,10 +61,12 @@ export default function ChatList({
           <div className="flex items-center gap-1">
             {type === "together" && (
               <>
-                <p className="body-md">{title}</p>
+                <p className="body-md w-[180px] overflow-hidden text-ellipsis whitespace-nowrap">
+                  {groupBuyTitle}
+                </p>
                 <div className="flex flex-row gap-[2px]">
                   <UsersRound className="w-4 h-4 text-zinc-400" />
-                  <p className="caption !text-zinc-400">{totalPeople}</p>
+                  <p className="caption !text-zinc-400">{participantCount}</p>
                 </div>
               </>
             )}

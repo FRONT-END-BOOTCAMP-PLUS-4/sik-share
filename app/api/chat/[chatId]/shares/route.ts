@@ -4,7 +4,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { PrismaChatMessageRepository } from "@/infra/repositories/prisma/PrismaChatMessageListRepository";
-import { GetChatMessagesUsecase } from "@/application/usecases/Chat/GetChatMessagesUsecase";
+import { GetShareChatListUsecase } from "@/application/usecases/Chat/GetShareChatListUsecase";
 
 export async function GET(
   req: NextRequest,
@@ -22,7 +22,7 @@ export async function GET(
   }
 
   const repo = new PrismaChatMessageRepository();
-  const usecase = new GetChatMessagesUsecase(repo);
+  const usecase = new GetShareChatListUsecase(repo);
 
   try {
     const chatDetail = await usecase.execute(chatId, session.user.id);

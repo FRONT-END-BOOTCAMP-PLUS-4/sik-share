@@ -17,17 +17,25 @@ interface Message {
   createdAt: string;
   sender?: {
     nickname: string;
-    imageUrl: string;
-    profileUrl: string;
+    imageUrl?: string;
+    profileUrl?: string;
   };
   readCount: number;
+}
+
+interface TogetherInfoProps {
+  title: string;
+  imageUrl?: string;
+  locationNote?: string;
+  meetingDate?: string;
+  participantCount?: number;
 }
 
 interface ChatRoomProps {
   type: "share" | "together";
   chatId: string;
   messages: Message[];
-  otherUser: {
+  otherUser?: {
     nickname: string;
     imageUrl: string;
     profileUrl: string;
@@ -38,6 +46,7 @@ interface ChatRoomProps {
     locationNote: string;
     imageUrl: string;
   };
+  togetherInfo?: TogetherInfoProps;
 }
 
 function toFormattedMessage(
@@ -79,6 +88,7 @@ export default function ChatRoom({
   messages: initialMessages,
   otherUser,
   shareInfo,
+  togetherInfo,
 }: ChatRoomProps) {
   const { data: session } = useSession();
   const [messages, setMessages] = useState<Message[]>(initialMessages);
@@ -156,9 +166,28 @@ export default function ChatRoom({
 
   return (
     <div className="flex flex-col h-full">
-      <ChatHeader otherUser={otherUser} type={type} />
+      {type === "together" && togetherInfo ? (
+        <ChatHeader
+          type={type}
+          title={togetherInfo.title}
+          participantCount={togetherInfo.participantCount ?? 0}
+        />
+      ) : (
+        <ChatHeader otherUser={otherUser!} type={type} />
+      )}
+
+      {/* 상단 인포 영역: 단체/1:1 분기 */}
+      {type === "together" && togetherInfo && (
+        <TogetherInfo
+          title={togetherInfo.title}
+          imageUrl={togetherInfo.imageUrl}
+          meetingDate={togetherInfo.meetingDate}
+          locationNote={togetherInfo.locationNote}
+        />
+      )}
       {type === "share" && shareInfo && <ShareInfo info={shareInfo} />}
-      {type === "together" && <TogetherInfo />}
+
+      {/* 메시지 리스트 */}
       <ChatMessageList messages={formattedMessages} />
       <ChatInput
         chatId={chatId}

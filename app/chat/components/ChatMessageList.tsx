@@ -2,12 +2,12 @@ import { useEffect, useRef } from "react";
 import ChatMessage from "./ChatMessage";
 
 interface FormattedMessage {
-  id: string;
+  id?: string | number;
   type: "other" | "me";
-  nickname: string;
-  imageUrl: string;
+  nickname?: string;
+  imageUrl?: string;
   message: string;
-  readCount: number;
+  readCount?: number;
   time: string;
 }
 
@@ -33,10 +33,12 @@ export default function ChatMessageList({ messages }: ChatMessageListProps) {
         <ChatMessage
           key={msg.id ?? `tmp-${index}`}
           type={msg.type}
-          nickname={msg.nickname}
-          imageUrl={msg.imageUrl}
+          nickname={msg.nickname ?? ""}
+          imageUrl={
+            msg.imageUrl ?? "/assets/images/example/default-profile.png"
+          }
           message={msg.message}
-          readCount={msg.readCount}
+          readCount={msg.readCount ?? 0}
           time={msg.time}
         />
       ))}

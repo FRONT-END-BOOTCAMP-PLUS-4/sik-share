@@ -2,7 +2,7 @@ import type { ChatMessageRepository } from "@/domain/repositories/Chat/ChatMessa
 import { ChatDetailDto } from "@/application/usecases/Chat/dto/ChatDetailDto";
 import type { ChatMessageListDto } from "@/application/usecases/Chat/dto/ChatMessageListDto";
 
-export class GetChatMessagesUsecase {
+export class GetShareChatListUsecase {
   constructor(private readonly chatMessageRepository: ChatMessageRepository) {}
 
   async execute(chatId: number, userId: string): Promise<ChatDetailDto> {

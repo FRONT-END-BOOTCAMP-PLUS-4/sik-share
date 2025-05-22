@@ -1,11 +1,9 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@/prisma/generated";
 import { PrismaChatListRepository } from "@/infra/repositories/prisma/PrismaChatListRepository";
 import { GetChatListUsecase } from "@/application/usecases/Chat/GetChatListUsecase";
+import { GetGroupBuyChatListUsecase } from "@/application/usecases/Chat/GetGroupBuyChatListUsecase";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-
-const prisma = new PrismaClient();
 
 export async function GET(req: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -15,11 +13,28 @@ export async function GET(req: NextRequest) {
   }
 
   const repo = new PrismaChatListRepository();
-  const usecase = new GetChatListUsecase(repo);
+
+  // 쿼리 파라미터 분기
+  const { searchParams } = new URL(req.url);
+  const type = searchParams.get("type");
 
   try {
-    const chatList = await usecase.execute(session.user.id);
-    return NextResponse.json(chatList);
+    if (type === "share") {
+      const shareChats = await new GetChatListUsecase(repo).execute(session.user.id);
+      return NextResponse.json(shareChats);
+    }
+    if (type === "together") {
+      const groupBuyChats = await new GetGroupBuyChatListUsecase(repo).execute(session.user.id);
+      return NextResponse.json(groupBuyChats);
+    }
+    const [shareChats, groupBuyChats] = await Promise.all([
+      new GetChatListUsecase(repo).execute(session.user.id),
+      new GetGroupBuyChatListUsecase(repo).execute(session.user.id),
+    ]);
+    return NextResponse.json({
+      shareChats,
+      groupBuyChats,
+    });
   } catch (err) {
     console.error("채팅 리스트 불러오기 실패:", err);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

@@ -1,10 +1,12 @@
 import { PrismaClient } from "@/prisma/generated";
 import type { ChatListRepository } from "@/domain/repositories/Chat/ChatListRepository";
 import { ShareChatListItemDto } from "@/application/usecases/Chat/dto/ChatListItemDto";
+import { GroupBuyChatListDto } from "@/application/usecases/Chat/dto/GroupBuyChatListDto";
 
 const prisma = new PrismaClient();
 
 export class PrismaChatListRepository implements ChatListRepository {
+  // 1:1 나눔(share) 채팅방 리스트
   async findChatListByUserId(userId: string): Promise<ShareChatListItemDto[]> {
     const chats = await prisma.shareChat.findMany({
       where: {
@@ -36,7 +38,6 @@ export class PrismaChatListRepository implements ChatListRepository {
     return Promise.all(
       chats.map(async (chat) => {
         const lastMessage = chat.messages[0];
-
         const me = chat.participants.find((p) => p.user.id === userId);
         const other = chat.participants.find((p) => p.user.id !== userId);
 
@@ -61,4 +62,55 @@ export class PrismaChatListRepository implements ChatListRepository {
       })
     );
   }
+
+  // 공동장보기(단체) 채팅방 리스트
+async getGroupBuyChatListByUserId(userId: string): Promise<GroupBuyChatListDto[]> {
+  const participants = await prisma.groupBuyChatParticipant.findMany({
+    where: { userId },
+    include: {
+      groupBuyChat: {
+        include: {
+          groupBuy: {
+            include: {
+              images: {
+                where: { order: 0 },
+                take: 1,
+              },
+            },
+          },
+          messages: {
+            orderBy: { createdAt: "desc" },
+            take: 1,
+          },
+        },
+      },
+    },
+  });
+
+  // participantCount를 await로 각각 조회해야 하므로 map + Promise.all 사용
+  return await Promise.all(
+    participants.map(async (participant) => {
+      const chat = participant.groupBuyChat;
+      const groupBuy = chat.groupBuy;
+      const lastMsg = chat.messages[0];
+      const mainImage = groupBuy.images[0]?.url ?? null;
+
+      // 진짜 채팅방 참여자 수를 카운트 (groupBuyChatParticipant에서 groupBuyChatId 기준)
+      const participantCount = await prisma.groupBuyChatParticipant.count({
+        where: { groupBuyChatId: chat.id },
+      });
+
+      return new GroupBuyChatListDto(
+        chat.id,
+        groupBuy.id,
+        groupBuy.title,
+        mainImage ? [mainImage] : [],
+        lastMsg ? lastMsg.content : null,
+        lastMsg ? lastMsg.createdAt : null,
+        participantCount,
+        "together",
+      );
+    })
+  );
+}
 }

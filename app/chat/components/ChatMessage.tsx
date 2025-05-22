@@ -7,17 +7,17 @@ interface ChatMessageProps {
   nickname?: string;
   imageUrl?: string;
   message: string;
-  readCount: number;
-  time: string;
+  readCount?: number;
+  time?: string;
 }
 
 export default function ChatMessage({
   type,
-  nickname,
-  imageUrl,
+  nickname = "",
+  imageUrl = "/assets/images/example/default-profile.png",
   message,
-  readCount,
-  time,
+  readCount = 0,
+  time = "",
 }: ChatMessageProps) {
   return (
     <>
