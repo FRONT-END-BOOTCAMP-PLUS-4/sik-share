@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import useShareItmes from "@/app/hooks/useShareItems";
+import useShareItmes from "@/app/share/new/hooks/useShareItems";
 import FormInput from "@/components/common/FormInput";
 import Loading from "@/components/common/Loading";
 import SubHeader from "@/components/common/SubHeader";
