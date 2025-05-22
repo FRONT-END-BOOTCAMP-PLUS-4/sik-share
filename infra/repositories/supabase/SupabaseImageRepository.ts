@@ -42,9 +42,9 @@ export class SupabaseImageStorageRepository implements ImageStorageRepository {
     const fileExtension = extractFileExtension(file.name);
     const filePath = `share_${shareId}_${order}.${fileExtension}`;
 
-    const { error } = await supabase.stroage
+    const { error } = await supabase.storage
       .from("share")
-      .uploade(filePath, file, { contentType: file.type, upsert: true });
+      .upload(filePath, file, { contentType: file.type, upsert: true });
 
     if (error) throw error;
 

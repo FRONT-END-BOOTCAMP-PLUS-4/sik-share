@@ -45,7 +45,7 @@ export default function FormSelect({
             {label && <FormLabel>{label}</FormLabel>}
             <FormControl>
               <Select
-                value={field.value !== -1 ? String(field.value) : ""}
+                value={field.value ? String(field.value) : ""}
                 onValueChange={(val) => {
                   field.onChange(Number(val));
                 }}

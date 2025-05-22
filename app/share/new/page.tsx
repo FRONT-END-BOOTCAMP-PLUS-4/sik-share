@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import useShareItmes from "@/app/hooks/useShareItems";
 import FormInput from "@/components/common/FormInput";
 import Loading from "@/components/common/Loading";
@@ -13,6 +14,8 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import LocationSelectModal from "./components/LocationSelectModal";
 import type { LocationData } from "@/types/types";
+import { toast } from "sonner";
+import { useSession } from "next-auth/react";
 
 type ShareForm = {
   title: string;
@@ -26,12 +29,17 @@ type ShareForm = {
 };
 
 export default function CreateSharePage() {
+  const router = useRouter();
+  const { data: session } = useSession();
+
+  const userId = session?.user.id;
+
   const { shareItems, loading, error } = useShareItmes(); //에러는 토스트로
   const form = useForm<ShareForm>({
-    mode: "onBlur",
+    mode: "onSubmit",
     defaultValues: {
       title: "",
-      shareItem: -1,
+      shareItem: undefined,
       description: "",
       locationNote: "",
       locationAddress: "",
@@ -43,8 +51,45 @@ export default function CreateSharePage() {
 
   const [showMapModal, setShowMapModal] = useState(false);
 
-  const onSubmit = (data: ShareForm) => {
-    console.log(data);
+  const onSubmit = async () => {
+    try {
+      const values = form.getValues();
+
+      const formData = new FormData();
+      formData.append("shareItemId", String(values.shareItem));
+      formData.append("ownerId", userId!);
+      formData.append("title", values.title);
+      formData.append("locationNote", values.locationNote);
+      formData.append("locationAddress", values.locationAddress);
+      formData.append("lat", String(values.lat));
+      formData.append("lng", String(values.lng));
+      formData.append("description", values.description);
+
+      for (const image of values.images) {
+        formData.append("images", image);
+      }
+
+      const res = await fetch("/api/shares", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        const message =
+          errorData?.message ||
+          "알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요.";
+        toast.error(message);
+        console.log(message);
+        return;
+      }
+
+      toast.success("나눔이 등록되었습니다");
+      router.back();
+    } catch (error) {
+      console.error("나눔 등록 중 오류 발생:", error);
+      toast.error("네트워크 오류가 발생했습니다. 다시 시도해주세요.");
+    }
   };
 
   return (
@@ -111,6 +156,7 @@ export default function CreateSharePage() {
             form.setValue("locationNote", locationData.locationNote);
             form.setValue("lat", locationData.lat!);
             form.setValue("lng", locationData.lng!);
+            form.trigger("locationNote");
             setShowMapModal(false);
           }}
         />

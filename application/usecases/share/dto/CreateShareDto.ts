@@ -8,7 +8,6 @@ export class CreateShareDto{
     public locationAddress : string,
     public locationNote : string,
     public description : string,
-    public status : number,
     public images : File[]
   ){}
 }

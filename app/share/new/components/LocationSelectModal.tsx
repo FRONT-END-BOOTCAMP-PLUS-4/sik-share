@@ -1,13 +1,14 @@
 import KakaoMap from "@/components/common/KakaoMap";
 import SubHeader from "@/components/common/SubHeader";
 import type { LocationData } from "@/types/types";
+import type React from "react";
 import { useEffect, useState, useCallback } from "react";
 import ButtonSection from "./ButtonSection";
 import {
   Dialog,
   DialogContent,
   DialogTitle,
-  DialogFooter,
+  DialogDescription,
   DialogHeader,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -58,7 +59,8 @@ export default function LocationSelectModal({
     setShowDialog(true);
   };
 
-  const handleDialogConfirm = () => {
+  const handleDialogConfirm = (e: React.FormEvent) => {
+    e.preventDefault();
     if (!selectedLocation.locationNote) return;
 
     onConfirm({
@@ -85,14 +87,17 @@ export default function LocationSelectModal({
         </section>
       </div>
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent>
+        <DialogContent aria-describedby="location-description">
           <DialogHeader>
             <DialogTitle className="flex gap-1 items-center text-md">
               선택한 곳의 장소명을 입력해주세요{" "}
               <span className="caption text-zinc-400">(최대 25자)</span>
             </DialogTitle>
           </DialogHeader>
-          <form onSubmit={handleDialogConfirm}>
+          <DialogDescription id="location-description">
+            모두가 찾기 쉬운 위치명을 입력해주세요.
+          </DialogDescription>
+          <form onSubmit={handleDialogConfirm} className="flex flex-col gap-4">
             <Input
               className="body-sm"
               placeholder="ex. 봉천역 2번 출구"
@@ -110,6 +115,7 @@ export default function LocationSelectModal({
             />
 
             <Button
+              type="submit"
               className="w-full h-11 text-md text-zinc-50"
               disabled={!selectedLocation.locationNote}
             >

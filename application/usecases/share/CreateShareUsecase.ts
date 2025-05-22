@@ -26,8 +26,9 @@ export class CreateShareUsecase {
       lng: share.lng,
       locationNote: share.locationNote,
       description: share.description,
-      status: share.status,
+      status: 0,
     });
+
 
     const images = await Promise.all(
       share.images.map(async (image, idx) => {
@@ -36,6 +37,9 @@ export class CreateShareUsecase {
           idx,
           image,
         );
+
+        console.log("테스트");
+        console.log(imageUrl);
 
         return {
           shareId: result.id,
