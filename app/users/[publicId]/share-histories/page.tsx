@@ -1,7 +1,40 @@
-import { HistorySection } from "../../components/HistorySection";
+import { useCallback, useState } from "react";
+import { HistorySection } from "@/app/users/components/HistorySection";
+import { useUserInfo } from "@/app/users/hooks/useUserInfo";
+import { useInfiniteScroll } from "@/hooks/useInfinityScroll";
 
 export default function SharesHistory() {
-  const isMyAccount = true;
+  const { publicId, isMyAccount } = useUserInfo();
+
+  const [status, setStatus] = useState<"active" | "completed" | "expired">(
+    "active",
+  );
+
+  const fetcher = useCallback(
+    async (page: number, itemsPerPage: number) => {
+      const res = await fetch("/api/users/shares", {
+        method: "GET",
+        body: JSON.stringify({
+          ownerId: publicId,
+          status: status,
+          page: page,
+          itemsPerPage: itemsPerPage,
+        }),
+      });
+
+      const data = await res.json();
+      return data;
+    },
+    [publicId, status],
+  );
+
+  const { items, loading, ref } = useInfiniteScroll({
+    fetcher,
+    itemsPerPage: 20,
+    delay: 300,
+    // deps: [publicId, status],
+  });
+
   const data = [
     {
       id: "diddididcsfdm",
@@ -27,14 +60,14 @@ export default function SharesHistory() {
     <HistorySection
       title="나눔 내역"
       tabValues={[
-        { label: "진행 중", count: 1, value: "in-progress" },
+        { label: "진행 중", count: 1, value: "active" },
         { label: "종료", count: 2, value: "completed" },
         ...(isMyAccount
           ? [{ label: "기한 만료", count: 6, value: "expired" }]
           : []),
       ]}
       tabItems={{
-        "in-progress": data,
+        active: data,
         completed: data,
         ...(isMyAccount ? { expired: data } : {}),
       }}

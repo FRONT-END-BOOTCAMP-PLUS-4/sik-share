@@ -1,17 +1,16 @@
 "use client";
 
-import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import Header from "@/components/common/Header";
+import Footer from "@/components/common/Footer";
+import Loading from "@/components/common/Loading";
 import { getScoreVisual } from "@/app/users/utils";
 import UsersNav from "@/app/users/components/UsersNav";
 import Profile from "@/app/users/components/Profile";
 import UserLocation from "@/app/users/components/UserLocation";
 import ShareScore from "@/app/users/components/ShareScore";
 import MyCharacter from "@/app/users/components/MyCharacter";
-import Header from "@/components/common/Header";
-import Footer from "@/components/common/Footer";
-import Loading from "@/components/common/Loading";
+import { useUserInfo } from "@/app/users/hooks/useUserInfo";
 
 interface User {
   neighborhoodName: string;
@@ -21,13 +20,7 @@ interface User {
 }
 
 export default function userPage() {
-  const params = useParams();
-  const publicId = params.publicId;
-  const { data: session, status } = useSession();
-  const myPublicId = session?.user.publicId;
-
-  const isMyAccount =
-    status === "authenticated" && String(myPublicId) === publicId;
+  const { publicId, isMyAccount } = useUserInfo();
 
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
