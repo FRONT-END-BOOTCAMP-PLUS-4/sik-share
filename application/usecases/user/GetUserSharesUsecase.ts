@@ -22,6 +22,20 @@ export class GetUserSharesUsecase {
       itemsPerPage,
     });
 
-    return shares;
+    shares?.forEach((share) => {
+//           id: string;
+//   thumbnailSrc: string;
+//   thumbnailAlt?: string;
+//   title: string;
+//   badgeVariant?: BadgeVariantProps<typeof Badge>["variant"];
+//   badgeLabel?: string;
+//   timeLeft?: string;
+//   location: string;
+
+      share.images = share.images.map((image) => ({
+        ...image,
+        imageUrl: image.imageUrl,
+      }));
+    }
   }
 }
