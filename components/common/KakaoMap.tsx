@@ -5,7 +5,11 @@ import { Badge } from "@/components/ui/badge";
 import { useEffect, useRef, useState } from "react";
 
 interface KakaoMapProps {
-  onSelect: (address: string, neighborhoodName: string) => void;
+  onSelect: (
+    address: string,
+    neighborhoodName: string,
+    coordinates?: { lat: number; lng: number },
+  ) => void;
 }
 
 export default function KakaoMap({ onSelect }: KakaoMapProps) {
@@ -29,7 +33,11 @@ export default function KakaoMap({ onSelect }: KakaoMapProps) {
           if (status === window.kakao.maps.services.Status.OK) {
             const addr = result.find((r) => r.region_type === "H");
             console.log(addr);
-            if (addr) onSelect(addr.address_name, addr.region_3depth_name);
+            if (addr)
+              onSelect(addr.address_name, addr.region_3depth_name, {
+                lat: newCenter.getLat(),
+                lng: newCenter.getLng(),
+              });
           }
         },
       );

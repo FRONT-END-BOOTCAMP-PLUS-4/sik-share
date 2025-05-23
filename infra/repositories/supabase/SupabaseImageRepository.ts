@@ -28,7 +28,32 @@ export class SupabaseImageStorageRepository implements ImageStorageRepository {
 
     if (error) throw error;
 
-    const { data } = supaUserStorage.getPublicUrl(filePath);
+    const { data } = supabase.storage
+      .from("user-profile")
+      .getPublicUrl(filePath);
     return new ProfileImage(data.publicUrl);
   }
+
+  async uploadeShareImage(
+    shareId: number,
+    order: number,
+    file: File,
+  ): Promise<string> {
+    const fileExtension = extractFileExtension(file.name);
+    const filePath = `share_${shareId}_${order}.${fileExtension}`;
+
+    const { error } = await supabase.storage
+      .from("share")
+      .upload(filePath, file, { contentType: file.type, upsert: true });
+
+    if (error) throw error;
+
+    const { data } = supabase.storage.from("share").getPublicUrl(filePath);
+
+    return data.publicUrl;
+  }
+}
+
+function extractFileExtension(fileName: string) {
+  return fileName.includes(".") ? fileName.split(".").pop() : "jpg";
 }

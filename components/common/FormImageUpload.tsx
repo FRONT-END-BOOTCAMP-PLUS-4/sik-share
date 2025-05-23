@@ -11,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import { toast } from "sonner";
+import { MAX_SIZE } from "@/lib/constants";
 
 interface FormImageUploadProps {
   name: string;
@@ -24,7 +25,6 @@ export function FormImageUpload({
   className = "",
 }: FormImageUploadProps) {
   const [preview, setPreview] = useState<string | null>(null);
-  const MAX_SIZE = 50 * 1024 * 1024;
 
   return (
     <FormField
