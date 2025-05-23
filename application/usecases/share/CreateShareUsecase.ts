@@ -32,14 +32,12 @@ export class CreateShareUsecase {
 
     const images = await Promise.all(
       share.images.map(async (image, idx) => {
-        const imageUrl = await this.imageStorageRepo.uploadeShareImage(
+        const imageUrl = await this.imageStorageRepo.uploadPostImage(
           result.id,
           idx,
           image,
+          "share"
         );
-
-        console.log("테스트");
-        console.log(imageUrl);
 
         return {
           shareId: result.id,

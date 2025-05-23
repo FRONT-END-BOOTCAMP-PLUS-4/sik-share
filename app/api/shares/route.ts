@@ -1,10 +1,10 @@
-import { CreateShareUsecase } from "./../../../application/usecases/share/CreateShareUsecase";
+import { NextResponse } from "next/server";
+import { CreateShareUsecase } from "@/application/usecases/share/CreateShareUsecase";
 import { CreateShareDto } from "@/application/usecases/share/dto/CreateShareDto";
 import { PrismaNeighborhoodRepository } from "@/infra/repositories/prisma/PrismaNeighborhoodRepository";
 import { PrismaShareImageRepository } from "@/infra/repositories/prisma/share/PrismaShareImageRepository";
 import { PrismaShareRepository } from "@/infra/repositories/prisma/share/PrismaShareRepository";
 import { SupabaseImageStorageRepository } from "@/infra/repositories/supabase/SupabaseImageRepository";
-import { NextResponse } from "next/server";
 
 export async function POST(req: Request){
   try {
@@ -40,10 +40,10 @@ export async function POST(req: Request){
 
     const createShareUsecase = new CreateShareUsecase(shareRepo, neighborhoodRepo, shareImageRepo, imageStorageRepo);
 
-    const result = await createShareUsecase.execute(createShareDto);
+    await createShareUsecase.execute(createShareDto);
 
     return NextResponse.json(
-      {message : '나눔 등록 성공', share : result},
+      {message : '나눔 등록 성공'},
       {status : 201}
     )
   }

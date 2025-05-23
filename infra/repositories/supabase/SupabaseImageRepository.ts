@@ -34,24 +34,26 @@ export class SupabaseImageStorageRepository implements ImageStorageRepository {
     return new ProfileImage(data.publicUrl);
   }
 
-  async uploadeShareImage(
-    shareId: number,
+  async uploadPostImage(
+    id: number,
     order: number,
     file: File,
+    bucketName : "share" | "group-buy"
   ): Promise<string> {
     const fileExtension = extractFileExtension(file.name);
-    const filePath = `share_${shareId}_${order}.${fileExtension}`;
+    const filePath = `${bucketName}_${id}_${order}.${fileExtension}`;
 
     const { error } = await supabase.storage
-      .from("share")
+      .from(bucketName)
       .upload(filePath, file, { contentType: file.type, upsert: true });
 
     if (error) throw error;
 
-    const { data } = supabase.storage.from("share").getPublicUrl(filePath);
+    const { data } = supabase.storage.from(bucketName).getPublicUrl(filePath);
 
     return data.publicUrl;
   }
+  
 }
 
 function extractFileExtension(fileName: string) {

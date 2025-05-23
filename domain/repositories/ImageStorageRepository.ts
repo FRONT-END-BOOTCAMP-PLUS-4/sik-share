@@ -6,9 +6,11 @@ export interface ImageStorageRepository {
     file: File,
   ): Promise<ProfileImage>;
 
-  uploadeShareImage(
-    shareId: number,
+  uploadPostImage(
+    id: number,
     order: number,
     file: File,
+    bucketName : string
   ): Promise<string>;
+
 }

@@ -1,21 +1,21 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import useShareItmes from "@/app/share/new/hooks/useShareItems";
+import { useSession } from "next-auth/react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import FormInput from "@/components/common/FormInput";
 import Loading from "@/components/common/Loading";
 import SubHeader from "@/components/common/SubHeader";
 import { Form } from "@/components/ui/form";
-import { useForm } from "react-hook-form";
-import FormDetail from "./components/FormDetail";
-import FormSelect from "./components/FormSelect";
-import FormMultiImageUpload from "./components/FormMultiImageUpload";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import LocationSelectModal from "./components/LocationSelectModal";
 import type { LocationData } from "@/types/types";
-import { toast } from "sonner";
-import { useSession } from "next-auth/react";
+import useShareItmes from "./hooks/useShareItems";
+import FormDetail from "../components/FormDetail";
+import FormSelect from "../components/FormSelect";
+import FormMultiImageUpload from "../components/FormMultiImageUpload";
+import LocationSelectModal from "../components/LocationSelectModal";
 
 type ShareForm = {
   title: string;
@@ -80,11 +80,15 @@ export default function CreateSharePage() {
           errorData?.message ||
           "알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요.";
         toast.error(message);
-        console.log(message);
         return;
       }
 
-      toast.success("나눔이 등록되었습니다");
+      toast.success("나눔이 등록되었습니다", {
+        duration: 2000,
+        onAutoClose: () => {
+          router.back();
+        },
+      });
       router.back();
     } catch (error) {
       console.error("나눔 등록 중 오류 발생:", error);

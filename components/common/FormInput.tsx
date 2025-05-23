@@ -21,6 +21,7 @@ interface FormInputProps {
   onClick?: () => void;
   readOnly?: boolean;
   rules?: RegisterOptions;
+  suffix?: string;
 }
 
 export default function FormInput({
@@ -35,6 +36,7 @@ export default function FormInput({
   onClick,
   readOnly,
   rules,
+  suffix,
 }: FormInputProps) {
   return (
     <FormField
@@ -43,17 +45,24 @@ export default function FormInput({
       render={({ field }) => (
         <FormItem className={className}>
           {label && <FormLabel>{label}</FormLabel>}
-          <FormControl>
-            <Input
-              className={inputClassName}
-              type={type}
-              placeholder={placeholder}
-              disabled={disabled}
-              readOnly={readOnly}
-              onClick={onClick}
-              {...field}
-            />
-          </FormControl>
+          <div className="relative">
+            <FormControl>
+              <Input
+                className={inputClassName}
+                type={type}
+                placeholder={placeholder}
+                disabled={disabled}
+                readOnly={readOnly}
+                onClick={onClick}
+                {...field}
+              />
+            </FormControl>
+            {suffix && (
+              <span className="absolute right-3 top-2 text-zinc-500 text-sm font-light">
+                {suffix}
+              </span>
+            )}
+          </div>
           <FormMessage />
           {description && <FormDescription>{description}</FormDescription>}
         </FormItem>
