@@ -86,7 +86,12 @@ export default function CreateGroupBuyPage() {
         return;
       }
 
-      toast.success("같이 장보기가 등록되었습니다");
+      toast.success("같이 장보기가 등록되었습니다", {
+        duration: 2000,
+        onAutoClose: () => {
+          router.back();
+        },
+      });
       router.back();
     } catch (error) {
       console.error("장보기 등록 중 오류 발생:", error);

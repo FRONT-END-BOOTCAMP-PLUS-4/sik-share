@@ -83,7 +83,12 @@ export default function CreateSharePage() {
         return;
       }
 
-      toast.success("나눔이 등록되었습니다");
+      toast.success("나눔이 등록되었습니다", {
+        duration: 2000,
+        onAutoClose: () => {
+          router.back();
+        },
+      });
       router.back();
     } catch (error) {
       console.error("나눔 등록 중 오류 발생:", error);
