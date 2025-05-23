@@ -36,7 +36,7 @@ function CameraInsideLook() {
 // 🧾 페이지
 export default function ShareBoxPage() {
   return (
-    <div className="-mx-4">
+    <div>
       <div style={{ width: "100%", height: "100vh" }}>
         <Canvas camera={{ fov: 20 }}>
           <CameraInsideLook />
