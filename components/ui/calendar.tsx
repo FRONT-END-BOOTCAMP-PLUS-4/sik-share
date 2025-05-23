@@ -1,6 +1,5 @@
 "use client";
 
-import type { Dispatch, SetStateAction } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -17,6 +16,7 @@ export function Calendar({ selected, onSelect }: CalendarProps) {
         selected={selected}
         onChange={(d) => onSelect(d as Date)}
         dayClassName={() => "text-sm"}
+        minDate={new Date()}
         calendarClassName="!border-none !font-['GyeonggiTitle'] !font-light"
       />
     </div>
