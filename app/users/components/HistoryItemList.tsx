@@ -22,7 +22,7 @@ export function HistoryItemList({
   return (
     <ul>
       {items.map((item, index) => (
-        <li key={item.id} ref={index === items.length - 1 ? refTarget : null}>
+        <li key={item.id}>
           {type === "share" ? (
             <ShareListCard {...(item as ShareListCardProps)} />
           ) : (
@@ -30,6 +30,7 @@ export function HistoryItemList({
           )}
         </li>
       ))}
+      <div ref={refTarget} className="h-4/5" />
       {loading && <p>로딩중이야요</p>}
       {!hasMore && <p>마지막 항목이에요</p>}
     </ul>

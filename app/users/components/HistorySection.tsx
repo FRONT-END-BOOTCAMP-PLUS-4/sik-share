@@ -1,3 +1,4 @@
+"use client";
 import { useCallback, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { HistoryItemList } from "./HistoryItemList";
@@ -9,17 +10,15 @@ import { useInfiniteScroll } from "@/hooks/useInfinityScroll";
 interface HistorySectionProps {
   type: "share" | "group" | "participations";
   title: string;
-  publicId: string;
+  ownerId: string;
   isMyAccount: boolean;
-  defaultTab?: string;
 }
 
 export function HistorySection({
   type,
   title,
-  publicId,
+  ownerId,
   isMyAccount,
-  defaultTab,
 }: HistorySectionProps) {
   const [status, setStatus] = useState<"active" | "completed" | "expired">(
     "active",
@@ -27,27 +26,26 @@ export function HistorySection({
 
   const fetcher = useCallback(
     async (page: number, itemsPerPage: number) => {
-      const res = await fetch(`/api/users/${type}s`, {
-        method: "GET",
-        body: JSON.stringify({
-          ownerId: publicId,
-          status: status,
-          page: page,
-          itemsPerPage: itemsPerPage,
-        }),
-      });
+      if (ownerId === null) return [];
+      console.log("🔥 fetcher 호출됨", { status, ownerId });
+      const res = await fetch(
+        `/api/users/${type}s?ownerId=${ownerId}&status=${status}&page=${page}&itemsPerPage=${itemsPerPage}`,
+      );
 
+      console.log("page-----res", res);
       const data = await res.json();
-      return data.items;
+
+      console.log("page-----", data);
+      return data.shares;
     },
-    [publicId, status, type],
+    [ownerId, status, type],
   );
 
   const { items, loading, hasMore, ref } = useInfiniteScroll({
     fetcher,
     itemsPerPage: 20,
     delay: 300,
-    deps: [publicId, status],
+    deps: [ownerId, status],
   });
 
   const tabValues = [
@@ -61,8 +59,12 @@ export function HistorySection({
       <SubHeader titleText={title} />
       <section className="pt-4">
         <Tabs
-          defaultValue={defaultTab ?? tabValues[0].value}
+          value={status}
           className="w-full"
+          onValueChange={(val) => {
+            console.log("onchangeval", val);
+            setStatus(val as "active" | "completed" | "expired");
+          }}
         >
           <TabsList className="w-full">
             {tabValues.map((tab) => (
@@ -76,10 +78,7 @@ export function HistorySection({
           {tabValues.map((tab) => (
             <TabsContent key={tab.value} value={tab.value}>
               <HistoryItemList
-                items={items}
-                refTarget={ref}
-                loading={loading}
-                hasMore={hasMore}
+                items={items as ListCardProps[] | ShareListCardProps[]}
                 type={
                   type === "participations"
                     ? tab.value === "group"
@@ -87,6 +86,9 @@ export function HistorySection({
                       : "share"
                     : type
                 }
+                refTarget={ref}
+                loading={loading}
+                hasMore={hasMore}
               />
             </TabsContent>
           ))}

@@ -17,7 +17,7 @@ export class PrismaShareRepository implements ShareRepository {
     itemsPerPage,
   }: FindByOwnerAndStatus): Promise<Share[] | null> {
 
-    return this.prisma.share.findMany({
+    const result = await this.prisma.share.findMany({
       where,
       skip: offset,
       take: itemsPerPage,
@@ -28,5 +28,8 @@ export class PrismaShareRepository implements ShareRepository {
         images: true,
       },
     });
+
+    console.log("result", result);
+    return result;
   }
 }

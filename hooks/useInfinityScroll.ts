@@ -25,6 +25,7 @@ export function useInfiniteScroll<T>({
 
   const loadMore = useCallback(
     async (currentSignal: number) => {
+      console.log("🚀 loadMore 실행", { page });
       if (loading || !hasMore) return;
       setLoading(true);
 
