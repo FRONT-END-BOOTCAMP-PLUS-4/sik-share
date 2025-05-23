@@ -35,7 +35,7 @@ export default function CreateGroupBuyPage() {
   const userId = session?.user.id;
 
   const form = useForm<GroupBuyForm>({
-    mode: "onBlur",
+    mode: "onSubmit",
     defaultValues: {
       title: "",
       description: "",

@@ -14,9 +14,14 @@ import { cn } from "@/lib/utils";
 interface InputCalendarProps {
   value: Date | null;
   onChange: (date: Date | null) => void;
+  hasError?: boolean;
 }
 
-export default function InputCalendar({ value, onChange }: InputCalendarProps) {
+export default function InputCalendar({
+  value,
+  onChange,
+  hasError = false,
+}: InputCalendarProps) {
   const label = value ? format(value, "yyyy-MM-dd") : "YYYY-MM-DD";
 
   return (
@@ -29,6 +34,7 @@ export default function InputCalendar({ value, onChange }: InputCalendarProps) {
             value
               ? "text-foreground font-normal"
               : "text-muted-foreground font-light",
+            hasError && "!border-destructive",
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
