@@ -18,13 +18,37 @@ export function MapList({ selectedId }: MapListProps) {
     async (page: number, itemsPerPage: number) => {
       if (selectedId === null) return [];
 
-      return Array.from(
-        { length: itemsPerPage },
-        (_, i) =>
-          `ID ${selectedId} - ${filterType} 항목 ${page * itemsPerPage + i + 1}`,
-      );
+      const params = new URLSearchParams({
+        page: String(page),
+        itemsPerPage: String(itemsPerPage),
+        neighborhoodId: String(selectedId),
+      });
+
+      try {
+        const res = await fetch(`/api/map/share?${params.toString()}`);
+
+        if (!res.ok) {
+          console.error("API 호출 실패", res.statusText);
+          return [];
+        }
+
+        const data = await res.json();
+
+        return data.shares.map((item: any) => ({
+          id: item.id,
+          src: item.thumbnailUrl || "",
+          alt: item.title,
+          title: item.title,
+          location: item.locationNote,
+          timeLeftInHours: item.timeLeftInHours,
+          type: "share",
+        }));
+      } catch (error) {
+        console.error("API 호출 중 에러", error);
+        return [];
+      }
     },
-    [selectedId, filterType],
+    [selectedId],
   );
 
   const { items, loading, ref } = useInfiniteScroll({
@@ -38,11 +62,15 @@ export function MapList({ selectedId }: MapListProps) {
     <div className="max-h-[55vh] min-h-[55vh] overflow-y-auto px-4 py-2">
       {items.map((item) => (
         <ListCard
-          key={item}
+          key={item.id}
           thumbnailSrc={item.src}
           thumbnailAlt={item.alt}
-          title={"제목입니당"}
-          location="관악청년청"
+          title={item.title}
+          location={item.location}
+          timeLeft={String(item.timeLeftInHours)}
+          type={item.type}
+          currentUser={item.currentUser}
+          maxUser={item.maxUser}
         />
       ))}
       {loading && <LoadingLottie />}

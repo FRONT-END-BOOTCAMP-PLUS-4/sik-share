@@ -44,23 +44,24 @@ model User {
 }
 
 model GroupBuy {
-  id              Int                   @id @default(autoincrement())
-  organizerId     String
-  neighborhoodId  Int
-  title           String
-  capacity        Int
-  desiredItem     String
-  meetingDate     DateTime
-  createdAt       DateTime              @default(now())
-  locationAddress String
-  locationNote    String
-  description     String
-  status          Int
-  neighborhood    Neighborhood          @relation(fields: [neighborhoodId], references: [id])
-  organizer       User                  @relation(fields: [organizerId], references: [id])
-  chats           GroupBuyChat[]
-  images          GroupBuyImage[]
-  participants    GroupBuyParticipant[]
+  id             Int                   @id @default(autoincrement())
+  organizerId    String
+  neighborhoodId Int
+  title          String
+  capacity       Int
+  desiredItem    String
+  meetingDate    DateTime
+  createdAt      DateTime              @default(now())
+  locationNote   String
+  description    String
+  status         Int
+  lat            Float
+  lng            Float
+  neighborhood   Neighborhood          @relation(fields: [neighborhoodId], references: [id])
+  organizer      User                  @relation(fields: [organizerId], references: [id])
+  chats          GroupBuyChat[]
+  images         GroupBuyImage[]
+  participants   GroupBuyParticipant[]
 }
 
 model GroupBuyParticipant {

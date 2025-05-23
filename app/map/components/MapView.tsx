@@ -22,9 +22,9 @@ export function MapView() {
   const mapContainer = useRef<HTMLDivElement>(null);
 
   const locationInfo = [
-    { id: 1, lat: 37.4779619, lng: 126.9534602, count: 130 },
-    { id: 2, lat: 37.4749956, lng: 126.9349995, count: 50 },
-    { id: 3, lat: 37.4762971, lng: 126.9583884, count: 13 },
+    { id: 15, lat: 37.4779619, lng: 126.9534602, count: 130 },
+    { id: 16, lat: 37.4749956, lng: 126.9349995, count: 50 },
+    { id: 17, lat: 37.4762971, lng: 126.9583884, count: 13 },
   ];
 
   useEffect(() => {
