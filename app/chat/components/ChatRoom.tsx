@@ -9,6 +9,7 @@ import ChatMessageList from "./ChatMessageList";
 import ChatInput from "./ChatInput";
 import TogetherInfo from "./TogetherInfo";
 
+// ====== 타입 정의 ======
 interface Message {
   id?: number;
   tempId?: string;
@@ -49,6 +50,18 @@ interface ChatRoomProps {
   togetherInfo?: TogetherInfoProps;
 }
 
+interface FormattedMessage {
+  id?: string | number;
+  tempId?: string;
+  type: "other" | "me";
+  nickname: string;
+  imageUrl: string;
+  message: string;
+  readCount: number;
+  time: string;
+}
+
+// ====== 메시지 변환 함수 ======
 function toFormattedMessage(
   msg: Message | FormattedMessage,
   currentUserId: string,
@@ -71,17 +84,7 @@ function toFormattedMessage(
   };
 }
 
-interface FormattedMessage {
-  id?: string | number;
-  tempId?: string;
-  type: "other" | "me";
-  nickname: string;
-  imageUrl: string;
-  message: string;
-  readCount: number;
-  time: string;
-}
-
+// ====== ChatRoom 컴포넌트 ======
 export default function ChatRoom({
   type,
   chatId,
@@ -93,35 +96,21 @@ export default function ChatRoom({
   const { data: session } = useSession();
   const [messages, setMessages] = useState<Message[]>(initialMessages);
 
-  // 메시지 추가/업데이트 함수 (id 기준)
-  const handleMessage = useCallback((msg: Message) => {
-    setMessages((prev) => {
-      const idx = prev.findIndex((m) => m.id === msg.id);
-      if (idx !== -1) {
-        const copy = [...prev];
-        copy[idx] = { ...copy[idx], ...msg };
-        return copy;
-      }
-      return [...prev, msg];
-    });
-  }, []);
-
+  // 메시지 수신 핸들러
   useEffect(() => {
-    // joinRoom
-    const join = () => {
-      if (session?.user?.id) {
-        socket.emit("joinRoom", { chatId, userId: session.user.id });
-      }
-    };
-    socket.on("connect", join);
+    if (!session?.user?.id) return;
 
-    // 이미 연결되어 있으면 바로 joinRoom
-    if (socket.connected && session?.user?.id) {
+    // --- 방 입장 이벤트명 분기
+    if (type === "together") {
+      socket.emit("joinGroupRoom", { chatId, userId: session.user.id });
+    } else {
       socket.emit("joinRoom", { chatId, userId: session.user.id });
     }
 
-    // 메시지 수신 핸들러
-    const handleMessage = (msg: Message) => {
+    // --- 메시지 수신 이벤트명 분기
+    const msgEvent =
+      type === "together" ? "groupbuy chat message" : "chat message";
+    const handler = (msg: Message) => {
       setMessages((prev) => {
         const idx = prev.findIndex((m) => m.id === msg.id);
         if (idx !== -1) {
@@ -132,9 +121,9 @@ export default function ChatRoom({
         return [...prev, msg];
       });
     };
-    socket.on("chat message", handleMessage);
+    socket.on(msgEvent, handler);
 
-    // 읽음 처리 메시지 핸들러
+    // --- 읽음 처리(1:1만, 단체는 필요 시 추가)
     const handleMessagesRead = ({ readIds }: { readIds: number[] }) => {
       setMessages((prev) =>
         prev.map((m) =>
@@ -144,19 +133,29 @@ export default function ChatRoom({
         ),
       );
     };
-    socket.on("messagesRead", handleMessagesRead);
+    if (type === "share") {
+      socket.on("messagesRead", handleMessagesRead);
+    }
 
+    // 클린업
     return () => {
+      // 퇴장
       socket.emit("leaveRoom", chatId);
-      socket.off("chat message", handleMessage);
-      socket.off("connect", join);
-      socket.off("messagesRead", handleMessagesRead);
+      socket.off(msgEvent, handler);
+      if (type === "share") {
+        socket.off("messagesRead", handleMessagesRead);
+      }
     };
-  }, [chatId, session?.user?.id]);
+  }, [chatId, session?.user?.id, type]);
 
-  // 메시지 보내기
+  // 메시지 보내기 핸들러
   const handleSendMessage = (msg: Message) => {
-    socket.emit("chat message", msg);
+    // 단체채팅과 1:1채팅에 따라 이벤트 분기
+    if (type === "together") {
+      socket.emit("groupbuy chat message", msg);
+    } else {
+      socket.emit("chat message", msg);
+    }
   };
 
   // 메시지 변환
@@ -166,6 +165,7 @@ export default function ChatRoom({
 
   return (
     <div className="flex flex-col h-full">
+      {/* 헤더 */}
       {type === "together" && togetherInfo ? (
         <ChatHeader
           type={type}
@@ -176,7 +176,7 @@ export default function ChatRoom({
         <ChatHeader otherUser={otherUser!} type={type} />
       )}
 
-      {/* 상단 인포 영역: 단체/1:1 분기 */}
+      {/* 상단 info */}
       {type === "together" && togetherInfo && (
         <TogetherInfo
           title={togetherInfo.title}
@@ -189,6 +189,8 @@ export default function ChatRoom({
 
       {/* 메시지 리스트 */}
       <ChatMessageList messages={formattedMessages} />
+
+      {/* 입력 */}
       <ChatInput
         chatId={chatId}
         senderId={session?.user.id ?? ""}
