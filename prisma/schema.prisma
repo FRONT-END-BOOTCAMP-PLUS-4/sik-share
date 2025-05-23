@@ -44,24 +44,24 @@ model User {
 }
 
 model GroupBuy {
-  id             Int                   @id @default(autoincrement())
-  organizerId    String
-  neighborhoodId Int
-  title          String
-  capacity       Int
-  desiredItem    String
-  meetingDate    DateTime
-  createdAt      DateTime              @default(now())
-  locationNote   String
-  description    String
-  status         Int
-  lat            Float
-  lng            Float
-  neighborhood   Neighborhood          @relation(fields: [neighborhoodId], references: [id])
-  organizer      User                  @relation(fields: [organizerId], references: [id])
-  chats          GroupBuyChat[]
-  images         GroupBuyImage[]
-  participants   GroupBuyParticipant[]
+  id              Int                   @id @default(autoincrement())
+  organizerId     String
+  neighborhoodId  Int
+  title           String
+  capacity        Int
+  desiredItem     String
+  meetingDate     DateTime
+  createdAt       DateTime              @default(now())
+  lat             Float
+  lng             Float
+  locationNote    String
+  description     String
+  status          Int
+  neighborhood    Neighborhood          @relation(fields: [neighborhoodId], references: [id])
+  organizer       User                  @relation(fields: [organizerId], references: [id])
+  chats           GroupBuyChat[]
+  images          GroupBuyImage[]
+  participants    GroupBuyParticipant[]
 }
 
 model GroupBuyParticipant {
@@ -171,7 +171,6 @@ model GroupBuyChatMessage {
   content        String
   count          Int
   createdAt      DateTime     @default(now())
-  count          Int
   groupBuyChat   GroupBuyChat @relation(fields: [groupBuyChatId], references: [id])
   sender         User         @relation(fields: [senderId], references: [id])
 }
@@ -202,7 +201,6 @@ model ShareChatMessage {
   content     String
   readCount   Int       @default(1)
   createdAt   DateTime  @default(now())
-  readCount   Int       @default(1)
   sender      User      @relation(fields: [senderId], references: [id])
   shareChat   ShareChat @relation(fields: [shareChatId], references: [id])
 }
@@ -213,7 +211,6 @@ model ShareChatParticipant {
   lastReadItemId Int?
   shareChatId    Int
   joinedAt       DateTime  @default(now())
-  lastReadItemId Int?
   shareChat      ShareChat @relation(fields: [shareChatId], references: [id])
   user           User      @relation(fields: [userId], references: [id])
 }
