@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { PrismaShareRepository } from "@/infra/repositories/prisma/PrismaShareRepository";
-import { GetShareListUsecase } from "@/application/usecases/share/GetShareListUsecase";
+import { PrismaGroupBuyRepository } from "@/infra/repositories/prisma/PrismGroupBuyRepository";
+import { GetGroupBuyListUsecase } from "@/application/usecases/groupbuy/GetGroupBuyListUsecase";
 
 export async function GET(req: Request) {
   try {
@@ -13,12 +13,12 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: "neighborhoodId 누락" }, { status: 400 });
     }
 
-    const shareRepo = new PrismaShareRepository();
-    const getShares = new GetShareListUsecase(shareRepo);
+    const groupBuyRepo = new PrismaGroupBuyRepository();
+    const getGroupBuy = new GetGroupBuyListUsecase(groupBuyRepo);
 
-    const shares = await getShares.execute({ page, itemsPerPage, neighborhoodId });
+    const groupbuy = await getGroupBuy.execute({ page, itemsPerPage, neighborhoodId });
 
-    return NextResponse.json({ message: "조회 성공", shares }, { status: 200 });
+    return NextResponse.json({ message: "조회 성공", groupbuy }, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: "서버 에러" }, { status: 500 });

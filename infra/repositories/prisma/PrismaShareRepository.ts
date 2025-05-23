@@ -22,7 +22,7 @@ export class PrismaShareRepository implements ShareRepository {
         locationNote: true,
         createdAt: true,
         images: {
-          where: { order: 1 },
+          where: { order: 0 },
           select: { url: true },
         },
       },

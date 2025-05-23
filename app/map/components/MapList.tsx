@@ -3,12 +3,12 @@
 import { useCallback } from "react";
 import { useInfiniteScroll } from "@/hooks/useInfinityScroll";
 import { useMapFilterStore } from "@/stores/useMapFilterStore";
-import { LoadingLottie } from "./LoadingLottie";
 import { ListCard } from "@/components/common/ListCard";
+import { LoadingLottie } from "./LoadingLottie";
+import { format } from "date-fns";
 
 interface MapListProps {
   selectedId: number | null;
-  filterType: string;
 }
 
 export function MapList({ selectedId }: MapListProps) {
@@ -24,16 +24,10 @@ export function MapList({ selectedId }: MapListProps) {
         neighborhoodId: String(selectedId),
       });
 
-      try {
+      const fetchShare = async () => {
         const res = await fetch(`/api/map/share?${params.toString()}`);
-
-        if (!res.ok) {
-          console.error("API 호출 실패", res.statusText);
-          return [];
-        }
-
+        if (!res.ok) return [];
         const data = await res.json();
-
         return data.shares.map((item: any) => ({
           id: item.id,
           src: item.thumbnailUrl || "",
@@ -43,12 +37,44 @@ export function MapList({ selectedId }: MapListProps) {
           timeLeftInHours: item.timeLeftInHours,
           type: "share",
         }));
+      };
+
+      const fetchGroupBuy = async () => {
+        const res = await fetch(`/api/map/groupbuy?${params.toString()}`);
+        if (!res.ok) return [];
+        const data = await res.json();
+        return data.groupbuy.map((item: any) => ({
+          id: item.id,
+          src: item.thumbnailUrl || "",
+          alt: item.title,
+          title: item.title,
+          location: item.locationNote,
+          meetingDate: item.meetingDate,
+          type: "groupbuy",
+          currentUser: item.currentUser,
+          maxUser: item.maxUser,
+        }));
+      };
+
+      try {
+        if (filterType === "share") {
+          return await fetchShare();
+        }
+        if (filterType === "groupbuy") {
+          return await fetchGroupBuy();
+        }
+        // all
+        const [shareItems, groupBuyItems] = await Promise.all([
+          fetchShare(),
+          fetchGroupBuy(),
+        ]);
+        return [...shareItems, ...groupBuyItems];
       } catch (error) {
-        console.error("API 호출 중 에러", error);
+        console.error("API 호출 에러", error);
         return [];
       }
     },
-    [selectedId],
+    [filterType, selectedId],
   );
 
   const { items, loading, ref } = useInfiniteScroll({
@@ -67,7 +93,11 @@ export function MapList({ selectedId }: MapListProps) {
           thumbnailAlt={item.alt}
           title={item.title}
           location={item.location}
-          timeLeft={String(item.timeLeftInHours)}
+          timeLeft={
+            item.type === "share"
+              ? String(item.timeLeftInHours)
+              : format(new Date(item.meetingDate), "yyyy-MM-dd")
+          }
           type={item.type}
           currentUser={item.currentUser}
           maxUser={item.maxUser}
