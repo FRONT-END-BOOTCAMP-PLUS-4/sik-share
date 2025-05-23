@@ -1,5 +1,5 @@
 "use client";
-import useSocket from "@/app/hooks/useSocket";
+import useSocket from "@/hooks/useSocket";
 
 export default function ChatLayout({
   children,
