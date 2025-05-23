@@ -42,7 +42,7 @@ export default function InputCalendar({
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-auto p-0" align="start">
+      <PopoverContent className="w-auto p-0" align="end">
         <Calendar selected={value} onSelect={onChange} />
       </PopoverContent>
     </Popover>
