@@ -11,6 +11,30 @@ interface MapListProps {
   selectedId: number | null;
 }
 
+interface ShareItem {
+  id: number;
+  src: string;
+  alt: string;
+  title: string;
+  location: string;
+  timeLeftInHours: number;
+  type: "share";
+}
+
+interface GroupBuyItem {
+  id: number;
+  src: string;
+  alt: string;
+  title: string;
+  location: string;
+  meetingDate: string;
+  type: "groupbuy";
+  currentUser: number;
+  maxUser: number;
+}
+
+type ListItem = ShareItem | GroupBuyItem;
+
 export function MapList({ selectedId }: MapListProps) {
   const { filterType } = useMapFilterStore();
 
@@ -77,7 +101,7 @@ export function MapList({ selectedId }: MapListProps) {
     [filterType, selectedId],
   );
 
-  const { items, loading, ref } = useInfiniteScroll({
+  const { items, loading, ref } = useInfiniteScroll<ListItem>({
     fetcher,
     itemsPerPage: 20,
     delay: 2000,
@@ -89,18 +113,25 @@ export function MapList({ selectedId }: MapListProps) {
       {items.map((item) => (
         <ListCard
           key={item.id}
-          thumbnailSrc={item.src}
+          thumbnailSrc={
+            item.src ||
+            "/assets/images/example/default-group-buys-thumbnail.png"
+          }
           thumbnailAlt={item.alt}
           title={item.title}
           location={item.location}
           timeLeft={
             item.type === "share"
               ? String(item.timeLeftInHours)
-              : format(new Date(item.meetingDate), "yyyy-MM-dd")
+              : format(
+                  new Date((item as GroupBuyItem).meetingDate),
+                  "yyyy-MM-dd",
+                )
           }
           type={item.type}
-          currentUser={item.currentUser}
-          maxUser={item.maxUser}
+          currentUser={(item as GroupBuyItem).currentUser}
+          maxUser={(item as GroupBuyItem).maxUser}
+          id={""}
         />
       ))}
       {loading && <LoadingLottie />}
