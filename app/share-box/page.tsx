@@ -3,7 +3,7 @@
 import { Canvas, useThree } from "@react-three/fiber";
 import { OrbitControls, useGLTF, Stage } from "@react-three/drei";
 import { Suspense, useEffect } from "react";
-import Egg from "./components/Egg";
+import Banana from "./components/Banana";
 import Tomato from "./components/Tomato";
 import Onion from "./components/Onion";
 import Carrot from "./components/Carrot";
@@ -33,7 +33,6 @@ function CameraInsideLook() {
   return null;
 }
 
-// 🧾 페이지
 export default function ShareBoxPage() {
   return (
     <div>
@@ -47,7 +46,7 @@ export default function ShareBoxPage() {
           <Suspense fallback={null}>
             <Stage intensity={0.6}>
               <KitchenBackground />
-              <Egg />
+              <Banana />
               <Tomato />
               <Onion />
               <Carrot />
