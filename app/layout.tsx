@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
-import Header from "@/components/common/Header";
-import Footer from "@/components/common/Footer";
 import "./globals.css";
 import RobotLottie from "@/components/lotties/RobotLottie";
 import { SessionProvider } from "@/components/common/SessionProvider";
 import Script from "next/script";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "함께 나누는 따뜻한 식생활",
@@ -49,10 +48,9 @@ export default function RootLayout({
             </section>
 
             <section className="relative safe-container w-full min-h-screen mx-auto  bg-white border-t border-x border-zinc-300 max-w-[var(--space-mobileMax)]">
-              <Header />
               <main className="md:w-full">{children}</main>
               <div className="h-auto" id="drawer-customPortal" />
-              <Footer />
+              <Toaster position="bottom-center" richColors />
             </section>
           </div>
 

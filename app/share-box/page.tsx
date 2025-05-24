@@ -33,7 +33,6 @@ function CameraInsideLook() {
   return null;
 }
 
-// 🧾 페이지
 export default function ShareBoxPage() {
   return (
     <div>

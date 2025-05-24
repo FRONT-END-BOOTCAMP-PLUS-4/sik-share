@@ -284,8 +284,8 @@ body {
 
 .button-lg {
   color: white;
-  font-size: var(--fs-20);
-  line-height: var(--space-20);
+  font-size: var(--fs-16);
+  line-height: var(--space-24);
 }
 .button-sm {
   color: var(--light-green-50);
@@ -368,4 +368,9 @@ body {
 .grade-F {
   background: #FFD455;
   background: radial-gradient(circle,rgba(255, 212, 85, 1) 24%, rgba(151, 219, 14, 1) 99%);
+}
+
+/* maplibre */
+.maplibregl-ctrl-bottom-right {
+  display: none !important;
 }

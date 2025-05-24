@@ -3,15 +3,21 @@ import MapSection from "@/app/components/MapSection";
 import CommunicateSection from "@/app/components/CommunicateSection";
 import ScrollSection from "@/app/components/ScrollSection";
 import EndSection from "./components/EndSection";
+import Header from "@/components/common/Header";
+import Footer from "@/components/common/Footer";
 
 export default function Home() {
   return (
-    <div className="flex flex-col gap-28">
-      <HeroSection />
-      <MapSection />
-      <CommunicateSection />
-      <ScrollSection />
-      <EndSection />
-    </div>
+    <>
+      <Header />
+      <div className="flex flex-col gap-28">
+        <HeroSection />
+        <MapSection />
+        <CommunicateSection />
+        <ScrollSection />
+        <EndSection />
+      </div>
+      <Footer />
+    </>
   );
 }

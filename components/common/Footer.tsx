@@ -8,10 +8,11 @@ import {
   MessageCircle,
   CircleUserRound,
 } from "lucide-react";
+import { useSession } from "next-auth/react";
 
 const navItems = [
   { key: "", Icon: House, label: "홈" },
-  { key: "share", Icon: Salad, label: "나눔함" },
+  { key: "share-box", Icon: Salad, label: "나눔함" },
   { key: "map", Icon: MapPinned, label: "동네지도" },
   { key: "chat", Icon: MessageCircle, label: "채팅" },
   { key: "users", Icon: CircleUserRound, label: "나의 식샤" },
@@ -20,13 +21,23 @@ const navItems = [
 export default function Footer() {
   const pathname = usePathname();
   const router = useRouter();
+  const { data: session, status } = useSession();
 
   const current = pathname?.split("/")[1] ?? navItems[0].key;
   const activeTab =
     navItems.find((item) => item.key === current)?.key ?? navItems[0].key;
 
   const handleClick = (key: string) => {
-    router.push(`/${key}`);
+    if (key === "users") {
+      if (status === "loading") return;
+      if (status === "unauthenticated") {
+        router.push("/login");
+        return;
+      }
+      router.push(`/users/${session?.user.publicId}`);
+    } else {
+      router.push(`/${key}`);
+    }
   };
 
   return (

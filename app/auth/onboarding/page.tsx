@@ -1,16 +1,14 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import KakaoMap from "./components/KakaoMap";
+import KakaoMap from "@/components/common/KakaoMap";
 import SubHeader from "@/components/common/SubHeader";
 import ButtonSection from "./components/ButtonSection";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useAuthStore } from "@/store/authStore";
 
 export default function OnboardingPage() {
-  const { data: session, status } = useSession();
-  const { setPublicId, setAccessToken } = useAuthStore();
+  const { data: session, status, update } = useSession();
   const router = useRouter();
   const [location, setLocation] = useState<{
     address: string;
@@ -26,6 +24,8 @@ export default function OnboardingPage() {
       alert("지도를 움직여 위치를 지정해주세요.");
       return;
     }
+
+    if (status === "loading") return;
 
     if (status !== "authenticated") {
       router.replace("/login");
@@ -45,11 +45,9 @@ export default function OnboardingPage() {
         }),
       });
 
-      const { user } = await res.json();
-      setAccessToken(session.accessToken);
-      setPublicId(user.publicId);
-
+      await update({ forceRefresh: true });
       router.replace("/map");
+      router.refresh();
     } catch (err) {
       console.error(err);
     }
