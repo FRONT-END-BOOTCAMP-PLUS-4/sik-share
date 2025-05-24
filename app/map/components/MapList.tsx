@@ -110,9 +110,9 @@ export function MapList({ selectedId }: MapListProps) {
 
   return (
     <div className="max-h-[55vh] min-h-[55vh] overflow-y-auto px-4 py-2">
-      {items.map((item) => (
+      {items.map((item, i) => (
         <ListCard
-          key={item.id}
+          key={`${item.id} - ${i}`}
           thumbnailSrc={
             item.src ||
             "/assets/images/example/default-group-buys-thumbnail.png"

@@ -5,11 +5,12 @@ export class PrismaClusterRepository implements ClusterRepository {
   private prisma = new PrismaClient();
 
   async getNeighborhoodClusters(): Promise<
-    { id: number; lat: number; lng: number; count: number }[]
+    { id: number; name: string; lat: number; lng: number; count: number }[]
   > {
     const neighborhoods = await this.prisma.neighborhood.findMany({
       select: {
         id: true,
+        name: true,
         lat: true,
         lng: true,
       },
@@ -24,8 +25,9 @@ export class PrismaClusterRepository implements ClusterRepository {
 
         return {
           id: n.id,
-          lat: n.lat!,
-          lng: n.lng!,
+          name: n.name,
+          lat: n.lat,
+          lng: n.lng,
           count: shareCount + groupBuyCount,
         };
       })

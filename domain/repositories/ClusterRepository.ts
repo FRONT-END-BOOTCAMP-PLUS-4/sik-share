@@ -1,5 +1,5 @@
 export interface ClusterRepository {
   getNeighborhoodClusters(): Promise<
-    { id: number; lat: number; lng: number; count: number }[]
+    { id: number; name: string; lat: number; lng: number; count: number }[]
   >;
 }
