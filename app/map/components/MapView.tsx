@@ -17,7 +17,6 @@ import { MapListSelect } from "./MapListSelect";
 export function MapView() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<number | null>(null);
-  const [filterType, setFilterType] = useState<string>("all");
   const [selectedCount, setSelectedCount] = useState<number>(0);
   const [selectedName, setSelectedName] = useState<string>("");
 
@@ -30,6 +29,7 @@ export function MapView() {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/map`);
         const { clusters } = await res.json();
 
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         const features = clusters.map((loc: any) => ({
           type: "Feature",
           geometry: {
@@ -73,14 +73,14 @@ export function MapView() {
                 ["linear"],
                 ["get", "count"],
                 1,
+                25,
                 10,
-                10,
-                20,
+                35,
                 50,
-                40,
+                45,
               ],
               "circle-color": "#22774eb3",
-              "circle-stroke-width": 5,
+              "circle-stroke-width": 3,
               "circle-stroke-color": "#22774e",
             },
           });
@@ -116,8 +116,6 @@ export function MapView() {
           const clusterCount = clusterFeature.properties.count;
           const clusterName = clusterFeature.properties.name;
 
-          console.log(clusterFeature);
-
           setSelectedId(Number(clusterId));
           setSelectedCount(Number(clusterCount));
           setSelectedName(clusterName);
@@ -150,10 +148,10 @@ export function MapView() {
               근처에 {selectedCount}명의 나누미가 있어요!
             </DrawerDescription>
             <div className="w-full mt-6">
-              <MapListSelect onChange={setFilterType} />
+              <MapListSelect />
             </div>
           </DrawerHeader>
-          <MapList selectedId={selectedId} filterType={filterType} />
+          <MapList selectedId={selectedId} />
         </DrawerContent>
       </Drawer>
     </>

@@ -46,7 +46,7 @@ export function ListCard({
       <div className="flex flex-col flex-1 gap-1">
         {/* 제목 + 뱃지 */}
         <div className="flex justify-between items-center">
-          <p className="body-md truncate max-w-[230px]">{title}</p>
+          <p className="body-md truncate max-w-[180px]">{title}</p>
           <Badge variant={type}>{resolvedBadgeLabel}</Badge>
         </div>
 

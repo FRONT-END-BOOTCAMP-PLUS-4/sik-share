@@ -52,6 +52,7 @@ export function MapList({ selectedId }: MapListProps) {
         const res = await fetch(`/api/map/share?${params.toString()}`);
         if (!res.ok) return [];
         const data = await res.json();
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         return data.shares.map((item: any) => ({
           id: item.id,
           src: item.thumbnailUrl || "",
@@ -67,6 +68,7 @@ export function MapList({ selectedId }: MapListProps) {
         const res = await fetch(`/api/map/groupbuy?${params.toString()}`);
         if (!res.ok) return [];
         const data = await res.json();
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         return data.groupbuy.map((item: any) => ({
           id: item.id,
           src: item.thumbnailUrl || "",
