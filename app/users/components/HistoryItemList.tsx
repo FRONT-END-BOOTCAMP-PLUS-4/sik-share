@@ -1,3 +1,4 @@
+import { LoadingLottie } from "@/app/map/components/LoadingLottie";
 import { ListCard, type ListCardProps } from "@/components/common/ListCard";
 import {
   ShareListCard,
@@ -20,19 +21,21 @@ export function HistoryItemList({
   hasMore,
 }: HistoryItemListProps) {
   return (
-    <ul>
-      {items.map((item, index) => (
-        <li key={item.id}>
-          {type === "share" ? (
-            <ShareListCard {...(item as ShareListCardProps)} />
-          ) : (
-            <ListCard {...(item as ListCardProps)} />
-          )}
-        </li>
-      ))}
+    <>
+      <ul>
+        {items.map((item, index) => (
+          <li key={item.id}>
+            {type === "share" ? (
+              <ShareListCard {...(item as ShareListCardProps)} />
+            ) : (
+              <ListCard {...(item as ListCardProps)} />
+            )}
+          </li>
+        ))}
+      </ul>
       <div ref={refTarget} className="h-4/5" />
-      {loading && <p>로딩중이야요</p>}
-      {!hasMore && <p>마지막 항목이에요</p>}
-    </ul>
+      {loading && <LoadingLottie />}
+      {/* {!hasMore && <p>마지막 항목이에요</p>} */}
+    </>
   );
 }

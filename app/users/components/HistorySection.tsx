@@ -10,14 +10,14 @@ import { useInfiniteScroll } from "@/hooks/useInfinityScroll";
 interface HistorySectionProps {
   type: "share" | "group" | "participations";
   title: string;
-  ownerId: string;
+  publicId: string;
   isMyAccount: boolean;
 }
 
 export function HistorySection({
   type,
   title,
-  ownerId,
+  publicId,
   isMyAccount,
 }: HistorySectionProps) {
   const [status, setStatus] = useState<"active" | "completed" | "expired">(
@@ -26,10 +26,10 @@ export function HistorySection({
 
   const fetcher = useCallback(
     async (page: number, itemsPerPage: number) => {
-      if (ownerId === null) return [];
-      console.log("🔥 fetcher 호출됨", { status, ownerId });
+      if (publicId === null) return [];
+      console.log("🔥 fetcher 호출됨", { status, publicId });
       const res = await fetch(
-        `/api/users/${type}s?ownerId=${ownerId}&status=${status}&page=${page}&itemsPerPage=${itemsPerPage}`,
+        `/api/users/${type}s?publicId=${publicId}&status=${status}&page=${page}&itemsPerPage=${itemsPerPage}`,
       );
 
       console.log("page-----res", res);
@@ -38,14 +38,14 @@ export function HistorySection({
       console.log("page-----", data);
       return data.shares;
     },
-    [ownerId, status, type],
+    [publicId, status, type],
   );
 
   const { items, loading, hasMore, ref } = useInfiniteScroll({
     fetcher,
     itemsPerPage: 20,
     delay: 300,
-    deps: [ownerId, status],
+    deps: [publicId, status],
   });
 
   const tabValues = [

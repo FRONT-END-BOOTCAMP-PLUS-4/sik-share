@@ -1,6 +1,7 @@
 import { GetUserSharesDto } from "@/application/usecases/user/dto/GetUserSharesDto";
 import { GetUserSharesUsecase } from "@/application/usecases/user/GetUserSharesUsecase";
 import { PrismaShareRepository } from "@/infra/repositories/prisma/PrismaShareRepository";
+import { PrismaUserRepository } from "@/infra/repositories/prisma/PrismaUserRepository";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
@@ -9,28 +10,24 @@ export async function GET(req: Request) {
     const url = new URL(req.url);
     const searchParams = url.searchParams;
 
-    const ownerId = searchParams.get("ownerId") ?? "";
+    const publicId = searchParams.get("publicId");
     const status = searchParams.get("status") as
       | "active"
       | "completed"
       | "expired";
-    // const page = Number.parseInt(searchParams.get("page") ?? "0", 10);
-    // const itemsPerPage = Number.parseInt(
-    //   searchParams.get("itemsPerPage") ?? "20",
-    //   10,
-    // );
     const page = Number(searchParams.get("page") || "0");
     const itemsPerPage = Number(searchParams.get("itemsPerPage") || "20");
 
     const getUserSharesDto = new GetUserSharesDto(
-      ownerId,
+      Number(publicId),
       status,
       page,
       itemsPerPage,
     );
 
+    const userRepo = new PrismaUserRepository();
     const shareRepo = new PrismaShareRepository();
-    const getUserSharesUsecase = new GetUserSharesUsecase(shareRepo);
+    const getUserSharesUsecase = new GetUserSharesUsecase(userRepo,shareRepo);
     const shares = await getUserSharesUsecase.execute(getUserSharesDto);
     if (!shares) {
       return NextResponse.json(

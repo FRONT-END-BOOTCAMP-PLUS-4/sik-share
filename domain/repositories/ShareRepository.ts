@@ -7,5 +7,5 @@ export interface FindByOwnerAndStatus {
 }
 
 export interface ShareRepository {
-  findByOwnerAndStatus(shares: FindByOwnerAndStatus): Promise<Share[] | null>;
+  findByOwnerAndStatus(shares: FindByOwnerAndStatus): Promise<(Partial<Share> & {thumbnailUrl: string | null})[]>;
 }

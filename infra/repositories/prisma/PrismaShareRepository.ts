@@ -15,21 +15,30 @@ export class PrismaShareRepository implements ShareRepository {
     where,
     offset,
     itemsPerPage,
-  }: FindByOwnerAndStatus): Promise<Share[] | null> {
+  }: FindByOwnerAndStatus): Promise<(Partial<Share> & {thumbnailUrl: string | null})[]> {
 
-    const result = await this.prisma.share.findMany({
+    const shares = await this.prisma.share.findMany({
       where,
       skip: offset,
       take: itemsPerPage,
       orderBy: { createdAt: "desc" },
-      include: {
-        shareItem: true,
-        neighborhood: true,
-        images: true,
+      select: {
+        id: true,
+        title: true,
+        locationNote: true,
+        createdAt: true,
+        meetingDate: true,
+        status: true,
+        images: {
+          where: { order: 0 },
+          select: { url: true },
+        },
       },
     });
 
-    console.log("result", result);
-    return result;
+    return shares.map((share) => ({
+      ...share,
+      thumbnailUrl: share.images[0].url ?? null,
+  }));
   }
 }
