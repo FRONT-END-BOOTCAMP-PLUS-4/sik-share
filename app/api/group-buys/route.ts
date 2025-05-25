@@ -5,6 +5,7 @@ import { PrismaGroupBuyImageRepository } from '@/infra/repositories/prisma/group
 import { PrismaGroupBuyRepository } from '@/infra/repositories/prisma/group-buy/PrismaGroupBuyRepository';
 import { PrismaNeighborhoodRepository } from '@/infra/repositories/prisma/PrismaNeighborhoodRepository';
 import { SupabaseImageStorageRepository } from '@/infra/repositories/supabase/SupabaseImageRepository';
+import { PrismaGroupBuyParticipantRepository } from '@/infra/repositories/prisma/group-buy/PrismaGroupBuyParticipantRepository';
 
 export async function POST(req: Request){
   try{
@@ -40,12 +41,14 @@ export async function POST(req: Request){
     const neighborhoodRepo = new PrismaNeighborhoodRepository();
     const groupBuyImageRepo = new PrismaGroupBuyImageRepository();
     const imageStorageRepo = new SupabaseImageStorageRepository();
+    const groupBuyParticipantRepo = new PrismaGroupBuyParticipantRepository();
 
     const createGroupBuyUsecase = new CreateGroupBuyUsecase(
       groupBuyRepo,
       neighborhoodRepo,
       groupBuyImageRepo,
-      imageStorageRepo
+      imageStorageRepo,
+      groupBuyParticipantRepo
     );
 
     await createGroupBuyUsecase.execute(createGroupBuyDto);

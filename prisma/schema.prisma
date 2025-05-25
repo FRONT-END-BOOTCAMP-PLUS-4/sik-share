@@ -33,11 +33,11 @@ model User {
   groupBuyChatMessages     GroupBuyChatMessage[]
   groupBuyChatParticipants GroupBuyChatParticipant[]
   groupBuyParticipants     GroupBuyParticipant[]
-  notifications            Notification[]
   receivedReviews          Review[]                  @relation("ReceivedReview")
   writtenReviews           Review[]                  @relation("WrittenReview")
   ownedShares              Share[]                   @relation("OwnedShare")
   receivedShares           Share[]                   @relation("ReceivedShare")
+  shareApplications        ShareApplication[]
   shareChatMessages        ShareChatMessage[]
   shareChatParticipants    ShareChatParticipant[]
   neighborhood             Neighborhood              @relation(fields: [neighborhoodId], references: [id])
@@ -102,6 +102,19 @@ model Share {
   shareItem       ShareItem    @relation(fields: [shareItemId], references: [id])
   chats           ShareChat[]
   images          ShareImage[]
+  applications    ShareApplication[]
+}
+
+model ShareApplication {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  shareId   Int
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id])
+  share     Share    @relation(fields: [shareId], references: [id])
+
+  @@unique([userId, shareId])
 }
 
 model ShareImage {
@@ -144,15 +157,6 @@ model ShortReviewOption {
   id      Int                 @id @default(autoincrement())
   content String
   reviews ReviewShortReview[]
-}
-
-model Notification {
-  id        Int      @id @default(autoincrement())
-  userId    String
-  isRead    Boolean  @default(false)
-  content   String
-  createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
 }
 
 model GroupBuyChat {
