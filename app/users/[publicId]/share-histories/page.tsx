@@ -11,6 +11,7 @@ export default function SharesHistory() {
       publicId={publicId as string}
       isMyAccount={isMyAccount}
       type="share"
+      tabType="status"
     />
   );
 }

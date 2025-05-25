@@ -11,6 +11,7 @@ export default function GroupBuyHistory() {
       publicId={publicId as string}
       isMyAccount={isMyAccount}
       type="groupbuy"
+      tabType="status"
     />
   );
 }

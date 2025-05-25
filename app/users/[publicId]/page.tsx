@@ -72,7 +72,7 @@ export default function userPage() {
             userName={user.nickName}
             profileImage={user.profileUrl}
           />
-          <UsersNav publicId={publicId as string} />
+          <UsersNav isMyAccount={isMyAccount} publicId={publicId as string} />
         </section>
       </div>
       <Footer />

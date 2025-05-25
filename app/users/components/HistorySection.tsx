@@ -8,7 +8,8 @@ import type { ShareListCardProps } from "@/app/users/components/ShareListCard";
 import { useInfiniteScroll } from "@/hooks/useInfinityScroll";
 
 interface HistorySectionProps {
-  type: "share" | "groupbuy" | "participations";
+  type: "share" | "groupbuy" | "participation";
+  tabType: "status" | "participation";
   title: string;
   publicId: string;
   isMyAccount: boolean;
@@ -19,46 +20,53 @@ export function HistorySection({
   title,
   publicId,
   isMyAccount,
+  tabType,
 }: HistorySectionProps) {
-  const [status, setStatus] = useState<"active" | "completed" | "expired">(
-    "active",
+  const [currentTab, setCurrentTab] = useState<string>(
+    tabType === "status" ? "active" : "share",
   );
 
   const fetcher = useCallback(
     async (page: number, itemsPerPage: number) => {
       if (publicId === null) return [];
       const res = await fetch(
-        `/api/users/${type}s?publicId=${publicId}&status=${status}&page=${page}&itemsPerPage=${itemsPerPage}`,
+        `/api/users/${type}s?publicId=${publicId}&status=${currentTab}&page=${page}&itemsPerPage=${itemsPerPage}`,
       );
       const data = await res.json();
 
       return data.result;
     },
-    [publicId, status, type],
+    [publicId, currentTab, type],
   );
 
   const { items, loading, hasMore, ref } = useInfiniteScroll({
     fetcher,
     itemsPerPage: 20,
     delay: 300,
-    deps: [publicId, status],
+    deps: [publicId, currentTab],
   });
 
-  const tabValues = [
-    { label: "진행 중", value: "active" },
-    { label: "종료", value: "completed" },
-    ...(isMyAccount ? [{ label: "기한 만료", value: "expired" }] : []),
-  ];
+  const tabValues =
+    tabType === "participation"
+      ? [
+          { label: "나눔", value: "share" },
+          { label: "같이 장보기", value: "groupbuy" },
+        ]
+      : [
+          { label: "진행 중", value: "active" },
+          { label: "종료", value: "completed" },
+          ...(isMyAccount ? [{ label: "기한 만료", value: "expired" }] : []),
+        ];
 
   return (
     <>
       <SubHeader titleText={title} />
       <section className="pt-4">
         <Tabs
-          value={status}
+          value={currentTab}
           className="w-full"
           onValueChange={(val) => {
-            setStatus(val as "active" | "completed" | "expired");
+            setCurrentTab(val);
           }}
         >
           <TabsList className="w-full">
@@ -75,7 +83,7 @@ export function HistorySection({
               <HistoryItemList
                 items={items as ListCardProps[] | ShareListCardProps[]}
                 type={
-                  type === "participations"
+                  type === "participation"
                     ? tab.value === "groupbuy"
                       ? "groupbuy"
                       : "share"

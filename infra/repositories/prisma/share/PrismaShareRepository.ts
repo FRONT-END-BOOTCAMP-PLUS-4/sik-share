@@ -13,7 +13,7 @@ export class PrismaShareRepository implements ShareRepository {
     });
   }
 
-  async findByOwnerAndStatus({
+  async findByUserIdAndStatus({
       where,
       offset,
       itemsPerPage,

@@ -4,6 +4,7 @@ import type { GroupBuyRepository } from "@/domain/repositories/group-buy/GroupBu
 import { getGroupBuyStatusCondition } from "./utils/getStatusCondition";
 import type { GetUserGroupBuysResultDto } from "./dto/GetUserGroupBuysResultDto";
 import type { UserRepository } from "@/domain/repositories/UserRepository";
+import type { StatusType } from "@/types/types";
 
 export class GetUserGroupBuysUsecase {
   constructor(
@@ -18,8 +19,8 @@ export class GetUserGroupBuysUsecase {
     const user = await this.userRepo.findByPublicId(publicId);
 
     const where = {
-      organizerId : user?.id,
-      ...getGroupBuyStatusCondition(status),
+      organizerId: user?.id,
+      ...getGroupBuyStatusCondition(status as StatusType),
     };
 
     const data = await this.groupbuyRepo.findByOwnerAndStatus({
@@ -39,7 +40,7 @@ export class GetUserGroupBuysUsecase {
       location: groupbuy.locationNote,
       meetingDate: format(groupbuy.meetingDate, "yyyy-MM-dd"),
       currentUsers: groupbuy.participants,
-      maxUsers: groupbuy.capacity,      
+      maxUsers: groupbuy.capacity,
     }));
   }
 }

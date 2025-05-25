@@ -1,9 +1,8 @@
 import type { Prisma } from "@/prisma/generated";
-
-type StatusType = "active" | "completed" | "expired";
+import type { StatusType } from "@/types/types";
 
 export function getShareStatusCondition(
-  type: StatusType
+  type: StatusType,
 ): Prisma.ShareWhereInput {
   const now = new Date();
   const deadline = new Date(now.getTime() - 24 * 60 * 60 * 1000);
@@ -19,7 +18,7 @@ export function getShareStatusCondition(
 }
 
 export function getGroupBuyStatusCondition(
-  type: StatusType
+  type: StatusType,
 ): Prisma.GroupBuyWhereInput {
   const now = new Date();
 

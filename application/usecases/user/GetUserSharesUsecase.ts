@@ -4,6 +4,7 @@ import type { ShareRepository } from "@/domain/repositories/share/ShareRepositor
 import { getShareStatusCondition } from "./utils/getStatusCondition";
 import type { GetUserSharesResultDto } from "./dto/GetUserSharesResultDto";
 import type { UserRepository } from "@/domain/repositories/UserRepository";
+import type { StatusType } from "@/types/types";
 
 export class GetUserSharesUsecase {
   constructor(
@@ -18,11 +19,11 @@ export class GetUserSharesUsecase {
     const user = await this.userRepo.findByPublicId(publicId);
 
     const where = {
-      ownerId : user?.id,
-      ...getShareStatusCondition(status),
+      ownerId: user?.id,
+      ...getShareStatusCondition(status as StatusType),
     };
 
-    const data = await this.shareRepo.findByOwnerAndStatus({
+    const data = await this.shareRepo.findByUserIdAndStatus({
       where,
       offset: page * itemsPerPage,
       itemsPerPage,
@@ -46,7 +47,7 @@ export class GetUserSharesUsecase {
         title: item.title,
         thumbnailSrc: item.thumbnailUrl ?? "",
         location: item.locationNote,
-      }
+      };
 
       if (item.status === 1 && item.meetingDate) {
         share.meetingDate = format(new Date(item.meetingDate), "yyyy-MM-dd");
@@ -57,7 +58,7 @@ export class GetUserSharesUsecase {
       } else if (item.status === 0 && !item.meetingDate && timeLeft > 0) {
         share.timeLeft = timeLeft;
       }
-    
+
       return share;
     });
 
