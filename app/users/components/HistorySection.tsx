@@ -4,11 +4,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { HistoryItemList } from "./HistoryItemList";
 import type { ListCardProps } from "@/components/common/ListCard";
 import SubHeader from "@/components/common/SubHeader";
-import type { ShareListCardProps } from "@/components/common/ShareListCard";
+import type { ShareListCardProps } from "@/app/users/components/ShareListCard";
 import { useInfiniteScroll } from "@/hooks/useInfinityScroll";
 
 interface HistorySectionProps {
-  type: "share" | "group" | "participations";
+  type: "share" | "groupbuy" | "participations";
   title: string;
   publicId: string;
   isMyAccount: boolean;
@@ -31,7 +31,8 @@ export function HistorySection({
         `/api/users/${type}s?publicId=${publicId}&status=${status}&page=${page}&itemsPerPage=${itemsPerPage}`,
       );
       const data = await res.json();
-      return data.shares;
+
+      return data.result;
     },
     [publicId, status, type],
   );
@@ -75,8 +76,8 @@ export function HistorySection({
                 items={items as ListCardProps[] | ShareListCardProps[]}
                 type={
                   type === "participations"
-                    ? tab.value === "group"
-                      ? "group"
+                    ? tab.value === "groupbuy"
+                      ? "groupbuy"
                       : "share"
                     : type
                 }

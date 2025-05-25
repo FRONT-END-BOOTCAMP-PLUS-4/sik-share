@@ -25,7 +25,10 @@ export class PrismaShareRepository implements ShareRepository {
         take: itemsPerPage,
         orderBy: { createdAt: "desc" },
         include: {
-          images: true,
+          images: {
+            where: { order: 0 },
+            take: 1,
+          },
         }
       });
   
@@ -33,5 +36,5 @@ export class PrismaShareRepository implements ShareRepository {
         ...share,
         thumbnailUrl: share.images?.[0]?.url ?? null,
     }));
-    }
+  }
 }

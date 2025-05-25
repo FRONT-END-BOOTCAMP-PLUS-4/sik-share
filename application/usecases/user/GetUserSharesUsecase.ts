@@ -1,7 +1,7 @@
 import { differenceInHours, format } from "date-fns";
 import type { GetUserHistoryDto } from "./dto/GetUserHistoryDto";
 import type { ShareRepository } from "@/domain/repositories/share/ShareRepository";
-import { getStatusCondition } from "./utils/getStatusCondition";
+import { getShareStatusCondition } from "./utils/getStatusCondition";
 import type { GetUserSharesResultDto } from "./dto/GetUserSharesResultDto";
 import type { UserRepository } from "@/domain/repositories/UserRepository";
 
@@ -19,7 +19,7 @@ export class GetUserSharesUsecase {
 
     const where = {
       ownerId : user?.id,
-      ...getStatusCondition(status, "share"),
+      ...getShareStatusCondition(status),
     };
 
     const data = await this.shareRepo.findByOwnerAndStatus({

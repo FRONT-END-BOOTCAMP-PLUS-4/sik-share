@@ -1,13 +1,16 @@
 import { LoadingLottie } from "@/app/map/components/LoadingLottie";
-import { ListCard, type ListCardProps } from "@/components/common/ListCard";
+import {
+  GroupBuyListCard,
+  type GroupBuyListCardProps,
+} from "@/app/users/components/GroupBuyListCard";
 import {
   ShareListCard,
   type ShareListCardProps,
-} from "@/components/common/ShareListCard";
+} from "@/app/users/components/ShareListCard";
 
 interface HistoryItemListProps {
-  items: ListCardProps[] | ShareListCardProps[];
-  type: "share" | "group";
+  items: GroupBuyListCardProps[] | ShareListCardProps[];
+  type: "share" | "groupbuy";
   refTarget: (node: HTMLElement | null) => void;
   loading?: boolean;
   hasMore?: boolean;
@@ -20,6 +23,7 @@ export function HistoryItemList({
   loading,
   hasMore,
 }: HistoryItemListProps) {
+  console.log("HistoryItemList loaded", items);
   return (
     <>
       {items.length === 0 && !loading && (
@@ -33,7 +37,7 @@ export function HistoryItemList({
             {type === "share" ? (
               <ShareListCard {...(item as ShareListCardProps)} />
             ) : (
-              <ListCard {...(item as ListCardProps)} />
+              <GroupBuyListCard {...(item as GroupBuyListCardProps)} />
             )}
           </li>
         ))}

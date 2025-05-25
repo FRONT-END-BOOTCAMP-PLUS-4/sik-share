@@ -49,7 +49,7 @@ export default function ParticipationsHistory() {
       title="나의 참여 내역"
       tabValues={[
         { label: "나눔", count: 2, value: "share" },
-        { label: "같이 장보기", count: 2, value: "group" },
+        { label: "같이 장보기", count: 2, value: "groupbuy" },
       ]}
       tabItems={{
         share: data,

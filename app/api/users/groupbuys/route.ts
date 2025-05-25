@@ -1,6 +1,6 @@
 import { GetUserHistoryDto } from "@/application/usecases/user/dto/GetUserHistoryDto";
-import { GetUserSharesUsecase } from "@/application/usecases/user/GetUserSharesUsecase";
-import { PrismaShareRepository } from "@/infra/repositories/prisma/share/PrismaShareRepository";
+import { GetUserGroupBuysUsecase } from "@/application/usecases/user/GetUserGroupBuysUsecase";
+import { PrismaGroupBuyRepository } from "@/infra/repositories/prisma/group-buy/PrismaGroupBuyRepository";
 import { PrismaUserRepository } from "@/infra/repositories/prisma/PrismaUserRepository";
 import { NextResponse } from "next/server";
 
@@ -25,13 +25,13 @@ export async function GET(req: Request) {
     );
 
     const userRepo = new PrismaUserRepository();
-    const shareRepo = new PrismaShareRepository();
-    const getUserSharesUsecase = new GetUserSharesUsecase(userRepo,shareRepo);
-    const result = await getUserSharesUsecase.execute(getUserHistoryDto);
+    const groupBuysRepo = new PrismaGroupBuyRepository();
+    const getUserGroupBuysUsecase = new GetUserGroupBuysUsecase(userRepo,groupBuysRepo);
+    const result = await getUserGroupBuysUsecase.execute(getUserHistoryDto);
 
     return NextResponse.json({ success: true, result }, { status: 200 });
   } catch (error) {
-    console.error("나눔 내역 조회 실패", error);
-    return NextResponse.json({ success: false, error: "나눔 내역 조회 실패" }, { status: 500 });
+    console.error("같이 장보기 내역 조회 실패", error);
+    return NextResponse.json({ success: false, error: "같이 장보기 내역 조회 실패" }, { status: 500 });
   }
 }
