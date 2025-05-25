@@ -1,4 +1,4 @@
-export class GetUserSharesDto{
+export class GetUserHistoryDto{
   constructor( 
     public publicId: number, 
     public status: "active" | "completed" | "expired",

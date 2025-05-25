@@ -1,4 +1,4 @@
-import type { ShareRepository } from "@/domain/repositories/share/ShareRepository";
+import type { FindByOwnerAndStatus, ShareRepository } from "@/domain/repositories/share/ShareRepository";
 import { PrismaClient, type Share } from "@/prisma/generated";
 
 export class PrismaShareRepository implements ShareRepository {
@@ -12,4 +12,26 @@ export class PrismaShareRepository implements ShareRepository {
       data: share,
     });
   }
+
+  async findByOwnerAndStatus({
+      where,
+      offset,
+      itemsPerPage,
+    }: FindByOwnerAndStatus): Promise<(Share & {thumbnailUrl: string | null})[]> {
+  
+      const shares = await this.prisma.share.findMany({
+        where,
+        skip: offset,
+        take: itemsPerPage,
+        orderBy: { createdAt: "desc" },
+        include: {
+          images: true,
+        }
+      });
+  
+      return shares.map((share) => ({
+        ...share,
+        thumbnailUrl: share.images?.[0]?.url ?? null,
+    }));
+    }
 }

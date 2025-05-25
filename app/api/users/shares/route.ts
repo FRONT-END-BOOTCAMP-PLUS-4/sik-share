@@ -1,6 +1,6 @@
-import { GetUserSharesDto } from "@/application/usecases/user/dto/GetUserSharesDto";
+import { GetUserHistoryDto } from "@/application/usecases/user/dto/GetUserHistoryDto";
 import { GetUserSharesUsecase } from "@/application/usecases/user/GetUserSharesUsecase";
-import { PrismaShareRepository } from "@/infra/repositories/prisma/PrismaShareRepository";
+import { PrismaShareRepository } from "@/infra/repositories/prisma/share/PrismaShareRepository";
 import { PrismaUserRepository } from "@/infra/repositories/prisma/PrismaUserRepository";
 import { NextResponse } from "next/server";
 
@@ -17,7 +17,7 @@ export async function GET(req: Request) {
     const page = Number(searchParams.get("page") || "0");
     const itemsPerPage = Number(searchParams.get("itemsPerPage") || "20");
 
-    const getUserSharesDto = new GetUserSharesDto(
+    const getUserHistoryDto = new GetUserHistoryDto(
       Number(publicId),
       status,
       page,
@@ -27,7 +27,7 @@ export async function GET(req: Request) {
     const userRepo = new PrismaUserRepository();
     const shareRepo = new PrismaShareRepository();
     const getUserSharesUsecase = new GetUserSharesUsecase(userRepo,shareRepo);
-    const shares = await getUserSharesUsecase.execute(getUserSharesDto);
+    const shares = await getUserSharesUsecase.execute(getUserHistoryDto);
 
     return NextResponse.json({ success: true, shares }, { status: 200 });
   } catch (error) {

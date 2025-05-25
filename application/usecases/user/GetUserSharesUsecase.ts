@@ -1,6 +1,6 @@
 import { differenceInHours, format } from "date-fns";
-import type { GetUserSharesDto } from "./dto/GetUserSharesDto";
-import type { ShareRepository } from "@/domain/repositories/ShareRepository";
+import type { GetUserHistoryDto } from "./dto/GetUserHistoryDto";
+import type { ShareRepository } from "@/domain/repositories/share/ShareRepository";
 import { getStatusCondition } from "./utils/getStatusCondition";
 import type { GetUserSharesResultDto } from "./dto/GetUserSharesResultDto";
 import type { UserRepository } from "@/domain/repositories/UserRepository";
@@ -12,7 +12,7 @@ export class GetUserSharesUsecase {
   ) {}
 
   async execute(
-    sharesByStatus: GetUserSharesDto,
+    sharesByStatus: GetUserHistoryDto,
   ): Promise<GetUserSharesResultDto[] | null> {
     const { publicId, status, page, itemsPerPage } = sharesByStatus;
     const user = await this.userRepo.findByPublicId(publicId);
@@ -42,10 +42,10 @@ export class GetUserSharesUsecase {
       );
 
       const share: GetUserSharesResultDto = {
-        id: item.id!,
-        title: item.title!,
+        id: item.id,
+        title: item.title,
         thumbnailSrc: item.thumbnailUrl ?? "",
-        location: item.locationNote!,
+        location: item.locationNote,
       }
 
       if (item.status === 1 && item.meetingDate) {
