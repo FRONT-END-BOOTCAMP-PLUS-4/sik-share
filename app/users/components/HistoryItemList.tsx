@@ -22,6 +22,11 @@ export function HistoryItemList({
 }: HistoryItemListProps) {
   return (
     <>
+      {items.length === 0 && !loading && (
+        <p className="pt-8 text-center text-gray-400">
+          {type === "share" ? "나눔" : "같이 장보기"} 내역이 없어요.
+        </p>
+      )}
       <ul>
         {items.map((item, index) => (
           <li key={item.id}>
@@ -35,7 +40,11 @@ export function HistoryItemList({
       </ul>
       <div ref={refTarget} className="h-4/5" />
       {loading && <LoadingLottie />}
-      {/* {!hasMore && <p>마지막 항목이에요</p>} */}
+      {items.length !== 0 && !hasMore && (
+        <p className="pt-8 text-center text-gray-400">
+          모든 항목을 불러왔어요.
+        </p>
+      )}
     </>
   );
 }

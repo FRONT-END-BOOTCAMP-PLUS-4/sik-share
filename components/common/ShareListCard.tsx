@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ClockFading, MapPin } from "lucide-react";
+import { Clock, ClockFading, MapPin } from "lucide-react";
 import {
   Badge,
   type VariantProps as BadgeVariantProps,
@@ -9,10 +9,11 @@ export interface ShareListCardProps {
   id: string;
   thumbnailSrc: string;
   title: string;
+  location: string;
   badgeVariant?: BadgeVariantProps<typeof Badge>["variant"];
   badgeLabel?: string;
   timeLeft?: string;
-  location: string;
+  meetingDate?: string;
 }
 
 export function ShareListCard({
@@ -21,6 +22,7 @@ export function ShareListCard({
   badgeVariant,
   badgeLabel,
   timeLeft,
+  meetingDate,
   location,
 }: ShareListCardProps) {
   return (
@@ -49,6 +51,12 @@ export function ShareListCard({
                 <span className="text-(--warning)">{timeLeft}</span>
                 시간 남음
               </p>
+            </div>
+          )}
+          {meetingDate && (
+            <div className="flex flex-1/2 items-center gap-1">
+              <Clock size={16} strokeWidth={1} />
+              <p className="caption">{meetingDate}</p>
             </div>
           )}
           <div className="flex items-center gap-1">

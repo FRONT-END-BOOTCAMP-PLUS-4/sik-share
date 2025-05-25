@@ -33,11 +33,6 @@ export function useInfiniteScroll<T>({
         if (delay > 0) await new Promise((res) => setTimeout(res, delay));
 
         const newItems = await fetcher(page, itemsPerPage);
-        if (!Array.isArray(newItems)) {
-          console.error("❌ fetcher가 배열을 반환하지 않음:", newItems);
-          setHasMore(false);
-          return;
-        }
 
         if (newItems.length === 0) {
           setHasMore(false);

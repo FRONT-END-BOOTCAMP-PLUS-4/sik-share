@@ -1,4 +1,4 @@
-import { differenceInHours } from "date-fns";
+import { differenceInHours, format } from "date-fns";
 import type { GetUserSharesDto } from "./dto/GetUserSharesDto";
 import type { ShareRepository } from "@/domain/repositories/ShareRepository";
 import { getStatusCondition } from "./utils/getStatusCondition";
@@ -22,18 +22,14 @@ export class GetUserSharesUsecase {
       ...getStatusCondition(status, "share"),
     };
 
-    console.log("where", where);
-
     const data = await this.shareRepo.findByOwnerAndStatus({
       where,
       offset: page * itemsPerPage,
       itemsPerPage,
     });
 
-    console.log("data --- ", data);
-
     if (!data || data.length === 0) {
-      return null;
+      return [];
     }
 
     const shares = data.map((item) => {
@@ -45,27 +41,26 @@ export class GetUserSharesUsecase {
         0,
       );
 
-      return {
+      const share: GetUserSharesResultDto = {
         id: item.id!,
         title: item.title!,
         thumbnailSrc: item.thumbnailUrl ?? "",
         location: item.locationNote!,
-        ...(item.status === 1 &&
-          item.meetingDate && {
-            meetingDate: item.meetingDate,
-          }),
-        ...(item.status === 0 &&
-          item.meetingDate && {
-            meetingDate: item.meetingDate,
-            badgeVariant: "share",
-            badgeLabel: "예약",
-          }),
-        ...(item.status === 0 && !item.meetingDate && timeLeft > 0 && {
-          timeLeft: timeLeft,
-        }),
-      };
+      }
+
+      if (item.status === 1 && item.meetingDate) {
+        share.meetingDate = format(new Date(item.meetingDate), "yyyy-MM-dd");
+      } else if (item.status === 0 && item.meetingDate) {
+        share.meetingDate = format(new Date(item.meetingDate), "yyyy-MM-dd");
+        share.badgeVariant = "share";
+        share.badgeLabel = "예약";
+      } else if (item.status === 0 && !item.meetingDate && timeLeft > 0) {
+        share.timeLeft = timeLeft;
+      }
+    
+      return share;
     });
 
-    return shares.length > 0 ? shares : null;
+    return shares;
   }
 }

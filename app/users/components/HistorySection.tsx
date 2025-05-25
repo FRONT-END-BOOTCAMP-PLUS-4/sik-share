@@ -27,15 +27,10 @@ export function HistorySection({
   const fetcher = useCallback(
     async (page: number, itemsPerPage: number) => {
       if (publicId === null) return [];
-      console.log("🔥 fetcher 호출됨", { status, publicId });
       const res = await fetch(
         `/api/users/${type}s?publicId=${publicId}&status=${status}&page=${page}&itemsPerPage=${itemsPerPage}`,
       );
-
-      console.log("page-----res", res);
       const data = await res.json();
-
-      console.log("page-----", data);
       return data.shares;
     },
     [publicId, status, type],
@@ -62,7 +57,6 @@ export function HistorySection({
           value={status}
           className="w-full"
           onValueChange={(val) => {
-            console.log("onchangeval", val);
             setStatus(val as "active" | "completed" | "expired");
           }}
         >
