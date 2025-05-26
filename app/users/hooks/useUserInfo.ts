@@ -7,12 +7,9 @@ export function useUserInfo() {
   const publicId = params.publicId;
   const { data: session, status } = useSession();
   const myPublicId = session?.user.publicId;
-  const id = session?.user.id;
-
-  console.log(publicId, myPublicId, id);
 
   const isMyAccount =
     status === "authenticated" && String(myPublicId) === publicId;
 
-  return {publicId, isMyAccount, id};
+  return {publicId, isMyAccount};
 }

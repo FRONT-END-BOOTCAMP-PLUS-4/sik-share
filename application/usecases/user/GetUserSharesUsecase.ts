@@ -23,7 +23,7 @@ export class GetUserSharesUsecase {
       ...getShareStatusCondition(status as StatusType),
     };
 
-    const data = await this.shareRepo.findByUserIdAndStatus({
+    const data = await this.shareRepo.getUserShares({
       where,
       offset: page * itemsPerPage,
       itemsPerPage,

@@ -8,7 +8,7 @@ import type { ShareListCardProps } from "@/app/users/components/ShareListCard";
 import { useInfiniteScroll } from "@/hooks/useInfinityScroll";
 
 interface HistorySectionProps {
-  type: "share" | "groupbuy" | "participation";
+  type: "share" | "group-buy" | "participation";
   tabType: "status" | "participation";
   title: string;
   publicId: string;
@@ -50,7 +50,7 @@ export function HistorySection({
     tabType === "participation"
       ? [
           { label: "나눔", value: "share" },
-          { label: "같이 장보기", value: "groupbuy" },
+          { label: "같이 장보기", value: "group-buy" },
         ]
       : [
           { label: "진행 중", value: "active" },
@@ -84,8 +84,8 @@ export function HistorySection({
                 items={items as ListCardProps[] | ShareListCardProps[]}
                 type={
                   type === "participation"
-                    ? tab.value === "groupbuy"
-                      ? "groupbuy"
+                    ? tab.value === "group-buy"
+                      ? "group-buy"
                       : "share"
                     : type
                 }

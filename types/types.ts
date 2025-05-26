@@ -6,4 +6,4 @@ export type LocationData = {
   locationAddress: string;
 };
 export type StatusType = "active" | "completed" | "expired";
-export type participantsType = "share" | "groupbuy";
+export type participantsType = "share" | "group-buy";

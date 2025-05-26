@@ -13,7 +13,7 @@ export async function GET(req: Request) {
     const publicId = searchParams.get("publicId");
     const status = searchParams.get("status") as
       | "share"
-      | "groupbuy";
+      | "group-buy";
     const page = Number(searchParams.get("page") || "0");
     const itemsPerPage = Number(searchParams.get("itemsPerPage") || "20");
 
@@ -32,7 +32,7 @@ export async function GET(req: Request) {
 
     return NextResponse.json({ success: true, result }, { status: 200 });
   } catch (error) {
-    console.error("같이 장보기 내역 조회 실패", error);
-    return NextResponse.json({ success: false, error: "같이 장보기 내역 조회 실패" }, { status: 500 });
+    console.error("참여 내역 조회 실패", error);
+    return NextResponse.json({ success: false, error: "참여 내역 조회 실패" }, { status: 500 });
   }
 }

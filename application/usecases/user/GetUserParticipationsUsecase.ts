@@ -26,7 +26,7 @@ export class GetUserParticipationsUsecase {
         recipientId: user?.id,
       };
   
-      const data = await this.shareRepo.findByUserIdAndStatus({
+      const data = await this.shareRepo.getUserShares({
         where,
         offset: page * itemsPerPage,
         itemsPerPage,
@@ -52,7 +52,7 @@ export class GetUserParticipationsUsecase {
         }
       };
   
-      const data = await this.groupbuyRepo.findByOwnerAndStatus({
+      const data = await this.groupbuyRepo.getUserGroupbuys({
         where,
         offset: page * itemsPerPage,
         itemsPerPage,

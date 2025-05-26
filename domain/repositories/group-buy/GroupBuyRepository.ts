@@ -1,6 +1,6 @@
 import type { Prisma, GroupBuy } from "@/prisma/generated";
 
-export interface FindByOwnerAndStatus {
+export interface GetUserGroupbuys {
     where: Prisma.GroupBuyWhereInput,
     offset: number,
     itemsPerPage: number,
@@ -8,5 +8,5 @@ export interface FindByOwnerAndStatus {
 
 export interface GroupBuyRepository {
   save(groupBuy: Partial<GroupBuy>): Promise<GroupBuy>;
-  findByOwnerAndStatus(shares: FindByOwnerAndStatus): Promise<(GroupBuy & {participants:number, thumbnailUrl: string})[]>;
+  getUserGroupbuys(shares: GetUserGroupbuys): Promise<(GroupBuy & {participants:number, thumbnailUrl: string})[]>;
 }

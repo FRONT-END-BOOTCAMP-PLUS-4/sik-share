@@ -23,7 +23,7 @@ export class GetUserGroupBuysUsecase {
       ...getGroupBuyStatusCondition(status as StatusType),
     };
 
-    const data = await this.groupbuyRepo.findByOwnerAndStatus({
+    const data = await this.groupbuyRepo.getUserGroupbuys({
       where,
       offset: page * itemsPerPage,
       itemsPerPage,

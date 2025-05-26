@@ -1,4 +1,4 @@
-import type { FindByOwnerAndStatus, GroupBuyRepository } from "@/domain/repositories/group-buy/GroupBuyRepository";
+import type { GetUserGroupbuys, GroupBuyRepository } from "@/domain/repositories/group-buy/GroupBuyRepository";
 import { type GroupBuy, PrismaClient } from "@/prisma/generated";
 
 export class PrismaGroupBuyRepository implements GroupBuyRepository {
@@ -14,11 +14,11 @@ export class PrismaGroupBuyRepository implements GroupBuyRepository {
     })
   }
 
-  async findByOwnerAndStatus({
+  async getUserGroupbuys({
     where,
     offset,
     itemsPerPage,
-  }: FindByOwnerAndStatus): Promise<(GroupBuy & {participants:number, thumbnailUrl: string})[]> {
+  }: GetUserGroupbuys): Promise<(GroupBuy & {participants:number, thumbnailUrl: string})[]> {
     const groupBuys = await this.prisma.groupBuy.findMany({
       where,
       skip: offset,

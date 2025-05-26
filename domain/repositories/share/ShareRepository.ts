@@ -1,6 +1,6 @@
 import type { Prisma, Share } from "@/prisma/generated";
 
-export interface FindByOwnerAndStatus {
+export interface GetUserShares {
     where: Prisma.ShareWhereInput,
     offset: number,
     itemsPerPage: number,
@@ -8,5 +8,5 @@ export interface FindByOwnerAndStatus {
 
 export interface ShareRepository {
   save(share: Partial<Share>): Promise<Share>;
-  findByUserIdAndStatus(shares: FindByOwnerAndStatus): Promise<(Share & {thumbnailUrl: string | null})[]>;
+  getUserShares(shares: GetUserShares): Promise<(Share & {thumbnailUrl: string | null})[]>;
 }

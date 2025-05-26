@@ -10,7 +10,7 @@ import {
 
 interface HistoryItemListProps {
   items: GroupBuyListCardProps[] | ShareListCardProps[];
-  type: "share" | "groupbuy";
+  type: "share" | "group-buy";
   refTarget: (node: HTMLElement | null) => void;
   loading?: boolean;
   hasMore?: boolean;
@@ -23,7 +23,6 @@ export function HistoryItemList({
   loading,
   hasMore,
 }: HistoryItemListProps) {
-  console.log("HistoryItemList loaded", items);
   return (
     <>
       {items.length === 0 && !loading && (
