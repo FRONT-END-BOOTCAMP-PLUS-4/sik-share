@@ -27,7 +27,7 @@ model User {
   profileUrl               String?
   address                  String
   createdAt                DateTime                  @default(now())
-  shareScore               Int                       @default(0)
+  shareScore               Float                       @default(0)
   publicId                 Int                       @unique @default(autoincrement())
   grouBuys                 GroupBuy[]
   groupBuyChatMessages     GroupBuyChatMessage[]
