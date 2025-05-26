@@ -37,31 +37,31 @@ model User {
   writtenReviews           Review[]                  @relation("WrittenReview")
   ownedShares              Share[]                   @relation("OwnedShare")
   receivedShares           Share[]                   @relation("ReceivedShare")
-  shareApplications        ShareApplication[]
+  ShareApplication         ShareApplication[]
   shareChatMessages        ShareChatMessage[]
   shareChatParticipants    ShareChatParticipant[]
   neighborhood             Neighborhood              @relation(fields: [neighborhoodId], references: [id])
 }
 
 model GroupBuy {
-  id              Int                   @id @default(autoincrement())
-  organizerId     String
-  neighborhoodId  Int
-  title           String
-  capacity        Int
-  desiredItem     String
-  meetingDate     DateTime
-  createdAt       DateTime              @default(now())
-  lat             Float
-  lng             Float
-  locationNote    String
-  description     String
-  status          Int
-  neighborhood    Neighborhood          @relation(fields: [neighborhoodId], references: [id])
-  organizer       User                  @relation(fields: [organizerId], references: [id])
-  chats           GroupBuyChat[]
-  images          GroupBuyImage[]
-  participants    GroupBuyParticipant[]
+  id             Int                   @id @default(autoincrement())
+  organizerId    String
+  neighborhoodId Int
+  title          String
+  capacity       Int
+  desiredItem    String
+  meetingDate    DateTime
+  createdAt      DateTime              @default(now())
+  locationNote   String
+  description    String
+  status         Int
+  lat            Float
+  lng            Float
+  neighborhood   Neighborhood          @relation(fields: [neighborhoodId], references: [id])
+  organizer      User                  @relation(fields: [organizerId], references: [id])
+  chats          GroupBuyChat[]
+  images         GroupBuyImage[]
+  participants   GroupBuyParticipant[]
 }
 
 model GroupBuyParticipant {
@@ -82,39 +82,27 @@ model GroupBuyImage {
 }
 
 model Share {
-  id              Int          @id @default(autoincrement())
-  shareItemId     Int
-  neighborhoodId  Int
-  ownerId         String
-  recipientId     String?
-  title           String
-  createdAt       DateTime     @default(now())
-  meetingDate     DateTime?
-  lat             Float
-  lng             Float
-  locationNote    String
-  description     String
-  status          Int
-  reviews         Review[]
-  neighborhood    Neighborhood @relation(fields: [neighborhoodId], references: [id])
-  owner           User         @relation("OwnedShare", fields: [ownerId], references: [id])
-  recipient       User?        @relation("ReceivedShare", fields: [recipientId], references: [id])
-  shareItem       ShareItem    @relation(fields: [shareItemId], references: [id])
-  chats           ShareChat[]
-  images          ShareImage[]
-  applications    ShareApplication[]
-}
-
-model ShareApplication {
-  id        Int      @id @default(autoincrement())
-  userId    String
-  shareId   Int
-  createdAt DateTime @default(now())
-
-  user      User     @relation(fields: [userId], references: [id])
-  share     Share    @relation(fields: [shareId], references: [id])
-
-  @@unique([userId, shareId])
+  id               Int                @id @default(autoincrement())
+  shareItemId      Int
+  neighborhoodId   Int
+  ownerId          String
+  recipientId      String?
+  title            String
+  createdAt        DateTime           @default(now())
+  meetingDate      DateTime?
+  lat              Float
+  lng              Float
+  locationNote     String
+  description      String
+  status           Int
+  reviews          Review[]
+  neighborhood     Neighborhood       @relation(fields: [neighborhoodId], references: [id])
+  owner            User               @relation("OwnedShare", fields: [ownerId], references: [id])
+  recipient        User?              @relation("ReceivedShare", fields: [recipientId], references: [id])
+  shareItem        ShareItem          @relation(fields: [shareItemId], references: [id])
+  ShareApplication ShareApplication[]
+  chats            ShareChat[]
+  images           ShareImage[]
 }
 
 model ShareImage {
@@ -217,4 +205,15 @@ model ShareChatParticipant {
   joinedAt       DateTime  @default(now())
   shareChat      ShareChat @relation(fields: [shareChatId], references: [id])
   user           User      @relation(fields: [userId], references: [id])
+}
+
+model ShareApplication {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  shareId   Int
+  createdAt DateTime @default(now())
+  Share     Share    @relation(fields: [shareId], references: [id])
+  User      User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, shareId])
 }

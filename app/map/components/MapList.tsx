@@ -1,15 +1,39 @@
 "use client";
 
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { useInfiniteScroll } from "@/hooks/useInfinityScroll";
 import { useMapFilterStore } from "@/stores/useMapFilterStore";
-import { LoadingLottie } from "./LoadingLottie";
 import { ListCard } from "@/components/common/ListCard";
+import { LoadingLottie } from "./LoadingLottie";
+import { format } from "date-fns";
 
 interface MapListProps {
   selectedId: number | null;
-  filterType: string;
 }
+
+interface ShareItem {
+  id: number;
+  src: string;
+  alt: string;
+  title: string;
+  location: string;
+  timeLeftInHours: number;
+  type: "share";
+}
+
+interface GroupBuyItem {
+  id: number;
+  src: string;
+  alt: string;
+  title: string;
+  location: string;
+  meetingDate: string;
+  type: "groupbuy";
+  currentUser: number;
+  maxUser: number;
+}
+
+type ListItem = ShareItem | GroupBuyItem;
 
 export function MapList({ selectedId }: MapListProps) {
   const { filterType } = useMapFilterStore();
@@ -18,16 +42,68 @@ export function MapList({ selectedId }: MapListProps) {
     async (page: number, itemsPerPage: number) => {
       if (selectedId === null) return [];
 
-      return Array.from(
-        { length: itemsPerPage },
-        (_, i) =>
-          `ID ${selectedId} - ${filterType} 항목 ${page * itemsPerPage + i + 1}`,
-      );
+      const params = new URLSearchParams({
+        page: String(page),
+        itemsPerPage: String(itemsPerPage),
+        neighborhoodId: String(selectedId),
+      });
+
+      const fetchShare = async () => {
+        const res = await fetch(`/api/map/share?${params.toString()}`);
+        if (!res.ok) return [];
+        const data = await res.json();
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+        return data.shares.map((item: any) => ({
+          id: item.id,
+          src: item.thumbnailUrl || "",
+          alt: item.title,
+          title: item.title,
+          location: item.locationNote,
+          timeLeftInHours: item.timeLeftInHours,
+          type: "share",
+        }));
+      };
+
+      const fetchGroupBuy = async () => {
+        const res = await fetch(`/api/map/group-buy?${params.toString()}`);
+        if (!res.ok) return [];
+        const data = await res.json();
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+        return data.groupbuy.map((item: any) => ({
+          id: item.id,
+          src: item.thumbnailUrl || "",
+          alt: item.title,
+          title: item.title,
+          location: item.locationNote,
+          meetingDate: item.meetingDate,
+          type: "groupbuy",
+          currentUser: item.currentUser,
+          maxUser: item.maxUser,
+        }));
+      };
+
+      try {
+        if (filterType === "share") {
+          return await fetchShare();
+        }
+        if (filterType === "groupbuy") {
+          return await fetchGroupBuy();
+        }
+        // all
+        const [shareItems, groupBuyItems] = await Promise.all([
+          fetchShare(),
+          fetchGroupBuy(),
+        ]);
+        return [...shareItems, ...groupBuyItems];
+      } catch (error) {
+        console.error("API 호출 에러", error);
+        return [];
+      }
     },
-    [selectedId, filterType],
+    [filterType, selectedId],
   );
 
-  const { items, loading, ref } = useInfiniteScroll({
+  const { items, loading, ref } = useInfiniteScroll<ListItem>({
     fetcher,
     itemsPerPage: 20,
     delay: 2000,
@@ -35,14 +111,29 @@ export function MapList({ selectedId }: MapListProps) {
   });
 
   return (
-    <div className="max-h-[55vh] min-h-[55vh] overflow-y-auto px-4 py-2">
-      {items.map((item) => (
+    <div className="max-h-[55vh] min-h-[55vh] overflow-y-auto border-t-1">
+      {items.map((item, i) => (
         <ListCard
-          key={item}
-          thumbnailSrc={item.src}
+          key={`${item.id} - ${i}`}
+          thumbnailSrc={
+            item.src ||
+            "/assets/images/example/default-group-buys-thumbnail.png"
+          }
           thumbnailAlt={item.alt}
-          title={"제목입니당"}
-          location="관악청년청"
+          title={item.title}
+          location={item.location}
+          timeLeft={
+            item.type === "share"
+              ? String(item.timeLeftInHours)
+              : format(
+                  new Date((item as GroupBuyItem).meetingDate),
+                  "yyyy-MM-dd",
+                )
+          }
+          type={item.type}
+          currentUser={(item as GroupBuyItem).currentUser}
+          maxUser={(item as GroupBuyItem).maxUser}
+          id={""}
         />
       ))}
       {loading && <LoadingLottie />}

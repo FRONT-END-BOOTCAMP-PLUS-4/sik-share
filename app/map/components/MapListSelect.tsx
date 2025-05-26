@@ -9,9 +9,7 @@ import {
 } from "@/components/ui/select";
 import { useMapFilterStore } from "@/stores/useMapFilterStore";
 
-export function MapListSelect({
-  onChange,
-}: { onChange: (value: string) => void }) {
+export function MapListSelect() {
   const { filterType, setFilterType } = useMapFilterStore();
 
   return (

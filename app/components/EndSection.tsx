@@ -3,7 +3,7 @@
 import { Handshake, ShoppingCart } from "lucide-react";
 import { motion } from "motion/react";
 import { useState } from "react";
-import { useCountUp } from "@/app/hooks/useCountUp";
+import { useCountUp } from "@/hooks/useCountUp";
 
 const stats = [
   { id: 1, label: "나눔 완료", value: 1000 },

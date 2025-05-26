@@ -23,7 +23,7 @@ const badgeVariants = cva(
         done: "badge-bold bg-zinc-400 rounded-[6px]",
         location: "badge-medium bg-zinc-600 rounded-[15px]",
         share: "badge-medium bg-[var(--secondary)] rounded-[15px]",
-        cart: "badge-medium bg-[var(--orange)] rounded-[15px]",
+        groupbuy: "badge-medium bg-[var(--orange)] rounded-[15px]",
         locate: "badge-bold bg-[var(--white-o5)] text-zinc-900 rounded-[15px]",
       },
     },

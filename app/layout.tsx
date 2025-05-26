@@ -20,7 +20,7 @@ export default function RootLayout({
       <body suppressHydrationWarning>
         <SessionProvider>
           <div className="flex items-center">
-            <section className="hidden lg:flex fixed top-1/2 left-0 w-1/3 transform -translate-y-1/2">
+            <section className="hidden lg:flex justify-center fixed top-1/2 left-0 w-1/3 transform -translate-y-1/2">
               <div className="flex flex-col items-end">
                 <div className="flex flex-col justify-between items-center space-y-4">
                   <div className="flex flex-col items-center text-2xl font-bold leading-snug">
