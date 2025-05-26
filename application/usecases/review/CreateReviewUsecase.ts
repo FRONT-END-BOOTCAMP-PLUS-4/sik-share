@@ -21,8 +21,10 @@ export class CreateReviewUsecase {
       throw new Error('성사되지 않은 나눔입니다.');
     }
 
+    const recipientId = share.recipientId === review.writerId ? share.ownerId : share.recipientId;
+
     const result = await this.reviewRepo.save({
-      recipientId: share.recipientId,
+      recipientId,
       writerId: review.writerId,
       grade: review.grade,
       content : review.content
