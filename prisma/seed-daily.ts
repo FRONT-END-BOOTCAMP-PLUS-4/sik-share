@@ -1,6 +1,12 @@
 import { PrismaClient } from "./generated";
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({
+  datasources: {
+    db: {
+      url: process.env.DATABASE_URL as string,
+    },
+  },
+});
 
 const TEST_USER_ID = "7a070f84-fc74-4a6a-82db-6ddd4b602263";
 const TEST_NEIGHBORHOOD_ID = 1;
