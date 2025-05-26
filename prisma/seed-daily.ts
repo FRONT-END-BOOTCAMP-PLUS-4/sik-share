@@ -2,7 +2,6 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-// 실제 존재하는 테스트 사용자 및 동네 ID로 바꿔주세요
 const TEST_USER_ID = "7a070f84-fc74-4a6a-82db-6ddd4b602263";
 const TEST_NEIGHBORHOOD_ID = 1;
 
@@ -34,7 +33,6 @@ const ITEM_IMAGE_MAP: Record<string, string[]> = {
   ]
 
 }
-
 
 const STATUS_ACTIVE = 0;
 
