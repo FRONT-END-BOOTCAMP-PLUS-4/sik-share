@@ -2,16 +2,16 @@
 import { HistorySection } from "@/app/users/components/HistorySection";
 import { useUserInfo } from "@/app/users/hooks/useUserInfo";
 
-export default function GroupBuyHistory() {
+export default function SharesHistory() {
   const { publicId, isMyAccount } = useUserInfo();
 
   return (
     <HistorySection
-      title="나의 참여 내역"
+      title="나눔 내역"
       publicId={publicId as string}
       isMyAccount={isMyAccount}
-      type="participation"
-      tabType="participation"
+      type="share"
+      tabType="status"
     />
   );
 }

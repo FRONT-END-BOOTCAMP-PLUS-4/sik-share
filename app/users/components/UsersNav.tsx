@@ -5,14 +5,21 @@ import Link from "next/link";
 
 interface usersNavProps {
   publicId: string;
+  isMyAccount: boolean;
   mannerReviews?: []; // 임시
 }
 
-export default function UsersNav({ publicId, mannerReviews }: usersNavProps) {
+export default function UsersNav({
+  publicId,
+  isMyAccount,
+  mannerReviews,
+}: usersNavProps) {
   const usersLinks = [
-    { label: "나눔 내역", path: "share-historys" },
-    { label: "같이 장보기 내역", path: "group-buy-historys" },
-    { label: "나의 참여 내역", path: "participations" },
+    { label: "나눔 내역", path: "share-histories" },
+    { label: "같이 장보기 내역", path: "group-buy-histories" },
+    ...(isMyAccount
+      ? [{ label: "나의 참여 내역", path: "participations" }]
+      : []),
     { label: "후기", path: "reviews" },
   ];
 

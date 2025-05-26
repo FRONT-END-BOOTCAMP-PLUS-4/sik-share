@@ -1,16 +1,16 @@
 "use client";
 
-import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import Header from "@/components/common/Header";
+import Footer from "@/components/common/Footer";
+import Loading from "@/components/common/Loading";
 import { getScoreVisual } from "@/app/users/utils";
 import UsersNav from "@/app/users/components/UsersNav";
 import Profile from "@/app/users/components/Profile";
 import UserLocation from "@/app/users/components/UserLocation";
 import ShareScore from "@/app/users/components/ShareScore";
 import MyCharacter from "@/app/users/components/MyCharacter";
-import Header from "@/components/common/Header";
-import Footer from "@/components/common/Footer";
+import { useUserInfo } from "@/app/users/hooks/useUserInfo";
 
 interface User {
   neighborhoodName: string;
@@ -20,13 +20,7 @@ interface User {
 }
 
 export default function userPage() {
-  const params = useParams();
-  const publicId = params.publicId;
-  const { data: session, status } = useSession();
-  const myPublicId = session?.user.publicId;
-
-  const isMyAccount =
-    status === "authenticated" && String(myPublicId) === publicId;
+  const { publicId, isMyAccount } = useUserInfo();
 
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -51,7 +45,7 @@ export default function userPage() {
     fetchUserProfile();
   }, [publicId]);
 
-  if (loading) return <div>로딩 중...</div>;
+  if (loading) return <Loading />;
   if (!user) return <div>유저 정보를 찾을 수 없습니다.</div>;
 
   const levelbyScore = getScoreVisual(user.score);
@@ -78,7 +72,7 @@ export default function userPage() {
             userName={user.nickName}
             profileImage={user.profileUrl}
           />
-          <UsersNav publicId={publicId as string} />
+          <UsersNav isMyAccount={isMyAccount} publicId={publicId as string} />
         </section>
       </div>
       <Footer />

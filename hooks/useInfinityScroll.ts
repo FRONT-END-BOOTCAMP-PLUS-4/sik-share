@@ -32,10 +32,11 @@ export function useInfiniteScroll<T>({
         if (delay > 0) await new Promise((res) => setTimeout(res, delay));
 
         const newItems = await fetcher(page, itemsPerPage);
+
         if (newItems.length === 0) {
           setHasMore(false);
         }
-
+        
         if (resetSignal.current === currentSignal) {
           setItems((prev) => [...prev, ...newItems]);
           setPage((prev) => prev + 1);

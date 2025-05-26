@@ -7,11 +7,11 @@ export default function GroupBuyHistory() {
 
   return (
     <HistorySection
-      title="나의 참여 내역"
+      title="같이 장보기 내역"
       publicId={publicId as string}
       isMyAccount={isMyAccount}
-      type="participation"
-      tabType="participation"
+      type="group-buy"
+      tabType="status"
     />
   );
 }
