@@ -9,9 +9,6 @@
     "lint": "biome lint .",
     "format": "biome format . --write"
   },
-  "prisma": {
-    "seed": "npx tsx prisma/seed.ts"
-  },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
     "@lottiefiles/dotlottie-react": "^0.13.5",
