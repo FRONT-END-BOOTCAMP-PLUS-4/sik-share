@@ -1,9 +1,9 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { PrismaChatListRepository } from "@/infra/repositories/prisma/PrismaChatListRepository";
-import { GetChatListUsecase } from "@/application/usecases/Chat/GetChatListUsecase";
-import { GetGroupBuyChatListUsecase } from "@/application/usecases/Chat/GetGroupBuyChatListUsecase";
+import { GetChatListUsecase } from "@/application/usecases/chat/GetChatListUsecase";
+import { GetGroupBuyChatListUsecase } from "@/application/usecases/chat/GetGroupBuyChatListUsecase";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/authOptions";
 
 export async function GET(req: NextRequest) {
   const session = await getServerSession(authOptions);

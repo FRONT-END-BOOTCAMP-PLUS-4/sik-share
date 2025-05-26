@@ -1,5 +1,5 @@
-import type { ShareChatListItemDto } from "@/application/usecases/Chat/dto/ChatListItemDto";
-import type { GroupBuyChatListDto } from "@/application/usecases/Chat/dto/GroupBuyChatListDto";
+import type { ShareChatListItemDto } from "@/application/usecases/chat/dto/ChatListItemDto";
+import type { GroupBuyChatListDto } from "@/application/usecases/chat/dto/GroupBuyChatListDto";
 
 export interface ChatListRepository {
   findChatListByUserId(userId: string): Promise<ShareChatListItemDto[]>;
