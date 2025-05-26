@@ -13,6 +13,12 @@ import {
 import { MapPin } from "lucide-react";
 import { MapList } from "./MapList";
 import { MapListSelect } from "./MapListSelect";
+import { useMapFilterStore } from "@/stores/useMapFilterStore";
+import { Badge } from "@/components/ui/badge";
+import DropdownButton, {
+  type DropdownOption,
+} from "@/components/common/DropdownButton";
+import { useSession } from "next-auth/react";
 
 export function MapView() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -20,9 +26,15 @@ export function MapView() {
   const [selectedCount, setSelectedCount] = useState<number>(0);
   const [selectedName, setSelectedName] = useState<string>("");
 
+  const { setFilterType } = useMapFilterStore();
+
   const mapContainer = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
 
+  const session = useSession();
+  console.log(session.data?.user.publicId);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const fetchAndLoadMap = async () => {
       try {
@@ -100,12 +112,62 @@ export function MapView() {
           });
         });
 
-        map.on("mouseenter", "clusters", () => {
+        map.on("mouseenter", "clusters", (e) => {
           map.getCanvas().style.cursor = "pointer";
+
+          // mouseenter시 클러스터 name 적용하기
+          // const features = map.queryRenderedFeatures(e.point, {
+          //   layers: ["clusters"],
+          // });
+
+          // if (features.length > 0) {
+          //   const feature = features[0];
+          //   const name = feature.properties?.name;
+
+          //   setSelectedName(name);
+          // }
         });
+
         map.on("mouseleave", "clusters", () => {
           map.getCanvas().style.cursor = "";
         });
+
+        map.on("moveend", () => {
+          const center = map.getCenter();
+
+          const features = map.queryRenderedFeatures(undefined, {
+            layers: ["clusters"],
+          });
+
+          if (!features.length) return;
+
+          let nearestFeature = features[0];
+          let minDist = distance(center, features[0].geometry.coordinates);
+
+          for (let i = 1; i < features.length; i++) {
+            const dist = distance(center, features[i].geometry.coordinates);
+            if (dist < minDist) {
+              minDist = dist;
+              nearestFeature = features[i];
+            }
+          }
+
+          const name = nearestFeature.properties?.name;
+          const count = nearestFeature.properties?.count;
+          const id = nearestFeature.properties?.id;
+
+          if (name) {
+            setSelectedName(name);
+            setSelectedCount(Number(count));
+            setSelectedId(Number(id));
+          }
+        });
+
+        function distance(center: maplibregl.LngLat, coords: [number, number]) {
+          const dx = center.lng - coords[0];
+          const dy = center.lat - coords[1];
+          return Math.sqrt(dx * dx + dy * dy);
+        }
 
         map.on("click", "clusters", (e) => {
           const features = map.queryRenderedFeatures(e.point, {
@@ -116,6 +178,7 @@ export function MapView() {
           const clusterCount = clusterFeature.properties.count;
           const clusterName = clusterFeature.properties.name;
 
+          setFilterType("all");
           setSelectedId(Number(clusterId));
           setSelectedCount(Number(clusterCount));
           setSelectedName(clusterName);
@@ -133,9 +196,30 @@ export function MapView() {
     };
   }, []);
 
+  const options: DropdownOption[] = [
+    {
+      id: "group-buy",
+      label: "같이 장보기",
+      onClick: () => {},
+    },
+    {
+      id: "share",
+      label: "나눔",
+      onClick: () => {},
+    },
+  ];
+
   return (
     <>
-      <div ref={mapContainer} className="w-full h-[calc(100vh-56px)]" />
+      <div className="relative">
+        <div ref={mapContainer} className="w-full h-[calc(100vh-56px)]" />
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-50">
+          <Badge variant="location">{`관악구 ${selectedName}`}</Badge>
+        </div>
+        <div className="flex flex-col gap-3 mb-5 absolute bottom-12 right-4 z-50">
+          <DropdownButton options={options} type="register" align="top" />
+        </div>
+      </div>
 
       <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
         <DrawerContent className="!pt-1">
