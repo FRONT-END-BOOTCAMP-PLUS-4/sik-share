@@ -1,7 +1,7 @@
 "use client";
 
 import SubHeader from "@/components/common/SubHeader";
-import { GroupBuyFooter } from "./components/GroupBuyFooter";
+import { ShareFooter } from "./components/ShareFooter";
 import Carousel from "@/components/common/shares/Carousel";
 import { Clock, MapPin, Salad } from "lucide-react";
 import KakaoMap from "./components/KakaoMapShare";
@@ -29,10 +29,6 @@ export default function GroupBuyPage() {
 
         <section className="text-zinc-500 caption mt-2">
           <div className="flex items-center gap-[1px]">
-            <Clock size={15} />
-            <p>2025-02-14</p>
-          </div>
-          <div className="flex items-center gap-[1px]">
             <Salad size={15} />
             <p>감자</p>
           </div>
@@ -56,7 +52,7 @@ export default function GroupBuyPage() {
           <KakaoMap width="100%" height="100%" lat={37.479} lng={126.9416} />
         </section>
       </div>
-      <GroupBuyFooter />
+      <ShareFooter />
     </div>
   );
 }
