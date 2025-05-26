@@ -1,4 +1,4 @@
-import type { GroupBuyChatMessageRepository } from "@/domain/repositories/Chat/GroupBuyChatMessageRepository";
+import type { GroupBuyChatMessageRepository } from "@/domain/repositories/chat/GroupBuyChatMessageRepository";
 import type { GroupBuyChatMessageListDto } from "./dto/GroupBuyChatMessageListDto";
 
 export class GetGroupBuyChatMessagesUsecase {

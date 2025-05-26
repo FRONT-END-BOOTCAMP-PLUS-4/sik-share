@@ -1,12 +1,11 @@
 import { PrismaClient } from "@/prisma/generated";
-import type { ChatListRepository } from "@/domain/repositories/Chat/ChatListRepository";
-import { ShareChatListItemDto } from "@/application/usecases/Chat/dto/ChatListItemDto";
-import { GroupBuyChatListDto } from "@/application/usecases/Chat/dto/GroupBuyChatListDto";
+import type { ChatListRepository } from "@/domain/repositories/chat/ChatListRepository";
+import { ShareChatListItemDto } from "@/application/usecases/chat/dto/ChatListItemDto";
+import { GroupBuyChatListDto } from "@/application/usecases/chat/dto/GroupBuyChatListDto";
 
 const prisma = new PrismaClient();
 
 export class PrismaChatListRepository implements ChatListRepository {
-  // 1:1 나눔(share) 채팅방 리스트
   async findChatListByUserId(userId: string): Promise<ShareChatListItemDto[]> {
     const chats = await prisma.shareChat.findMany({
       where: {

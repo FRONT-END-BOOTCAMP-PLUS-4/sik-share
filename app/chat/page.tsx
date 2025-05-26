@@ -38,8 +38,7 @@ export default function ChatList() {
 
   return (
     <>
-      <Header />
-      <div className="w-full h-[66px] p-4 title-md flex justify-start items-center">
+      <div className="w-full h-[66px] p-4 title-md flex justify-start items-start">
         채팅
       </div>
       <Tab

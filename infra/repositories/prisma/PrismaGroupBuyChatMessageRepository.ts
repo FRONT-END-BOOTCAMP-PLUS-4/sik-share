@@ -1,11 +1,10 @@
 import { PrismaClient } from "@/prisma/generated";
-import type { GroupBuyChatMessageRepository } from "@/domain/repositories/Chat/GroupBuyChatMessageRepository";
-import { GroupBuyChatMessageListDto } from "@/application/usecases/Chat/dto/GroupBuyChatMessageListDto";
+import type { GroupBuyChatMessageRepository } from "@/domain/repositories/chat/GroupBuyChatMessageRepository";
+import { GroupBuyChatMessageListDto } from "@/application/usecases/chat/dto/GroupBuyChatMessageListDto";
 
 const prisma = new PrismaClient();
 
 export class PrismaGroupBuyChatMessageRepository implements GroupBuyChatMessageRepository {
-  // 1. 메시지 리스트 조회
   async findMessagesByChatId(
     chatId: number,
     userId: string
@@ -24,12 +23,11 @@ export class PrismaGroupBuyChatMessageRepository implements GroupBuyChatMessageR
         msg.sender.profileUrl ?? "/assets/images/example/thumbnail.png",
         msg.content,
         msg.createdAt.toISOString(),
-        msg.count // 읽음/안읽음 인원 수 (필요시 추후 수정)
+        msg.count
       )
     );
   }
 
-  // 2. 채팅방 상단 정보 조회
   async findGroupBuyInfoByChatId(
     chatId: number
   ): Promise<{
@@ -37,8 +35,8 @@ export class PrismaGroupBuyChatMessageRepository implements GroupBuyChatMessageR
     meetingDate: string;
     imageUrl: string;
     participantCount: number;
+    locationNote: string;
   }> {
-    // 1. groupBuyChat → groupBuyId 조회
     const chat = await prisma.groupBuyChat.findUnique({
       where: { id: chatId },
       include: {
@@ -48,7 +46,7 @@ export class PrismaGroupBuyChatMessageRepository implements GroupBuyChatMessageR
             participants: true,
           },
         },
-        participants: true, // 채팅방 참여자 (optional, 필요하면)
+        participants: true,
       },
     });
 
@@ -59,7 +57,8 @@ export class PrismaGroupBuyChatMessageRepository implements GroupBuyChatMessageR
       title: groupBuy.title,
       meetingDate: groupBuy.meetingDate.toISOString(),
       imageUrl: groupBuy.images[0]?.url ?? "/assets/images/example/default-profile.png",
-      participantCount: chat.participants.length, // 채팅방 참여자 수
+      participantCount: chat.participants.length,
+      locationNote: groupBuy.locationNote,
     };
   }
 }
