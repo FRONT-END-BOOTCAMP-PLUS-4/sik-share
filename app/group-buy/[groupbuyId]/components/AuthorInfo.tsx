@@ -9,7 +9,7 @@ export function AuthorInfo() {
         alt="프로필 이미지"
         width={38}
         height={38}
-        className="rounded-full"
+        className="w-[38px] h-[38px] object-cover rounded-full"
       />
       <div className="flex justify-between items-end w-full">
         <div className="flex flex-col ml-2">

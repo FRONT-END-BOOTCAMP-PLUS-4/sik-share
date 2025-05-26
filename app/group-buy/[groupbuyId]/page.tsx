@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import SubHeader from "@/components/common/SubHeader";
 import { GroupBuyFooter } from "./components/GroupBuyFooter";
 import Carousel from "@/components/common/shares/Carousel";
@@ -46,12 +45,12 @@ export default function GroupBuyPage() {
           </p>
         </section>
 
-        <section className="flex flex-col h-[250px] mt-4 mb-[100px]">
+        <section className="flex flex-col h-[250px] mt-4 mb-[58px]">
           <div className="flex justify-between mb-1">
-            <p>만남 장소</p>
+            <p className="text-[12px]">만남 장소</p>
             <div className="flex items-center gap-0.5">
               <MapPin size={16} />
-              <p>관악청년청 앞</p>
+              <p className="text-[12px]">관악청년청 앞</p>
             </div>
           </div>
           <KakaoMap width="100%" height="100%" lat={37.479} lng={126.9416} />
