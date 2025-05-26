@@ -4,5 +4,5 @@
     "noEmit": false,
     "types": ["node"]
   },
-  "include": ["prisma/seed-daily.ts"]
+  "include": ["seeds/seed-daily.ts"]
 }
