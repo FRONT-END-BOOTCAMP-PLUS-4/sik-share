@@ -65,7 +65,7 @@ export function MapList({ selectedId }: MapListProps) {
       };
 
       const fetchGroupBuy = async () => {
-        const res = await fetch(`/api/map/groupbuy?${params.toString()}`);
+        const res = await fetch(`/api/map/group-buy?${params.toString()}`);
         if (!res.ok) return [];
         const data = await res.json();
         // biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -111,7 +111,7 @@ export function MapList({ selectedId }: MapListProps) {
   });
 
   return (
-    <div className="max-h-[55vh] min-h-[55vh] overflow-y-auto px-4 py-2">
+    <div className="max-h-[55vh] min-h-[55vh] overflow-y-auto border-t-1">
       {items.map((item, i) => (
         <ListCard
           key={`${item.id} - ${i}`}

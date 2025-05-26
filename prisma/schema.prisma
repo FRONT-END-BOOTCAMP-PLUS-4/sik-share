@@ -37,6 +37,7 @@ model User {
   writtenReviews           Review[]                  @relation("WrittenReview")
   ownedShares              Share[]                   @relation("OwnedShare")
   receivedShares           Share[]                   @relation("ReceivedShare")
+  ShareApplication         ShareApplication[]
   shareChatMessages        ShareChatMessage[]
   shareChatParticipants    ShareChatParticipant[]
   neighborhood             Neighborhood              @relation(fields: [neighborhoodId], references: [id])
@@ -81,26 +82,27 @@ model GroupBuyImage {
 }
 
 model Share {
-  id             Int          @id @default(autoincrement())
-  shareItemId    Int
-  neighborhoodId Int
-  ownerId        String
-  recipientId    String?
-  title          String
-  createdAt      DateTime     @default(now())
-  meetingDate    DateTime?
-  lat            Float
-  lng            Float
-  locationNote   String
-  description    String
-  status         Int
-  reviews        Review[]
-  neighborhood   Neighborhood @relation(fields: [neighborhoodId], references: [id])
-  owner          User         @relation("OwnedShare", fields: [ownerId], references: [id])
-  recipient      User?        @relation("ReceivedShare", fields: [recipientId], references: [id])
-  shareItem      ShareItem    @relation(fields: [shareItemId], references: [id])
-  chats          ShareChat[]
-  images         ShareImage[]
+  id               Int                @id @default(autoincrement())
+  shareItemId      Int
+  neighborhoodId   Int
+  ownerId          String
+  recipientId      String?
+  title            String
+  createdAt        DateTime           @default(now())
+  meetingDate      DateTime?
+  lat              Float
+  lng              Float
+  locationNote     String
+  description      String
+  status           Int
+  reviews          Review[]
+  neighborhood     Neighborhood       @relation(fields: [neighborhoodId], references: [id])
+  owner            User               @relation("OwnedShare", fields: [ownerId], references: [id])
+  recipient        User?              @relation("ReceivedShare", fields: [recipientId], references: [id])
+  shareItem        ShareItem          @relation(fields: [shareItemId], references: [id])
+  ShareApplication ShareApplication[]
+  chats            ShareChat[]
+  images           ShareImage[]
 }
 
 model ShareImage {
