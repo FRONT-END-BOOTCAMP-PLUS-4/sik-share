@@ -56,7 +56,7 @@ export function ShareListCard({
           {meetingDate && (
             <div className="flex flex-1/2 items-center gap-1">
               <Clock size={16} strokeWidth={1} />
-              <p className="caption">{meetingDate}</p>
+              <p className="caption text-primary">{meetingDate}</p>
             </div>
           )}
           <div className="flex items-center gap-1">
