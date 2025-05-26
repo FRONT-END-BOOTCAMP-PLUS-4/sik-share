@@ -3,7 +3,7 @@ import type { UserRepository } from "@/domain/repositories/UserRepository";
 
 import type { ShareRepository } from "@/domain/repositories/share/ShareRepository";
 import type { GetUserHistoryCountDto } from "./dto/GetUserHistoryCountDto";
-import { getGroupBuyStatusCondition, getShareStatusCondition } from "./utils/getStatusCondition";
+import { getShareStatusCondition } from "./utils/getStatusCondition";
 
 export class GetUserHistoryCountUsecase {
   constructor(
@@ -33,16 +33,16 @@ export class GetUserHistoryCountUsecase {
         return { active, completed, expired };
       }
       if (type === "group-buy") {
-        const [active, completed, expired] = await Promise.all(
+        const [active, completed] = await Promise.all(
           statuses.map((status) =>{
             const where = {
               organizerId: user?.id,
-              ...getGroupBuyStatusCondition(status),
+              status: status === "active" ? 0 : 1,
             };
 
             return this.groupbuyRepo.getCount(where)
           }));
-        return { active, completed, expired };
+        return { active, completed };
       }
     };
 

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 
-interface UseTabCountsOptions {
+interface UseTabCountsProps {
   publicId: string;
   type: "share" | "group-buy" | "participation";
   tabType: "status" | "participation";
 }
 
-export function useTabCounts({ publicId, type, tabType }: UseTabCountsOptions) {
+export function useTabCounts({ publicId, type, tabType }: UseTabCountsProps) {
   const [counts, setCounts] = useState<Record<string, number>>({});
 
   useEffect(() => {

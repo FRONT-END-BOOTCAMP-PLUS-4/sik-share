@@ -1,10 +1,8 @@
 import { format } from "date-fns";
 import type { GetUserHistoryDto } from "./dto/GetUserHistoryDto";
 import type { GroupBuyRepository } from "@/domain/repositories/group-buy/GroupBuyRepository";
-import { getGroupBuyStatusCondition } from "./utils/getStatusCondition";
 import type { GetUserGroupBuysResultDto } from "./dto/GetUserGroupBuysResultDto";
 import type { UserRepository } from "@/domain/repositories/UserRepository";
-import type { StatusType } from "@/types/types";
 
 export class GetUserGroupBuysUsecase {
   constructor(
@@ -20,7 +18,7 @@ export class GetUserGroupBuysUsecase {
 
     const where = {
       organizerId: user?.id,
-      ...getGroupBuyStatusCondition(status as StatusType),
+      status: status === "active" ? 0 : 1,
     };
 
     const data = await this.groupbuyRepo.getUserGroupbuys({
@@ -33,6 +31,8 @@ export class GetUserGroupBuysUsecase {
       return [];
     }
 
+    const now = new Date();
+
     return data.map((groupbuy) => ({
       id: groupbuy.id,
       title: groupbuy.title,
@@ -41,6 +41,7 @@ export class GetUserGroupBuysUsecase {
       meetingDate: format(groupbuy.meetingDate, "yyyy-MM-dd"),
       currentUsers: groupbuy.participants,
       maxUsers: groupbuy.capacity,
+      ...(groupbuy.status === 0 && groupbuy.participants <= 1 && groupbuy.meetingDate && new Date(groupbuy.meetingDate) < now && { badgeLabel : "마감" })
     }));
   }
 }

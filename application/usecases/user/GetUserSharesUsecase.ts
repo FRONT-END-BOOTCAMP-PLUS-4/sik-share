@@ -51,10 +51,10 @@ export class GetUserSharesUsecase {
 
       if (item.status === 1 && item.meetingDate) {
         share.meetingDate = format(new Date(item.meetingDate), "yyyy-MM-dd");
-      } else if (item.status === 0 && item.meetingDate) {
-        share.meetingDate = format(new Date(item.meetingDate), "yyyy-MM-dd");
         share.badgeVariant = "share";
         share.badgeLabel = "예약";
+      } else if (item.status === 2 && item.meetingDate) {
+        share.meetingDate = format(new Date(item.meetingDate), "yyyy-MM-dd");
       } else if (item.status === 0 && !item.meetingDate && timeLeft > 0) {
         share.timeLeft = timeLeft;
       }

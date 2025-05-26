@@ -57,7 +57,9 @@ export function HistorySection({
       : [
           { label: "진행 중", value: "active" },
           { label: "나눔 완료", value: "completed" },
-          ...(isMyAccount ? [{ label: "기한 만료", value: "expired" }] : []),
+          ...(isMyAccount && type === "share"
+            ? [{ label: "기한 만료", value: "expired" }]
+            : []),
         ];
 
   return (

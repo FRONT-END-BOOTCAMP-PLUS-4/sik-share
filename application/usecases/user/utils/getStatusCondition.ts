@@ -9,25 +9,10 @@ export function getShareStatusCondition(
 
   switch (type) {
     case "active":
-      return { AND : [{ status: 0 }, {OR: [{ createdAt: { gt: deadline } }, { NOT : {meetingDate: null} }]}] };
+      return { OR: [{ status: 0 , createdAt: { gt: deadline } }, { status: 1 }] };
     case "expired":
       return { status: 0, createdAt: { lt: deadline }, meetingDate: null };
     case "completed":
       return { status: 2 };
-  }
-}
-
-export function getGroupBuyStatusCondition(
-  type: StatusType,
-): Prisma.GroupBuyWhereInput {
-  const now = new Date();
-
-  switch (type) {
-    case "active":
-      return { status: 0, meetingDate: { gt: now } };
-    case "expired":
-      return { status: 0, meetingDate: { lt: now } };
-    case "completed":
-      return { status: 1 };
   }
 }

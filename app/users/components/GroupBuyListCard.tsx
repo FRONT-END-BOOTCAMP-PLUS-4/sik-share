@@ -1,11 +1,16 @@
 import Image from "next/image";
 import { CircleUserRound, Clock, MapPin } from "lucide-react";
+import {
+  Badge,
+  type VariantProps as BadgeVariantProps,
+} from "@/components/ui/badge";
 
 export interface GroupBuyListCardProps {
   id: string;
   thumbnailSrc: string;
   title: string;
   location: string;
+  badgeLabel?: string;
   meetingDate?: string;
   currentUsers?: number;
   maxUsers?: number;
@@ -18,6 +23,7 @@ export function GroupBuyListCard({
   location,
   currentUsers,
   maxUsers,
+  badgeLabel,
 }: GroupBuyListCardProps) {
   return (
     <div className="w-full flex gap-2 items-start px-4 py-3 cursor-pointer  border-b-1 border-b-zinc-200 hover:bg-zinc-200 hover:border-b-transparents">
@@ -33,6 +39,7 @@ export function GroupBuyListCard({
       <div className="flex flex-col flex-1 gap-1">
         <div className="flex justify-between items-center">
           <p className="body-md truncate max-w-[230px]">{title}</p>
+          {badgeLabel && <Badge variant="cart">{badgeLabel}</Badge>}
         </div>
         <div className="flex flex-col gap-1 text-zinc-500">
           <div className="flex gap-[5px]">
