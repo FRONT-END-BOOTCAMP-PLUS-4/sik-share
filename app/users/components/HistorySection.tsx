@@ -7,6 +7,7 @@ import { useTabCounts } from "@/app/users/hooks/useTabCounts";
 import { HistoryItemList } from "@/app/users/components/HistoryItemList";
 import type { ListCardProps } from "@/components/common/ListCard";
 import type { ShareListCardProps } from "@/app/users/components/ShareListCard";
+import { getTabValues } from "@/app/users/utils";
 
 interface HistorySectionProps {
   type: "share" | "group-buy" | "participation";
@@ -48,19 +49,7 @@ export function HistorySection({
     deps: [publicId, currentTab],
   });
 
-  const tabValues =
-    type === "participation"
-      ? [
-          { label: "나눔", value: "share" },
-          { label: "같이 장보기", value: "group-buy" },
-        ]
-      : [
-          { label: "진행 중", value: "active" },
-          { label: "나눔 완료", value: "completed" },
-          ...(isMyAccount && type === "share"
-            ? [{ label: "기한 만료", value: "expired" }]
-            : []),
-        ];
+  const tabValues = getTabValues(type, isMyAccount);
 
   return (
     <>
