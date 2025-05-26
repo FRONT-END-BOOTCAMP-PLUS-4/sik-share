@@ -9,11 +9,11 @@ export function getShareStatusCondition(
 
   switch (type) {
     case "active":
-      return { status: 0, createdAt: { gt: deadline } };
+      return { AND : [{ status: 0 }, {OR: [{ createdAt: { gt: deadline } }, { NOT : {meetingDate: null} }]}] };
     case "expired":
-      return { status: 0, createdAt: { lt: deadline } };
+      return { status: 0, createdAt: { lt: deadline }, meetingDate: null };
     case "completed":
-      return { status: 1 };
+      return { status: 2 };
   }
 }
 

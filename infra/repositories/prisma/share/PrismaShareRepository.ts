@@ -1,5 +1,8 @@
-import type { GetUserShares, ShareRepository } from "@/domain/repositories/share/ShareRepository";
-import { PrismaClient, type Share } from "@/prisma/generated";
+import type {
+  GetUserShares,
+  ShareRepository,
+} from "@/domain/repositories/share/ShareRepository";
+import { type Prisma, PrismaClient, type Share } from "@/prisma/generated";
 
 export class PrismaShareRepository implements ShareRepository {
   private prisma: PrismaClient;
@@ -14,27 +17,30 @@ export class PrismaShareRepository implements ShareRepository {
   }
 
   async getUserShares({
+    where,
+    offset,
+    itemsPerPage,
+  }: GetUserShares): Promise<(Share & { thumbnailUrl: string | null })[]> {
+    const shares = await this.prisma.share.findMany({
       where,
-      offset,
-      itemsPerPage,
-    }: GetUserShares): Promise<(Share & {thumbnailUrl: string | null})[]> {
-  
-      const shares = await this.prisma.share.findMany({
-        where,
-        skip: offset,
-        take: itemsPerPage,
-        orderBy: { createdAt: "desc" },
-        include: {
-          images: {
-            where: { order: 0 },
-            take: 1,
-          },
-        }
-      });
-  
-      return shares.map((share) => ({
-        ...share,
-        thumbnailUrl: share.images?.[0]?.url ?? null,
+      skip: offset,
+      take: itemsPerPage,
+      orderBy: { createdAt: "desc" },
+      include: {
+        images: {
+          where: { order: 0 },
+          take: 1,
+        },
+      },
+    });
+
+    return shares.map((share) => ({
+      ...share,
+      thumbnailUrl: share.images?.[0]?.url ?? null,
     }));
+  }
+
+  async getCount(where: Prisma.ShareWhereInput): Promise<number> {
+    return await this.prisma.share.count({ where });
   }
 }

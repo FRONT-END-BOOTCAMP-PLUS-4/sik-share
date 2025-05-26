@@ -1,11 +1,12 @@
 "use client";
 import { useCallback, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { HistoryItemList } from "./HistoryItemList";
-import type { ListCardProps } from "@/components/common/ListCard";
 import SubHeader from "@/components/common/SubHeader";
-import type { ShareListCardProps } from "@/app/users/components/ShareListCard";
 import { useInfiniteScroll } from "@/hooks/useInfinityScroll";
+import { useTabCounts } from "@/app/users/hooks/useTabCounts";
+import { HistoryItemList } from "@/app/users/components/HistoryItemList";
+import type { ListCardProps } from "@/components/common/ListCard";
+import type { ShareListCardProps } from "@/app/users/components/ShareListCard";
 
 interface HistorySectionProps {
   type: "share" | "group-buy" | "participation";
@@ -22,6 +23,7 @@ export function HistorySection({
   isMyAccount,
   tabType,
 }: HistorySectionProps) {
+  const { counts } = useTabCounts({ publicId, type, tabType });
   const [currentTab, setCurrentTab] = useState<string>(
     tabType === "status" ? "active" : "share",
   );
@@ -47,14 +49,14 @@ export function HistorySection({
   });
 
   const tabValues =
-    tabType === "participation"
+    type === "participation"
       ? [
           { label: "나눔", value: "share" },
           { label: "같이 장보기", value: "group-buy" },
         ]
       : [
           { label: "진행 중", value: "active" },
-          { label: "종료", value: "completed" },
+          { label: "나눔 완료", value: "completed" },
           ...(isMyAccount ? [{ label: "기한 만료", value: "expired" }] : []),
         ];
 
@@ -71,9 +73,19 @@ export function HistorySection({
         >
           <TabsList className="w-full">
             {tabValues.map((tab) => (
-              <TabsTrigger key={tab.value} value={tab.value} className="flex-1">
-                {tab.label}
-                {/*  {tab.count} */}
+              <TabsTrigger
+                key={tab.value}
+                value={tab.value}
+                className="flex-1 flex gap-1"
+              >
+                <div>{tab.label}</div>
+                <div>
+                  {counts[tab.value] !== 0
+                    ? counts?.[
+                        tab.value === "group-buy" ? "groupbuy" : tab.value
+                      ]
+                    : ""}
+                </div>
               </TabsTrigger>
             ))}
           </TabsList>

@@ -9,4 +9,5 @@ export interface GetUserGroupbuys {
 export interface GroupBuyRepository {
   save(groupBuy: Partial<GroupBuy>): Promise<GroupBuy>;
   getUserGroupbuys(shares: GetUserGroupbuys): Promise<(GroupBuy & {participants:number, thumbnailUrl: string})[]>;
+  getCount(where: Prisma.GroupBuyWhereInput): Promise<number>;
 }

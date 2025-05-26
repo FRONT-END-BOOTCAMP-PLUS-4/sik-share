@@ -10,7 +10,7 @@ export default function GroupBuyHistory() {
       title="같이 장보기 내역"
       publicId={publicId as string}
       isMyAccount={isMyAccount}
-      type="groupbuy"
+      type="group-buy"
       tabType="status"
     />
   );
