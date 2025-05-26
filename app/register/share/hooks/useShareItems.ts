@@ -15,7 +15,7 @@ export default function useShareItmes() {
   useEffect(() => {
     const fetchShareItems = async () => {
       try{
-        const res = await fetch("/api/shareItems", {
+        const res = await fetch("/api/share-items", {
           cache: "no-store"
         });
           
