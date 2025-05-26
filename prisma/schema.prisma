@@ -33,11 +33,11 @@ model User {
   groupBuyChatMessages     GroupBuyChatMessage[]
   groupBuyChatParticipants GroupBuyChatParticipant[]
   groupBuyParticipants     GroupBuyParticipant[]
-  notifications            Notification[]
   receivedReviews          Review[]                  @relation("ReceivedReview")
   writtenReviews           Review[]                  @relation("WrittenReview")
   ownedShares              Share[]                   @relation("OwnedShare")
   receivedShares           Share[]                   @relation("ReceivedShare")
+  shareApplications        ShareApplication[]
   shareChatMessages        ShareChatMessage[]
   shareChatParticipants    ShareChatParticipant[]
   neighborhood             Neighborhood              @relation(fields: [neighborhoodId], references: [id])
@@ -82,26 +82,39 @@ model GroupBuyImage {
 }
 
 model Share {
-  id             Int          @id @default(autoincrement())
-  shareItemId    Int
-  neighborhoodId Int
-  ownerId        String
-  recipientId    String?
-  title          String
-  createdAt      DateTime     @default(now())
-  meetingDate    DateTime?
-  lat            Float
-  lng            Float
-  locationNote   String
-  description    String
-  status         Int
-  reviews        Review[]
-  neighborhood   Neighborhood @relation(fields: [neighborhoodId], references: [id])
-  owner          User         @relation("OwnedShare", fields: [ownerId], references: [id])
-  recipient      User?        @relation("ReceivedShare", fields: [recipientId], references: [id])
-  shareItem      ShareItem    @relation(fields: [shareItemId], references: [id])
-  chats          ShareChat[]
-  images         ShareImage[]
+  id              Int          @id @default(autoincrement())
+  shareItemId     Int
+  neighborhoodId  Int
+  ownerId         String
+  recipientId     String?
+  title           String
+  createdAt       DateTime     @default(now())
+  meetingDate     DateTime?
+  lat             Float
+  lng             Float
+  locationNote    String
+  description     String
+  status          Int
+  reviews         Review[]
+  neighborhood    Neighborhood @relation(fields: [neighborhoodId], references: [id])
+  owner           User         @relation("OwnedShare", fields: [ownerId], references: [id])
+  recipient       User?        @relation("ReceivedShare", fields: [recipientId], references: [id])
+  shareItem       ShareItem    @relation(fields: [shareItemId], references: [id])
+  chats           ShareChat[]
+  images          ShareImage[]
+  applications    ShareApplication[]
+}
+
+model ShareApplication {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  shareId   Int
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id])
+  share     Share    @relation(fields: [shareId], references: [id])
+
+  @@unique([userId, shareId])
 }
 
 model ShareImage {
@@ -146,15 +159,6 @@ model ShortReviewOption {
   reviews ReviewShortReview[]
 }
 
-model Notification {
-  id        Int      @id @default(autoincrement())
-  userId    String
-  isRead    Boolean  @default(false)
-  content   String
-  createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
-}
-
 model GroupBuyChat {
   id           Int                       @id @default(autoincrement())
   groupBuyId   Int
@@ -169,8 +173,8 @@ model GroupBuyChatMessage {
   senderId       String
   groupBuyChatId Int
   content        String
-  createdAt      DateTime     @default(now())
   count          Int
+  createdAt      DateTime     @default(now())
   groupBuyChat   GroupBuyChat @relation(fields: [groupBuyChatId], references: [id])
   sender         User         @relation(fields: [senderId], references: [id])
 }
@@ -199,8 +203,8 @@ model ShareChatMessage {
   senderId    String
   shareChatId Int
   content     String
-  createdAt   DateTime  @default(now())
   readCount   Int       @default(1)
+  createdAt   DateTime  @default(now())
   sender      User      @relation(fields: [senderId], references: [id])
   shareChat   ShareChat @relation(fields: [shareChatId], references: [id])
 }
@@ -208,9 +212,9 @@ model ShareChatMessage {
 model ShareChatParticipant {
   id             Int       @id @default(autoincrement())
   userId         String
+  lastReadItemId Int?
   shareChatId    Int
   joinedAt       DateTime  @default(now())
-  lastReadItemId Int?
   shareChat      ShareChat @relation(fields: [shareChatId], references: [id])
   user           User      @relation(fields: [userId], references: [id])
 }
