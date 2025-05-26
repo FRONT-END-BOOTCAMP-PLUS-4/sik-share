@@ -19,6 +19,7 @@ import DropdownButton, {
   type DropdownOption,
 } from "@/components/common/DropdownButton";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export function MapView() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -196,16 +197,22 @@ export function MapView() {
     };
   }, []);
 
+  const router = useRouter();
+
   const options: DropdownOption[] = [
     {
       id: "group-buy",
       label: "같이 장보기",
-      onClick: () => {},
+      onClick: () => {
+        router.push("/register/group-buy");
+      },
     },
     {
       id: "share",
       label: "나눔",
-      onClick: () => {},
+      onClick: () => {
+        router.push("/register/share");
+      },
     },
   ];
 
