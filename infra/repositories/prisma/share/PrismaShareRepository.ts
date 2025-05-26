@@ -43,4 +43,10 @@ export class PrismaShareRepository implements ShareRepository {
   async getCount(where: Prisma.ShareWhereInput): Promise<number> {
     return await this.prisma.share.count({ where });
   }
+
+  async findById(id: number) : Promise<Share | null>{
+    return await this.prisma.share.findUnique({
+      where: {id}
+    })
+  }
 }
