@@ -26,6 +26,6 @@ jobs:
 
 
       - name: Run daily dummy seeder
-        run: npx tsx prisma/seed-daily.ts
+        run: npx tsx --tsconfig tsconfig.seed.json prisma/seed-daily.ts
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
