@@ -29,6 +29,7 @@ export class CreateReviewUsecase {
     // 후기 데이터 생성
     const result = await this.reviewRepo.save({
       recipientId,
+      shareId: review.shareId,
       writerId: review.writerId,
       grade: review.grade,
       content: review.content,

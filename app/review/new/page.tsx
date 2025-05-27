@@ -11,6 +11,7 @@ import Loading from "@/components/common/Loading";
 import FormButton from "@/components/common/register/FormButton";
 import FormRatingSelector from "./components/FormRatingSelector";
 import FormCheckbox from "@/components/common/register/FormCheckbox";
+import { toast } from "sonner";
 
 type ReviewForm = {
   grade: number;
@@ -59,7 +60,41 @@ export default function CreateReviewPage() {
   });
 
   const onSubmit = async () => {
-    const values = form.getValues();
+    try {
+      const values = form.getValues();
+
+      const res = await fetch("/api/reviews", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...values,
+          shareId,
+          writerId: userId,
+        }),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        const message =
+          errorData?.message ||
+          "알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요.";
+
+        toast.error(message);
+        return;
+      }
+
+      toast.success("후기가 등록되었습니다.", {
+        duration: 2000,
+        onAutoClose: () => {
+          router.replace("/map");
+        },
+      });
+    } catch (error) {
+      console.error("후기기 등록 중 오류 발생:", error);
+      toast.error("네트워크 오류가 발생했습니다. 다시 시도해주세요.");
+    }
   };
 
   if (!shareId) notFound();
@@ -96,7 +131,7 @@ export default function CreateReviewPage() {
                 placeholder="여기에 적어주세요. (선택사항)"
                 labelClassName="font-bold"
               />
-              <FormButton onClick={onSubmit}>작성 완료</FormButton>
+              <FormButton onClick={() => {}}>작성 완료</FormButton>
             </form>
           </Form>
         </section>

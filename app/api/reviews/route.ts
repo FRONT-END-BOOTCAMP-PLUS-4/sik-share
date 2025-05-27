@@ -4,29 +4,33 @@ import { CreateReviewUsecase } from '@/application/usecases/review/CreateReviewU
 import { CreateReviewDto } from '@/application/usecases/review/dto/CreateReviewDto';
 import { PrismaReviewRepository } from '@/infra/repositories/prisma/review/PrismaReviewRepository';
 import { PrismaShareRepository } from '@/infra/repositories/prisma/share/PrismaShareRepository';
+import { PrismaUserRepository } from '@/infra/repositories/prisma/PrismaUserRepository';
 
 export async function POST(req:Request){
   try{
-    const formData = await req.formData();
+    const data = await req.json();
 
-    const shareId = Number(formData.get("shareId"));
-    const writerId = formData.get("writerId") as string;
-    const grade = Number(formData.get("grade"));
-    const shortReviews = (formData.getAll("shortReviews") as string[]).map(Number);
-    const content = formData.get("content") as string;
-
-    const createReviewDto = new CreateReviewDto(
+    const {
       shareId,
       writerId,
       grade,
       shortReviews,
+      content,
+    } = data;
+
+    const createReviewDto = new CreateReviewDto(
+      Number(shareId),
+      writerId,
+      Number(grade),
+      shortReviews.map(Number),
       content
     );
 
     const shareRepo = new PrismaShareRepository();
     const reviewRepo = new PrismaReviewRepository();
     const reviewShortReviewRepo = new PrismaReviewShortReviewRepository();
-    const createReviewUsecase = new CreateReviewUsecase(shareRepo, reviewRepo, reviewShortReviewRepo);
+    const userRepo = new PrismaUserRepository();
+    const createReviewUsecase = new CreateReviewUsecase(shareRepo, reviewRepo, reviewShortReviewRepo, userRepo);
 
     await createReviewUsecase.execute(createReviewDto);
 
