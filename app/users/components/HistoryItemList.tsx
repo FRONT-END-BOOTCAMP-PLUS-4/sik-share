@@ -1,4 +1,4 @@
-import { LoadingLottie } from "@/app/map/components/LoadingLottie";
+import { LoadingFoodLottie } from "@/components/lotties/LoadingFoodLottie";
 import {
   GroupBuyListCard,
   type GroupBuyListCardProps,
@@ -42,7 +42,7 @@ export function HistoryItemList({
         ))}
       </ul>
       <div ref={refTarget} className="h-4/5" />
-      {loading && <LoadingLottie />}
+      {loading && <LoadingFoodLottie />}
       {items.length !== 0 && !hasMore && (
         <p className="pt-8 text-center text-gray-400">
           모든 항목을 불러왔어요.

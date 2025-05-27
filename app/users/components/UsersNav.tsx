@@ -3,16 +3,22 @@ import { cn } from "@/lib/utils";
 import { ChevronRight, Users } from "lucide-react";
 import Link from "next/link";
 
+export interface shortReview {
+  id: number;
+  content: string;
+  count: number;
+}
+
 interface usersNavProps {
   publicId: string;
   isMyAccount: boolean;
-  mannerReviews?: []; // 임시
+  shortReviews?: shortReview[];
 }
 
 export default function UsersNav({
   publicId,
   isMyAccount,
-  mannerReviews,
+  shortReviews,
 }: usersNavProps) {
   const usersLinks = [
     { label: "나눔 내역", path: "share-histories" },
@@ -38,14 +44,17 @@ export default function UsersNav({
           {label}
           <ChevronRight />
         </Link>
-        {isReview && (
+        {isReview && shortReviews && shortReviews.length > 0 && (
           <ul className="px-4 flex flex-col gap-1.5 pt-1">
-            <li className="flex gap-1 items-center">
-              <div className="w-[130px] body-sm">나눔 재료가 신선해요</div>
-              <Badge variant="review">
-                <Users size={10} />1
-              </Badge>
-            </li>
+            {shortReviews.map((review) => (
+              <li key={review.id} className="flex gap-1 items-center">
+                <div className="w-[130px] body-sm">{review.content}</div>
+                <Badge variant="review">
+                  <Users size={12} />
+                  {review.count}
+                </Badge>
+              </li>
+            ))}
           </ul>
         )}
       </li>

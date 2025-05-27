@@ -2,6 +2,7 @@ import { GetUserHistoryCountDto } from "@/application/usecases/user/dto/GetUserH
 import { GetUserHistoryCountUsecase } from "@/application/usecases/user/GetUserHistoryCountUsecase";
 import { PrismaGroupBuyRepository } from "@/infra/repositories/prisma/group-buy/PrismaGroupBuyRepository";
 import { PrismaUserRepository } from "@/infra/repositories/prisma/PrismaUserRepository";
+import { PrismaReviewRepository } from "@/infra/repositories/prisma/review/PrismaReviewRepository";
 import { PrismaShareRepository } from "@/infra/repositories/prisma/share/PrismaShareRepository";
 import { NextResponse } from "next/server";
 
@@ -23,7 +24,8 @@ export async function GET(req: Request) {
     const userRepo = new PrismaUserRepository();
     const shareRepo = new PrismaShareRepository();
     const groupBuysRepo = new PrismaGroupBuyRepository();
-    const getUserHistoryCountUsecase = new GetUserHistoryCountUsecase(userRepo,shareRepo,groupBuysRepo);
+    const reviewRepo = new PrismaReviewRepository();
+    const getUserHistoryCountUsecase = new GetUserHistoryCountUsecase(userRepo,shareRepo,groupBuysRepo,reviewRepo);
     const result = await getUserHistoryCountUsecase.execute(getUserHistoryCountDto);
 
     return NextResponse.json({ success: true, result }, { status: 200 });

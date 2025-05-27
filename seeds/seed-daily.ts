@@ -46,6 +46,7 @@ async function main() {
   const shareItems = await prisma.shareItem.findMany();
 
   const now = new Date();
+  const formattedDate = now.toISOString().substring(0, 10).replace(/-/g, "");
 
   for (const item of shareItems) {
     const imageUrls = ITEM_IMAGE_MAP[item.name];
@@ -54,7 +55,7 @@ async function main() {
         shareItemId: item.id,
         neighborhoodId: TEST_NEIGHBORHOOD_ID,
         ownerId: TEST_USER_ID,
-        title: `[더미] ${item.name} 나눔`,
+        title: `[더미] ${item.name} 나눔_${formattedDate}`,
         description: `테스트용 ${item.name} 나눔입니다.`,
         lat: 37.4784,
         lng: 126.9516,
