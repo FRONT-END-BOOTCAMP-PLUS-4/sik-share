@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import Tab from "./components/Tab";
 import socket from "@/lib/socket";
-import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 
 export default function ChatList() {
