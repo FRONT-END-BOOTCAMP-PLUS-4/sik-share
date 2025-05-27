@@ -6,29 +6,15 @@ import type { UserRepository } from "@/domain/repositories/UserRepository";
 
 export class CreateReviewUsecase {
   constructor(
-    private shareRepo: ShareRepository,
     private reviewRepo: ReviewRepository,
     private reviewShortReviewRepo: ReviewShortReviewRepository,
     private userRepo: UserRepository,
   ) {}
 
   async execute(review: CreateReviewDto) {
-    const share = await this.shareRepo.findById(review.shareId);
-
-    if (!share) {
-      throw new Error("존재하지 않는 후기입니다.");
-    }
-
-    if (!share.recipientId) {
-      throw new Error("성사되지 않은 나눔입니다.");
-    }
-
-    const recipientId =
-      share.recipientId === review.writerId ? share.ownerId : share.recipientId;
-
     // 후기 데이터 생성
     const result = await this.reviewRepo.save({
-      recipientId,
+      recipientId: review.recipientId,
       shareId: review.shareId,
       writerId: review.writerId,
       grade: review.grade,
@@ -42,7 +28,7 @@ export class CreateReviewUsecase {
     await this.reviewShortReviewRepo.save(reviewShortReviews);
 
     // 나눔지수 업데이트
-    const user = await this.userRepo.findById(recipientId);
+    const user = await this.userRepo.findById(review.recipientId);
     if (!user) {
       throw new Error("후기를 받는 회원이 존재하지 않습니다.");
     }
@@ -64,7 +50,7 @@ export class CreateReviewUsecase {
     }
 
     await this.userRepo.update({
-      id: recipientId,
+      id: review.recipientId,
       shareScore: newShareScore
     });
   }

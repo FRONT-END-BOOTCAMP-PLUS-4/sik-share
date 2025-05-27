@@ -12,6 +12,7 @@ import FormButton from "@/components/common/register/FormButton";
 import FormRatingSelector from "./components/FormRatingSelector";
 import FormCheckbox from "@/components/common/register/FormCheckbox";
 import { toast } from "sonner";
+import useValidateReviewWritable from "./hooks/useValidateReviewWritable";
 
 type ReviewForm = {
   grade: number;
@@ -43,12 +44,22 @@ const ratingOptions = [
 export default function CreateReviewPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   const shareId = searchParams.get("shareId");
   const userId = session?.user.id;
+  if (!shareId) notFound();
 
-  const { shortReviewOptions, loading, error } = useShortReviewOptions();
+  const {
+    shortReviewOptions,
+    loading: reviewOptionLoading,
+    error,
+  } = useShortReviewOptions();
+  const {
+    recipientId,
+    recipientNickname,
+    loading: validationLoading,
+  } = useValidateReviewWritable(Number(shareId), userId);
 
   const form = useForm<ReviewForm>({
     mode: "onSubmit",
@@ -71,6 +82,7 @@ export default function CreateReviewPage() {
         body: JSON.stringify({
           ...values,
           shareId,
+          recipientId,
           writerId: userId,
         }),
       });
@@ -92,21 +104,20 @@ export default function CreateReviewPage() {
         },
       });
     } catch (error) {
-      console.error("후기기 등록 중 오류 발생:", error);
+      console.error("후기 등록 중 오류 발생:", error);
       toast.error("네트워크 오류가 발생했습니다. 다시 시도해주세요.");
     }
   };
 
-  if (!shareId) notFound();
   return (
     <>
-      {loading ? (
+      {reviewOptionLoading || validationLoading || !recipientNickname ? (
         <Loading />
       ) : (
         <>
           <SubHeader
-            DescTitleText={`씩씩한 감자님과의
-        나눔은 어땠나요?`} /**상대방 닉네임 fetch 필요 */
+            DescTitleText={`${recipientNickname}님과의
+        나눔은 어땠나요?`}
             DescSubText="남겨주신 후기는 상대방의 프로필에 공개돼요."
           />
           <section className="h-[calc(100vh-170px)] py-6 px-4">
@@ -118,7 +129,7 @@ export default function CreateReviewPage() {
                 <FormRatingSelector
                   name="grade"
                   options={ratingOptions}
-                  rules={{ required: "최소 하나는 선택해주세요." }}
+                  rules={{ required: "평점을 선택해주세요." }}
                 />
                 <FormCheckbox
                   name="shortReviews"

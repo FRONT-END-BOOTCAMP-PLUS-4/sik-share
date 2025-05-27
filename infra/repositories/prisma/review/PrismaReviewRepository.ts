@@ -12,4 +12,13 @@ export class PrismaReviewRepository implements ReviewRepository {
       data: review
     })
   }
+
+  async findByShareIdAndWriteId(shareId: number, writerId: string): Promise<Review | null> {
+    return await this.prisma.review.findFirst({
+      where: {
+        shareId: shareId,
+        writerId: writerId
+      }
+    })
+  }
 }
