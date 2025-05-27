@@ -10,10 +10,10 @@ import { Button } from "@/components/ui/button";
 import FormInput from "@/components/common/FormInput";
 import SubHeader from "@/components/common/SubHeader";
 import type { LocationData } from "@/types/types";
-import FormMultiImageUpload from "../components/FormMultiImageUpload";
-import FormCalendar from "../components/FormCalendar";
-import FormDetail from "../components/FormDetail";
-import LocationSelectModal from "../components/LocationSelectModal";
+import FormMultiImageUpload from "@/components/common/register/FormMultiImageUpload";
+import FormCalendar from "@/components/common/register/FormCalendar";
+import FormDetail from "@/components/common/register/FormDetail";
+import LocationSelectModal from "@/components/common/register/LocationSelectModal";
 
 type GroupBuyForm = {
   title: string;

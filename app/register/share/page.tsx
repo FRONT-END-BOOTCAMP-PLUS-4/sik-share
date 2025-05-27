@@ -12,10 +12,10 @@ import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import type { LocationData } from "@/types/types";
 import useShareItmes from "./hooks/useShareItems";
-import FormDetail from "../components/FormDetail";
-import FormSelect from "../components/FormSelect";
-import FormMultiImageUpload from "../components/FormMultiImageUpload";
-import LocationSelectModal from "../components/LocationSelectModal";
+import FormDetail from "@/components/common/register/FormDetail";
+import FormSelect from "@/components/common/register/FormSelect";
+import FormMultiImageUpload from "@/components/common/register/FormMultiImageUpload";
+import LocationSelectModal from "@/components/common/register/LocationSelectModal";
 
 type ShareForm = {
   title: string;
