@@ -14,6 +14,7 @@ export interface WriterProfile {
 
 
 export interface ReviewRepository {
-    getUserReviews(params: GetUserReviews): Promise<(Review & WriterProfile)[]>;
-    getCount(where: Prisma.ReviewWhereInput): Promise<number>;
+  getCount(where: Prisma.ReviewWhereInput): Promise<number>;
+  getUserReviews(params: GetUserReviews): Promise<(Review & WriterProfile)[]>;
+  getbyRecipientId(id: string): Promise<number[]>;
 }

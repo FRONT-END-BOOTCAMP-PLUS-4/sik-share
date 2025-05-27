@@ -12,6 +12,10 @@ export class PrismaReviewRepository implements ReviewRepository {
     this.prisma = new PrismaClient();
   }
 
+  async getCount(where: Prisma.ReviewWhereInput): Promise<number> {
+    return this.prisma.review.count({ where });
+  }
+
   async getUserReviews({
     recipientId,
     offset,
@@ -20,7 +24,7 @@ export class PrismaReviewRepository implements ReviewRepository {
     const reviews = await this.prisma.review.findMany({
       where: {
         recipientId: recipientId,
-        content: { not: null,},
+        content: { not: null },
       },
       skip: offset,
       take: itemsPerPage,
@@ -44,7 +48,12 @@ export class PrismaReviewRepository implements ReviewRepository {
     }));
   }
 
-  async getCount(where: Prisma.ReviewWhereInput): Promise<number> {
-    return this.prisma.review.count({ where });
+  async getbyRecipientId(id: string): Promise<number[]> {
+    const reviews = await this.prisma.review.findMany({
+      where: { recipientId: id },
+      select: { id: true },
+    });
+
+    return reviews.map((r) => r.id);
   }
 }

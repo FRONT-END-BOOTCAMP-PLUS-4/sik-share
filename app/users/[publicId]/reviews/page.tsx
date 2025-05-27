@@ -46,6 +46,11 @@ export default function Reviews() {
           총 받은 후기
           <span className="text-primary pl-1">{counts.review}</span>
         </div>
+        {items.length === 0 && !loading && (
+          <p className="pt-8 text-center text-gray-400">
+            아직 받은 후기가 없어요.
+          </p>
+        )}
         <ul className="flex flex-col gap-4 pt-3">
           {items.map((item) => (
             <ReviewListItem key={item.id} {...(item as ReviewListItemProps)} />
