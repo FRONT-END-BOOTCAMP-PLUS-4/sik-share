@@ -7,6 +7,7 @@ import KakaoMap from "@/components/details/KakaoMapDetail";
 import { GroupBadges } from "@/components/details/GroupBadges";
 import { AuthorInfo } from "@/components/details/AuthorInfo";
 import { DetailFooter } from "@/components/details/DetailFooter";
+import { useRouter, usePathname } from "next/navigation";
 
 export default function GroupBuyPage() {
   const DummyImage = [
@@ -14,6 +15,13 @@ export default function GroupBuyPage() {
     "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDJ8fGZvb2R8ZW58MHx8fHwxNjg3NTY5NzA1&ixlib=rb-4.0.3&q=80&w=400",
     "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
   ];
+
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const handleClick = () => {
+    router.push(`${pathname}/meet`);
+  };
 
   return (
     <div className="relative min-h-screen">
@@ -44,12 +52,22 @@ export default function GroupBuyPage() {
         <section className="flex flex-col h-[200px] mt-4 mb-[58px]">
           <div className="flex justify-between mb-1">
             <p className="text-[12px]">만남 장소</p>
-            <div className="flex items-center gap-0.5">
+            <button
+              className="flex items-center gap-0.5 cursor-pointer"
+              onClick={handleClick}
+              type="button"
+            >
               <MapPin size={16} />
-              <p className="text-[12px]">관악청년청 앞</p>
-            </div>
+              <p className="text-[12px]">상세보기</p>
+            </button>
           </div>
-          <KakaoMap width="100%" height="100%" lat={37.479} lng={126.9416} />
+          <KakaoMap
+            width="100%"
+            height="100%"
+            lat={37.479}
+            lng={126.9416}
+            location={"관악 청년청 앞"}
+          />
         </section>
       </div>
       <DetailFooter />

@@ -4,7 +4,7 @@ import SubHeader from "@/components/common/SubHeader";
 import KakaoMap from "@/components/details/KakaoMapDetail";
 import { DetailFooter } from "@/components/details/DetailFooter";
 
-export default function GroupBuyMeetPage() {
+export default function ShareMeetPage() {
   return (
     <div className="relative w-full h-screen min-h-screen">
       <SubHeader titleText="만남 장소" />
