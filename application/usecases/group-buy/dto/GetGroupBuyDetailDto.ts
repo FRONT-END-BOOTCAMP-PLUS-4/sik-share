@@ -3,6 +3,7 @@ export class GetGroupBuyDetailDto {
     public id: number,
     public title: string,
     public desc: string,
+    public organizerId: string,
     public organizerNickname: string,
     public organizerProfileUrl: string,
     public organizerShareScore: number,

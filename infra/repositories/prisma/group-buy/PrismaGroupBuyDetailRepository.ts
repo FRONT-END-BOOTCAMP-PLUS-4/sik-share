@@ -17,6 +17,7 @@ export class PrismaGroupBuyDetailRepository
       include: {
         organizer: {
           select: {
+            id: true,
             nickname: true,
             profileUrl: true,
             shareScore: true,
@@ -50,6 +51,7 @@ export class PrismaGroupBuyDetailRepository
       groupBuy.id,
       groupBuy.title,
       groupBuy.description,
+      groupBuy.organizer.id,
       groupBuy.organizer.nickname,
       groupBuy.organizer.profileUrl ?? "",
       groupBuy.organizer.shareScore,

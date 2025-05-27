@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { Clock, MapPin, Salad } from "lucide-react";
 import SubHeader from "@/components/common/SubHeader";
 import Carousel from "@/components/common/shares/Carousel";
@@ -10,11 +11,13 @@ import { GroupBadges } from "@/components/details/GroupBadges";
 import { AuthorInfo } from "@/components/details/AuthorInfo";
 import { DetailFooter } from "@/components/details/DetailFooter";
 import { differenceInCalendarDays } from "date-fns";
+import Loading from "@/components/common/Loading";
 
 interface GroupBuyData {
   id: number;
   title: string;
   desc: string;
+  organizerId: string;
   organizerNickname: string;
   organizerProfileUrl: string;
   organizerShareScore: number;
@@ -31,6 +34,7 @@ interface GroupBuyData {
 
 export default function GroupBuyPage() {
   const [groupBuy, setGroupBuy] = useState<GroupBuyData | null>(null);
+  const [isOwner, setIsOwner] = useState<boolean | null>(null);
 
   const router = useRouter();
   const pathname = usePathname();
@@ -46,6 +50,8 @@ export default function GroupBuyPage() {
     router.push(`${pathname}/meet?${query}`);
   };
 
+  const session = useSession();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -59,7 +65,16 @@ export default function GroupBuyPage() {
     fetchData();
   }, [groupBuyId]);
 
-  if (!groupBuy) return <div className="p-4">불러오는 중...</div>;
+  useEffect(() => {
+    if (!session.data || !groupBuy) {
+      setIsOwner(null);
+      return;
+    }
+
+    setIsOwner(session.data.user.id === groupBuy.organizerId);
+  }, [session.data, groupBuy]);
+
+  if (!groupBuy) return <Loading />;
 
   const isDday = differenceInCalendarDays(
     new Date(groupBuy.meetingDate),
@@ -128,7 +143,7 @@ export default function GroupBuyPage() {
           />
         </section>
       </div>
-      <DetailFooter />
+      <DetailFooter isOwner={isOwner ?? false} />
     </div>
   );
 }
