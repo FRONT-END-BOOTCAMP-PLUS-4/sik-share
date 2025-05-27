@@ -22,6 +22,7 @@ interface Message {
     profileUrl?: string;
   };
   readCount: number;
+  count?: number;
 }
 
 interface TogetherInfoProps {
@@ -60,6 +61,7 @@ interface FormattedMessage {
   message: string;
   readCount: number;
   time: string;
+  count?: number;
 }
 
 // ====== 메시지 변환 함수 ======
@@ -82,6 +84,7 @@ function toFormattedMessage(
     message: msg.content,
     readCount: msg.readCount,
     time: msg.createdAt,
+    count: msg.count,
   };
 }
 
@@ -112,6 +115,7 @@ export default function ChatRoom({
     const msgEvent =
       type === "together" ? "groupbuy chat message" : "chat message";
     const handler = (msg: Message) => {
+      console.log("[소켓 메시지 수신] 서버에서 받은 msg:", msg);
       setMessages((prev) => {
         const idx = prev.findIndex((m) => m.id === msg.id);
         if (idx !== -1) {
@@ -153,6 +157,8 @@ export default function ChatRoom({
   const handleSendMessage = (msg: Message) => {
     // 단체채팅과 1:1채팅에 따라 이벤트 분기
     if (type === "together") {
+      const participantCount = togetherInfo?.participantCount ?? 1;
+      msg.count = Math.max(0, participantCount - 1);
       socket.emit("groupbuy chat message", msg);
     } else {
       socket.emit("chat message", msg);

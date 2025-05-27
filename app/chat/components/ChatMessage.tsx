@@ -9,6 +9,7 @@ interface ChatMessageProps {
   message: string;
   readCount?: number;
   time?: string;
+  count?: number;
 }
 
 export default function ChatMessage({
@@ -18,7 +19,24 @@ export default function ChatMessage({
   message,
   readCount = 0,
   time = "",
+  count,
 }: ChatMessageProps) {
+  console.log("[ChatMessage]", {
+    type,
+    nickname,
+    message,
+    count,
+    readCount,
+    time,
+  });
+
+  const displayCount =
+    typeof count === "number" && count > 0
+      ? count
+      : readCount > 0
+        ? readCount
+        : null;
+
   return (
     <>
       {type === "other" && (
@@ -37,8 +55,8 @@ export default function ChatMessage({
                 {message}
               </div>
               <div className="flex flex-col items-start justify-center">
-                {readCount > 0 && (
-                  <div className="label text-primary">{readCount}</div>
+                {displayCount !== null && (
+                  <div className="label text-primary">{displayCount}</div>
                 )}
                 <div className="label self-end mb-1">
                   {time.trim() ? dayjs(time).locale("ko").format("A h:mm") : ""}
@@ -54,8 +72,8 @@ export default function ChatMessage({
           <div className="flex flex-col items-end">
             <div className="flex items-end gap-1">
               <div className="flex flex-col items-end justify-center">
-                {readCount > 0 && (
-                  <div className="label text-primary">{readCount}</div>
+                {displayCount !== null && (
+                  <div className="label text-primary">{displayCount}</div>
                 )}
                 <div className="label mb-1">
                   {time.trim() ? dayjs(time).locale("ko").format("A h:mm") : ""}

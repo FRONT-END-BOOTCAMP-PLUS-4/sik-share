@@ -29,9 +29,8 @@ export default function ChatInput({
       content: trimmed,
       createdAt: new Date().toISOString(),
     };
-
-    // socket.emit("chat message", msg);
     onSend(msg);
+    console.log("input에서 보낸 메시지:", msg);
     setText("");
   };
 

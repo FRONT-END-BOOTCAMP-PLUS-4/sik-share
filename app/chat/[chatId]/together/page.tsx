@@ -40,6 +40,8 @@ export default function TogetherChat() {
     );
   }
 
+  console.log(messages);
+
   return (
     <ChatRoom
       type="together"

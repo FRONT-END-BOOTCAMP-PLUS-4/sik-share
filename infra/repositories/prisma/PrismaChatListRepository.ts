@@ -6,6 +6,7 @@ import { GroupBuyChatListDto } from "@/application/usecases/chat/dto/GroupBuyCha
 const prisma = new PrismaClient();
 
 export class PrismaChatListRepository implements ChatListRepository {
+  // 1:1 나눔 채팅방 리스트
   async findChatListByUserId(userId: string): Promise<ShareChatListItemDto[]> {
     const chats = await prisma.shareChat.findMany({
       where: {
@@ -50,7 +51,7 @@ export class PrismaChatListRepository implements ChatListRepository {
         const me = chat.participants.find((p) => p.user.id === userId);
         const other = chat.participants.find((p) => p.user.id !== userId);
 
-        // 안읽은 메시지(상대방이 보낸 readCount === 1인 메시지 개수)
+        // 안읽은 메시지 개수 (상대방이 보낸 것 중 내가 안 읽은 것)
         const unreadCount = await prisma.shareChatMessage.count({
           where: {
             shareChatId: chat.id,
@@ -74,54 +75,78 @@ export class PrismaChatListRepository implements ChatListRepository {
     );
   }
 
-  // 공동장보기(단체) 채팅방 리스트
-async getGroupBuyChatListByUserId(userId: string): Promise<GroupBuyChatListDto[]> {
-  const participants = await prisma.groupBuyChatParticipant.findMany({
-    where: { userId },
-    include: {
-      groupBuyChat: {
-        include: {
-          groupBuy: {
-            include: {
-              images: {
-                where: { order: 0 },
-                take: 1,
+  // 단체채팅방(공동장보기) 리스트
+  async getGroupBuyChatListByUserId(userId: string): Promise<GroupBuyChatListDto[]> {
+    const participants = await prisma.groupBuyChatParticipant.findMany({
+      where: { userId },
+      include: {
+        groupBuyChat: {
+          include: {
+            groupBuy: {
+              include: {
+                images: {
+                  where: { order: 0 },
+                  take: 1,
+                },
               },
             },
-          },
-          messages: {
-            orderBy: { createdAt: "desc" },
-            take: 1,
+            messages: {
+              orderBy: { createdAt: "desc" },
+              take: 1,
+            },
           },
         },
       },
-    },
-  });
+    });
 
-  // participantCount를 await로 각각 조회해야 하므로 map + Promise.all 사용
-  return await Promise.all(
-    participants.map(async (participant) => {
-      const chat = participant.groupBuyChat;
-      const groupBuy = chat.groupBuy;
-      const lastMsg = chat.messages[0];
-      const mainImage = groupBuy.images[0]?.url ?? null;
+    // 각 채팅방별로 unreadCount 포함시켜 반환
+    const chatList = await Promise.all(
+      participants.map(async (participant) => {
+        const chat = participant.groupBuyChat;
+        const groupBuy = chat.groupBuy;
+        const lastMsg = chat.messages[0];
+        const mainImage = groupBuy.images[0]?.url ?? null;
 
-      // 진짜 채팅방 참여자 수를 카운트 (groupBuyChatParticipant에서 groupBuyChatId 기준)
-      const participantCount = await prisma.groupBuyChatParticipant.count({
-        where: { groupBuyChatId: chat.id },
-      });
+        // 🟢 안읽은 메시지 개수 (내가 안 읽은 메시지)
+        const unreadCount = await prisma.groupBuyChatMessage.count({
+          where: {
+            groupBuyChatId: chat.id,
+            senderId: { not: userId },
+            GroupBuyChatMessageRead: { none: { userId } },
+          },
+        });
 
-      return new GroupBuyChatListDto(
-        chat.id,
-        groupBuy.id,
-        groupBuy.title,
-        mainImage ? [mainImage] : [],
-        lastMsg ? lastMsg.content : null,
-        lastMsg ? lastMsg.createdAt : null,
-        participantCount,
-        "together",
-      );
-    })
-  );
-}
+        // 채팅방 참여자 수
+        const participantCount = await prisma.groupBuyChatParticipant.count({
+          where: { groupBuyChatId: chat.id },
+        });
+
+        // 필요하면 GroupBuyChatListDto에 unreadCount 필드도 추가!
+        // 아래에 unreadCount 같이 반환
+        // (GroupBuyChatListDto에 unreadCount: number 추가 필요)
+        return {
+          ...new GroupBuyChatListDto(
+            chat.id,
+            groupBuy.id,
+            groupBuy.title,
+            mainImage ? [mainImage] : [],
+            lastMsg ? lastMsg.content : null,
+            lastMsg ? lastMsg.createdAt : null,
+            participantCount,
+            "together"
+          ),
+          unreadCount, // 이 필드가 프론트에서 필요하다면 Dto 정의도 수정
+        };
+      })
+    );
+
+    // 🟢 최신 메시지 기준으로 정렬
+    chatList.sort((a, b) => {
+      const aDate = a.lastMessageAt ? new Date(a.lastMessageAt).getTime() : 0;
+      const bDate = b.lastMessageAt ? new Date(b.lastMessageAt).getTime() : 0;
+      return bDate - aDate;
+    });
+
+    return chatList;
+  }
 }

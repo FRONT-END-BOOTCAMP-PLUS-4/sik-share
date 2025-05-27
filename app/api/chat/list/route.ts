@@ -21,10 +21,12 @@ export async function GET(req: NextRequest) {
   try {
     if (type === "share") {
       const shareChats = await new GetChatListUsecase(repo).execute(session.user.id);
+      console.log("나눔 채팅방 목록:", shareChats);
       return NextResponse.json(shareChats);
     }
     if (type === "together") {
       const groupBuyChats = await new GetGroupBuyChatListUsecase(repo).execute(session.user.id);
+      console.log("같이 장보기 채팅방 목록:", groupBuyChats);
       return NextResponse.json(groupBuyChats);
     }
     const [shareChats, groupBuyChats] = await Promise.all([
