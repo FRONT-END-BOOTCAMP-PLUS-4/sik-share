@@ -25,6 +25,7 @@ interface GroupBuyData {
   lat: number;
   lng: number;
   desiredItem: string;
+  thumbnailUrls: string[];
 }
 
 export default function GroupBuyPage() {
@@ -32,11 +33,16 @@ export default function GroupBuyPage() {
 
   const router = useRouter();
   const pathname = usePathname();
-
   const groupBuyId = pathname.split("/").pop();
 
   const handleClick = () => {
-    router.push(`${pathname}/meet`);
+    const query = new URLSearchParams({
+      lat: String(groupBuy?.lat),
+      lng: String(groupBuy?.lng),
+      location: String(groupBuy?.locationNote ?? ""),
+    }).toString();
+
+    router.push(`${pathname}/meet?${query}`);
   };
 
   useEffect(() => {
@@ -63,9 +69,7 @@ export default function GroupBuyPage() {
           <p className="title-md mb-4">{groupBuy.title}</p>
           <Carousel
             images={
-              groupBuy.participantProfileUrls.length > 0
-                ? groupBuy.participantProfileUrls
-                : []
+              groupBuy.thumbnailUrls.length > 0 ? groupBuy.thumbnailUrls : []
             }
           />
         </section>

@@ -19,11 +19,11 @@ export default function Carousel({ images }: CarouselProps) {
         slidesPerView={1}
         className="!pb-0"
       >
-        {images.map((src, index) => (
-          <SwiperSlide key={index}>
+        {images.map((src) => (
+          <SwiperSlide key={src}>
             <img
               src={src}
-              alt={`slide-${index}`}
+              alt={`slide-${src}`}
               className="w-full h-[260px] object-cover rounded-lg"
             />
           </SwiperSlide>

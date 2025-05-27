@@ -31,11 +31,12 @@ export class PrismaGroupBuyDetailRepository
             },
           },
         },
-        // groupBuyImages: {
-        //     where: {
-
-        //     }
-        // }
+        images: {
+            orderBy: { order: 'asc' },
+            select: {
+                url: true,
+            }
+        }
       },
     });
 
@@ -60,6 +61,7 @@ export class PrismaGroupBuyDetailRepository
       groupBuy.lat,
       groupBuy.lng,
       groupBuy.desiredItem,
+      groupBuy.images.map((img) => img.url),
     );
   }
 }
