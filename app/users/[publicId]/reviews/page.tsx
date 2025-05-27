@@ -8,7 +8,7 @@ import ReviewListItem, {
 import { useUserInfo } from "@/app/users/hooks/useUserInfo";
 import { useTotalCounts } from "@/app/users/hooks/useTotalCounts";
 import { useInfiniteScroll } from "@/hooks/useInfinityScroll";
-import LoadingLottie from "@/components/lotties/LoadingLottie";
+import { LoadingFoodLottie } from "@/components/lotties/LoadingFoodLottie";
 
 export default function Reviews() {
   const { publicId } = useUserInfo();
@@ -52,7 +52,7 @@ export default function Reviews() {
           ))}
         </ul>
         <div ref={ref} className="h-4/5" />
-        {loading && <LoadingLottie />}
+        {loading && <LoadingFoodLottie />}
         {items.length !== 0 && !hasMore && (
           <p className="pt-8 text-center text-gray-400">
             모든 항목을 불러왔어요.

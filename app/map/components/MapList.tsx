@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import { useInfiniteScroll } from "@/hooks/useInfinityScroll";
 import { useMapFilterStore } from "@/stores/useMapFilterStore";
 import { ListCard } from "@/components/common/ListCard";
-import { LoadingLottie } from "./LoadingLottie";
+import { LoadingFoodLottie } from "@/components/lotties/LoadingFoodLottie";
 import { format } from "date-fns";
 
 interface MapListProps {
@@ -136,7 +136,7 @@ export function MapList({ selectedId }: MapListProps) {
           id={""}
         />
       ))}
-      {loading && <LoadingLottie />}
+      {loading && <LoadingFoodLottie />}
       <div ref={ref} className="h-4/5" />
     </div>
   );
