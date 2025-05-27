@@ -1,5 +1,6 @@
 export class GetGroupBuyDetailDto {
   constructor(
+    public id: number,
     public title: string,
     public desc: string,
     public organizerNickname: string,
@@ -7,6 +8,7 @@ export class GetGroupBuyDetailDto {
     public organizerShareScore: number,
     public participantProfileUrls: string[],
     public capacity: number,
+    public currentParticipantCount: number,
     public meetingDate: Date,
     public locationNote: string,
     public lat: number,

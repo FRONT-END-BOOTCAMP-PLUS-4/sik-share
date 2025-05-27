@@ -31,6 +31,11 @@ export class PrismaGroupBuyDetailRepository
             },
           },
         },
+        // groupBuyImages: {
+        //     where: {
+
+        //     }
+        // }
       },
     });
 
@@ -43,9 +48,9 @@ export class PrismaGroupBuyDetailRepository
     return new GetGroupBuyDetailDto(
       groupBuy.id,
       groupBuy.title,
-      groupBuy.desc,
+      groupBuy.description,
       groupBuy.organizer.nickname,
-      groupBuy.organizer.profileUrl,
+      groupBuy.organizer.profileUrl ?? "",
       groupBuy.organizer.shareScore,
       participantProfileUrls,
       groupBuy.capacity,
