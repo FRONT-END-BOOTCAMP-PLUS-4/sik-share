@@ -43,7 +43,6 @@ export default function ShareChat() {
         if (res.ok) {
           const data = await res.json();
           setChatData(data);
-          console.log("메시지 불러오기 성공", data);
         } else {
           console.error("메시지 불러오기 실패", await res.text());
         }

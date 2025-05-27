@@ -22,5 +22,6 @@ export interface ChatMessageRepository {
     thumbnailUrl: string;
     locationNote: string;
     meetingDate?: string;
+    status: number;
   }>;
 }

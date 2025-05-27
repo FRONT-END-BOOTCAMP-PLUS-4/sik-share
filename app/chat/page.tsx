@@ -14,7 +14,10 @@ export default function ChatList() {
   useEffect(() => {
     fetch("/api/chat/list?type=share")
       .then((res) => res.json())
-      .then((data) => setShareData(data));
+      .then((data) => {
+        setShareData(data);
+        console.log("서버에서 받아온 shareData:", data);
+      });
 
     socket.on("메세지", (msg) => {
       console.log("받은 메시지:", msg);
