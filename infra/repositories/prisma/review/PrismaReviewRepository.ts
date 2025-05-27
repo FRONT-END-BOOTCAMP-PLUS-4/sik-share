@@ -24,7 +24,7 @@ export class PrismaReviewRepository implements ReviewRepository {
     const reviews = await this.prisma.review.findMany({
       where: {
         recipientId: recipientId,
-        content: { not: null },
+        content: { not: "" },
       },
       skip: offset,
       take: itemsPerPage,

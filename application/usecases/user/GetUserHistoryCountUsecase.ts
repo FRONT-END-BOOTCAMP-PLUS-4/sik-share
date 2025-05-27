@@ -65,7 +65,7 @@ export class GetUserHistoryCountUsecase {
     }
 
     if (tabType === "review") {
-      const review = await this.reviewRepo.getCount({ recipientId: user?.id, content: { not: null,}, });
+      const review = await this.reviewRepo.getCount({ recipientId: user?.id, content: { not: "",}, });
       return { review };
     }
 
