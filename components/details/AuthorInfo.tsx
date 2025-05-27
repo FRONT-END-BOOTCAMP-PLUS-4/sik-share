@@ -1,7 +1,11 @@
 import Image from "next/image";
 import { AvatarGroup } from "./AvatarGroup";
 
-export function AuthorInfo() {
+interface AuthorInfoProps {
+  variant: "share" | "groupbuy";
+}
+
+export function AuthorInfo({ variant }: AuthorInfoProps) {
   return (
     <section className="flex items-center mt-4 pb-2 border-b">
       <Image
@@ -16,7 +20,7 @@ export function AuthorInfo() {
           <p className="body-md">씩씩한 감자</p>
           <p className="text-[12px] text-primary">19.5°C</p>
         </div>
-        <AvatarGroup count={3} />
+        {variant === "groupbuy" && <AvatarGroup count={3} />}
       </div>
     </section>
   );

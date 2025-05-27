@@ -7,6 +7,7 @@ import KakaoMap from "@/components/details/KakaoMapDetail";
 import { GroupBadges } from "@/components/details/GroupBadges";
 import { AuthorInfo } from "@/components/details/AuthorInfo";
 import { DetailFooter } from "@/components/details/DetailFooter";
+import { useRouter } from "next/navigation";
 
 export default function GroupBuyPage() {
   const DummyImage = [
@@ -14,6 +15,8 @@ export default function GroupBuyPage() {
     "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDJ8fGZvb2R8ZW58MHx8fHwxNjg3NTY5NzA1&ixlib=rb-4.0.3&q=80&w=400",
     "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
   ];
+
+  const router = useRouter();
 
   return (
     <div className="relative min-h-screen">
@@ -25,7 +28,7 @@ export default function GroupBuyPage() {
           <Carousel images={DummyImage} />
         </section>
 
-        <AuthorInfo />
+        <AuthorInfo variant={"groupbuy"} />
 
         <section className="text-zinc-500 caption mt-2">
           <div className="flex items-center gap-[1px]">

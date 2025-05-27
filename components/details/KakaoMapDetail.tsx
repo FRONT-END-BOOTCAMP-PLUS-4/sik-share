@@ -55,5 +55,5 @@ export default function KakaoMapDetail({
     }
   }, [lat, lng]);
 
-  return <div ref={mapRef} style={{ width, height, borderRadius: "16px" }} />;
+  return <div ref={mapRef} style={{ width, height }} />;
 }

@@ -25,7 +25,7 @@ export default function GroupBuyPage() {
           <Carousel images={DummyImage} />
         </section>
 
-        <AuthorInfo />
+        <AuthorInfo variant={"share"} />
 
         <section className="text-zinc-500 caption mt-2">
           <div className="flex items-center gap-[1px]">
