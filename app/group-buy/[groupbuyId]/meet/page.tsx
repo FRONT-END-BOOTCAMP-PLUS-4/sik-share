@@ -4,12 +4,15 @@ import { useSearchParams } from "next/navigation";
 import SubHeader from "@/components/common/SubHeader";
 import KakaoMap from "@/components/details/KakaoMapDetail";
 import { DetailFooter } from "@/components/details/DetailFooter";
+import { useSessionStore } from "@/stores/useSessionStore";
 
 export default function GroupBuyMeetPage() {
   const searchParams = useSearchParams();
   const lat = Number(searchParams.get("lat"));
   const lng = Number(searchParams.get("lng"));
   const location = searchParams.get("location") ?? "";
+
+  const isOwner = useSessionStore((state) => state.isOwner);
 
   return (
     <div className="relative w-full h-screen min-h-screen">
@@ -20,7 +23,7 @@ export default function GroupBuyMeetPage() {
         lng={lng}
         location={location}
       />
-      <DetailFooter />
+      <DetailFooter isOwner={isOwner} />
     </div>
   );
 }

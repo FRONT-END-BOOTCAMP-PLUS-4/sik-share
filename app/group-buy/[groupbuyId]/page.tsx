@@ -12,6 +12,7 @@ import { AuthorInfo } from "@/components/details/AuthorInfo";
 import { DetailFooter } from "@/components/details/DetailFooter";
 import { differenceInCalendarDays } from "date-fns";
 import Loading from "@/components/common/Loading";
+import { useSessionStore } from "@/stores/useSessionStore";
 
 interface GroupBuyData {
   id: number;
@@ -34,7 +35,7 @@ interface GroupBuyData {
 
 export default function GroupBuyPage() {
   const [groupBuy, setGroupBuy] = useState<GroupBuyData | null>(null);
-  const [isOwner, setIsOwner] = useState<boolean | null>(null);
+  const { isOwner, setIsOwner } = useSessionStore();
 
   const router = useRouter();
   const pathname = usePathname();
@@ -67,12 +68,12 @@ export default function GroupBuyPage() {
 
   useEffect(() => {
     if (!session.data || !groupBuy) {
-      setIsOwner(null);
+      setIsOwner(false);
       return;
     }
 
     setIsOwner(session.data.user.id === groupBuy.organizerId);
-  }, [session.data, groupBuy]);
+  }, [session.data, groupBuy, setIsOwner]);
 
   if (!groupBuy) return <Loading />;
 
