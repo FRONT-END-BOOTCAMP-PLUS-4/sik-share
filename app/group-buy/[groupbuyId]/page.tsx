@@ -108,12 +108,12 @@ export default function GroupBuyPage() {
         />
 
         <section className="text-zinc-500 caption mt-2">
-          <div className="flex items-center gap-[1px]">
-            <Clock size={15} />
+          <div className="flex items-center gap-0.5">
+            <Clock size={15} strokeWidth={1} />
             <p>{new Date(groupBuy.meetingDate).toLocaleDateString()}</p>
           </div>
-          <div className="flex items-center gap-[1px]">
-            <Salad size={15} />
+          <div className="flex items-center gap-0.5">
+            <Salad size={15} strokeWidth={1} />
             <p>{groupBuy.desiredItem}</p>
           </div>
         </section>
