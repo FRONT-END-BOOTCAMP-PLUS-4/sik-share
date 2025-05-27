@@ -100,41 +100,43 @@ export default function CreateReviewPage() {
   if (!shareId) notFound();
   return (
     <>
-      <SubHeader
-        DescTitleText={`씩씩한 감자님과의
-        나눔은 어땠나요?`} /**상대방 닉네임 fetch 필요 */
-        DescSubText="남겨주신 후기는 상대방의 프로필에 공개돼요."
-      />
       {loading ? (
         <Loading />
       ) : (
-        <section className="h-[calc(100vh-170px)] py-6 px-4">
-          <Form {...form}>
-            <form
-              className="flex flex-col gap-6"
-              onSubmit={form.handleSubmit(onSubmit)}
-            >
-              <FormRatingSelector
-                name="grade"
-                options={ratingOptions}
-                rules={{ required: "최소 하나는 선택해주세요." }}
-              />
-              <FormCheckbox
-                name="shortReviews"
-                label="어떤 점이 좋았나요?"
-                options={shortReviewOptions}
-                rules={{ required: "최소 하나는 선택해주세요." }}
-              />
-              <FormDetail
-                name="content"
-                label="따뜻한 나눔 경험을 공유해주세요!"
-                placeholder="여기에 적어주세요. (선택사항)"
-                labelClassName="font-bold"
-              />
-              <FormButton onClick={() => {}}>작성 완료</FormButton>
-            </form>
-          </Form>
-        </section>
+        <>
+          <SubHeader
+            DescTitleText={`씩씩한 감자님과의
+        나눔은 어땠나요?`} /**상대방 닉네임 fetch 필요 */
+            DescSubText="남겨주신 후기는 상대방의 프로필에 공개돼요."
+          />
+          <section className="h-[calc(100vh-170px)] py-6 px-4">
+            <Form {...form}>
+              <form
+                className="flex flex-col gap-6"
+                onSubmit={form.handleSubmit(onSubmit)}
+              >
+                <FormRatingSelector
+                  name="grade"
+                  options={ratingOptions}
+                  rules={{ required: "최소 하나는 선택해주세요." }}
+                />
+                <FormCheckbox
+                  name="shortReviews"
+                  label="어떤 점이 좋았나요?"
+                  options={shortReviewOptions}
+                  rules={{ required: "최소 하나는 선택해주세요." }}
+                />
+                <FormDetail
+                  name="content"
+                  label="따뜻한 나눔 경험을 공유해주세요!"
+                  placeholder="여기에 적어주세요. (선택사항)"
+                  labelClassName="font-bold"
+                />
+                <FormButton onClick={() => {}}>작성 완료</FormButton>
+              </form>
+            </Form>
+          </section>
+        </>
       )}
     </>
   );
