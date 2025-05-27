@@ -1,6 +1,7 @@
 import type {
   GetUserReviews,
   ReviewRepository,
+  WriterProfile,
 } from "@/domain/repositories/review/ReviewRepository";
 import { type Prisma, PrismaClient, type Review } from "@/prisma/generated";
 
@@ -12,19 +13,35 @@ export class PrismaReviewRepository implements ReviewRepository {
   }
 
   async getUserReviews({
-    publicId,
+    recipientId,
     offset,
     itemsPerPage,
-  }: GetUserReviews): Promise<Review[]> {
-    return this.prisma.review.findMany({
-      where: { recipientId: publicId },
+  }: GetUserReviews): Promise<(Review & WriterProfile)[]> {
+    const reviews = await this.prisma.review.findMany({
+      where: {
+        recipientId: recipientId,
+        content: { not: null,},
+      },
       skip: offset,
       take: itemsPerPage,
       orderBy: { createdAt: "desc" },
       include: {
-        writer: true,
+        writer: {
+          select: {
+            shareScore: true,
+            nickname: true,
+            profileUrl: true,
+          },
+        },
       },
     });
+
+    return reviews.map((review) => ({
+      ...review,
+      writerShareScore: review.writer?.shareScore ?? 0,
+      writerNickname: review.writer?.nickname ?? "익명",
+      writerProfileUrl: review.writer?.profileUrl ?? "",
+    }));
   }
 
   async getCount(where: Prisma.ReviewWhereInput): Promise<number> {
