@@ -1,7 +1,17 @@
+"use client";
+
 import SubHeader from "@/components/common/SubHeader";
-import ReviewListItem from "../../components/ReviewListItem";
+import ReviewListItem from "@/app/users/components/ReviewListItem";
+import { useUserInfo } from "@/app/users/hooks/useUserInfo";
+import { useTotalCounts } from "@/app/users/hooks/useTotalCounts";
 
 export default function Reviews() {
+  const { publicId } = useUserInfo();
+  const { counts } = useTotalCounts({
+    publicId,
+    type: "review",
+    tabType: "review",
+  });
   const data = [
     {
       id: "diddididcsfdm",
@@ -24,7 +34,8 @@ export default function Reviews() {
       <SubHeader titleText="후기" />
       <div className="pt-7 px-4">
         <div className="text-right body-sm text-zinc-600">
-          총 받은 후기<span className="text-primary pl-1">{data.length}</span>
+          총 받은 후기
+          <span className="text-primary pl-1">{counts.review}</span>
         </div>
         <ul className="flex flex-col gap-4">
           {data.map((item) => (

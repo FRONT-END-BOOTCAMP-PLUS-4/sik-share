@@ -1,9 +1,7 @@
-import type { participantsType, StatusType } from "@/types/types";
-
 export class GetUserHistoryCountDto {
   constructor(
     public publicId: number,
-    public type: "share" | "group-buy" | "participation",
-    public tabType: "status" | "participation",
+    public type: "share" | "group-buy" | "participation" | "review",
+    public tabType: "status" | "participation" | "review",
   ) {}
 }
