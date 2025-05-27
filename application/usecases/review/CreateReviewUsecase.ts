@@ -52,8 +52,12 @@ export class CreateReviewUsecase {
         newShareScore = newShareScore - 2 > -100 ? newShareScore - 2 : -100;
         break;
       }
+      case 1: {
+        newShareScore = newShareScore + 1 < 100 ? newShareScore + 1 : 100;
+        break;
+      }
       case 2: {
-        newShareScore = newShareScore + 1.5 < 100 ? newShareScore + 1.5 : 100;
+        newShareScore = newShareScore + 2 < 100 ? newShareScore + 2 : 100;
         break;
       }
     }

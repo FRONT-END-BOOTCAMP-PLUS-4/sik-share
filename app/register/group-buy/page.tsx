@@ -14,6 +14,7 @@ import FormMultiImageUpload from "@/components/common/register/FormMultiImageUpl
 import FormCalendar from "@/components/common/register/FormCalendar";
 import FormDetail from "@/components/common/register/FormDetail";
 import LocationSelectModal from "@/components/common/register/LocationSelectModal";
+import FormButton from "@/components/common/register/FormButton";
 
 type GroupBuyForm = {
   title: string;
@@ -168,11 +169,7 @@ export default function CreateGroupBuyPage() {
               inputClassName="cursor-pointer"
               rules={{ required: "장보기 희망 장소를 설정해주세요." }}
             />
-            <div className="absolute left-0 bottom-0 z-50 w-full py-3 px-4 bg-white border-t-1 border-zinc-300">
-              <Button variant="joinFullBtn" size="lg">
-                작성 완료
-              </Button>
-            </div>
+            <FormButton onClick={() => {}}>작성 완료</FormButton>
           </form>
         </Form>
       </section>

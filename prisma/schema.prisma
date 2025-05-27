@@ -40,6 +40,8 @@ model User {
   ShareApplication         ShareApplication[]
   shareChatMessages        ShareChatMessage[]
   shareChatParticipants    ShareChatParticipant[]
+  GroupBuyChatReads        GroupBuyChatMessageRead[]
+  ShareChatReads           ShareChatMessageRead[]
   neighborhood             Neighborhood              @relation(fields: [neighborhoodId], references: [id])
 }
 
@@ -165,6 +167,7 @@ model GroupBuyChatMessage {
   count          Int
   groupBuyChat   GroupBuyChat @relation(fields: [groupBuyChatId], references: [id])
   sender         User         @relation(fields: [senderId], references: [id])
+  reads          GroupBuyChatMessageRead[]
 }
 
 model GroupBuyChatParticipant {
@@ -175,6 +178,17 @@ model GroupBuyChatParticipant {
   lastReadItemId Int?
   groupBuyChat   GroupBuyChat @relation(fields: [groupBuyChatId], references: [id])
   user           User         @relation(fields: [userId], references: [id])
+}
+
+model GroupBuyChatMessageRead {
+  id             Int                 @id @default(autoincrement())
+  messageId      Int
+  userId         String
+  readAt         DateTime            @default(now())
+  message        GroupBuyChatMessage @relation(fields: [messageId], references: [id])
+  user           User                @relation(fields: [userId], references: [id])
+
+  @@unique([messageId, userId])
 }
 
 model ShareChat {
@@ -195,6 +209,7 @@ model ShareChatMessage {
   readCount   Int       @default(1)
   sender      User      @relation(fields: [senderId], references: [id])
   shareChat   ShareChat @relation(fields: [shareChatId], references: [id])
+  reads       ShareChatMessageRead[]
 }
 
 model ShareChatParticipant {
@@ -205,6 +220,17 @@ model ShareChatParticipant {
   lastReadItemId Int?
   shareChat      ShareChat @relation(fields: [shareChatId], references: [id])
   user           User      @relation(fields: [userId], references: [id])
+}
+
+model ShareChatMessageRead {
+  id          Int                @id @default(autoincrement())
+  messageId   Int
+  userId      String
+  readAt      DateTime           @default(now())
+  message     ShareChatMessage   @relation(fields: [messageId], references: [id])
+  user        User               @relation(fields: [userId], references: [id])
+
+  @@unique([messageId, userId])
 }
 
 model ShareApplication {
