@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { Clock, MapPin, Salad } from "lucide-react";
 import SubHeader from "@/components/common/SubHeader";
 import Carousel from "@/components/common/shares/Carousel";
@@ -8,7 +9,7 @@ import KakaoMap from "@/components/details/KakaoMapDetail";
 import { GroupBadges } from "@/components/details/GroupBadges";
 import { AuthorInfo } from "@/components/details/AuthorInfo";
 import { DetailFooter } from "@/components/details/DetailFooter";
-import { useRouter, usePathname } from "next/navigation";
+import { differenceInCalendarDays } from "date-fns";
 
 interface GroupBuyData {
   id: number;
@@ -60,16 +61,23 @@ export default function GroupBuyPage() {
 
   if (!groupBuy) return <div className="p-4">불러오는 중...</div>;
 
+  const isDday = differenceInCalendarDays(
+    new Date(groupBuy.meetingDate),
+    new Date(),
+  );
+
   return (
     <div className="relative min-h-screen">
       <SubHeader />
       <div className="p-4">
         <section>
-          <GroupBadges />
+          <GroupBadges isDday={isDday} />
           <p className="title-md mb-4">{groupBuy.title}</p>
           <Carousel
             images={
-              groupBuy.thumbnailUrls.length > 0 ? groupBuy.thumbnailUrls : []
+              groupBuy.thumbnailUrls.length > 0
+                ? groupBuy.thumbnailUrls
+                : ["/assets/images/example/default-group-buys-thumbnail.png"]
             }
           />
         </section>
