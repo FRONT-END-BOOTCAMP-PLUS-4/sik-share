@@ -6,6 +6,7 @@ import { useMapFilterStore } from "@/stores/useMapFilterStore";
 import { ListCard } from "@/components/common/ListCard";
 import { LoadingLottie } from "./LoadingLottie";
 import { format } from "date-fns";
+import Link from "next/link";
 
 interface MapListProps {
   selectedId: number | null;
@@ -113,28 +114,32 @@ export function MapList({ selectedId }: MapListProps) {
   return (
     <div className="max-h-[55vh] min-h-[55vh] overflow-y-auto border-t-1">
       {items.map((item, i) => (
-        <ListCard
+        <Link
+          href={`/${item.type === "groupbuy" ? "group-buy" : "share"}/${item.id}`} // item.id -> API 로직 변경 후 나눔, 장보기 id 값으로 수정해야함
           key={`${item.id} - ${i}`}
-          thumbnailSrc={
-            item.src ||
-            "/assets/images/example/default-group-buys-thumbnail.png"
-          }
-          thumbnailAlt={item.alt}
-          title={item.title}
-          location={item.location}
-          timeLeft={
-            item.type === "share"
-              ? String(item.timeLeftInHours)
-              : format(
-                  new Date((item as GroupBuyItem).meetingDate),
-                  "yyyy-MM-dd",
-                )
-          }
-          type={item.type}
-          currentUser={(item as GroupBuyItem).currentUser}
-          maxUser={(item as GroupBuyItem).maxUser}
-          id={""}
-        />
+        >
+          <ListCard
+            thumbnailSrc={
+              item.src ||
+              "/assets/images/example/default-group-buys-thumbnail.png"
+            }
+            thumbnailAlt={item.alt}
+            title={item.title}
+            location={item.location}
+            timeLeft={
+              item.type === "share"
+                ? String(item.timeLeftInHours)
+                : format(
+                    new Date((item as GroupBuyItem).meetingDate),
+                    "yyyy-MM-dd",
+                  )
+            }
+            type={item.type}
+            currentUser={(item as GroupBuyItem).currentUser}
+            maxUser={(item as GroupBuyItem).maxUser}
+            id={""}
+          />
+        </Link>
       ))}
       {loading && <LoadingLottie />}
       <div ref={ref} className="h-4/5" />
