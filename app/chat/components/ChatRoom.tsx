@@ -46,6 +46,7 @@ interface ChatRoomProps {
     title: string;
     locationNote: string;
     imageUrl: string;
+    meetingDate?: string;
   };
   togetherInfo?: TogetherInfoProps;
 }
@@ -185,7 +186,9 @@ export default function ChatRoom({
           locationNote={togetherInfo.locationNote}
         />
       )}
-      {type === "share" && shareInfo && <ShareInfo info={shareInfo} />}
+      {type === "share" && shareInfo && (
+        <ShareInfo info={shareInfo} chatId={chatId} />
+      )}
 
       {/* 메시지 리스트 */}
       <ChatMessageList messages={formattedMessages} />

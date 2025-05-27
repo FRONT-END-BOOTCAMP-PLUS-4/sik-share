@@ -54,7 +54,7 @@ export default function ChatList({
           width={40}
           height={40}
           src={imageUrl ?? "/assets/images/example/thumbnail.png"}
-          className="rounded-full"
+          className="w-[40px] h-[40px] border-1 border-zinc-100 rounded-full"
           alt="profile"
         />
         <div className="flex flex-col">
