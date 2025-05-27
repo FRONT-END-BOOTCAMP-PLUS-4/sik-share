@@ -1,12 +1,12 @@
 "use client";
 
+import { MapPin, Salad } from "lucide-react";
 import SubHeader from "@/components/common/SubHeader";
-import { ShareFooter } from "./components/ShareFooter";
 import Carousel from "@/components/common/shares/Carousel";
-import { Clock, MapPin, Salad } from "lucide-react";
-import KakaoMap from "./components/KakaoMapShare";
-import { GroupBadges } from "./components/GroupBadges";
-import { AuthorInfo } from "./components/AuthorInfo";
+import KakaoMap from "@/components/details/KakaoMapDetail";
+import { GroupBadges } from "@/components/details/GroupBadges";
+import { AuthorInfo } from "@/components/details/AuthorInfo";
+import { DetailFooter } from "@/components/details/DetailFooter";
 
 export default function GroupBuyPage() {
   const DummyImage = [
@@ -52,7 +52,7 @@ export default function GroupBuyPage() {
           <KakaoMap width="100%" height="100%" lat={37.479} lng={126.9416} />
         </section>
       </div>
-      <ShareFooter />
+      <DetailFooter />
     </div>
   );
 }

@@ -13,7 +13,12 @@ interface KakaoMapProps {
   lng: number;
 }
 
-export default function KakaoMap({ width, height, lat, lng }: KakaoMapProps) {
+export default function KakaoMapDetail({
+  width,
+  height,
+  lat,
+  lng,
+}: KakaoMapProps) {
   const mapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
