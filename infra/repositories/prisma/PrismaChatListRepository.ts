@@ -34,6 +34,16 @@ export class PrismaChatListRepository implements ChatListRepository {
       },
     });
 
+    chats.sort((a, b) => {
+      const aDate = a.messages[0]?.createdAt
+        ? new Date(a.messages[0].createdAt).getTime()
+        : 0;
+      const bDate = b.messages[0]?.createdAt
+        ? new Date(b.messages[0].createdAt).getTime()
+        : 0;
+      return bDate - aDate;
+    });
+
     return Promise.all(
       chats.map(async (chat) => {
         const lastMessage = chat.messages[0];
