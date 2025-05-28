@@ -19,6 +19,7 @@ export class GetUserGroupBuysUsecase {
     const where = {
       organizerId: user?.id,
       status: status === "active" ? 0 : 1,
+      deletedAt : null,
     };
 
     const data = await this.groupbuyRepo.getUserGroupbuys({

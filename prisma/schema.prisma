@@ -54,12 +54,12 @@ model GroupBuy {
   desiredItem    String
   meetingDate    DateTime
   createdAt      DateTime              @default(now())
-  deletedAt      DateTime?
   locationNote   String
   description    String
   status         Int
   lat            Float
   lng            Float
+  deletedAt      DateTime?
   neighborhood   Neighborhood          @relation(fields: [neighborhoodId], references: [id])
   organizer      User                  @relation(fields: [organizerId], references: [id])
   chats          GroupBuyChat[]
@@ -92,13 +92,13 @@ model Share {
   recipientId      String?
   title            String
   createdAt        DateTime           @default(now())
-  deletedAt        DateTime?
   meetingDate      DateTime?
   lat              Float
   lng              Float
   locationNote     String
   description      String
   status           Int
+  deletedAt        DateTime?
   reviews          Review[]
   neighborhood     Neighborhood       @relation(fields: [neighborhoodId], references: [id])
   owner            User               @relation("OwnedShare", fields: [ownerId], references: [id])

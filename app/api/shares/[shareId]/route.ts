@@ -3,6 +3,7 @@ import { PrismaShareRepository } from "@/infra/repositories/prisma/share/PrismaS
 import { GetShareDetailUsecase } from "@/application/usecases/share/GetShareDetailUsecase";
 import { UpdateShareDto } from '@/application/usecases/share/dto/UpdateShareDto';
 import { UpdateShareUsecase } from '@/application/usecases/share/UpdateShareUsecase';
+import { DeleteShareUsecase } from "@/application/usecases/share/DeleteShareUsecase";
 import { PrismaNeighborhoodRepository } from '@/infra/repositories/prisma/PrismaNeighborhoodRepository';
 import { PrismaShareImageRepository } from '@/infra/repositories/prisma/share/PrismaShareImageRepository';
 import { SupabaseImageStorageRepository } from '@/infra/repositories/supabase/SupabaseImageRepository';
@@ -45,7 +46,7 @@ export async function PATCH(req: Request, { params:{ shareId } }: { params: { sh
       neighborhoodName,
       locationNote,
       description,
-      images
+      images,
     );
 
     const neighborhoodRepo = new PrismaNeighborhoodRepository();
@@ -53,7 +54,12 @@ export async function PATCH(req: Request, { params:{ shareId } }: { params: { sh
     const shareImageRepo = new PrismaShareImageRepository();
     const imageStorageRepo = new SupabaseImageStorageRepository();
 
-    const updateShareUsecase = new UpdateShareUsecase(neighborhoodRepo, shareRepo, shareImageRepo, imageStorageRepo);
+    const updateShareUsecase = new UpdateShareUsecase(
+      neighborhoodRepo,
+      shareRepo,
+      shareImageRepo,
+      imageStorageRepo,
+    );
 
     await updateShareUsecase.execute(updateShareDto);
 
@@ -69,10 +75,21 @@ export async function PATCH(req: Request, { params:{ shareId } }: { params: { sh
         { status : 400 }
       )
     }
+  }
+}
 
-    return NextResponse.json(
-      { message : '다시 시도해주세요' },
-      { status : 500 }
-    )
+export async function DELETE(_: Request, { params }: { params: { shareId: string }}){
+  try{
+    const shareRepo = new PrismaShareRepository();
+    const deleteShareUsecase = new DeleteShareUsecase(shareRepo);
+
+    const { shareId } = await params;
+
+    await deleteShareUsecase.execute(Number(shareId));
+
+    return NextResponse.json({ success: true, message: "나눔 글 삭제가 완료되었습니다." }, { status: 200 });
+  } catch(error) {
+    console.error("나눔 글 삭제 실패", error);
+    return NextResponse.json({ success: false, error: "나눔 글 삭제가 실패했습니다." }, { status: 500 });
   }
 }

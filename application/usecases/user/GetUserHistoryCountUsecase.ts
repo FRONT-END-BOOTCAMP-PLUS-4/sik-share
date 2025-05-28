@@ -28,6 +28,7 @@ export class GetUserHistoryCountUsecase {
             const where = {
               ownerId: user?.id,
               ...getShareStatusCondition(status),
+              deletedAt : null,
             };
 
             return this.shareRepo.getCount(where);
@@ -41,6 +42,7 @@ export class GetUserHistoryCountUsecase {
             const where = {
               organizerId: user?.id,
               status: status === "active" ? 0 : 1,
+              deletedAt : null,
             };
 
             return this.groupbuyRepo.getCount(where);
@@ -52,8 +54,9 @@ export class GetUserHistoryCountUsecase {
 
     if (tabType === "participation") {
       const [share, groupbuy] = await Promise.all([
-        this.shareRepo.getCount({ recipientId: user?.id }),
+        this.shareRepo.getCount({ recipientId: user?.id, deletedAt : null, }),
         this.groupbuyRepo.getCount({
+          deletedAt : null,
           participants: {
             some: {
               userId: user?.id,
