@@ -24,7 +24,7 @@ export function HistorySection({
   isMyAccount,
   tabType,
 }: HistorySectionProps) {
-  const { counts } = useTotalCounts({ publicId, type, tabType });
+  const tabValues = getTabValues(type, isMyAccount);
   const [currentTab, setCurrentTab] = useState<string>(
     tabType === "status" ? "active" : "share",
   );
@@ -54,7 +54,6 @@ export function HistorySection({
     deps: [publicId, currentTab],
   });
 
-  const tabValues = getTabValues(type, isMyAccount);
   const [items, setItems] = useState<
     (ShareListCardProps | GroupBuyListCardProps)[]
   >([]);
@@ -63,8 +62,25 @@ export function HistorySection({
     setItems(originalItems as (ShareListCardProps | GroupBuyListCardProps)[]);
   }, [originalItems]);
 
+  const { counts: originalCounts } = useTotalCounts({
+    publicId,
+    type,
+    tabType,
+  });
+
+  const [counts, setCounts] = useState(originalCounts);
+
+  useEffect(() => {
+    setCounts(originalCounts);
+  }, [originalCounts]);
+
   const handleDeleteItem = (id: number) => {
     setItems((prev) => prev.filter((item) => item.id !== id));
+
+    setCounts((prev) => ({
+      ...prev,
+      [currentTab]: Math.max((prev?.[currentTab] ?? 1) - 1, 0),
+    }));
   };
 
   return (
