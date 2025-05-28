@@ -54,6 +54,7 @@ model GroupBuy {
   desiredItem    String
   meetingDate    DateTime
   createdAt      DateTime              @default(now())
+  deletedAt      DateTime?
   locationNote   String
   description    String
   status         Int
@@ -91,6 +92,7 @@ model Share {
   recipientId      String?
   title            String
   createdAt        DateTime           @default(now())
+  deletedAt        DateTime?
   meetingDate      DateTime?
   lat              Float
   lng              Float
