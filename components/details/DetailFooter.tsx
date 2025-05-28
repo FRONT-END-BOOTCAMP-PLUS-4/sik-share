@@ -23,10 +23,14 @@ export function DetailFooter({ isOwner }: DetailFooterProps) {
           </Button>
         ) : (
           <div className="flex justify-between w-[85%]">
-            <Button variant="joinFullBtn" size="lg" className="w-[49%]">
+            <Button variant="joinBtn" size="lg" className="w-[49%]">
               수정하기
             </Button>
-            <Button variant="deleteFullBtn" size="lg" className="w-[49%]">
+            <Button
+              variant="outline"
+              size="lg"
+              className="!border-1 border-[var(--dark-green)] w-[49%] button-lg !text-[var(--dark-green)]"
+            >
               삭제하기
             </Button>
           </div>
