@@ -25,10 +25,18 @@ export default function FormMultiImageUpload({
   name,
   rules,
 }: FormMultiImageUploadProps) {
-  const { setValue, trigger } = useFormContext();
+  const { setValue, trigger, getValues } = useFormContext();
 
   const [files, setFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
+
+  // 초기값 설정
+  useEffect(() => {
+    const initialFiles = getValues(name);
+    if (initialFiles && initialFiles.length > 0 && files.length === 0) {
+      setFiles(initialFiles);
+    }
+  }, []);
 
   // 이미지 미리보기 URL 생성
   useEffect(() => {
