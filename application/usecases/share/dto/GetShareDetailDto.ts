@@ -1,4 +1,4 @@
-export class GetGroupBuyDetailDto {
+export class GetShareDetailDto {
   constructor(
     public id: number,
     public title: string,
@@ -7,15 +7,12 @@ export class GetGroupBuyDetailDto {
     public organizerNickname: string,
     public organizerProfileUrl: string,
     public organizerShareScore: number,
-    public participantProfileUrls: string[],
-    public capacity: number,
-    public currentParticipantCount: number,
-    public meetingDate: Date,
+    public createdAt: Date,
     public locationNote: string,
     public lat: number,
     public lng: number,
-    public desiredItem: string,
+    public desiredItemName: string,
     public imageUrls: string[],
-    public neighborhoodName: string
+    public remainingHours: number
   ) {}
 }

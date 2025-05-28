@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { PrismaShareRepository } from "@/infra/repositories/prisma/PrismaShareRepository";
+import { PrismaShareRepository } from "@/infra/repositories/prisma/share/PrismaShareRepository";
 import { GetShareListUsecase } from "@/application/usecases/share/GetShareListUsecase";
 
 export async function GET(req: Request) {
