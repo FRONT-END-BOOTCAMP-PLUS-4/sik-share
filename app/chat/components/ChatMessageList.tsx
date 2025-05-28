@@ -10,6 +10,7 @@ interface FormattedMessage {
   readCount?: number;
   time: string;
   count?: number;
+  senderId?: string;
 }
 
 interface ChatMessageListProps {
@@ -42,6 +43,7 @@ export default function ChatMessageList({ messages }: ChatMessageListProps) {
           readCount={msg.readCount ?? 0}
           count={msg.count}
           time={msg.time}
+          senderId={msg.senderId}
         />
       ))}
     </div>

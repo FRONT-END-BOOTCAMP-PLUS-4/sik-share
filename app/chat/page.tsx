@@ -45,7 +45,6 @@ export default function ChatList() {
         data.sort((a: ShareChatListItem, b: ShareChatListItem) =>
           (b.lastMessageAt || "") > (a.lastMessageAt || "") ? 1 : -1,
         );
-        console.log("shareData 응답", data);
         setShareData(data);
       });
   }, []);
@@ -60,7 +59,6 @@ export default function ChatList() {
           data.sort((a: GroupBuyChatListItem, b: GroupBuyChatListItem) =>
             (b.lastMessageAt || "") > (a.lastMessageAt || "") ? 1 : -1,
           );
-          console.log("togetherData 응답", data);
           setTogetherData(data);
         });
     }

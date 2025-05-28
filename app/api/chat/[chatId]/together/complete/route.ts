@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { PrismaUpdateShareStatusRepository } from "@/infra/repositories/prisma/PrismaUpdateShareStatusRepository";
-import { UpdateShareStatusUseCase } from "@/application/usecases/chat/UpdateShareStatusUseCase";
+import { PrismaUpdateTogetherStatusRepository } from "@/infra/repositories/prisma/PrismaUpdateTogetherStatusRepository";
+import { UpdateTogetherStatusUseCase } from "@/application/usecases/chat/UpdateTogetherStatusUseCase";
 
 export async function PATCH(
   req: NextRequest,
@@ -10,19 +10,13 @@ export async function PATCH(
   const numericChatId = Number(chatId);
 
   try {
-    const repository = new PrismaUpdateShareStatusRepository();
-    const useCase = new UpdateShareStatusUseCase(repository);
+    const repository = new PrismaUpdateTogetherStatusRepository();
+    const useCase = new UpdateTogetherStatusUseCase(repository);
 
     await useCase.execute({
       chatId: numericChatId,
       status: 2,
     });
-
-    await fetch("https://port-0-sik-share-server-m61t9knhb5c1f236.sel4.cloudtype.app/api/share-complete-message", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ chatId }),
-  });
 
     return NextResponse.json({ message: "success" }, { status: 200 });
   } catch (e) {

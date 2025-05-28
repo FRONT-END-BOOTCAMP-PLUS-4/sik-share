@@ -23,11 +23,22 @@ export class PrismaChatMessageRepository implements ChatMessageRepository {
     });
 
 return messages.map((msg) => {
+  let type: "me" | "other" | "system";
+  if (msg.senderId === "system") {
+    type = "system";
+  } else if (msg.senderId === userId) {
+    type = "me";
+  } else {
+    type = "other";
+  }
+
   return new ChatMessageListDto(
     msg.id,
-    msg.senderId === userId ? "me" : "other",
-    msg.sender.nickname,
-    msg.sender.profileUrl ?? "/assets/images/example/thumbnail.png",
+    type,
+    msg.senderId === "system" ? "system" : msg.sender.nickname,
+    msg.senderId === "system"
+      ? "/assets/images/example/thumbnail.png"
+      : (msg.sender.profileUrl ?? "/assets/images/example/thumbnail.png"),
     msg.content,
     msg.createdAt.toISOString(),
     msg.readCount,

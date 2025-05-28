@@ -1,7 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import socket from "@/lib/socket";
 import ChatHeader from "./ChatHeader";
 import ShareInfo from "./ShareInfo";
@@ -26,11 +26,13 @@ interface Message {
 }
 
 interface TogetherInfoProps {
+  chatId?: string;
   title: string;
   imageUrl?: string;
   locationNote?: string;
   meetingDate?: string;
   participantCount?: number;
+  status: number;
 }
 
 interface ChatRoomProps {
@@ -50,18 +52,20 @@ interface ChatRoomProps {
     meetingDate?: string;
   };
   togetherInfo?: TogetherInfoProps;
+  senderId: string;
 }
 
 interface FormattedMessage {
   id?: string | number;
   tempId?: string;
-  type: "other" | "me";
+  type: "other" | "me" | "system";
   nickname: string;
   imageUrl: string;
   message: string;
   readCount: number;
   time: string;
   count?: number;
+  senderId?: string;
 }
 
 // ====== 메시지 변환 함수 ======
@@ -72,19 +76,35 @@ function toFormattedMessage(
   if ("type" in msg) {
     return msg as FormattedMessage;
   }
+
+  let type: "me" | "other" | "system";
+  if (msg.senderId === "system") {
+    type = "system";
+  } else if (msg.senderId === currentUserId) {
+    type = "me";
+  } else {
+    type = "other";
+  }
+
   return {
     id: msg.id,
     tempId: msg.tempId,
-    type: msg.senderId === currentUserId ? "me" : "other",
-    nickname: msg.sender?.nickname || "알 수 없음",
+    type,
+    nickname:
+      msg.senderId === "system"
+        ? "system"
+        : msg.sender?.nickname || "알 수 없음",
     imageUrl:
-      msg.sender?.imageUrl ||
-      msg.sender?.profileUrl ||
-      "/assets/images/example/default-profile.png",
+      msg.senderId === "system"
+        ? "/assets/images/example/thumbnail.png"
+        : msg.sender?.imageUrl ||
+          msg.sender?.profileUrl ||
+          "/assets/images/example/default-profile.png",
     message: msg.content,
     readCount: msg.readCount,
     time: msg.createdAt,
     count: msg.count,
+    senderId: msg?.senderId,
   };
 }
 
@@ -96,6 +116,7 @@ export default function ChatRoom({
   otherUser,
   shareInfo,
   togetherInfo,
+  senderId,
 }: ChatRoomProps) {
   const { data: session } = useSession();
   const [messages, setMessages] = useState<Message[]>(initialMessages);
@@ -115,7 +136,6 @@ export default function ChatRoom({
     const msgEvent =
       type === "together" ? "groupbuy chat message" : "chat message";
     const handler = (msg: Message) => {
-      console.log("[소켓 메시지 수신] 서버에서 받은 msg:", msg);
       setMessages((prev) => {
         const idx = prev.findIndex((m) => m.id === msg.id);
         if (idx !== -1) {
@@ -186,10 +206,12 @@ export default function ChatRoom({
       {/* 상단 info */}
       {type === "together" && togetherInfo && (
         <TogetherInfo
+          chatId={chatId}
           title={togetherInfo.title}
           imageUrl={togetherInfo.imageUrl}
           meetingDate={togetherInfo.meetingDate}
           locationNote={togetherInfo.locationNote}
+          status={togetherInfo.status}
         />
       )}
       {type === "share" && shareInfo && (
@@ -197,6 +219,7 @@ export default function ChatRoom({
       )}
 
       {/* 메시지 리스트 */}
+
       <ChatMessageList messages={formattedMessages} />
 
       {/* 입력 */}

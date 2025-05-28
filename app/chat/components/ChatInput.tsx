@@ -30,7 +30,6 @@ export default function ChatInput({
       createdAt: new Date().toISOString(),
     };
     onSend(msg);
-    console.log("input에서 보낸 메시지:", msg);
     setText("");
   };
 

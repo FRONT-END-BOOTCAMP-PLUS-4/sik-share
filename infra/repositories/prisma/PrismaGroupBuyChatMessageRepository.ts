@@ -36,6 +36,7 @@ export class PrismaGroupBuyChatMessageRepository implements GroupBuyChatMessageR
     imageUrl: string;
     participantCount: number;
     locationNote: string;
+    status: number;
   }> {
     const chat = await prisma.groupBuyChat.findUnique({
       where: { id: chatId },
@@ -59,6 +60,7 @@ export class PrismaGroupBuyChatMessageRepository implements GroupBuyChatMessageR
       imageUrl: groupBuy.images[0]?.url ?? "/assets/images/example/default-profile.png",
       participantCount: chat.participants.length,
       locationNote: groupBuy.locationNote,
+      status: groupBuy.status,
     };
   }
 }

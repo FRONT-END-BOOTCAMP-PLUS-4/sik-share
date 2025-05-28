@@ -3,13 +3,14 @@ import dayjs from "dayjs";
 import "dayjs/locale/ko";
 
 interface ChatMessageProps {
-  type: "me" | "other";
+  type: "me" | "other" | "system";
   nickname?: string;
   imageUrl?: string;
   message: string;
   readCount?: number;
   time?: string;
   count?: number;
+  senderId?: string;
 }
 
 export default function ChatMessage({
@@ -20,16 +21,8 @@ export default function ChatMessage({
   readCount = 0,
   time = "",
   count,
+  senderId,
 }: ChatMessageProps) {
-  console.log("[ChatMessage]", {
-    type,
-    nickname,
-    message,
-    count,
-    readCount,
-    time,
-  });
-
   const displayCount =
     typeof count === "number" && count > 0
       ? count
@@ -83,6 +76,22 @@ export default function ChatMessage({
                 {message}
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {type === "system" && (
+        <div className="w-full flex justify-center py-6">
+          <div className="flex flex-col justify-center items-center w-[250px] min-h-[100px] gap-2 py-6 ">
+            <p className="caption text-zinc-500 mb-2 text-center">
+              나눔이 완료되었다면, 후기 작성 어때요?
+            </p>
+            <a
+              href="/chat"
+              className="badge-bold text-secondary underline text-[16px] font-bold cursor-pointer"
+            >
+              후기 작성 바로가기
+            </a>
           </div>
         </div>
       )}

@@ -18,7 +18,6 @@ export default function TogetherChat() {
     fetch(`/api/chat/${chatId}/together`)
       .then((res) => res.json())
       .then((data) => {
-        console.log("fetch로 받아온 data:", data);
         setMessages(data.messages || []);
         setInfo(data.info || null);
       })
@@ -40,8 +39,6 @@ export default function TogetherChat() {
     );
   }
 
-  console.log(messages);
-
   return (
     <ChatRoom
       type="together"
@@ -53,6 +50,7 @@ export default function TogetherChat() {
         imageUrl: info.imageUrl,
         meetingDate: info.meetingDate,
         participantCount: info.participantCount,
+        status: info.status,
       }}
     />
   );

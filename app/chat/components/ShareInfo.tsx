@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/dialog";
 import { ReserveDatePicker } from "./ReserveDatePicker";
 import { Badge } from "@/components/ui/badge";
-import { Toaster } from "@/components/ui/sonner";
 
 interface ShareInfoProps {
   chatId: string;
@@ -22,7 +21,7 @@ interface ShareInfoProps {
     locationNote: string;
     imageUrl: string;
     meetingDate?: string;
-    status: number; // 0: 진행중, 1: 예약중, 2: 완료
+    status: number;
   };
   onMeetingDateChange?: (date: Date) => void;
 }
@@ -83,7 +82,6 @@ export default function ShareInfo({
         setStatus(1); // 예약중으로 변경
         setOpen(false);
         onMeetingDateChange?.(date);
-        console.log("날짜 업데이트 성공:", date);
       } catch (e) {
         console.error("날짜 업데이트 실패:", e);
       }
@@ -94,9 +92,8 @@ export default function ShareInfo({
   const handleShareComplete = async () => {
     try {
       await completeShare(chatId);
-      setStatus(2); // 완료로 변경
+      setStatus(2);
       setOpen(false);
-      console.log("나눔 완료 처리 성공");
     } catch (e) {
       console.error("나눔 완료 처리 실패:", e);
     }
@@ -143,7 +140,6 @@ export default function ShareInfo({
       </Dialog>
     );
   } else if (status === 1) {
-    // 예약중: 나눔 완료하기 버튼
     actionButton = (
       <Dialog open={open} onOpenChange={handleOpenChange}>
         <DialogTrigger asChild>
@@ -155,7 +151,7 @@ export default function ShareInfo({
           </Badge>
         </DialogTrigger>
         <DialogContent>
-          <DialogHeader className="text-center">
+          <DialogHeader className="!text-center">
             <DialogTitle className="body-md font-bold">
               나눔이 완료 되었나요?
             </DialogTitle>

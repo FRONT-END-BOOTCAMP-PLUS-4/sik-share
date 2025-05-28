@@ -1,4 +1,4 @@
-export type ChatSenderType = "me" | "other";
+export type ChatSenderType = "me" | "other" | "system";
 
 export class ChatMessageListDto {
   constructor(
