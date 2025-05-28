@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import { LoadingFoodLottie } from "@/components/lotties/LoadingFoodLottie";
 import {
   GroupBuyListCard,
@@ -23,6 +24,12 @@ export function HistoryItemList({
   loading,
   hasMore,
 }: HistoryItemListProps) {
+  const router = useRouter();
+  const handleClick = (id: number) => {
+    const path = `/${type}/${id}`;
+    router.push(path);
+  };
+
   return (
     <>
       {items.length === 0 && !loading && (
@@ -33,11 +40,26 @@ export function HistoryItemList({
       <ul>
         {items.map((item, index) => (
           <li key={item.id}>
-            {type === "share" ? (
-              <ShareListCard {...(item as ShareListCardProps)} />
-            ) : (
-              <GroupBuyListCard {...(item as GroupBuyListCardProps)} />
-            )}
+            <div
+              // biome-ignore lint/a11y/useSemanticElements: <explanation>
+              role="button"
+              className="cursor-pointer"
+              tabIndex={0}
+              onKeyUp={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  handleClick(item.id);
+                }
+              }}
+              onClick={() => {
+                handleClick(item.id);
+              }}
+            >
+              {type === "share" ? (
+                <ShareListCard {...(item as ShareListCardProps)} />
+              ) : (
+                <GroupBuyListCard {...(item as GroupBuyListCardProps)} />
+              )}
+            </div>
           </li>
         ))}
       </ul>

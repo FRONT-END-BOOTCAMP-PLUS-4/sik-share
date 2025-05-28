@@ -5,8 +5,8 @@ import SubHeader from "@/components/common/SubHeader";
 import { useInfiniteScroll } from "@/hooks/useInfinityScroll";
 import { useTotalCounts } from "@/app/users/hooks/useTotalCounts";
 import { HistoryItemList } from "@/app/users/components/HistoryItemList";
-import type { ListCardProps } from "@/components/common/ListCard";
 import type { ShareListCardProps } from "@/app/users/components/ShareListCard";
+import type { GroupBuyListCardProps } from "@/app/users/components/GroupBuyListCard";
 import { getTabValues } from "@/app/users/utils";
 
 interface HistorySectionProps {
@@ -91,7 +91,7 @@ export function HistorySection({
                   </div>
                 )}
               <HistoryItemList
-                items={items as ListCardProps[] | ShareListCardProps[]}
+                items={items as ShareListCardProps[] | GroupBuyListCardProps[]}
                 type={
                   type === "participation"
                     ? tab.value === "group-buy"

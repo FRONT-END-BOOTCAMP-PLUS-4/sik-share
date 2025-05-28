@@ -68,7 +68,10 @@ export default function DropdownButton({
         <Button
           variant="withIcon"
           size="icon"
-          onClick={toggleDropdown}
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleDropdown();
+          }}
           className={cn(
             iconType === "more" &&
               "hover:bg-zinc-200 text-primary bg-transparent size-7",
@@ -109,7 +112,10 @@ export default function DropdownButton({
                 <Button
                   variant="ghost"
                   className="text-primary hover:bg-[var(--primary-o2)] hover:text-primary cursor-pointer shadow-none w-full"
-                  onClick={() => handleOptionClick(option)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleOptionClick(option);
+                  }}
                 >
                   {option.label}
                 </Button>

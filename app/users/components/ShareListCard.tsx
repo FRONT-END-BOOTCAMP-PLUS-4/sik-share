@@ -10,7 +10,7 @@ import DropdownButton, {
 import { useRouter } from "next/navigation";
 
 export interface ShareListCardProps {
-  id: string;
+  id: number;
   thumbnailSrc: string;
   title: string;
   location: string;

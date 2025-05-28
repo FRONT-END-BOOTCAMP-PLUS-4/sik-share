@@ -10,7 +10,7 @@ import DropdownButton, {
 import { useRouter } from "next/navigation";
 
 export interface GroupBuyListCardProps {
-  id: string;
+  id: number;
   thumbnailSrc: string;
   title: string;
   location: string;
