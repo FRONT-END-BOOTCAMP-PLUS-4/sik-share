@@ -14,7 +14,6 @@ import {
 } from "react-share";
 
 const SHARE_TITLE = "식샤 그룹모임에 함께해요!";
-const SHARE_IMAGE = "이미지를 넣어보자";
 
 export default function SharePanel() {
   const url = typeof window !== "undefined" ? window.location.href : "";
@@ -33,7 +32,6 @@ export default function SharePanel() {
       content: {
         title: SHARE_TITLE,
         description: "근처 이웃과 식재료를 나누어요!",
-        imageUrl: SHARE_IMAGE,
         link: {
           mobileWebUrl: url,
           webUrl: url,

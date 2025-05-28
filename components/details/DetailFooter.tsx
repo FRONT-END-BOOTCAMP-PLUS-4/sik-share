@@ -17,14 +17,19 @@ export function DetailFooter({ isOwner }: DetailFooterProps) {
   return (
     <Dialog>
       <footer className="z-10 fixed bottom-0 mx-auto w-full max-w-[calc(var(--space-mobileMax)-2px)] bg-white flex justify-around items-center min-h-[var(--space-header)] px-4 py-2 shadow-[var(--bottom-nav-shadow)]">
-        {!isOwner ? (
+        {isOwner ? (
           <Button variant="joinFullBtn" size="lg" className="w-[85%]">
             참여하기
           </Button>
         ) : (
-          <Button variant="joinFullBtn" size="lg" className="w-[85%]">
-            수정하기
-          </Button>
+          <div className="flex justify-between w-[85%]">
+            <Button variant="joinFullBtn" size="lg" className="w-[49%]">
+              수정하기
+            </Button>
+            <Button variant="deleteFullBtn" size="lg" className="w-[49%]">
+              삭제하기
+            </Button>
+          </div>
         )}
         <DialogTrigger asChild>
           <div className="border-1 border-[var(--dark-green)] rounded-[8px] p-2 cursor-pointer">
