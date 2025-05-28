@@ -79,6 +79,11 @@ export class PrismaGroupBuyRepository implements GroupBuyRepository {
           url: true,
         },
       },
+      neighborhood: {
+        select: {
+          name: true
+        }
+      }
     },
   });
 
@@ -105,6 +110,7 @@ export class PrismaGroupBuyRepository implements GroupBuyRepository {
     lng: groupBuy.lng,
     desiredItem: groupBuy.desiredItem,
     imageUrls: groupBuy.images.map((img) => img.url),
+    neighborhoodName: groupBuy.neighborhood?.name ?? null,
   };
 }
 

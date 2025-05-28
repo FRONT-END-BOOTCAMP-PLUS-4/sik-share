@@ -6,9 +6,9 @@ interface AuthorInfoProps {
   nickname: string;
   profileUrl: string;
   shareScore: number;
-  numberOfParticipants: number;
-  capacity: number;
-  participantProfileUrls: string[];
+  numberOfParticipants?: number;
+  capacity?: number;
+  participantProfileUrls?: string[];
 }
 
 export function AuthorInfo({
@@ -34,13 +34,16 @@ export function AuthorInfo({
           <p className="body-md">{nickname}</p>
           <p className="text-[12px] text-primary">{shareScore}°C</p>
         </div>
-        {variant === "groupbuy" && (
-          <AvatarGroup
-            count={numberOfParticipants}
-            capacity={capacity}
-            participantProfileUrls={participantProfileUrls}
-          />
-        )}
+        {variant === "groupbuy" &&
+          numberOfParticipants &&
+          capacity &&
+          participantProfileUrls && (
+            <AvatarGroup
+              count={numberOfParticipants}
+              capacity={capacity}
+              participantProfileUrls={participantProfileUrls}
+            />
+          )}
       </div>
     </section>
   );
