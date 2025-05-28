@@ -49,4 +49,33 @@ export class PrismaShareRepository implements ShareRepository {
       where: {id}
     })
   }
+
+  async getList(
+    offset: number,
+    limit: number,
+    neighborhoodId: number
+  ): Promise<(Partial<Share> & { thumbnailUrl: string | null })[]> {
+    const shares = await this.prisma.share.findMany({
+      where: { neighborhoodId },
+      orderBy: { createdAt: "desc" },
+      skip: offset,
+      take: limit,
+      select: {
+        id: true,
+        title: true,
+        neighborhoodId: true,
+        locationNote: true,
+        createdAt: true,
+        images: {
+          where: { order: 0 },
+          select: { url: true },
+        },
+      },
+    });
+
+    return shares.map((share) => ({
+      ...share,
+      thumbnailUrl: share.images[0]?.url ?? null,
+    }));
+  }
 }
