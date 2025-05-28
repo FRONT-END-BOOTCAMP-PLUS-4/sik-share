@@ -40,8 +40,24 @@ export class SupabaseImageStorageRepository implements ImageStorageRepository {
     file: File,
     bucketName : "share" | "group-buy"
   ): Promise<string> {
+    const storage = supabase.storage.from(bucketName);
+
+    // 기존 이미지 삭제
+    const { data: list, error: listError } = await storage.list("");
+    if (listError) {
+      console.warn("기존 이미지 목록 조회 실패:", listError.message);
+    }
+
+    const deleteTargets = list?.filter((item) => item.name.startsWith(`${bucketName}_${id}`)).map((item) => item.name) ?? [];
+    if (deleteTargets.length > 0) {
+      const { error: deleteError } = await storage.remove(deleteTargets);
+      if (deleteError) {
+        console.warn("기존 이미지 삭제 실패:", deleteError.message);
+      }
+    }
+
     const fileExtension = extractFileExtension(file.name);
-    const filePath = `${bucketName}_${id}_${order}.${fileExtension}`;
+    const filePath = `${bucketName}_${id}_${order}_${Date.now()}.${fileExtension}`;
 
     const { error } = await supabase.storage
       .from(bucketName)
@@ -49,7 +65,7 @@ export class SupabaseImageStorageRepository implements ImageStorageRepository {
 
     if (error) throw error;
 
-    const { data } = supabase.storage.from(bucketName).getPublicUrl(filePath);
+    const { data } = storage.getPublicUrl(filePath);
 
     return data.publicUrl;
   }
