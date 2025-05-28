@@ -2,6 +2,7 @@ import type {
   GetUserShares,
   ShareRepository,
 } from "@/domain/repositories/share/ShareRepository";
+import type { GetShareDetailDto } from "@/application/usecases/share/dto/GetShareDetailDto";
 import { type Prisma, PrismaClient, type Share } from "@/prisma/generated";
 
 export class PrismaShareRepository implements ShareRepository {
@@ -48,6 +49,63 @@ export class PrismaShareRepository implements ShareRepository {
     return await this.prisma.share.findUnique({
       where: {id}
     })
+  }
+
+  async getDetail(id: number): Promise<Partial<GetShareDetailDto> | null> {
+    const share = await this.prisma.share.findUnique({
+      where: { id },
+      include: {
+        owner: {
+          select: {
+            id: true,
+            nickname: true,
+            profileUrl: true,
+            shareScore: true,
+          },
+        },
+        images: {
+          orderBy: { order: "asc" },
+          select: {
+            url: true,
+          },
+        },
+        shareItem: {
+          select: {
+            name: true
+          }
+        },
+        neighborhood: {
+          select: {
+            name: true
+          }
+        }
+      },
+    });
+  
+    if (!share) return null;
+
+    const now = new Date();
+    const expireTime = new Date(share.createdAt.getTime() + 24 * 60 * 60 * 1000);
+    const remainingMs = expireTime.getTime() - now.getTime();
+    const remainingHours = Math.max(0, Math.floor(remainingMs / (1000 * 60 * 60)));
+  
+    return {
+      id: share.id,
+      title: share.title,
+      desc: share.description,
+      organizerId: share.owner.id,
+      organizerNickname: share.owner.nickname,
+      organizerProfileUrl: share.owner.profileUrl ?? "",
+      organizerShareScore: share.owner.shareScore,
+      createdAt: share.createdAt,
+      locationNote: share.locationNote,
+      lat: share.lat,
+      lng: share.lng,
+      desiredItemName: share.shareItem?.name ?? null,
+      imageUrls: share.images.map((img) => img.url),
+      neighborhoodName: share.neighborhood?.name ?? null,
+      remainingHours
+    };
   }
 
   async getList(

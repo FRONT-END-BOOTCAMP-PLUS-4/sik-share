@@ -1,52 +1,121 @@
 "use client";
 
-import { MapPin, Salad } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { differenceInCalendarDays } from "date-fns";
+import { MapPin, Salad, ClockFading } from "lucide-react";
+import { useSessionStore } from "@/stores/useSessionStore";
 import SubHeader from "@/components/common/SubHeader";
 import Carousel from "@/components/common/shares/Carousel";
 import KakaoMap from "@/components/details/KakaoMapDetail";
 import { GroupBadges } from "@/components/details/GroupBadges";
 import { AuthorInfo } from "@/components/details/AuthorInfo";
 import { DetailFooter } from "@/components/details/DetailFooter";
-import { useRouter, usePathname } from "next/navigation";
+import Loading from "@/components/common/Loading";
+
+interface ShareData {
+  id: number;
+  title: string;
+  desc: string;
+  organizerId: string;
+  organizerNickname: string;
+  organizerProfileUrl: string;
+  organizerShareScore: number;
+  meetingDate: string;
+  locationNote: string;
+  lat: number;
+  lng: number;
+  desiredItemName: string;
+  imageUrls: string[];
+  remainingHours: number;
+}
 
 export default function GroupBuyPage() {
-  const DummyImage = [
-    "https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=800&q=80",
-    "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDJ8fGZvb2R8ZW58MHx8fHwxNjg3NTY5NzA1&ixlib=rb-4.0.3&q=80&w=400",
-    "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
-  ];
+  const [share, setShare] = useState<ShareData | null>(null);
+  const { isOwner, setIsOwner } = useSessionStore();
 
   const router = useRouter();
   const pathname = usePathname();
+  const shareId = pathname.split("/").pop();
 
   const handleClick = () => {
-    router.push(`${pathname}/meet`);
+    const query = new URLSearchParams({
+      lat: String(share?.lat),
+      lng: String(share?.lng),
+      location: String(share?.locationNote ?? ""),
+    }).toString();
+
+    router.push(`${pathname}/meet?${query}`);
   };
+
+  const session = useSession();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch(`/api/shares/${shareId}`);
+        const json = await res.json();
+        setShare(json.data);
+      } catch (error) {
+        console.error("Error fetching group buy detail:", error);
+      }
+    };
+    fetchData();
+  }, [shareId]);
+
+  useEffect(() => {
+    if (!session.data || !share) {
+      setIsOwner(false);
+      return;
+    }
+
+    setIsOwner(session.data.user.id === share.organizerId);
+  }, [session.data, share, setIsOwner]);
+
+  if (!share) return <Loading />;
+
+  const isDday = differenceInCalendarDays(
+    new Date(share.meetingDate),
+    new Date(),
+  );
 
   return (
     <div className="relative min-h-screen">
       <SubHeader />
       <div className="p-4">
         <section>
-          <GroupBadges />
-          <p className="title-md mb-4">제목을 입력하세요</p>
-          <Carousel images={DummyImage} />
+          <GroupBadges isDday={isDday} />
+          <p className="title-md mb-4">{share.title}</p>
+          <Carousel
+            images={
+              share.imageUrls.length > 0
+                ? share.imageUrls
+                : ["/assets/images/example/default-group-buys-thumbnail.png"]
+            }
+          />
         </section>
 
-        <AuthorInfo variant={"share"} />
+        <AuthorInfo
+          variant={"share"}
+          nickname={share.organizerNickname}
+          profileUrl={share.organizerProfileUrl}
+          shareScore={share.organizerShareScore}
+        />
 
         <section className="text-zinc-500 caption mt-2">
-          <div className="flex items-center gap-[1px]">
-            <Salad size={15} />
-            <p>감자</p>
+          <div className="flex items-center gap-0.5">
+            <Salad size={15} strokeWidth={1} />
+            <p>{share.desiredItemName}</p>
+          </div>
+          <div className="flex items-center gap-0.5">
+            <ClockFading size={15} strokeWidth={1} />
+            <p>{share.remainingHours}시간 남음</p>
           </div>
         </section>
 
         <section className="mt-4">
-          <p>
-            이번 주 이마트 특가 세일 한다는데, 같이 장보러 가실 분 구합니다!
-            최대 5명 모집이고, 3명부터는 무조건 가는 거에요!
-          </p>
+          <p>{share.desc}</p>
         </section>
 
         <section className="flex flex-col h-[200px] mt-4 mb-[58px]">
@@ -64,13 +133,13 @@ export default function GroupBuyPage() {
           <KakaoMap
             width="100%"
             height="100%"
-            lat={37.479}
-            lng={126.9416}
-            location={"관악 청년청 앞"}
+            lat={share.lat}
+            lng={share.lng}
+            location={share.locationNote}
           />
         </section>
       </div>
-      <DetailFooter />
+      <DetailFooter isOwner={isOwner ?? false} />
     </div>
   );
 }
