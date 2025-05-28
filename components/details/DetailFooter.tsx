@@ -17,7 +17,7 @@ export function DetailFooter({ isOwner }: DetailFooterProps) {
   return (
     <Dialog>
       <footer className="z-10 fixed bottom-0 mx-auto w-full max-w-[calc(var(--space-mobileMax)-2px)] bg-white flex justify-around items-center min-h-[var(--space-header)] px-4 py-2 shadow-[var(--bottom-nav-shadow)]">
-        {isOwner ? (
+        {!isOwner ? (
           <Button variant="joinFullBtn" size="lg" className="w-[85%]">
             참여하기
           </Button>
