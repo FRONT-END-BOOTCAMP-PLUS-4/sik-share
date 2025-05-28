@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SubHeader from "@/components/common/SubHeader";
 import { useInfiniteScroll } from "@/hooks/useInfinityScroll";
-import { useTabCounts } from "@/app/users/hooks/useTabCounts";
+import { useTotalCounts } from "@/app/users/hooks/useTotalCounts";
 import { HistoryItemList } from "@/app/users/components/HistoryItemList";
 import type { ListCardProps } from "@/components/common/ListCard";
 import type { ShareListCardProps } from "@/app/users/components/ShareListCard";
@@ -24,7 +24,7 @@ export function HistorySection({
   isMyAccount,
   tabType,
 }: HistorySectionProps) {
-  const { counts } = useTabCounts({ publicId, type, tabType });
+  const { counts } = useTotalCounts({ publicId, type, tabType });
   const [currentTab, setCurrentTab] = useState<string>(
     tabType === "status" ? "active" : "share",
   );

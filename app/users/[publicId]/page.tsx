@@ -5,7 +5,7 @@ import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import Loading from "@/components/common/Loading";
 import { getScoreVisual } from "@/app/users/utils";
-import UsersNav from "@/app/users/components/UsersNav";
+import UsersNav, { type shortReview } from "@/app/users/components/UsersNav";
 import Profile from "@/app/users/components/Profile";
 import UserLocation from "@/app/users/components/UserLocation";
 import ShareScore from "@/app/users/components/ShareScore";
@@ -23,6 +23,7 @@ export default function userPage() {
   const { publicId, isMyAccount } = useUserInfo();
 
   const [user, setUser] = useState<User | null>(null);
+  const [shortReviews, setShortReviews] = useState<shortReview[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -34,7 +35,9 @@ export default function userPage() {
 
         if (!res.ok) throw new Error("유저 정보 조회 실패");
         const data = await res.json();
-        setUser(data.userProfile);
+
+        setUser(data.result.profile);
+        setShortReviews(data.result.shortReview);
       } catch (error) {
         console.error(error);
       } finally {
@@ -72,7 +75,11 @@ export default function userPage() {
             userName={user.nickName}
             profileImage={user.profileUrl}
           />
-          <UsersNav isMyAccount={isMyAccount} publicId={publicId as string} />
+          <UsersNav
+            isMyAccount={isMyAccount}
+            publicId={publicId as string}
+            shortReviews={shortReviews}
+          />
         </section>
       </div>
       <Footer />

@@ -13,7 +13,6 @@ async function main() {
     },
   });
 
-
   // 사용자 생성
   const user1 = await prisma.user.create({
     data: {
@@ -42,10 +41,11 @@ async function main() {
       capacity: 10,
       desiredItem: "식료품",
       meetingDate: new Date(),
-      locationAddress: "서울시 관악구 봉천동 123",
       locationNote: "근처 마트",
+      lat: 37.4783,
+      lng: 126.9517,
       description: "관악구 주민들을 위한 공동 장보기 모임입니다.",
-      status: "진행 중",
+      status: 0,
     },
   });
 
@@ -75,10 +75,9 @@ async function main() {
       meetingDate: new Date(),
       lat: 37.4783,
       lng: 126.9517,
-      locationAddress: "서울시 관악구 봉천동 123",
       locationNote: "채소 나눔 장소",
       description: "남는 채소를 나누는 행사입니다.",
-      status: "완료",
+      status: 1,
     },
   });
 
@@ -120,14 +119,6 @@ async function main() {
       shareId: share.id,
       grade: 2,
       content: "채소 나눔에 감사드립니다!",
-    },
-  });
-
-  // 알림 생성
-  await prisma.notification.create({
-    data: {
-      userId: user2.id,
-      content: "새로운 나눔 채팅 메시지가 있습니다.",
     },
   });
 

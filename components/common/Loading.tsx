@@ -1,6 +1,4 @@
 "use client";
-
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import LoadingLottie from "../lotties/LoadingLottie";
 
