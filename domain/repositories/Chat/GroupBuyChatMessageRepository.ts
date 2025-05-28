@@ -12,5 +12,6 @@ export interface GroupBuyChatMessageRepository {
     meetingDate: string;
     imageUrl: string;
     participantCount: number;
+    status: number;
   }>;
 }

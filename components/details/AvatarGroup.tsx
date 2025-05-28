@@ -1,13 +1,23 @@
 import Image from "next/image";
 
-export function AvatarGroup({ count = 3 }: { count?: number }) {
+interface AvatarGroupProps {
+  count: number;
+  capacity: number;
+  participantProfileUrls: string[];
+}
+
+export function AvatarGroup({
+  count = 3,
+  capacity,
+  participantProfileUrls,
+}: AvatarGroupProps) {
   return (
     <div className="flex items-center gap-1.5">
       <div className="flex">
         {Array.from({ length: count }).map((item, i) => (
           <Image
             key={`${item}-${i as number}`}
-            src="/assets/images/example/default-profile.png"
+            src={participantProfileUrls[i] || "/default-profile.png"}
             alt="프로필 이미지"
             width={22}
             height={22}
@@ -15,7 +25,9 @@ export function AvatarGroup({ count = 3 }: { count?: number }) {
           />
         ))}
       </div>
-      <p className="text-[12px]">{count}/5명</p>
+      <p className="text-[12px]">
+        {count}/{capacity}명
+      </p>
     </div>
   );
 }

@@ -6,5 +6,6 @@ declare global {
   }
   interface Window {
     kakao: unknown;
+    Kakao: unknown;
   }
 }

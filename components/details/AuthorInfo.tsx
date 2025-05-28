@@ -3,13 +3,27 @@ import { AvatarGroup } from "./AvatarGroup";
 
 interface AuthorInfoProps {
   variant: "share" | "groupbuy";
+  nickname: string;
+  profileUrl: string;
+  shareScore: number;
+  numberOfParticipants: number;
+  capacity: number;
+  participantProfileUrls: string[];
 }
 
-export function AuthorInfo({ variant }: AuthorInfoProps) {
+export function AuthorInfo({
+  variant,
+  nickname,
+  profileUrl,
+  shareScore,
+  numberOfParticipants,
+  capacity,
+  participantProfileUrls,
+}: AuthorInfoProps) {
   return (
     <section className="flex items-center mt-4 pb-2 border-b">
       <Image
-        src="/assets/images/example/default-profile.png"
+        src={profileUrl}
         alt="프로필 이미지"
         width={38}
         height={38}
@@ -17,10 +31,16 @@ export function AuthorInfo({ variant }: AuthorInfoProps) {
       />
       <div className="flex justify-between items-end w-full">
         <div className="flex flex-col ml-2">
-          <p className="body-md">씩씩한 감자</p>
-          <p className="text-[12px] text-primary">19.5°C</p>
+          <p className="body-md">{nickname}</p>
+          <p className="text-[12px] text-primary">{shareScore}°C</p>
         </div>
-        {variant === "groupbuy" && <AvatarGroup count={3} />}
+        {variant === "groupbuy" && (
+          <AvatarGroup
+            count={numberOfParticipants}
+            capacity={capacity}
+            participantProfileUrls={participantProfileUrls}
+          />
+        )}
       </div>
     </section>
   );
