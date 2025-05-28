@@ -15,6 +15,7 @@ export class GetGroupBuyDetailDto {
     public lat: number,
     public lng: number,
     public desiredItem: string,
-    public imageUrls: string[]
+    public imageUrls: string[],
+    public neighborhoodName: string
   ) {}
 }
