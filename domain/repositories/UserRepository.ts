@@ -4,5 +4,6 @@ export interface UserRepository {
   save(user: Partial<User>): Promise<User>;
   findByEmail(email: string): Promise<User | null>;
   findByPublicId(id: number): Promise<User | null>;
+  findById(id: string) : Promise<User | null>;
   update(user: Partial<User>): Promise<User>;
 }

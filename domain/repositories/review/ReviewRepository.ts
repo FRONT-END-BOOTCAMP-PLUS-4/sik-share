@@ -12,8 +12,9 @@ export interface WriterProfile {
   writerProfileUrl: string;
 }
 
-
 export interface ReviewRepository {
+  save(review: Partial<Review>): Promise<Review>;
+  findByShareIdAndWriteId(shareId: number, writerId: string): Promise<Review | null>;
   getCount(where: Prisma.ReviewWhereInput): Promise<number>;
   getUserReviews(params: GetUserReviews): Promise<(Review & WriterProfile)[]>;
   getbyRecipientId(id: string): Promise<number[]>;

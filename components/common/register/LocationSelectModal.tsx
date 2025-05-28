@@ -3,7 +3,7 @@ import SubHeader from "@/components/common/SubHeader";
 import type { LocationData } from "@/types/types";
 import type React from "react";
 import { useEffect, useState, useCallback } from "react";
-import ButtonSection from "./ButtonSection";
+import FormButton from "./FormButton";
 import {
   Dialog,
   DialogContent,
@@ -83,7 +83,7 @@ export default function LocationSelectModal({
         />
         <section className=" flex flex-col h-[calc(100vh-170px)]">
           <KakaoMap onSelect={handleLocationSelect} />
-          <ButtonSection onClick={handleButtonClick} />
+          <FormButton onClick={handleButtonClick}>선택 완료</FormButton>
         </section>
       </div>
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
