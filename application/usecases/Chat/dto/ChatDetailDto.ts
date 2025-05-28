@@ -12,6 +12,8 @@ export class ChatDetailDto {
       title: string;
       thumbnailUrl: string;
       location: string;
+      meetingDate?: string;
+      status: number;
     }
   ) {}
 }

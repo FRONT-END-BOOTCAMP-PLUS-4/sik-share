@@ -1,5 +1,6 @@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import ChatListItem from "./ChatList";
+import { motion, AnimatePresence } from "motion/react";
 
 interface TabProps {
   shareData: [];
@@ -21,14 +22,36 @@ export default function Tab({
         <TabsTrigger value="together">같이 장보기</TabsTrigger>
       </TabsList>
       <TabsContent value="share">
-        {shareData.map((chat, index) => (
-          <ChatListItem key={index} {...chat} />
-        ))}
+        <AnimatePresence>
+          {shareData.map((chat) => (
+            <motion.div
+              key={chat.chatId}
+              layout
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -30 }}
+              transition={{ duration: 0.25 }}
+            >
+              <ChatListItem {...chat} />
+            </motion.div>
+          ))}
+        </AnimatePresence>
       </TabsContent>
       <TabsContent value="together">
-        {togetherData.map((chat, index) => (
-          <ChatListItem key={index} {...chat} />
-        ))}
+        <AnimatePresence>
+          {togetherData.map((chat) => (
+            <motion.div
+              key={chat.chatId ?? chat.id ?? chat.title} // 유니크키
+              layout
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -30 }}
+              transition={{ duration: 0.25 }}
+            >
+              <ChatListItem {...chat} />
+            </motion.div>
+          ))}
+        </AnimatePresence>
       </TabsContent>
     </Tabs>
   );

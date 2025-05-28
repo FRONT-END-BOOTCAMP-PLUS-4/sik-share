@@ -12,10 +12,12 @@ export interface ShareRepository {
   getUserShares(shares: GetUserShares): Promise<(Share & {thumbnailUrl: string | null})[]>;
   getCount(where: Prisma.ShareWhereInput): Promise<number>;
   findById(id:number):Promise<Share | null>;
+
   getDetail(shareId: number): Promise<Partial<GetShareDetailDto> | null>;
   getList(
     offset: number,
     limit: number,
     neighborhoodId: number
   ): Promise<(Partial<Share> & { thumbnailUrl: string | null })[]>;
+  update(share: Partial<Share>): Promise<Share>;
 }

@@ -37,7 +37,7 @@ export default function ChatHeader(props: ChatHeaderProps) {
             width={38}
             height={38}
             alt="profile"
-            className="rounded-full"
+            className="w-[40px] h-[40px] border-1 border-zinc-100 rounded-full"
           />
           <div className="flex flex-col justify-center items-start h-[38px]">
             <span className="body-md">{props.otherUser.nickname}</span>

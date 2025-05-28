@@ -23,11 +23,22 @@ export class PrismaChatMessageRepository implements ChatMessageRepository {
     });
 
 return messages.map((msg) => {
+  let type: "me" | "other" | "system";
+  if (msg.senderId === "system") {
+    type = "system";
+  } else if (msg.senderId === userId) {
+    type = "me";
+  } else {
+    type = "other";
+  }
+
   return new ChatMessageListDto(
     msg.id,
-    msg.senderId === userId ? "me" : "other",
-    msg.sender.nickname,
-    msg.sender.profileUrl ?? "/assets/images/example/thumbnail.png",
+    type,
+    msg.senderId === "system" ? "system" : msg.sender.nickname,
+    msg.senderId === "system"
+      ? "/assets/images/example/thumbnail.png"
+      : (msg.sender.profileUrl ?? "/assets/images/example/thumbnail.png"),
     msg.content,
     msg.createdAt.toISOString(),
     msg.readCount,
@@ -70,7 +81,7 @@ return messages.map((msg) => {
 
   async findShareInfoByChatId(
   chatId: number
-): Promise<{ title: string; thumbnailUrl: string; locationNote: string }> {
+): Promise<{ title: string; thumbnailUrl: string; locationNote: string; meetingDate?: string; status: number }> {
   const shareChat = await prisma.shareChat.findUnique({
     where: { id: chatId },
     select: { shareId: true },
@@ -87,6 +98,8 @@ return messages.map((msg) => {
     select: {
       title: true,
       locationNote: true,
+      meetingDate: true,
+      status: true,
     },
   });
 
@@ -104,6 +117,8 @@ return messages.map((msg) => {
     title: share.title,
     locationNote: share.locationNote ?? "장소 정보 없음",
     thumbnailUrl: image?.url ?? "/assets/images/example/thumbnail.png",
+    meetingDate: share.meetingDate ? share.meetingDate.toISOString() : undefined,
+    status: share.status,
   };
 }
 

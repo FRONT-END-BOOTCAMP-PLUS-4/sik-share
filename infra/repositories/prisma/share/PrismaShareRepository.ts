@@ -135,5 +135,9 @@ export class PrismaShareRepository implements ShareRepository {
       ...share,
       thumbnailUrl: share.images[0]?.url ?? null,
     }));
+
+  }
+  async update(share: Partial<Share>) : Promise<Share> {
+    return await this.prisma.share.update({data: share, where: {id: share.id as number}});
   }
 }

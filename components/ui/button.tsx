@@ -28,6 +28,7 @@ const buttonVariants = cva(
         add: "bg-primary w-fit button-sm body-sm rounded-[var(--space-20)] hover:bg-primary/90 cursor-pointer",
         editProfile:
           "bg-background w-fit text-zinc-400 badge-bold rounded-sm hover:bg-zinc-100 cursor-pointer",
+        disabled: "bg-zinc-400 text-zinc-50",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",

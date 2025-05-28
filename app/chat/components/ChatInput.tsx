@@ -29,8 +29,6 @@ export default function ChatInput({
       content: trimmed,
       createdAt: new Date().toISOString(),
     };
-
-    // socket.emit("chat message", msg);
     onSend(msg);
     setText("");
   };

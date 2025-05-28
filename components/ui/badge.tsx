@@ -26,6 +26,8 @@ const badgeVariants = cva(
         share: "badge-medium bg-[var(--secondary)] rounded-[15px]",
         groupbuy: "badge-medium bg-[var(--orange)] rounded-[15px]",
         locate: "badge-bold bg-[var(--white-o5)] text-zinc-900 rounded-[15px]",
+        reserve: "bg-zinc-500 caption px-2.5 py-[3px]",
+        shareComplete: "bg-primary px-3 py-2 badge-bold",
       },
     },
     defaultVariants: {
