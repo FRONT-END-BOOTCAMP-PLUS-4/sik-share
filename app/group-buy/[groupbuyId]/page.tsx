@@ -3,16 +3,16 @@
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { differenceInCalendarDays } from "date-fns";
 import { Clock, MapPin, Salad } from "lucide-react";
+import { useSessionStore } from "@/stores/useSessionStore";
 import SubHeader from "@/components/common/SubHeader";
 import Carousel from "@/components/common/shares/Carousel";
 import KakaoMap from "@/components/details/KakaoMapDetail";
 import { GroupBadges } from "@/components/details/GroupBadges";
 import { AuthorInfo } from "@/components/details/AuthorInfo";
 import { DetailFooter } from "@/components/details/DetailFooter";
-import { differenceInCalendarDays } from "date-fns";
 import Loading from "@/components/common/Loading";
-import { useSessionStore } from "@/stores/useSessionStore";
 
 interface GroupBuyData {
   id: number;
