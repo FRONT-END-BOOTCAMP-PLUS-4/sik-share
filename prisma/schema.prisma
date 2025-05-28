@@ -60,7 +60,6 @@ model GroupBuy {
   status         Int
   lat            Float
   lng            Float
-  deletedAt      DateTime?
   neighborhood   Neighborhood          @relation(fields: [neighborhoodId], references: [id])
   organizer      User                  @relation(fields: [organizerId], references: [id])
   chats          GroupBuyChat[]
@@ -100,7 +99,6 @@ model Share {
   locationNote     String
   description      String
   status           Int
-  deletedAt        DateTime?
   reviews          Review[]
   neighborhood     Neighborhood       @relation(fields: [neighborhoodId], references: [id])
   owner            User               @relation("OwnedShare", fields: [ownerId], references: [id])
@@ -246,15 +244,4 @@ model ShareApplication {
   User      User     @relation(fields: [userId], references: [id])
 
   @@unique([userId, shareId])
-}
-
-model GroupBuyChatMessageRead {
-  id                  Int                 @id @default(autoincrement())
-  messageId           Int
-  userId              String
-  readAt              DateTime            @default(now())
-  GroupBuyChatMessage GroupBuyChatMessage @relation(fields: [messageId], references: [id])
-  User                User                @relation(fields: [userId], references: [id])
-
-  @@unique([messageId, userId])
 }
