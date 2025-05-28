@@ -15,6 +15,7 @@ interface HistoryItemListProps {
   refTarget: (node: HTMLElement | null) => void;
   loading?: boolean;
   hasMore?: boolean;
+  isEdit?: boolean;
 }
 
 export function HistoryItemList({
@@ -23,6 +24,7 @@ export function HistoryItemList({
   refTarget,
   loading,
   hasMore,
+  isEdit,
 }: HistoryItemListProps) {
   const router = useRouter();
   const handleClick = (id: number) => {
@@ -38,7 +40,7 @@ export function HistoryItemList({
         </p>
       )}
       <ul>
-        {items.map((item, index) => (
+        {items.map((item) => (
           <li key={item.id}>
             <div
               // biome-ignore lint/a11y/useSemanticElements: <explanation>
@@ -55,9 +57,9 @@ export function HistoryItemList({
               }}
             >
               {type === "share" ? (
-                <ShareListCard {...(item as ShareListCardProps)} />
+                <ShareListCard {...(item as ShareListCardProps)} isEdit={isEdit} />
               ) : (
-                <GroupBuyListCard {...(item as GroupBuyListCardProps)} />
+                <GroupBuyListCard {...(item as GroupBuyListCardProps)} isEdit={isEdit}/>
               )}
             </div>
           </li>

@@ -18,6 +18,7 @@ export interface ShareListCardProps {
   badgeLabel?: string;
   timeLeft?: string;
   meetingDate?: string;
+  isEdit?: boolean;
 }
 
 export function ShareListCard({
@@ -29,6 +30,7 @@ export function ShareListCard({
   timeLeft,
   meetingDate,
   location,
+  isEdit,
 }: ShareListCardProps) {
   const router = useRouter();
   const options: DropdownOption[] = [
@@ -68,7 +70,9 @@ export function ShareListCard({
             )}
             <p className="body-md truncate max-w-[230px]">{title}</p>
           </div>
-          <DropdownButton options={options} type="icon" iconType="more" />
+          {isEdit && (
+            <DropdownButton options={options} type="icon" iconType="more" />
+          )}
         </div>
         <div className="flex flex-col gap-1 text-zinc-500">
           {timeLeft && (

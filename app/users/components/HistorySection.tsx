@@ -102,6 +102,7 @@ export function HistorySection({
                 refTarget={ref}
                 loading={loading}
                 hasMore={hasMore}
+                isEdit={type !== "participation"}
               />
             </TabsContent>
           ))}

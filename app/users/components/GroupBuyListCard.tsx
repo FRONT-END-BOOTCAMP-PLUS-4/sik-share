@@ -18,6 +18,7 @@ export interface GroupBuyListCardProps {
   meetingDate?: string;
   currentUsers?: number;
   maxUsers?: number;
+  isEdit?: boolean;
 }
 
 export function GroupBuyListCard({
@@ -29,6 +30,7 @@ export function GroupBuyListCard({
   currentUsers,
   maxUsers,
   badgeLabel,
+  isEdit,
 }: GroupBuyListCardProps) {
   const router = useRouter();
   const options: DropdownOption[] = [
@@ -66,7 +68,9 @@ export function GroupBuyListCard({
             {badgeLabel && <Badge variant="groupbuy">{badgeLabel}</Badge>}
             <p className="body-md truncate max-w-[230px]">{title}</p>
           </div>
-          <DropdownButton options={options} type="icon" iconType="more" />
+          {isEdit && (
+            <DropdownButton options={options} type="icon" iconType="more" />
+          )}
         </div>
         <div className="flex flex-col gap-1 text-zinc-500">
           <div className="flex gap-[5px]">
