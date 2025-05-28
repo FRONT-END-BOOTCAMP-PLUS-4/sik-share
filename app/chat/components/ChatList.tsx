@@ -17,7 +17,7 @@ interface ChatListProps {
   temperature?: number;
   lastMessageAt: string;
   lastMessage: string;
-  chatCount: number;
+  unreadCount: number;
   participantCount: number;
 }
 
@@ -32,7 +32,7 @@ export default function ChatList({
   temperature,
   lastMessageAt,
   lastMessage,
-  chatCount,
+  unreadCount,
   participantCount,
 }: ChatListProps) {
   const router = useRouter();
@@ -54,7 +54,7 @@ export default function ChatList({
           width={40}
           height={40}
           src={imageUrl ?? "/assets/images/example/thumbnail.png"}
-          className="rounded-full"
+          className="w-[40px] h-[40px] border-1 border-zinc-100 rounded-full"
           alt="profile"
         />
         <div className="flex flex-col">
@@ -85,9 +85,9 @@ export default function ChatList({
           <p className="caption !text-zinc-500">{lastMessage}</p>
         </div>
       </div>
-      {chatCount > 0 && (
+      {unreadCount > 0 && (
         <div className="self-start flex justify-center items-center w-[20px] h-[20px] bg-[#B5D430] rounded-full">
-          <p className="label !text-[var(--light-green-50)]">{chatCount}</p>
+          <p className="label !text-[var(--light-green-50)]">{unreadCount}</p>
         </div>
       )}
     </div>
