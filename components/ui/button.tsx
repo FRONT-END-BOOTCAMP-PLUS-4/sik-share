@@ -24,7 +24,7 @@ const buttonVariants = cva(
         joinFullBtn:
           "bg-primary w-full button-lg hover:bg-primary/90 cursor-pointer",
         add: "bg-primary w-fit button-sm body-sm rounded-[var(--space-20)] hover:bg-primary/90 cursor-pointer",
-        editProfile:
+        withIcon:
           "bg-background w-fit text-zinc-400 badge-bold rounded-sm hover:bg-zinc-100 cursor-pointer",
       },
       size: {

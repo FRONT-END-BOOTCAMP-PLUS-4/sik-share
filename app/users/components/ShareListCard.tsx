@@ -4,6 +4,10 @@ import {
   Badge,
   type VariantProps as BadgeVariantProps,
 } from "@/components/ui/badge";
+import DropdownButton, {
+  type DropdownOption,
+} from "@/components/common/DropdownButton";
+import { useRouter } from "next/navigation";
 
 export interface ShareListCardProps {
   id: string;
@@ -17,6 +21,7 @@ export interface ShareListCardProps {
 }
 
 export function ShareListCard({
+  id,
   thumbnailSrc,
   title,
   badgeVariant,
@@ -25,8 +30,27 @@ export function ShareListCard({
   meetingDate,
   location,
 }: ShareListCardProps) {
+  const router = useRouter();
+  const options: DropdownOption[] = [
+    {
+      id: "edit",
+      label: "수정하기",
+      onClick: () => {
+        router.push(`/share/${id}/edit`);
+      },
+    },
+    {
+      id: "delete",
+      label: "삭제하기",
+      onClick: () => {
+        // router.push("/register/share");
+        alert("삭제할거요");
+      },
+    },
+  ];
+
   return (
-    <div className="w-full flex gap-2 items-start px-4 py-3 cursor-pointer  border-b-1 border-b-zinc-200 hover:bg-zinc-200 hover:border-b-transparents">
+    <div className="w-full flex gap-2 items-start px-4 py-3 cursor-pointer  border-b-1 border-b-zinc-200 hover:bg-zinc-100 hover:border-b-transparents">
       <div className="flex-shrink-0">
         <Image
           className="rounded-sm w-[78px] h-[78px] object-cover"
@@ -38,10 +62,13 @@ export function ShareListCard({
       </div>
       <div className="flex flex-col flex-1 gap-1">
         <div className="flex justify-between items-center">
-          <p className="body-md truncate max-w-[230px]">{title}</p>
-          {badgeVariant && badgeLabel && (
-            <Badge variant={badgeVariant}>{badgeLabel}</Badge>
-          )}
+          <div className="flex gap-1.5">
+            {badgeVariant && badgeLabel && (
+              <Badge variant={badgeVariant}>{badgeLabel}</Badge>
+            )}
+            <p className="body-md truncate max-w-[230px]">{title}</p>
+          </div>
+          <DropdownButton options={options} type="icon" iconType="more" />
         </div>
         <div className="flex flex-col gap-1 text-zinc-500">
           {timeLeft && (

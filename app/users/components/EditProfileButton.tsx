@@ -109,7 +109,7 @@ export default function EditProfileButton({
 
   return (
     <>
-      <DropdownButton options={options} type="editProfile" align="bottom" />
+      <DropdownButton options={options} type="icon" align="bottom" />
       <Dialog
         open={isDialogOpen}
         onOpenChange={(open) => {

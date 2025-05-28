@@ -83,6 +83,13 @@ export function HistorySection({
 
           {tabValues.map((tab) => (
             <TabsContent key={tab.value} value={tab.value}>
+              {type === "share" &&
+                tabType === "status" &&
+                tab.value === "expired" && (
+                  <div className="text-center caption text-zinc-400 py-3 border-b border-b-zinc-200">
+                    작성한 지 24시간이 지난 나눔 입니다.
+                  </div>
+                )}
               <HistoryItemList
                 items={items as ListCardProps[] | ShareListCardProps[]}
                 type={
