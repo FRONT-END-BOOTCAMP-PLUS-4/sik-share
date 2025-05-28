@@ -13,6 +13,7 @@ export class GetShareDetailDto {
     public lng: number,
     public desiredItemName: string,
     public imageUrls: string[],
+    public neighborhoodName: string,
     public remainingHours: number,
     public status: number
   ) {}
