@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { PrismaGroupBuyRepository } from "@/infra/repositories/prisma/PrismGroupBuyRepository";
+import { PrismaGroupBuyRepository } from "@/infra/repositories/prisma/group-buy/PrismaGroupBuyRepository";
 import { GetGroupBuyListUsecase } from "@/application/usecases/group-buy/GetGroupBuyListUsecase";
 
 export async function GET(req: Request) {

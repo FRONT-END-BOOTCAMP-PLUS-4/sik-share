@@ -1,6 +1,6 @@
 "use client";
 
-import useKakaoReady from "@/app/hooks/useKakaoReady";
+import useKakaoReady from "@/hooks/useKakaoReady";
 import { Badge } from "@/components/ui/badge";
 import { useEffect, useRef, useState } from "react";
 

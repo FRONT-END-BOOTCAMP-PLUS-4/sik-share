@@ -9,3 +9,27 @@ const scoreGradeMap = [
 export function getScoreVisual(score: number) {
   return scoreGradeMap.find(({ min }) => score >= min) ?? {grade:"F", memberBadge : "새로운 식샤 패밀리"};
 }
+
+
+export function getTabValues(type: "share" | "group-buy"| "participation" , isMyAccount: boolean): Record<string, string>[] {
+  switch (type) {
+    case "participation":
+      return [
+        { label: "나눔", value: "share" },
+        { label: "같이 장보기", value: "group-buy" },
+      ];
+
+    case "group-buy":
+      return [
+        { label: "진행 중", value: "active" },
+        { label: "같이 장보기 완료", value: "completed" },
+      ];
+
+    case "share":
+      return [
+        { label: "진행 중", value: "active" },
+        { label: "나눔 완료", value: "completed" },
+        ...(isMyAccount ? [{ label: "기한 만료", value: "expired" }] : []),
+      ];
+  }
+}

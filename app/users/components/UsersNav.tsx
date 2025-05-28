@@ -3,16 +3,29 @@ import { cn } from "@/lib/utils";
 import { ChevronRight, Users } from "lucide-react";
 import Link from "next/link";
 
-interface usersNavProps {
-  publicId: string;
-  mannerReviews?: []; // 임시
+export interface shortReview {
+  id: number;
+  content: string;
+  count: number;
 }
 
-export default function UsersNav({ publicId, mannerReviews }: usersNavProps) {
+interface usersNavProps {
+  publicId: string;
+  isMyAccount: boolean;
+  shortReviews?: shortReview[];
+}
+
+export default function UsersNav({
+  publicId,
+  isMyAccount,
+  shortReviews,
+}: usersNavProps) {
   const usersLinks = [
-    { label: "나눔 내역", path: "share-historys" },
-    { label: "같이 장보기 내역", path: "group-buy-historys" },
-    { label: "나의 참여 내역", path: "participations" },
+    { label: "나눔 내역", path: "share-histories" },
+    { label: "같이 장보기 내역", path: "group-buy-histories" },
+    ...(isMyAccount
+      ? [{ label: "나의 참여 내역", path: "participations" }]
+      : []),
     { label: "후기", path: "reviews" },
   ];
 
@@ -31,14 +44,17 @@ export default function UsersNav({ publicId, mannerReviews }: usersNavProps) {
           {label}
           <ChevronRight />
         </Link>
-        {isReview && (
+        {isReview && shortReviews && shortReviews.length > 0 && (
           <ul className="px-4 flex flex-col gap-1.5 pt-1">
-            <li className="flex gap-1 items-center">
-              <div className="w-[130px] body-sm">나눔 재료가 신선해요</div>
-              <Badge variant="review">
-                <Users size={10} />1
-              </Badge>
-            </li>
+            {shortReviews.map((review) => (
+              <li key={review.id} className="flex gap-1 items-center">
+                <div className="w-[130px] body-sm">{review.content}</div>
+                <Badge variant="review">
+                  <Users size={12} />
+                  {review.count}
+                </Badge>
+              </li>
+            ))}
           </ul>
         )}
       </li>

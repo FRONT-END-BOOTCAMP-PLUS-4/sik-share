@@ -180,6 +180,17 @@ model GroupBuyChatParticipant {
   user           User         @relation(fields: [userId], references: [id])
 }
 
+model GroupBuyChatMessageRead {
+  id             Int                 @id @default(autoincrement())
+  messageId      Int
+  userId         String
+  readAt         DateTime            @default(now())
+  message        GroupBuyChatMessage @relation(fields: [messageId], references: [id])
+  user           User                @relation(fields: [userId], references: [id])
+
+  @@unique([messageId, userId])
+}
+
 model ShareChat {
   id           Int                    @id @default(autoincrement())
   shareId      Int
@@ -209,6 +220,17 @@ model ShareChatParticipant {
   lastReadItemId Int?
   shareChat      ShareChat @relation(fields: [shareChatId], references: [id])
   user           User      @relation(fields: [userId], references: [id])
+}
+
+model ShareChatMessageRead {
+  id          Int                @id @default(autoincrement())
+  messageId   Int
+  userId      String
+  readAt      DateTime           @default(now())
+  message     ShareChatMessage   @relation(fields: [messageId], references: [id])
+  user        User               @relation(fields: [userId], references: [id])
+
+  @@unique([messageId, userId])
 }
 
 model ShareApplication {
