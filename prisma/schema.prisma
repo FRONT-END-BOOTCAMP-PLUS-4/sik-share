@@ -54,7 +54,6 @@ model GroupBuy {
   desiredItem    String
   meetingDate    DateTime
   createdAt      DateTime              @default(now())
-  deletedAt      DateTime?
   locationNote   String
   description    String
   status         Int
@@ -93,7 +92,6 @@ model Share {
   recipientId      String?
   title            String
   createdAt        DateTime           @default(now())
-  deletedAt        DateTime?
   meetingDate      DateTime?
   lat              Float
   lng              Float
@@ -246,15 +244,4 @@ model ShareApplication {
   User      User     @relation(fields: [userId], references: [id])
 
   @@unique([userId, shareId])
-}
-
-model GroupBuyChatMessageRead {
-  id                  Int                 @id @default(autoincrement())
-  messageId           Int
-  userId              String
-  readAt              DateTime            @default(now())
-  GroupBuyChatMessage GroupBuyChatMessage @relation(fields: [messageId], references: [id])
-  User                User                @relation(fields: [userId], references: [id])
-
-  @@unique([messageId, userId])
 }
