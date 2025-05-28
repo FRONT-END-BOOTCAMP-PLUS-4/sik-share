@@ -16,6 +16,7 @@ interface HistoryItemListProps {
   loading?: boolean;
   hasMore?: boolean;
   isEdit?: boolean;
+  onDeleteItem?: (id: number) => void;
 }
 
 export function HistoryItemList({
@@ -25,8 +26,10 @@ export function HistoryItemList({
   loading,
   hasMore,
   isEdit,
+  onDeleteItem,
 }: HistoryItemListProps) {
   const router = useRouter();
+
   const handleClick = (id: number) => {
     const path = `/${type}/${id}`;
     router.push(path);
@@ -57,9 +60,17 @@ export function HistoryItemList({
               }}
             >
               {type === "share" ? (
-                <ShareListCard {...(item as ShareListCardProps)} isEdit={isEdit} />
+                <ShareListCard
+                  {...(item as ShareListCardProps)}
+                  isEdit={isEdit}
+                  onDelete={onDeleteItem}
+                />
               ) : (
-                <GroupBuyListCard {...(item as GroupBuyListCardProps)} isEdit={isEdit}/>
+                <GroupBuyListCard
+                  {...(item as GroupBuyListCardProps)}
+                  isEdit={isEdit}
+                  onDelete={onDeleteItem}
+                />
               )}
             </div>
           </li>

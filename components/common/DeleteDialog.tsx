@@ -7,28 +7,47 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useState } from "react";
+import { toast } from "sonner";
 
 interface DeleteDialogProps {
+  id: number;
+  type: "share" | "group-buy";
   isDialogOpen: boolean;
   onClose: () => void;
+  onDelete?: (id: number) => void;
 }
 
 export default function DeleteDialog({
+  id,
   isDialogOpen,
   onClose,
+  type,
+  onDelete,
 }: DeleteDialogProps) {
-  const handleDelete = () => {
+  const handleDelete = async () => {
     onClose();
-    console.log("네 제발료");
+    const res = await fetch(`/api/${type}s/${id}`, {
+      method: "DELETE",
+    });
+
+    const { success, message } = await res.json();
+
+    if (success) {
+      toast.success(message);
+      onDelete?.(id);
+    } else {
+      toast.error(message);
+    }
   };
   return (
     <AlertDialog open={isDialogOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>나눔 글을 정말 삭제하시겠습니까?</AlertDialogTitle>
+          <AlertDialogTitle>
+            {type === "share" ? "나눔" : "같이 장보기"} 글을 정말
+            삭제하시겠습니까?
+          </AlertDialogTitle>
           <AlertDialogDescription>
             삭제된 글은 다시 살릴 수 없어요😢
           </AlertDialogDescription>

@@ -153,4 +153,11 @@ async getList(
 
     return result;
   }
+
+  async softDelete(id: number): Promise<void> {
+    await this.prisma.groupBuy.update({
+      data: { deletedAt: new Date() },
+      where: { id },
+    })
+  }
 }

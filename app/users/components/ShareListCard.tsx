@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Clock, ClockFading, MapPin } from "lucide-react";
 import {
@@ -7,8 +9,6 @@ import {
 import DropdownButton, {
   type DropdownOption,
 } from "@/components/common/DropdownButton";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 import DeleteDialog from "@/components/common/DeleteDialog";
 
 export interface ShareListCardProps {
@@ -21,6 +21,7 @@ export interface ShareListCardProps {
   timeLeft?: string;
   meetingDate?: string;
   isEdit?: boolean;
+  onDelete?: (id: number) => void;
 }
 
 export function ShareListCard({
@@ -33,9 +34,10 @@ export function ShareListCard({
   meetingDate,
   location,
   isEdit,
+  onDelete,
 }: ShareListCardProps) {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const router = useRouter();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const options: DropdownOption[] = [
     {
       id: "edit",
@@ -101,8 +103,11 @@ export function ShareListCard({
         </div>
       </div>
       <DeleteDialog
+        id={id}
+        type="share"
         isDialogOpen={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
+        onDelete={onDelete}
       />
     </>
   );

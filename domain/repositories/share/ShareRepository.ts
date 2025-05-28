@@ -12,4 +12,5 @@ export interface ShareRepository {
   getCount(where: Prisma.ShareWhereInput): Promise<number>;
   findById(id:number):Promise<Share | null>;
   update(share: Partial<Share>): Promise<Share>;
+  softDelete(id:number):Promise<void>;
 }

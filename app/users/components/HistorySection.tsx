@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SubHeader from "@/components/common/SubHeader";
 import { useInfiniteScroll } from "@/hooks/useInfinityScroll";
@@ -42,7 +42,12 @@ export function HistorySection({
     [publicId, currentTab, type],
   );
 
-  const { items, loading, hasMore, ref } = useInfiniteScroll({
+  const {
+    items: originalItems,
+    loading,
+    hasMore,
+    ref,
+  } = useInfiniteScroll({
     fetcher,
     itemsPerPage: 20,
     delay: 300,
@@ -50,6 +55,17 @@ export function HistorySection({
   });
 
   const tabValues = getTabValues(type, isMyAccount);
+  const [items, setItems] = useState<
+    (ShareListCardProps | GroupBuyListCardProps)[]
+  >([]);
+
+  useEffect(() => {
+    setItems(originalItems as (ShareListCardProps | GroupBuyListCardProps)[]);
+  }, [originalItems]);
+
+  const handleDeleteItem = (id: number) => {
+    setItems((prev) => prev.filter((item) => item.id !== id));
+  };
 
   return (
     <>
@@ -91,7 +107,7 @@ export function HistorySection({
                   </div>
                 )}
               <HistoryItemList
-                items={items as ShareListCardProps[] | GroupBuyListCardProps[]}
+                items={items}
                 type={
                   type === "participation"
                     ? tab.value === "group-buy"
@@ -103,6 +119,7 @@ export function HistorySection({
                 loading={loading}
                 hasMore={hasMore}
                 isEdit={type !== "participation"}
+                onDeleteItem={handleDeleteItem}
               />
             </TabsContent>
           ))}
