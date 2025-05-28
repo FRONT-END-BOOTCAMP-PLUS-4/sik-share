@@ -8,6 +8,19 @@ import { Toaster } from "@/components/ui/sonner";
 export const metadata: Metadata = {
   title: "함께 나누는 따뜻한 식생활",
   description: "식샤와 함께 나누어봐요",
+  openGraph: {
+    title: "식샤 그룹모임에 함께해요!",
+    description: "근처 이웃과 식재료를 나누어요!",
+    url: "http://localhost:3000",
+    images: [
+      {
+        url: "http://localhost:3000/favicon.ico",
+        width: 300,
+        height: 300,
+        alt: "식샤 썸네일",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
@@ -60,8 +73,8 @@ export default function RootLayout({
             strategy="beforeInteractive"
           />
           <Script
-            src="https://developers.kakao.com/sdk/js/kakao.js"
-            strategy="beforeInteractive"
+            src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.5/kakao.min.js"
+            integrity="sha384-dok87au0gKqJdxs7msEdBPNnKSRT+/mhTVzq+qOhcL464zXwvcrpjeWvyj1kCdq6"
           />
         </SessionProvider>
       </body>
