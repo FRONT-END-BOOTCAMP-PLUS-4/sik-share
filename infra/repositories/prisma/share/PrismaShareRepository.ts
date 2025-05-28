@@ -49,4 +49,8 @@ export class PrismaShareRepository implements ShareRepository {
       where: {id}
     })
   }
+
+  async update(share: Partial<Share>) : Promise<Share> {
+    return await this.prisma.share.update({data: share, where: {id: share.id as number}});
+  }
 }

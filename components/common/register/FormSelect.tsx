@@ -20,6 +20,7 @@ import type { RegisterOptions } from "react-hook-form";
 
 interface FormSelectProps {
   name: string;
+  disabled?: boolean;
   label?: string;
   placeholder?: string;
   options: { label: string; value: number }[];
@@ -28,6 +29,7 @@ interface FormSelectProps {
 
 export default function FormSelect({
   name,
+  disabled = false,
   label,
   placeholder,
   options,
@@ -46,6 +48,7 @@ export default function FormSelect({
             <FormControl>
               <Select
                 value={field.value ? String(field.value) : ""}
+                disabled={disabled}
                 onValueChange={(val) => {
                   field.onChange(Number(val));
                 }}
