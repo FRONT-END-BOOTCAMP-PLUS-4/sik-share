@@ -2,6 +2,7 @@ import type {
   GetUserGroupbuys,
   GroupBuyRepository,
 } from "@/domain/repositories/group-buy/GroupBuyRepository";
+import type { GetGroupBuyDetailDto } from "@/application/usecases/group-buy/dto/GetGroupBuyDetailDto";
 import { type GroupBuy, type Prisma, PrismaClient } from "@/prisma/generated";
 
 export class PrismaGroupBuyRepository implements GroupBuyRepository {
@@ -50,4 +51,60 @@ export class PrismaGroupBuyRepository implements GroupBuyRepository {
   async getCount(where: Prisma.GroupBuyWhereInput): Promise<number> {
     return await this.prisma.groupBuy.count({ where });
   }
+
+  async getDetail(id: number): Promise<Partial<GetGroupBuyDetailDto> | null> {
+  const groupBuy = await this.prisma.groupBuy.findUnique({
+    where: { id },
+    include: {
+      organizer: {
+        select: {
+          id: true,
+          nickname: true,
+          profileUrl: true,
+          shareScore: true,
+        },
+      },
+      participants: {
+        select: {
+          user: {
+            select: {
+              profileUrl: true,
+            },
+          },
+        },
+      },
+      images: {
+        orderBy: { order: "asc" },
+        select: {
+          url: true,
+        },
+      },
+    },
+  });
+
+  if (!groupBuy) return null;
+
+  const participantProfileUrls = groupBuy.participants.map(
+    (p) => p.user.profileUrl ?? ""
+  );
+
+  return {
+    id: groupBuy.id,
+    title: groupBuy.title,
+    desc: groupBuy.description,
+    organizerId: groupBuy.organizer.id,
+    organizerNickname: groupBuy.organizer.nickname,
+    organizerProfileUrl: groupBuy.organizer.profileUrl ?? "",
+    organizerShareScore: groupBuy.organizer.shareScore,
+    participantProfileUrls,
+    capacity: groupBuy.capacity,
+    currentParticipantCount: participantProfileUrls.length,
+    meetingDate: groupBuy.meetingDate,
+    locationNote: groupBuy.locationNote,
+    lat: groupBuy.lat,
+    lng: groupBuy.lng,
+    desiredItem: groupBuy.desiredItem,
+    imageUrls: groupBuy.images.map((img) => img.url),
+  };
+}
 }

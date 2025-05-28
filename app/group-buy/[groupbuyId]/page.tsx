@@ -30,7 +30,7 @@ interface GroupBuyData {
   lat: number;
   lng: number;
   desiredItem: string;
-  thumbnailUrls: string[];
+  imageUrls: string[];
 }
 
 export default function GroupBuyPage() {
@@ -91,8 +91,8 @@ export default function GroupBuyPage() {
           <p className="title-md mb-4">{groupBuy.title}</p>
           <Carousel
             images={
-              groupBuy.thumbnailUrls.length > 0
-                ? groupBuy.thumbnailUrls
+              groupBuy.imageUrls.length > 0
+                ? groupBuy.imageUrls
                 : ["/assets/images/example/default-group-buys-thumbnail.png"]
             }
           />

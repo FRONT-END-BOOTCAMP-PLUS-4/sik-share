@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { PrismaGroupBuyDetailRepository } from "@/infra/repositories/prisma/group-buy/PrismaGroupBuyDetailRepository";
+import { PrismaGroupBuyRepository } from "@/infra/repositories/prisma/group-buy/PrismaGroupBuyRepository";
 import { GetGroupBuyDetailUsecase } from "@/application/usecases/group-buy/GetGroupBuyDetailUsecase";
 
 export async function GET(_: Request, context: { params: { groupBuyId: string } }) {
@@ -10,7 +10,7 @@ export async function GET(_: Request, context: { params: { groupBuyId: string } 
       return NextResponse.json({ error: "잘못된 ID" }, { status: 400 });
     }
 
-    const repo = new PrismaGroupBuyDetailRepository();
+    const repo = new PrismaGroupBuyRepository();
     const usecase = new GetGroupBuyDetailUsecase(repo);
     const result = await usecase.execute(groupBuyId);
 
