@@ -4,10 +4,9 @@ import { UpdateMeetingDateUseCase } from "@/application/usecases/chat/UpdateMeet
 
 export async function PATCH(
   req: NextRequest,
-  context: { params: { chatId: string } }
+  { params }: { params: Promise<{ chatId: string }> }
 ) {
-  const { chatId } = await context.params;
-  const numericChatId = Number(chatId);
+  const chatId = await params;
 
   try {
     const { meetingDate } = await req.json();
@@ -23,7 +22,7 @@ export async function PATCH(
     const useCase = new UpdateMeetingDateUseCase(repository);
 
     await useCase.execute({
-      chatId: numericChatId,
+      chatId: Number(chatId),
       meetingDate: new Date(meetingDate),
       status: 1,
     });

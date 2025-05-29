@@ -3,9 +3,9 @@ import { PrismaGroupBuyRepository } from "@/infra/repositories/prisma/group-buy/
 import { GetGroupBuyDetailUsecase } from "@/application/usecases/group-buy/GetGroupBuyDetailUsecase";
 import { DeleteGroupBuyUsecase } from "@/application/usecases/group-buy/DeleteGroupBuyUsecase";
 
-export async function GET(_: Request, context: { params: { groupBuyId: string } }) {
+export async function GET(_: Request, { params }: { params: Promise<{ groupBuyId: string }> }) {
   try {
-    const groupBuyId = Number(context.params.groupBuyId);
+    const groupBuyId = await params;
 
     if (Number.isNaN(groupBuyId)) {
       return NextResponse.json({ error: "잘못된 ID" }, { status: 400 });
@@ -13,7 +13,7 @@ export async function GET(_: Request, context: { params: { groupBuyId: string } 
 
     const repo = new PrismaGroupBuyRepository();
     const usecase = new GetGroupBuyDetailUsecase(repo);
-    const result = await usecase.execute(groupBuyId);
+    const result = await usecase.execute(Number(groupBuyId));
 
     return NextResponse.json({ message: "조회 성공", data: result });
   } catch (e) {
@@ -22,7 +22,7 @@ export async function GET(_: Request, context: { params: { groupBuyId: string } 
   }
 }
 
-export async function DELETE(request: Request, { params }: { params: { groupBuyId: string }}){
+export async function DELETE(_: Request, { params }: { params: Promise<{ groupBuyId: string }>}){
   try{
     const groupBuyRepo = new PrismaGroupBuyRepository();
     const deleteGroupBuyUsecase = new DeleteGroupBuyUsecase(groupBuyRepo);
