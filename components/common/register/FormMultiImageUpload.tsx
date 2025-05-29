@@ -10,7 +10,11 @@ import {
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { type RegisterOptions, useFormContext } from "react-hook-form";
+import {
+  type RegisterOptions,
+  useFormContext,
+  useWatch,
+} from "react-hook-form";
 import { cn } from "@/lib/utils";
 import Thumbnail from "./Thumbnail";
 import { toast } from "sonner";
@@ -26,22 +30,27 @@ export default function FormMultiImageUpload({
   rules,
 }: FormMultiImageUploadProps) {
   const { setValue, trigger, getValues } = useFormContext();
+  const watchedFiles = useWatch({ name });
 
   const [files, setFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
 
   // 초기값 설정
   useEffect(() => {
-    const initialFiles = getValues(name);
-    if (initialFiles && initialFiles.length > 0 && files.length === 0) {
-      setFiles(initialFiles);
+    if (
+      Array.isArray(watchedFiles) &&
+      watchedFiles.length > 0 &&
+      files.length === 0
+    ) {
+      setFiles(watchedFiles);
     }
-  }, []);
+  }, [watchedFiles, files.length]);
 
   // 이미지 미리보기 URL 생성
   useEffect(() => {
     const urls = files.map((file) => URL.createObjectURL(file));
     setPreviews(urls);
+
     return () => {
       for (const url of urls) {
         URL.revokeObjectURL(url);
