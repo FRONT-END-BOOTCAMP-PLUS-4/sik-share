@@ -10,7 +10,7 @@ import { SupabaseImageStorageRepository } from '@/infra/repositories/supabase/Su
 
 export async function GET(_: Request, { params }: { params: Promise<{ shareId: string }> }) {
   try {
-    const shareId = await params;
+    const { shareId } = await params;
 
     if (Number.isNaN(shareId)) {
       return NextResponse.json({ error: "잘못된 ID" }, { status: 400 });
