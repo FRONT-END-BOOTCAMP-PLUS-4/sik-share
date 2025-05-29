@@ -1,5 +1,5 @@
 import { PrismaClient } from "@/prisma/generated";
-import type { GroupBuyChatMessageRepository } from "@/domain/repositories/chatting/GroupBuyChatMessageRepository";
+import type { GroupBuyChatMessageRepository } from "@/domain/repositories/chat/GroupBuyChatMessageRepository";
 import { GroupBuyChatMessageListDto } from "@/application/usecases/chatting/dto/GroupBuyChatMessageListDto";
 
 const prisma = new PrismaClient();

@@ -1,4 +1,4 @@
-import type { UpdateShareStatusRepository } from "@/domain/repositories/chatting/UpdateShareStatusRepository";
+import type { UpdateShareStatusRepository } from "@/domain/repositories/chat/UpdateShareStatusRepository";
 import type { UpdateShareStatusDto } from "@/application/usecases/chatting/dto/UpdateShareStatusDto";
 
 export class UpdateShareStatusUseCase {

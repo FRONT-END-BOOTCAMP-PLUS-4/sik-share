@@ -1,4 +1,4 @@
-import type { ChatListRepository } from "@/domain/repositories/chatting/ChatListRepository";
+import type { ChatListRepository } from "@/domain/repositories/chat/ChatListRepository";
 import type { GroupBuyChatListDto } from "./dto/GroupBuyChatListDto";
 
 export class GetGroupBuyChatListUsecase {

@@ -1,4 +1,4 @@
-import type { ChatMessageRepository } from "@/domain/repositories/chatting/ChatMessageListRepository";
+import type { ChatMessageRepository } from "@/domain/repositories/chat/ChatMessageListRepository";
 import { ChatDetailDto } from "@/application/usecases/chatting/dto/ChatDetailDto";
 import type { ChatMessageListDto } from "@/application/usecases/chatting/dto/ChatMessageListDto";
 

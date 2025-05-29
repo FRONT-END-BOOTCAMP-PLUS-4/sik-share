@@ -1,5 +1,5 @@
 import { PrismaClient } from "@/prisma/generated";
-import type { ChatMessageRepository } from "@/domain/repositories/chatting/ChatMessageListRepository";
+import type { ChatMessageRepository } from "@/domain/repositories/chat/ChatMessageListRepository";
 import { ChatMessageListDto } from "@/application/usecases/chatting/dto/ChatMessageListDto";
 import dayjs from "dayjs";
 

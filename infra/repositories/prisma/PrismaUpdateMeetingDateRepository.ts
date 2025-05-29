@@ -1,5 +1,5 @@
 import { PrismaClient } from "@/prisma/generated";
-import type { UpdateMeetingDateRepository } from "@/domain/repositories/chatting/UpdateMeetingDateRepository";
+import type { UpdateMeetingDateRepository } from "@/domain/repositories/chat/UpdateMeetingDateRepository";
 
 const prisma = new PrismaClient();
 
