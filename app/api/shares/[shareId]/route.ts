@@ -29,7 +29,7 @@ export async function GET(_: Request, { params }: { params: Promise<{ shareId: s
 
 export async function PATCH(req: Request, { params }: { params: Promise<{ shareId: string }>}){
   try{
-    const shareId = await params;
+    const { shareId } = await params;
     const formData = await req.formData();
     const title = formData.get("title") as string;
     const lat = Number.parseFloat(formData.get("lat") as string);
