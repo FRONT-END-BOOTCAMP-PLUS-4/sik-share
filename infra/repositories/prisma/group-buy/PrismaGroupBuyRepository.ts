@@ -111,6 +111,7 @@ export class PrismaGroupBuyRepository implements GroupBuyRepository {
     desiredItem: groupBuy.desiredItem,
     imageUrls: groupBuy.images.map((img) => img.url),
     neighborhoodName: groupBuy.neighborhood?.name ?? null,
+    status: groupBuy.status
   };
 }
 

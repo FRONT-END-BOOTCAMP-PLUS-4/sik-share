@@ -29,6 +29,7 @@ interface ShareData {
   desiredItemName: string;
   imageUrls: string[];
   remainingHours: number;
+  status: number;
 }
 
 export default function GroupBuyPage() {
@@ -75,17 +76,16 @@ export default function GroupBuyPage() {
 
   if (!share) return <Loading />;
 
-  const isDday = differenceInCalendarDays(
-    new Date(share.meetingDate),
-    new Date(),
-  );
-
   return (
     <div className="relative min-h-screen">
       <SubHeader />
       <div className="p-4">
         <section>
-          <GroupBadges isDday={isDday} />
+          <GroupBadges
+            type={"share"}
+            status={share.status}
+            remainingHours={share.remainingHours}
+          />
           <p className="title-md mb-4">{share.title}</p>
           <Carousel
             images={
@@ -108,10 +108,13 @@ export default function GroupBuyPage() {
             <Salad size={15} strokeWidth={1} />
             <p>{share.desiredItemName}</p>
           </div>
-          <div className="flex items-center gap-0.5">
-            <ClockFading size={15} strokeWidth={1} />
-            <p>{share.remainingHours}시간 남음</p>
-          </div>
+          {share.status === 0 && share.remainingHours !== 0 && (
+            <div className="flex items-center gap-0.5">
+              <ClockFading size={15} strokeWidth={1} />
+              <span className="text-destructive">{share.remainingHours}</span>
+              <span>시간 남음</span>
+            </div>
+          )}
         </section>
 
         <section className="mt-4">
@@ -139,7 +142,12 @@ export default function GroupBuyPage() {
           />
         </section>
       </div>
-      <DetailFooter isOwner={isOwner ?? false} />
+      <DetailFooter
+        isOwner={isOwner ?? false}
+        type={"share"}
+        status={share.status}
+        remainingHours={share.remainingHours}
+      />
     </div>
   );
 }

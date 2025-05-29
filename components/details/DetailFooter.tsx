@@ -8,19 +8,63 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import ShareButton from "./ShareButton";
+import { getGroupStatus } from "@/utils/groupStatus";
 
 interface DetailFooterProps {
   isOwner: boolean;
+  type: string;
+  isDday?: number;
+  status: number;
+  remainingHours?: number;
+  meetingDate?: string;
+  memberCount?: number;
+  maxMember?: number;
 }
 
-export function DetailFooter({ isOwner }: DetailFooterProps) {
+export function DetailFooter({
+  isOwner,
+  type,
+  isDday,
+  status,
+  remainingHours,
+  meetingDate,
+  memberCount,
+  maxMember,
+}: DetailFooterProps) {
+  const groupStatus = getGroupStatus({
+    type,
+    isDday,
+    status,
+    remainingHours,
+    meetingDate,
+    memberCount,
+    maxMember,
+  });
+
+  const isExpired =
+    groupStatus === "EXPIRED" ||
+    groupStatus === "DONE" ||
+    groupStatus === "SHARE_DONE";
+
+  const isFull = groupStatus === "FULL";
+
   return (
     <Dialog>
       <footer className="z-10 fixed bottom-0 mx-auto w-full max-w-[calc(var(--space-mobileMax)-2px)] bg-white flex justify-around items-center min-h-[var(--space-header)] px-4 py-2 shadow-[var(--bottom-nav-shadow)]">
         {!isOwner ? (
-          <Button variant="joinFullBtn" size="lg" className="w-[85%]">
-            참여하기
-          </Button>
+          isExpired ? (
+            <Button variant="disabled" size="lg" className="w-[85%]" disabled>
+              모집 종료
+            </Button>
+          ) : isFull ? (
+            <Button variant="disabled" size="lg" className="w-[85%]" disabled>
+              모집 완료
+            </Button>
+          ) : (
+            <Button variant="joinFullBtn" size="lg" className="w-[85%]">
+              참여하기
+            </Button>
+          )
         ) : (
           <div className="flex justify-between w-[85%]">
             <Button variant="joinBtn" size="lg" className="w-[49%]">
