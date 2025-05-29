@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { PrismaChatListRepository } from "@/infra/repositories/prisma/PrismaChatListRepository";
-import { GetChatListUsecase } from "@/application/usecases/chat/GetChatListUsecase";
-import { GetGroupBuyChatListUsecase } from "@/application/usecases/chat/GetGroupBuyChatListUsecase";
+import { GetChatListUsecase } from "@/application/usecases/chatting/GetChatListUsecase";
+import { GetGroupBuyChatListUsecase } from "@/application/usecases/chatting/GetGroupBuyChatListUsecase";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 

@@ -1,5 +1,5 @@
 import { PrismaClient } from "@/prisma/generated";
-import type { UpdateTogetherStatusRepository } from "@/domain/repositories/chat/UpdateTogetherStatusRepository";
+import type { UpdateTogetherStatusRepository } from "@/domain/repositories/chatting/UpdateTogetherStatusRepository";
 
 const prisma = new PrismaClient();
 

@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { PrismaUpdateShareStatusRepository } from "@/infra/repositories/prisma/PrismaUpdateShareStatusRepository";
-import { UpdateShareStatusUseCase } from "@/application/usecases/chat/UpdateShareStatusUseCase";
+import { UpdateShareStatusUseCase } from "@/application/usecases/chatting/UpdateShareStatusUseCase";
 
 export async function PATCH(
   req: NextRequest,

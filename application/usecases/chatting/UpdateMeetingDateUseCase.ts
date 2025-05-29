@@ -1,5 +1,5 @@
-import type { UpdateMeetingDateRepository } from "@/domain/repositories/chat/UpdateMeetingDateRepository";
-import type { UpdateMeetingDateDto } from "@/application/usecases/chat/dto/UpdateMeetingDateDto";
+import type { UpdateMeetingDateRepository } from "@/domain/repositories/chatting/UpdateMeetingDateRepository";
+import type { UpdateMeetingDateDto } from "@/application/usecases/chatting/dto/UpdateMeetingDateDto";
 
 export class UpdateMeetingDateUseCase {
   constructor(private readonly shareChatRepository: UpdateMeetingDateRepository) {}

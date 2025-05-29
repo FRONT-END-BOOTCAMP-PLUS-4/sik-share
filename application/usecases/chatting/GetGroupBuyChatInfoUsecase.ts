@@ -1,4 +1,4 @@
-import type { GroupBuyChatMessageRepository } from "@/domain/repositories/chat/GroupBuyChatMessageRepository";
+import type { GroupBuyChatMessageRepository } from "@/domain/repositories/chatting/GroupBuyChatMessageRepository";
 
 export class GetGroupBuyChatInfoUsecase {
   constructor(private readonly chatMessageRepository: GroupBuyChatMessageRepository) {}

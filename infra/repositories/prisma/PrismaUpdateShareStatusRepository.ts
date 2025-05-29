@@ -1,5 +1,5 @@
 import { PrismaClient } from "@/prisma/generated";
-import type { UpdateShareStatusRepository } from "@/domain/repositories/chat/UpdateShareStatusRepository";
+import type { UpdateShareStatusRepository } from "@/domain/repositories/chatting/UpdateShareStatusRepository";
 
 const prisma = new PrismaClient();
 

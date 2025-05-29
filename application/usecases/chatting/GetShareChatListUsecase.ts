@@ -1,6 +1,6 @@
-import type { ChatMessageRepository } from "@/domain/repositories/chat/ChatMessageListRepository";
-import { ChatDetailDto } from "@/application/usecases/chat/dto/ChatDetailDto";
-import type { ChatMessageListDto } from "@/application/usecases/chat/dto/ChatMessageListDto";
+import type { ChatMessageRepository } from "@/domain/repositories/chatting/ChatMessageListRepository";
+import { ChatDetailDto } from "@/application/usecases/chatting/dto/ChatDetailDto";
+import type { ChatMessageListDto } from "@/application/usecases/chatting/dto/ChatMessageListDto";
 
 export class GetShareChatListUsecase {
   constructor(private readonly chatMessageRepository: ChatMessageRepository) {}
