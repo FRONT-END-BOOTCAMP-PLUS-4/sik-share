@@ -31,6 +31,7 @@ interface GroupBuyData {
   lng: number;
   desiredItem: string;
   imageUrls: string[];
+  status: number;
 }
 
 export default function GroupBuyPage() {
@@ -87,7 +88,12 @@ export default function GroupBuyPage() {
       <SubHeader />
       <div className="p-4">
         <section>
-          <GroupBadges isDday={isDday} />
+          <GroupBadges
+            type={"groupbuy"}
+            isDday={isDday}
+            status={groupBuy.status}
+            meetingDate={new Date(groupBuy.meetingDate).toLocaleDateString()}
+          />
           <p className="title-md mb-4">{groupBuy.title}</p>
           <Carousel
             images={

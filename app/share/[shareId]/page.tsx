@@ -81,7 +81,11 @@ export default function GroupBuyPage() {
       <SubHeader />
       <div className="p-4">
         <section>
-          <GroupBadges type={"share"} status={share.status} />
+          <GroupBadges
+            type={"share"}
+            status={share.status}
+            remainingHours={share.remainingHours}
+          />
           <p className="title-md mb-4">{share.title}</p>
           <Carousel
             images={
@@ -104,10 +108,11 @@ export default function GroupBuyPage() {
             <Salad size={15} strokeWidth={1} />
             <p>{share.desiredItemName}</p>
           </div>
-          {share.status !== 2 && (
+          {share.status === 0 && share.remainingHours !== 0 && (
             <div className="flex items-center gap-0.5">
               <ClockFading size={15} strokeWidth={1} />
-              <p>{share.remainingHours}시간 남음</p>
+              <span className="text-destructive">{share.remainingHours}</span>
+              <span>시간 남음</span>
             </div>
           )}
         </section>
