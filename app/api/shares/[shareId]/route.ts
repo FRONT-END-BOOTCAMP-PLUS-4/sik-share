@@ -26,8 +26,9 @@ export async function GET(_: Request, context: { params: { shareId: string } }) 
   }
 }
 
-export async function PATCH(req: Request, { params:{ shareId } }: { params: { shareId: string }}){
+export async function PATCH(req: Request, { params }: { params: Promise<{ shareId: string }>}){
   try{
+    const { shareId } = await params;
     const formData = await req.formData();
     const title = formData.get("title") as string;
     const lat = Number.parseFloat(formData.get("lat") as string);
