@@ -20,4 +20,5 @@ export interface ShareRepository {
     neighborhoodId: number
   ): Promise<(Partial<Share> & { thumbnailUrl: string | null })[]>;
   update(share: Partial<Share>): Promise<Share>;
+  softDelete(id:number):Promise<void>;
 }

@@ -77,7 +77,7 @@ export default function ChatList({
               </>
             )}
             <p className="label !text-zinc-400">
-              {lastMessageAt.trim()
+              {lastMessageAt && lastMessageAt.trim()
                 ? dayjs(lastMessageAt).locale("ko").format("A h:mm")
                 : ""}
             </p>

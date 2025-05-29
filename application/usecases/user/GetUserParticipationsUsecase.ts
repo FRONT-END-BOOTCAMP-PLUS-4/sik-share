@@ -24,6 +24,7 @@ export class GetUserParticipationsUsecase {
     if (status === "share") {
       const where = {
         recipientId: user?.id,
+        deletedAt : null,
       };
   
       const data = await this.shareRepo.getUserShares({
@@ -45,6 +46,7 @@ export class GetUserParticipationsUsecase {
       }));
     } else {
       const where = {
+        deletedAt : null,
         participants: {
           some : {
             userId: user?.id,

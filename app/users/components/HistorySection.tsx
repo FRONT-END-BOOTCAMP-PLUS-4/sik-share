@@ -1,12 +1,12 @@
 "use client";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SubHeader from "@/components/common/SubHeader";
 import { useInfiniteScroll } from "@/hooks/useInfinityScroll";
 import { useTotalCounts } from "@/app/users/hooks/useTotalCounts";
 import { HistoryItemList } from "@/app/users/components/HistoryItemList";
-import type { ListCardProps } from "@/components/common/ListCard";
 import type { ShareListCardProps } from "@/app/users/components/ShareListCard";
+import type { GroupBuyListCardProps } from "@/app/users/components/GroupBuyListCard";
 import { getTabValues } from "@/app/users/utils";
 
 interface HistorySectionProps {
@@ -24,7 +24,7 @@ export function HistorySection({
   isMyAccount,
   tabType,
 }: HistorySectionProps) {
-  const { counts } = useTotalCounts({ publicId, type, tabType });
+  const tabValues = getTabValues(type, isMyAccount);
   const [currentTab, setCurrentTab] = useState<string>(
     tabType === "status" ? "active" : "share",
   );
@@ -42,14 +42,46 @@ export function HistorySection({
     [publicId, currentTab, type],
   );
 
-  const { items, loading, hasMore, ref } = useInfiniteScroll({
+  const {
+    items: originalItems,
+    loading,
+    hasMore,
+    ref,
+  } = useInfiniteScroll({
     fetcher,
     itemsPerPage: 20,
     delay: 300,
     deps: [publicId, currentTab],
   });
 
-  const tabValues = getTabValues(type, isMyAccount);
+  const [items, setItems] = useState<
+    (ShareListCardProps | GroupBuyListCardProps)[]
+  >([]);
+
+  useEffect(() => {
+    setItems(originalItems as (ShareListCardProps | GroupBuyListCardProps)[]);
+  }, [originalItems]);
+
+  const { counts: originalCounts } = useTotalCounts({
+    publicId,
+    type,
+    tabType,
+  });
+
+  const [counts, setCounts] = useState(originalCounts);
+
+  useEffect(() => {
+    setCounts(originalCounts);
+  }, [originalCounts]);
+
+  const handleDeleteItem = (id: number) => {
+    setItems((prev) => prev.filter((item) => item.id !== id));
+
+    setCounts((prev) => ({
+      ...prev,
+      [currentTab]: Math.max((prev?.[currentTab] ?? 1) - 1, 0),
+    }));
+  };
 
   return (
     <>
@@ -83,8 +115,15 @@ export function HistorySection({
 
           {tabValues.map((tab) => (
             <TabsContent key={tab.value} value={tab.value}>
+              {type === "share" &&
+                tabType === "status" &&
+                tab.value === "expired" && (
+                  <div className="text-center caption text-zinc-400 py-3 border-b border-b-zinc-200">
+                    작성한 지 24시간이 지난 나눔 입니다.
+                  </div>
+                )}
               <HistoryItemList
-                items={items as ListCardProps[] | ShareListCardProps[]}
+                items={items}
                 type={
                   type === "participation"
                     ? tab.value === "group-buy"
@@ -95,6 +134,8 @@ export function HistorySection({
                 refTarget={ref}
                 loading={loading}
                 hasMore={hasMore}
+                isEdit={type !== "participation"}
+                onDeleteItem={handleDeleteItem}
               />
             </TabsContent>
           ))}

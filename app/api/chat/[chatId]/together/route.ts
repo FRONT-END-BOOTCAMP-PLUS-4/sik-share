@@ -9,7 +9,7 @@ import { authOptions } from "@/lib/authOptions";
 
 export async function GET(
   req: NextRequest,
-  context: { params: { chatId: string } }
+  context: { params: Promise<{ chatId: string }> }
 ) {
   const params = await context.params;
   const chatId = Number(params.chatId);
