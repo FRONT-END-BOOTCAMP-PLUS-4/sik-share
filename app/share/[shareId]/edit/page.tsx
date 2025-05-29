@@ -11,11 +11,12 @@ import SubHeader from "@/components/common/SubHeader";
 import { Form } from "@/components/ui/form";
 import usePreloadedImageFiles from "@/hooks/usePreloadedImageFiles";
 import type { LocationData } from "@/types/types";
-import { useParams, useRouter } from "next/navigation";
+import { notFound, useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import useShareFormDetail from "./hooks/useShareFormDetail";
+import { HttpError } from "@/errors/HttpError";
 
 type ShareEditForm = {
   shareItem: number;
@@ -42,6 +43,16 @@ export default function ShareEditPage() {
   const [showMapModal, setShowMapModal] = useState(false);
 
   useEffect(() => {
+    if (error instanceof HttpError) {
+      if (error.status === 403) {
+        router.replace("/forbidden");
+      } else if (error.status === 404) {
+        router.replace("/not-found");
+      }
+    }
+  }, [error, router]);
+
+  useEffect(() => {
     if (shareFormDetail?.images) {
       setImagesToLoad(shareFormDetail.images);
     }
@@ -62,13 +73,6 @@ export default function ShareEditPage() {
       images: [],
     },
   });
-
-  useEffect(() => {
-    if (error) {
-      toast.error(error);
-      router.back();
-    }
-  }, [error, router]);
 
   useEffect(() => {
     if (
@@ -136,7 +140,7 @@ export default function ShareEditPage() {
 
   return (
     <>
-      {filesLoading || detailLoading ? (
+      {filesLoading || detailLoading || !shareFormDetail ? (
         <Loading />
       ) : (
         <>
