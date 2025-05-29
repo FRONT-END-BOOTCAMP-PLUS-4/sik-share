@@ -12,7 +12,7 @@ interface BadgeInfo {
 interface GroupBadgesProps extends GroupStatusParams {}
 
 export function GroupBadges(props: GroupBadgesProps) {
-  const { type, isDday, status } = props;
+  const { isDday, status, type } = props;
 
   const badges: (BadgeInfo | false)[] = [
     typeof isDday === "number" &&
@@ -37,14 +37,14 @@ export function GroupBadges(props: GroupBadgesProps) {
     case "EXPIRED":
       badges.push({
         key: "expired",
-        label: "기한 마감",
+        label: type === "groupbuy" ? "마감" : "기한 만료",
         variant: "done",
       });
       break;
     case "DONE":
       badges.push({
         key: "done",
-        label: "완료",
+        label: "장보기 완료",
         variant: "done",
       });
       break;

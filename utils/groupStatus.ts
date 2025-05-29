@@ -23,8 +23,11 @@ export function getGroupStatus({
   remainingHours,
   meetingDate,
 }: GroupStatusParams): GroupStatus {
-  const today = new Date().toISOString().split("T")[0];
-  const meeting = meetingDate?.split("T")[0];
+  const today = new Date().toLocaleDateString();
+  const meeting = meetingDate ? new Date(meetingDate).toLocaleDateString() : undefined;
+
+  console.log("today", today);
+  console.log("meeting", meeting);
 
   if (type === "groupbuy") {
     if (status === 1) return "DONE";
@@ -37,7 +40,6 @@ export function getGroupStatus({
       today <= meeting
     )
       return "CLOSING";
-    if (typeof isDday === "number" && isDday >= 0 && status === 0) return "DDAY";
   }
 
   if (type === "share") {
