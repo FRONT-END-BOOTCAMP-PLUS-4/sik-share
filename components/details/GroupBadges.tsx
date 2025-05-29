@@ -1,4 +1,5 @@
 import { Badge } from "@/components/ui/badge";
+import { getGroupStatus, type GroupStatusParams } from "@/utils/groupStatus";
 
 type BadgeVariant = React.ComponentProps<typeof Badge>["variant"];
 
@@ -8,87 +9,73 @@ interface BadgeInfo {
   variant: BadgeVariant;
 }
 
-interface GroupBadgesProps {
-  type: string;
-  isDday?: number;
-  status: number;
-  remainingHours?: number;
-  meetingDate?: string;
-}
+interface GroupBadgesProps extends GroupStatusParams {}
 
-export function GroupBadges({
-  type,
-  isDday,
-  status,
-  remainingHours,
-  meetingDate,
-}: GroupBadgesProps) {
-  const today = new Date().toLocaleDateString();
+export function GroupBadges(props: GroupBadgesProps) {
+  const { type, isDday, status } = props;
 
-  const badges: BadgeInfo[] = [
+  const badges: (BadgeInfo | false)[] = [
     typeof isDday === "number" &&
-      isDday !== undefined &&
       isDday >= 0 &&
       status === 0 && {
         key: "dday",
         label: `D-${isDday}`,
         variant: "isDday",
       },
-    type === "groupbuy" &&
-      isDday !== undefined &&
-      isDday <= 1 &&
-      status === 0 &&
-      meetingDate !== undefined &&
-      today <= meetingDate && {
+  ];
+
+  const groupStatus = getGroupStatus(props);
+
+  switch (groupStatus) {
+    case "CLOSING":
+      badges.push({
         key: "closing",
         label: "마감 임박",
         variant: "warning",
-      },
-    type === "groupbuy" &&
-      status === 0 &&
-      meetingDate !== undefined &&
-      today > meetingDate && {
-        key: "end",
+      });
+      break;
+    case "EXPIRED":
+      badges.push({
+        key: "expired",
         label: "기한 마감",
         variant: "done",
-      },
-    type === "groupbuy" &&
-      status === 1 && {
+      });
+      break;
+    case "DONE":
+      badges.push({
         key: "done",
         label: "완료",
         variant: "done",
-      },
-    type === "share" &&
-      status === 0 &&
-      remainingHours !== 0 && {
+      });
+      break;
+    case "SHARE_DONE":
+      badges.push({
+        key: "shareDone",
+        label: "나눔 완료",
+        variant: "done",
+      });
+      break;
+    case "ONGOING":
+      badges.push({
         key: "ongoing",
         label: "진행 중",
         variant: "isDday",
-      },
-    type === "share" &&
-      status === 0 &&
-      remainingHours === 0 && {
-        key: "end",
-        label: "기한 마감",
-        variant: "done",
-      },
-    type === "share" &&
-      status === 1 && {
+      });
+      break;
+    case "RESERVED":
+      badges.push({
         key: "reserved",
         label: "예약 중",
         variant: "default",
-      },
-    type === "share" &&
-      status === 2 && {
-        key: "done",
-        label: "나눔 완료",
-        variant: "done",
-      },
-  ].filter(Boolean) as BadgeInfo[];
+      });
+      break;
+  }
+
+  const validBadges = badges.filter(Boolean) as BadgeInfo[];
 
   return (
     <div className="flex gap-1 mb-2">
-      {badges.map(({ key, label, variant }) => (
+      {validBadges.map(({ key, label, variant }) => (
         <Badge key={key} variant={variant}>
           {label}
         </Badge>

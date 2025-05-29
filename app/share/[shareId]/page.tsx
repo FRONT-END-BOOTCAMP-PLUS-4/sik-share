@@ -142,7 +142,12 @@ export default function GroupBuyPage() {
           />
         </section>
       </div>
-      <DetailFooter isOwner={isOwner ?? false} />
+      <DetailFooter
+        isOwner={isOwner ?? false}
+        type={"share"}
+        status={share.status}
+        remainingHours={share.remainingHours}
+      />
     </div>
   );
 }

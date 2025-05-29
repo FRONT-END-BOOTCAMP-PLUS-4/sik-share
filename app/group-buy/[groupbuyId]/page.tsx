@@ -150,7 +150,13 @@ export default function GroupBuyPage() {
           />
         </section>
       </div>
-      <DetailFooter isOwner={isOwner ?? false} />
+      <DetailFooter
+        isOwner={isOwner ?? false}
+        type={"groupbuy"}
+        isDday={isDday}
+        status={groupBuy.status}
+        meetingDate={new Date(groupBuy.meetingDate).toLocaleDateString()}
+      />
     </div>
   );
 }
