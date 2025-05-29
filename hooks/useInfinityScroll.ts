@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
+import throttle from "lodash.throttle";
 
 interface UseInfiniteScrollOptions<T> {
   fetcher: (page: number, itemsPerPage: number) => Promise<T[]>;
@@ -23,8 +24,10 @@ export function useInfiniteScroll<T>({
 
   const { ref, inView } = useInView({ threshold: 0.3 });
 
-  const loadMore = useCallback(
-    async (currentSignal: number) => {
+  const throttledLoadMoreRef = useRef<((signal: number) => void) & { cancel?: () => void }>(null);
+
+  useEffect(() => {
+    throttledLoadMoreRef.current = throttle(async (signal: number) => {
       if (loading || !hasMore) return;
       setLoading(true);
 
@@ -33,11 +36,7 @@ export function useInfiniteScroll<T>({
 
         const newItems = await fetcher(page, itemsPerPage);
 
-        if (newItems.length === 0) {
-          setHasMore(false);
-        }
-        
-        if (resetSignal.current === currentSignal) {
+        if (resetSignal.current === signal) {
           setItems((prev) => [...prev, ...newItems]);
           setPage((prev) => prev + 1);
 
@@ -48,21 +47,27 @@ export function useInfiniteScroll<T>({
       } finally {
         setLoading(false);
       }
-    },
-    [fetcher, page, loading, hasMore, delay, itemsPerPage],
-  );
+    }, 1000);
+
+    return () => {
+      throttledLoadMoreRef.current?.cancel?.();
+    };
+  }, [loading, hasMore, page, itemsPerPage, delay, fetcher]);
 
   useEffect(() => {
     if (inView) {
-      loadMore(resetSignal.current);
+      throttledLoadMoreRef.current?.(resetSignal.current);
     }
-  }, [inView, loadMore]);
+  }, [inView]);
 
   useEffect(() => {
     resetSignal.current += 1;
     setItems([]);
     setPage(0);
     setHasMore(true);
+    setTimeout(() => {
+      throttledLoadMoreRef.current?.(resetSignal.current);
+    }, 0);
   }, deps);
 
   return {
