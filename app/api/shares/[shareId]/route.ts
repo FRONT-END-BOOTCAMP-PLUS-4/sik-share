@@ -8,9 +8,9 @@ import { PrismaNeighborhoodRepository } from '@/infra/repositories/prisma/Prisma
 import { PrismaShareImageRepository } from '@/infra/repositories/prisma/share/PrismaShareImageRepository';
 import { SupabaseImageStorageRepository } from '@/infra/repositories/supabase/SupabaseImageRepository';
 
-export async function GET(_: Request, context: { params: { shareId: string } }) {
+export async function GET(_: Request, { params }: { params: Promise<{ shareId: string }> }) {
   try {
-    const shareId = Number(context.params.shareId);
+    const shareId = await params;
 
     if (Number.isNaN(shareId)) {
       return NextResponse.json({ error: "잘못된 ID" }, { status: 400 });
@@ -18,7 +18,7 @@ export async function GET(_: Request, context: { params: { shareId: string } }) 
 
     const repo = new PrismaShareRepository();
     const usecase = new GetShareDetailUsecase(repo);
-    const result = await usecase.execute(shareId);
+    const result = await usecase.execute(Number(shareId));
 
     return NextResponse.json({ message: "조회 성공", data: result });
   } catch (e) {
@@ -27,8 +27,9 @@ export async function GET(_: Request, context: { params: { shareId: string } }) 
   }
 }
 
-export async function PATCH(req: Request, { params:{ shareId } }: { params: { shareId: string }}){
+export async function PATCH(req: Request, { params }: { params: Promise<{ shareId: string }>}){
   try{
+    const shareId = await params;
     const formData = await req.formData();
     const title = formData.get("title") as string;
     const lat = Number.parseFloat(formData.get("lat") as string);
@@ -78,7 +79,7 @@ export async function PATCH(req: Request, { params:{ shareId } }: { params: { sh
   }
 }
 
-export async function DELETE(_: Request, { params }: { params: { shareId: string }}){
+export async function DELETE(_: Request, { params }: { params: Promise<{ shareId: string }>}){
   try{
     const shareRepo = new PrismaShareRepository();
     const deleteShareUsecase = new DeleteShareUsecase(shareRepo);
