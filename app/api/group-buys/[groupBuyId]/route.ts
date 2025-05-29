@@ -5,7 +5,7 @@ import { DeleteGroupBuyUsecase } from "@/application/usecases/group-buy/DeleteGr
 
 export async function GET(_: Request, { params }: { params: Promise<{ groupBuyId: string }> }) {
   try {
-    const groupBuyId = await params;
+    const groupBuyId = (await params).groupBuyId;
 
     if (Number.isNaN(groupBuyId)) {
       return NextResponse.json({ error: "잘못된 ID" }, { status: 400 });
