@@ -40,6 +40,10 @@ export function useInfiniteScroll<T>({
         if (resetSignal.current === currentSignal) {
           setItems((prev) => [...prev, ...newItems]);
           setPage((prev) => prev + 1);
+
+          if (newItems.length < itemsPerPage) {
+            setHasMore(false);
+          }
         }
       } finally {
         setLoading(false);
