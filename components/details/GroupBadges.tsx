@@ -45,6 +45,14 @@ export function GroupBadges({
         variant: "warning",
       },
     type === "groupbuy" &&
+      status === 0 &&
+      meetingDate !== undefined &&
+      today > meetingDate && {
+        key: "end",
+        label: "기한 마감",
+        variant: "done",
+      },
+    type === "groupbuy" &&
       status === 1 && {
         key: "done",
         label: "완료",
