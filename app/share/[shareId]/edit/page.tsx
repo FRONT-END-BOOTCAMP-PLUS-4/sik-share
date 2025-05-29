@@ -47,7 +47,7 @@ export default function ShareEditPage() {
       if (error.status === 403) {
         router.replace("/forbidden");
       } else if (error.status === 404) {
-        router.replace("/not-found");
+        notFound();
       }
     }
   }, [error, router]);
