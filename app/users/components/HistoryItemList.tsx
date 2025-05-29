@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import { LoadingFoodLottie } from "@/components/lotties/LoadingFoodLottie";
 import {
   GroupBuyListCard,
@@ -14,6 +15,8 @@ interface HistoryItemListProps {
   refTarget: (node: HTMLElement | null) => void;
   loading?: boolean;
   hasMore?: boolean;
+  isEdit?: boolean;
+  onDeleteItem?: (id: number) => void;
 }
 
 export function HistoryItemList({
@@ -22,7 +25,16 @@ export function HistoryItemList({
   refTarget,
   loading,
   hasMore,
+  isEdit,
+  onDeleteItem,
 }: HistoryItemListProps) {
+  const router = useRouter();
+
+  const handleClick = (id: number) => {
+    const path = `/${type}/${id}`;
+    router.push(path);
+  };
+
   return (
     <>
       {items.length === 0 && !loading && (
@@ -31,13 +43,36 @@ export function HistoryItemList({
         </p>
       )}
       <ul>
-        {items.map((item, index) => (
+        {items.map((item) => (
           <li key={item.id}>
-            {type === "share" ? (
-              <ShareListCard {...(item as ShareListCardProps)} />
-            ) : (
-              <GroupBuyListCard {...(item as GroupBuyListCardProps)} />
-            )}
+            <div
+              // biome-ignore lint/a11y/useSemanticElements: <explanation>
+              role="button"
+              className="cursor-pointer"
+              tabIndex={0}
+              onKeyUp={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  handleClick(item.id);
+                }
+              }}
+              onClick={() => {
+                handleClick(item.id);
+              }}
+            >
+              {type === "share" ? (
+                <ShareListCard
+                  {...(item as ShareListCardProps)}
+                  isEdit={isEdit}
+                  onDelete={onDeleteItem}
+                />
+              ) : (
+                <GroupBuyListCard
+                  {...(item as GroupBuyListCardProps)}
+                  isEdit={isEdit}
+                  onDelete={onDeleteItem}
+                />
+              )}
+            </div>
           </li>
         ))}
       </ul>

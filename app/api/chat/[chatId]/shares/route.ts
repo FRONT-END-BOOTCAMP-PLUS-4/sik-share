@@ -8,10 +8,9 @@ import { GetShareChatListUsecase } from "@/application/usecases/chat/GetShareCha
 
 export async function GET(
   req: NextRequest,
-  context: { params: { chatId: string } }
+  { params }: { params: Promise<{ chatId: string }> }
 ) {
-  const params = await context.params;
-  const chatId = Number(params.chatId);
+  const { chatId } = await params;
   const session = await getServerSession(authOptions);
   if (!session || !session.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -25,7 +24,7 @@ export async function GET(
   const usecase = new GetShareChatListUsecase(repo);
 
   try {
-    const chatDetail = await usecase.execute(chatId, session.user.id);
+    const chatDetail = await usecase.execute(Number(chatId), session.user.id);
     return NextResponse.json(chatDetail);
   } catch (err) {
     console.error("메시지 불러오기 실패:", err);

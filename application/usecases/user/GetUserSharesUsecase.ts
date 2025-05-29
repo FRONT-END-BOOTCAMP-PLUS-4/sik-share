@@ -21,6 +21,7 @@ export class GetUserSharesUsecase {
     const where = {
       ownerId: user?.id,
       ...getShareStatusCondition(status as StatusType),
+      deletedAt : null,
     };
 
     const data = await this.shareRepo.getUserShares({

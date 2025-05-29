@@ -140,4 +140,11 @@ export class PrismaShareRepository implements ShareRepository {
   async update(share: Partial<Share>) : Promise<Share> {
     return await this.prisma.share.update({data: share, where: {id: share.id as number}});
   }
+
+  async softDelete(id: number): Promise<void> {
+    await this.prisma.share.update({
+      data: { deletedAt: new Date() },
+      where: { id },
+    });
+  }
 }

@@ -22,7 +22,7 @@ export function getTabValues(type: "share" | "group-buy"| "participation" , isMy
     case "group-buy":
       return [
         { label: "진행 중", value: "active" },
-        { label: "같이 장보기 완료", value: "completed" },
+        { label: "장보기 완료", value: "completed" },
       ];
 
     case "share":
