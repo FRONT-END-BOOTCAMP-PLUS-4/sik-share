@@ -4,7 +4,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 import { PrismaChatMessageRepository } from "@/infra/repositories/prisma/PrismaChatMessageListRepository";
-import { GetShareChatListUsecase } from "@/application/usecases/chatting/GetShareChatListUsecase";
+import { GetShareChatListUsecase } from "@/application/usecases/chat/GetShareChatListUsecase";
 
 export async function GET(
   req: NextRequest,

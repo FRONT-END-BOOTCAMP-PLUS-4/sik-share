@@ -2,8 +2,8 @@ export const dynamic = 'force-dynamic';
 
 import { type NextRequest, NextResponse } from "next/server";
 import { PrismaGroupBuyChatMessageRepository } from "@/infra/repositories/prisma/PrismaGroupBuyChatMessageRepository";
-import { GetGroupBuyChatMessagesUsecase } from "@/application/usecases/chatting/GetGroupBuyChatMessagesUsecase";
-import { GetGroupBuyChatInfoUsecase } from "@/application/usecases/chatting/GetGroupBuyChatInfoUsecase";
+import { GetGroupBuyChatMessagesUsecase } from "@/application/usecases/chat/GetGroupBuyChatMessagesUsecase";
+import { GetGroupBuyChatInfoUsecase } from "@/application/usecases/chat/GetGroupBuyChatInfoUsecase";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 

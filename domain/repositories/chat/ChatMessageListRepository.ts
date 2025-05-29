@@ -1,4 +1,4 @@
-import type { ChatMessageListDto } from "@/application/usecases/chatting/dto/ChatMessageListDto";
+import type { ChatMessageListDto } from "@/application/usecases/chat/dto/ChatMessageListDto";
 
 export interface ChatMessageRepository {
   findMessagesByChatId(

@@ -1,5 +1,5 @@
 import type { UpdateShareStatusRepository } from "@/domain/repositories/chat/UpdateShareStatusRepository";
-import type { UpdateShareStatusDto } from "@/application/usecases/chatting/dto/UpdateShareStatusDto";
+import type { UpdateShareStatusDto } from "@/application/usecases/chat/dto/UpdateShareStatusDto";
 
 export class UpdateShareStatusUseCase {
   constructor(private readonly shareChatRepository: UpdateShareStatusRepository) {}

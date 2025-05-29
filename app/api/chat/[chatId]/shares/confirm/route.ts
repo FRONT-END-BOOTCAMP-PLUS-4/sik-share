@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { PrismaUpdateMeetingDateRepository } from "@/infra/repositories/prisma/PrismaUpdateMeetingDateRepository";
-import { UpdateMeetingDateUseCase } from "@/application/usecases/chatting/UpdateMeetingDateUseCase";
+import { UpdateMeetingDateUseCase } from "@/application/usecases/chat/UpdateMeetingDateUseCase";
 
 export async function PATCH(
   req: NextRequest,

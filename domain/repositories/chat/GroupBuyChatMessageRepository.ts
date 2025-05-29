@@ -1,4 +1,4 @@
-import type { GroupBuyChatMessageListDto } from "@/application/usecases/chatting/dto/GroupBuyChatMessageListDto";
+import type { GroupBuyChatMessageListDto } from "@/application/usecases/chat/dto/GroupBuyChatMessageListDto";
 
 export interface GroupBuyChatMessageRepository {
   findMessagesByChatId(

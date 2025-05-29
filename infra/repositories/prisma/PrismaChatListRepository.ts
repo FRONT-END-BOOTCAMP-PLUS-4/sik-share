@@ -1,7 +1,7 @@
 import { PrismaClient } from "@/prisma/generated";
 import type { ChatListRepository } from "@/domain/repositories/chat/ChatListRepository";
-import { ShareChatListItemDto } from "@/application/usecases/chatting/dto/ChatListItemDto";
-import { GroupBuyChatListDto } from "@/application/usecases/chatting/dto/GroupBuyChatListDto";
+import { ShareChatListItemDto } from "@/application/usecases/chat/dto/ChatListItemDto";
+import { GroupBuyChatListDto } from "@/application/usecases/chat/dto/GroupBuyChatListDto";
 
 const prisma = new PrismaClient();
 
