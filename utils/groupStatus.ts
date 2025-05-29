@@ -6,6 +6,7 @@ export type GroupStatus =
   | "RESERVED"
   | "SHARE_DONE"
   | "DDAY"
+  | "FULL"
   | "UNKNOWN";
 
 export interface GroupStatusParams {
@@ -14,6 +15,8 @@ export interface GroupStatusParams {
   status: number;
   remainingHours?: number;
   meetingDate?: string;
+  memberCount?: number;
+  maxMember?: number;
 }
 
 export function getGroupStatus({
@@ -22,12 +25,15 @@ export function getGroupStatus({
   status,
   remainingHours,
   meetingDate,
+  memberCount,
+  maxMember,
 }: GroupStatusParams): GroupStatus {
   const today = new Date().toLocaleDateString();
   const meeting = meetingDate ? new Date(meetingDate).toLocaleDateString() : undefined;
 
-  console.log("today", today);
-  console.log("meeting", meeting);
+  if (typeof memberCount === "number" && typeof maxMember === "number" && memberCount >= maxMember) {
+    return "FULL";
+  }
 
   if (type === "groupbuy") {
     if (status === 1) return "DONE";

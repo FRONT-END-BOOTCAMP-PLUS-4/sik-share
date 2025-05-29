@@ -17,6 +17,8 @@ interface DetailFooterProps {
   status: number;
   remainingHours?: number;
   meetingDate?: string;
+  memberCount?: number;
+  maxMember?: number;
 }
 
 export function DetailFooter({
@@ -26,6 +28,8 @@ export function DetailFooter({
   status,
   remainingHours,
   meetingDate,
+  memberCount,
+  maxMember,
 }: DetailFooterProps) {
   const groupStatus = getGroupStatus({
     type,
@@ -33,12 +37,16 @@ export function DetailFooter({
     status,
     remainingHours,
     meetingDate,
+    memberCount,
+    maxMember,
   });
 
   const isExpired =
     groupStatus === "EXPIRED" ||
     groupStatus === "DONE" ||
     groupStatus === "SHARE_DONE";
+
+  const isFull = groupStatus === "FULL";
 
   return (
     <Dialog>
@@ -47,6 +55,10 @@ export function DetailFooter({
           isExpired ? (
             <Button variant="disabled" size="lg" className="w-[85%]" disabled>
               모집 종료
+            </Button>
+          ) : isFull ? (
+            <Button variant="disabled" size="lg" className="w-[85%]" disabled>
+              모집 완료
             </Button>
           ) : (
             <Button variant="joinFullBtn" size="lg" className="w-[85%]">
