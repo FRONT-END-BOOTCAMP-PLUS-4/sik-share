@@ -6,7 +6,7 @@ export async function PATCH(
   req: NextRequest,
    {params }: { params: Promise<{ chatId: string }> }
 ) {
-  const chatId = await params;
+  const { chatId } = await params;
 
   try {
     const repository = new PrismaUpdateTogetherStatusRepository();
