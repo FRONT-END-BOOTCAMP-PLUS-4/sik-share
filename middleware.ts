@@ -17,7 +17,7 @@ export async function middleware(req: NextRequest) {
     PUBLIC_PAGE_REGEX.some((regex) => regex.test(pathname));
   const isPublicApi =
     PUBLIC_API_PATHS.some((path) => pathname.startsWith(path)) ||
-    (/^\/api\/group-buy\/\d+$/.test(pathname) && req.method === "GET");
+    (/^\/api\/group-buys\/\d+$/.test(pathname) && req.method === "GET");
   
   const token = await getToken({ req });
   
