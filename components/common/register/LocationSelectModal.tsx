@@ -26,6 +26,7 @@ export default function LocationSelectModal({
 }: LocationSelectModalProps) {
   const [mounted, setMounted] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
+  const [ address, setAddress ] = useState("")
   const [selectedLocation, setSelectedLocation] = useState<LocationData>({
     locationNote: "",
     locationAddress: "",
@@ -45,6 +46,7 @@ export default function LocationSelectModal({
     ) => {
       if (!coordinates) return;
 
+      setAddress(address);
       setSelectedLocation({
         locationNote: "",
         locationAddress: neighborhoodName,
@@ -56,6 +58,16 @@ export default function LocationSelectModal({
   );
 
   const handleButtonClick = () => {
+    if(!selectedLocation.locationAddress){
+      toast.error('지도를 움직여 위치를 선택해주세요.');
+      return;
+    }
+    
+    if(address.split(' ')[1] !== '관악구'){
+      toast.error('식샤는 관악구에서만 가능합니다.');
+      return;
+    }
+
     setShowDialog(true);
   };
 

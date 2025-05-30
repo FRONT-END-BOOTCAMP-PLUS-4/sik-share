@@ -9,7 +9,6 @@ import FormInput from "@/components/common/FormInput";
 import Loading from "@/components/common/Loading";
 import SubHeader from "@/components/common/SubHeader";
 import { Form } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
 import type { LocationData } from "@/types/types";
 import useShareItmes from "./hooks/useShareItems";
 import FormDetail from "@/components/common/register/FormDetail";
