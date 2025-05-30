@@ -21,6 +21,13 @@ export async function GET(_: Request, { params }: { params: Promise<{ groupBuyId
     const usecase = new GetGroupBuyDetailUsecase(repo);
     const result = await usecase.execute(Number(groupBuyId));
 
+    if (!result) {
+      return NextResponse.json(
+        { error: "존재하지 않는 같이 장보기 글입니다." },
+        { status: 404 }
+      );
+    }
+
     return NextResponse.json({ message: "조회 성공", data: result });
   } catch (e) {
     console.error(e);
