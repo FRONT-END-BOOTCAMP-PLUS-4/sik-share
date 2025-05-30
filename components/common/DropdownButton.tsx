@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { Settings, Plus, Minus } from "lucide-react";
+import { Settings, Plus, Minus, MoreVertical } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export interface DropdownOption {
@@ -11,14 +11,16 @@ export interface DropdownOption {
 
 export interface DropdownProps {
   options: DropdownOption[];
-  type?: "editProfile" | "register";
+  type?: "icon" | "register";
+  iconType?: "editProfile" | "more";
   align?: "top" | "bottom";
   className?: string;
 }
 
 export default function DropdownButton({
   options,
-  type = "editProfile",
+  type = "icon",
+  iconType = "editProfile",
   align = "bottom",
   className,
 }: DropdownProps) {
@@ -62,9 +64,21 @@ export default function DropdownButton({
 
   return (
     <div className="relative w-fit" ref={dropdownRef}>
-      {type === "editProfile" ? (
-        <Button variant="editProfile" size="icon" onClick={toggleDropdown}>
-          <Settings />
+      {type === "icon" ? (
+        <Button
+          variant="withIcon"
+          size="icon"
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleDropdown();
+          }}
+          className={cn(
+            iconType === "more" &&
+              "hover:bg-zinc-200 text-primary bg-transparent size-7",
+          )}
+        >
+          {iconType === "editProfile" && <Settings />}
+          {iconType === "more" && <MoreVertical size={20} />}
         </Button>
       ) : (
         <Button
@@ -88,7 +102,7 @@ export default function DropdownButton({
         <div className="relative">
           <ul
             className={cn(
-              "absolute flex flex-col bg-white shadow-md rounded-sm p-2 right-0",
+              "absolute flex flex-col bg-white shadow-md rounded-sm p-2 right-0 z-10",
               align === "bottom" && "top-1",
               align === "top" && "bottom-10",
             )}
@@ -98,7 +112,10 @@ export default function DropdownButton({
                 <Button
                   variant="ghost"
                   className="text-primary hover:bg-[var(--primary-o2)] hover:text-primary cursor-pointer shadow-none w-full"
-                  onClick={() => handleOptionClick(option)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleOptionClick(option);
+                  }}
                 >
                   {option.label}
                 </Button>

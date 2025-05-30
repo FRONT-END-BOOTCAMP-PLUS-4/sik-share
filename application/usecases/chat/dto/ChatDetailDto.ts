@@ -11,7 +11,7 @@ export class ChatDetailDto {
     public shareInfo: {
       title: string;
       thumbnailUrl: string;
-      location: string;
+      locationNote: string;
       meetingDate?: string;
       status: number;
     }

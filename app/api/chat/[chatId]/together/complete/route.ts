@@ -4,17 +4,16 @@ import { UpdateTogetherStatusUseCase } from "@/application/usecases/chat/UpdateT
 
 export async function PATCH(
   req: NextRequest,
-  context: { params: { chatId: string } }
+   {params }: { params: Promise<{ chatId: string }> }
 ) {
-  const { chatId } = await context.params;
-  const numericChatId = Number(chatId);
+  const { chatId } = await params;
 
   try {
     const repository = new PrismaUpdateTogetherStatusRepository();
     const useCase = new UpdateTogetherStatusUseCase(repository);
 
     await useCase.execute({
-      chatId: numericChatId,
+      chatId: Number(chatId),
       status: 2,
     });
 

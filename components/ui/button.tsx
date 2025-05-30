@@ -26,7 +26,7 @@ const buttonVariants = cva(
         deleteFullBtn:
           "bg-destructive w-full button-lg hover:bg-destructive/90 cursor-pointer",
         add: "bg-primary w-fit button-sm body-sm rounded-[var(--space-20)] hover:bg-primary/90 cursor-pointer",
-        editProfile:
+        withIcon:
           "bg-background w-fit text-zinc-400 badge-bold rounded-sm hover:bg-zinc-100 cursor-pointer",
         disabled: "bg-zinc-400 text-zinc-50",
       },

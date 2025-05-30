@@ -16,6 +16,7 @@ export class GetGroupBuyDetailDto {
     public lng: number,
     public desiredItem: string,
     public imageUrls: string[],
-    public neighborhoodName: string
+    public neighborhoodName: string,
+    public status: number
   ) {}
 }

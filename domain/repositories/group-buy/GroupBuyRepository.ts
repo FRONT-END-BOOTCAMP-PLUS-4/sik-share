@@ -17,4 +17,6 @@ export interface GroupBuyRepository {
     limit: number,
     neighborhoodId: number
   ): Promise<(Partial<GroupBuy> & { thumbnailUrl: string | null, currentUser: number, maxUser: number })[]>;
+  softDelete(id: number): Promise<void>;
+  update(groupBuy: Partial<GroupBuy>): Promise<GroupBuy>;
 }

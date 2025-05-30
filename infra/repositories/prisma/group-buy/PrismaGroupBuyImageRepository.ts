@@ -18,4 +18,11 @@ export class PrismaGroupBuyImageRepository implements GroupBuyImageRepository {
       orderBy: {order: 'asc'}
     })
   }
+
+  async replace(images: GroupBuyImage[]): Promise<void> {
+    const tx = await this.prisma.$transaction([
+      this.prisma.groupBuyImage.deleteMany({ where: { groupBuyId: images[0].groupBuyId } }),
+      this.prisma.groupBuyImage.createMany({ data: images }),
+    ]);
+  }
 }

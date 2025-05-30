@@ -1,6 +1,5 @@
 "use client";
 
-import useShareItmes from "@/app/register/share/hooks/useShareItems";
 import FormInput from "@/components/common/FormInput";
 import Loading from "@/components/common/Loading";
 import FormButton from "@/components/common/register/FormButton";
@@ -12,11 +11,12 @@ import SubHeader from "@/components/common/SubHeader";
 import { Form } from "@/components/ui/form";
 import usePreloadedImageFiles from "@/hooks/usePreloadedImageFiles";
 import type { LocationData } from "@/types/types";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { notFound, useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import useShareFormDetail from "./hooks/useShareFormDetail";
+import { HttpError } from "@/errors/HttpError";
 
 type ShareEditForm = {
   shareItem: number;
@@ -29,47 +29,109 @@ type ShareEditForm = {
   images: File[];
 };
 
-const images = [
-  "https://jxehepesvdmpvgnpxoxn.supabase.co/storage/v1/object/public/share/share_15_0.JPG",
-];
-
 export default function ShareEditPage() {
   const router = useRouter();
-  const { data: session } = useSession();
+  const { shareId } = useParams<{ shareId: string }>();
 
-  const userId = session?.user.id;
+  const {
+    shareFormDetail,
+    loading: detailLoading,
+    error,
+  } = useShareFormDetail(Number(shareId));
 
-  const { shareItems, loading: shareItemsLoading, error } = useShareItmes();
-  const { files, loading: filesLoading } = usePreloadedImageFiles(images);
-  const form = useForm<ShareEditForm>({
-    mode: "onSubmit",
-    defaultValues: {
-      shareItem: 5,
-      title: "계란 나눠요~!",
-      description: `계란 나눔합니다.\n어제 샀는데 잠시 본가에 내려가 있을 예정이라 나눠요~!\n저녁 6시 이후 아무 때나 좋아요`,
-      neighborhoodName: "청룡동",
-      locationNote: "관악 소방서 앞",
-      lat: 37.47426560506256,
-      lng: 126.9526147439166,
-      images: files,
-    },
-  });
-
+  const [imagesToLoad, setImagesToLoad] = useState<string[]>([]);
   const [showMapModal, setShowMapModal] = useState(false);
 
   useEffect(() => {
-    if (!filesLoading && files && files.length > 0) {
+    if (error instanceof HttpError) {
+      if (error.status === 403) {
+        router.replace("/forbidden");
+      } else if (error.status === 404) {
+        notFound();
+      }
+    }
+  }, [error, router]);
+
+  useEffect(() => {
+    if (shareFormDetail?.images) {
+      setImagesToLoad(shareFormDetail.images);
+    }
+  }, [shareFormDetail]);
+
+  const { files, loading: filesLoading } = usePreloadedImageFiles(imagesToLoad);
+
+  const form = useForm<ShareEditForm>({
+    mode: "onSubmit",
+    defaultValues: {
+      shareItem: 1,
+      title: "",
+      description: "",
+      neighborhoodName: "",
+      locationNote: "",
+      lat: 0,
+      lng: 0,
+      images: [],
+    },
+  });
+
+  useEffect(() => {
+    if (
+      !filesLoading &&
+      !detailLoading &&
+      shareFormDetail &&
+      files.length > 0
+    ) {
       form.reset({
-        ...form.getValues(),
+        shareItem: 1,
+        title: shareFormDetail.title,
+        description: shareFormDetail.description,
+        neighborhoodName: shareFormDetail.neighborhoodName,
+        locationNote: shareFormDetail.locationNote,
+        lat: shareFormDetail.lat,
+        lng: shareFormDetail.lng,
         images: files,
       });
     }
-  }, [files, filesLoading]);
+  }, [filesLoading, detailLoading, shareFormDetail, files, form]);
 
   const onSubmit = async () => {
     try {
       const values = form.getValues();
-      console.log(values);
+
+      const formData = new FormData();
+      formData.append("shardId", shareId);
+      formData.append("title", values.title);
+      formData.append("lat", String(values.lat));
+      formData.append("lng", String(values.lng));
+      formData.append("neighborhoodName", values.neighborhoodName);
+      formData.append("locationNote", values.locationNote);
+      formData.append("description", values.description);
+
+      for (const image of values.images) {
+        formData.append("images", image);
+      }
+
+      const res = await fetch(`/api/shares/${shareId}`, {
+        method: "PATCH",
+        body: formData,
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        const message =
+          errorData?.message ||
+          "알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요.";
+        toast.error(message);
+        return;
+      }
+
+      toast.success("나눔이 수정되었습니다", {
+        duration: 2000,
+        onAutoClose: () => {
+          router.back();
+        },
+      });
+      router.back();
     } catch (error) {
       console.error("나눔 수정 중 오류 발생:", error);
       toast.error("네트워크 오류가 발생했습니다. 다시 시도해주세요.");
@@ -78,7 +140,7 @@ export default function ShareEditPage() {
 
   return (
     <>
-      {shareItemsLoading || filesLoading ? (
+      {filesLoading || detailLoading || !shareFormDetail ? (
         <Loading />
       ) : (
         <>
@@ -101,13 +163,12 @@ export default function ShareEditPage() {
                 />
                 <FormSelect
                   name="shareItem"
-                  disabled={true}
+                  disabled
                   label="나눔 품목"
                   placeholder="나누고 싶은 품목을 선택해주세요."
-                  options={shareItems.map((item) => ({
-                    label: item.name,
-                    value: item.id,
-                  }))}
+                  options={[
+                    { label: shareFormDetail?.shareItem || "", value: 1 },
+                  ]}
                   rules={{ required: "나눔 품목을 선택해주세요." }}
                 />
                 <FormDetail

@@ -111,6 +111,7 @@ export class PrismaGroupBuyRepository implements GroupBuyRepository {
     desiredItem: groupBuy.desiredItem,
     imageUrls: groupBuy.images.map((img) => img.url),
     neighborhoodName: groupBuy.neighborhood?.name ?? null,
+    status: groupBuy.status
   };
 }
 
@@ -158,5 +159,19 @@ async getList(
     );
 
     return result;
+  }
+
+  async softDelete(id: number): Promise<void> {
+    await this.prisma.groupBuy.update({
+      data: { deletedAt: new Date() },
+      where: { id },
+    })
+  }
+
+  async update(groupBuy: Partial<GroupBuy>): Promise<GroupBuy> {
+    return await this.prisma.groupBuy.update({
+      data: groupBuy,
+      where: { id: groupBuy.id as number}
+    })
   }
 }

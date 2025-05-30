@@ -104,7 +104,8 @@ export class PrismaShareRepository implements ShareRepository {
       desiredItemName: share.shareItem?.name ?? null,
       imageUrls: share.images.map((img) => img.url),
       neighborhoodName: share.neighborhood?.name ?? null,
-      remainingHours
+      remainingHours,
+      status: share.status
     };
   }
 
@@ -139,5 +140,12 @@ export class PrismaShareRepository implements ShareRepository {
   }
   async update(share: Partial<Share>) : Promise<Share> {
     return await this.prisma.share.update({data: share, where: {id: share.id as number}});
+  }
+
+  async softDelete(id: number): Promise<void> {
+    await this.prisma.share.update({
+      data: { deletedAt: new Date() },
+      where: { id },
+    });
   }
 }
