@@ -158,6 +158,8 @@ export default function GroupBuyPage() {
         meetingDate={new Date(groupBuy.meetingDate).toLocaleDateString()}
         memberCount={groupBuy.currentParticipantCount}
         maxMember={groupBuy.capacity}
+        postId={groupBuy.id}
+        userId={session.data?.user?.id ?? ""}
       />
     </div>
   );

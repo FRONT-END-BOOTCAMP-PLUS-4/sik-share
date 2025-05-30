@@ -147,6 +147,8 @@ export default function GroupBuyPage() {
         type={"share"}
         status={share.status}
         remainingHours={share.remainingHours}
+        postId={share.id}
+        userId={session.data?.user?.id ?? ""}
       />
     </div>
   );

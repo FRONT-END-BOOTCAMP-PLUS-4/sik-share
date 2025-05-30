@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Share2 } from "lucide-react";
 import {
@@ -9,16 +12,20 @@ import {
 } from "@/components/ui/dialog";
 import ShareButton from "./ShareButton";
 import { getGroupStatus } from "@/utils/groupStatus";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 interface DetailFooterProps {
   isOwner: boolean;
-  type: string;
+  type: "share" | "groupbuy";
   isDday?: number;
   status: number;
   remainingHours?: number;
   meetingDate?: string;
   memberCount?: number;
   maxMember?: number;
+  postId: number;
+  userId: string;
 }
 
 export function DetailFooter({
@@ -30,7 +37,12 @@ export function DetailFooter({
   meetingDate,
   memberCount,
   maxMember,
+  postId,
+  userId,
 }: DetailFooterProps) {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
   const groupStatus = getGroupStatus({
     type,
     isDday,
@@ -48,6 +60,40 @@ export function DetailFooter({
 
   const isFull = groupStatus === "FULL";
 
+  const handleJoin = async () => {
+    setIsLoading(true);
+    try {
+      const res = await fetch("/api/join", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId,
+          postId,
+          type,
+        }),
+      });
+
+      const data = await res.json();
+
+      console.log(data);
+
+      if (!res.ok) {
+        throw new Error(data?.error || "참여 중 오류가 발생했습니다.");
+      }
+
+      toast.success("참여가 완료되었습니다!");
+      router.refresh();
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("참여 중 오류가 발생했습니다.");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <Dialog>
       <footer className="z-10 fixed bottom-0 mx-auto w-full max-w-[calc(var(--space-mobileMax)-2px)] bg-white flex justify-around items-center min-h-[var(--space-header)] px-4 py-2 shadow-[var(--bottom-nav-shadow)]">
@@ -61,8 +107,14 @@ export function DetailFooter({
               모집 완료
             </Button>
           ) : (
-            <Button variant="joinFullBtn" size="lg" className="w-[85%]">
-              참여하기
+            <Button
+              variant="joinFullBtn"
+              size="lg"
+              className="w-[85%]"
+              onClick={handleJoin}
+              disabled={isLoading}
+            >
+              {isLoading ? "참여 중..." : "참여하기"}
             </Button>
           )
         ) : (
