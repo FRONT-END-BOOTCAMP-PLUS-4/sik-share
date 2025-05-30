@@ -26,6 +26,11 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('/map', req.url));
   }
 
+  // 회원가입 미완료 사용자 처리
+  if (token && !token.publicId && pathname !== "/auth/onboarding") {
+    return NextResponse.redirect(new URL("/auth/onboarding", req.url));
+  }
+
   // 페이지 보호
   if (!isApiRoute && !isPublicPage && !token) {
     const loginUrl = new URL("/login", req.url);
