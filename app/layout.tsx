@@ -72,10 +72,6 @@ export default function RootLayout({
             src={`https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&libraries=services,clusterer&autoload=false`}
             strategy="beforeInteractive"
           />
-          <Script
-            src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.5/kakao.min.js"
-            integrity="sha384-dok87au0gKqJdxs7msEdBPNnKSRT+/mhTVzq+qOhcL464zXwvcrpjeWvyj1kCdq6"
-          />
         </SessionProvider>
       </body>
     </html>
