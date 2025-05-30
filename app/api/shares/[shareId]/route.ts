@@ -20,6 +20,13 @@ export async function GET(_: Request, { params }: { params: Promise<{ shareId: s
     const usecase = new GetShareDetailUsecase(repo);
     const result = await usecase.execute(Number(shareId));
 
+    if (!result) {
+      return NextResponse.json(
+        { error: "존재하지 않는 나눔 글입니다." },
+        { status: 404 }
+      );
+    }
+
     return NextResponse.json({ message: "조회 성공", data: result });
   } catch (e) {
     console.error(e);

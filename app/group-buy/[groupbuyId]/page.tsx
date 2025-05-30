@@ -58,6 +58,12 @@ export default function GroupBuyPage() {
     const fetchData = async () => {
       try {
         const res = await fetch(`/api/group-buys/${groupBuyId}`);
+
+        if (res.status === 404) {
+          router.replace("/not-found");
+          return;
+        }
+
         const json = await res.json();
         setGroupBuy(json.data);
       } catch (error) {
@@ -65,7 +71,7 @@ export default function GroupBuyPage() {
       }
     };
     fetchData();
-  }, [groupBuyId]);
+  }, [groupBuyId, router]);
 
   useEffect(() => {
     if (!session.data || !groupBuy) {
