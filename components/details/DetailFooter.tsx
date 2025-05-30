@@ -76,7 +76,9 @@ export function DetailFooter({
       const data = await res.json();
       console.log(data);
 
-      router.push(`/chat/${data.chatId}/shares`);
+      router.push(
+        `/chat/${data.chatId}/${type === "share" ? "shares" : "together"}`,
+      );
     } catch (error: unknown) {
       if (error instanceof Error) {
         toast.error(error.message);

@@ -40,26 +40,30 @@ export class CreateJoinUsecase {
 
 
     if (dto.type === "groupbuy") {
-      await this.groupBuyParticipantRepo.save({
-        groupBuyId: dto.postId,
-        userId: dto.userId,
-      });
-
-      const chat = await this.groupBuyChatRepo.findByGroupBuyId(dto.postId);
-      if (chat) {
-        await this.groupBuyChatParticipantRepo.find({
+        
+        const chat = await this.groupBuyChatRepo.findByGroupBuyId(dto.postId);
+        if (chat) {
+            const already = await this.groupBuyChatParticipantRepo.find({
+                chatId: chat.id,
+                userId: dto.userId,
+            });
+            
+            if (already) {
+                return { chatId: chat.id };
+            }
+            
+        await this.groupBuyParticipantRepo.save({
+            groupBuyId: dto.postId,
+            userId: dto.userId,
+        });
+        
+        await this.groupBuyChatParticipantRepo.save({
           chatId: chat.id,
           userId: dto.userId,
         });
-
-        await this.groupBuyChatParticipantRepo.save({
-        chatId: chat.id,
-        userId: dto.userId,
-        });
         
-        return { chatId: chat.id };
       }
-      return {};
+      return { chatId: chat ? chat.id : undefined };
     }
 
     throw new Error("잘못된 타입입니다");
