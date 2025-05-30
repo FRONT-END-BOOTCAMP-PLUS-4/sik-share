@@ -4,7 +4,7 @@ import type { ShareChatParticipantRepository } from "@/domain/repositories/share
 export class PrismaShareChatParticipantRepository implements ShareChatParticipantRepository {
   private prisma = new PrismaClient();
 
-  async addUserToChat(data: { chatId: number; userId: string }): Promise<void> {
+  async save(data: { chatId: number; userId: string }): Promise<void> {
     await this.prisma.shareChatParticipant.create({
       data: {
         shareChatId: data.chatId,
@@ -12,4 +12,15 @@ export class PrismaShareChatParticipantRepository implements ShareChatParticipan
       },
     });
   }
+
+  async saveMany(data: { chatId: number; userId: string }[]): Promise<void> {
+  await this.prisma.shareChatParticipant.createMany({
+    data: data.map(({ chatId, userId }) => ({
+      shareChatId: chatId,
+      userId,
+    })),
+    skipDuplicates: true,
+  });
+}
+
 }

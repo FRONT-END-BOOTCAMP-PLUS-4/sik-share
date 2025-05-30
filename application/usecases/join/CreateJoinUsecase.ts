@@ -1,7 +1,7 @@
-import type { ShareChatRepository } from '@/domain/repositories/share/ShareChatRepository';
-import type { ShareChatParticipantRepository } from '@/domain/repositories/share/ShareChatParticipantRepository';
-import type { GroupBuyParticipantRepository } from '@/domain/repositories/group-buy/GroupBuyParticipantRepository';
-import type { CreateJoinDto } from './dto/CreateJoinDto';
+import type { ShareChatRepository } from "@/domain/repositories/share/ShareChatRepository";
+import type { ShareChatParticipantRepository } from "@/domain/repositories/share/ShareChatParticipantRepository";
+import type { GroupBuyParticipantRepository } from "@/domain/repositories/group-buy/GroupBuyParticipantRepository";
+import type { CreateJoinDto } from "./dto/CreateJoinDto";
 
 export class CreateJoinUsecase {
   constructor(
@@ -10,20 +10,21 @@ export class CreateJoinUsecase {
     private groupBuyParticipantRepo: GroupBuyParticipantRepository,
   ) {}
 
-  async execute(dto: CreateJoinDto) {
-    if (dto.type === 'share') {
-      const chat = await this.shareChatRepo.create({ shareId: dto.postId });
-      await this.shareChatParticipantRepo.addUserToChat({
-        chatId: chat.id,
-        userId: dto.userId,
-      });
-    } else if (dto.type === 'groupbuy') {
+  async execute(dto: CreateJoinDto): Promise<void> {
+    if (dto.type === "share") {      
+      const { id: chatId } = await this.shareChatRepo.create({ shareId: dto.postId });
+
+      await this.shareChatParticipantRepo.saveMany([
+        { chatId, userId: dto.userId },
+        { chatId, userId: await this.shareChatRepo.getOwnerId(dto.postId) }, // 추가된 부분
+      ]);
+    }
+
+    if (dto.type === "groupbuy") {
       await this.groupBuyParticipantRepo.save({
-        userId: dto.userId,
         groupBuyId: dto.postId,
+        userId: dto.userId,
       });
-    } else {
-      throw new Error('올바르지 않은 참여 유형입니다.');
     }
   }
 }

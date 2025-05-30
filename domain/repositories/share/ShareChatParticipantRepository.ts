@@ -1,3 +1,4 @@
 export interface ShareChatParticipantRepository {
-  addUserToChat(data: { chatId: number; userId: string }): Promise<void>;
+  save(data: { chatId: number; userId: string }): Promise<void>;
+  saveMany(data: { chatId: number; userId: string }[]): Promise<void>;
 }
