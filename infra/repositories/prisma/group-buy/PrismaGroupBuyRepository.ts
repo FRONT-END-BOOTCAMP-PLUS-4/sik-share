@@ -167,4 +167,11 @@ async getList(
       where: { id },
     })
   }
+
+  async update(groupBuy: Partial<GroupBuy>): Promise<GroupBuy> {
+    return await this.prisma.groupBuy.update({
+      data: groupBuy,
+      where: { id: groupBuy.id as number}
+    })
+  }
 }
