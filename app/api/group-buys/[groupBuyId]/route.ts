@@ -23,7 +23,7 @@ export async function GET(_: Request, { params }: { params: Promise<{ groupBuyId
 
     if (!result) {
       return NextResponse.json(
-        { error: "존재하지 않는 나눔 글입니다." },
+        { error: "존재하지 않는 같이 장보기 글입니다." },
         { status: 404 }
       );
     }
