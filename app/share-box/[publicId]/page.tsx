@@ -10,6 +10,10 @@ import Onion from "../components/Onion";
 import Banana from "../components/Banana";
 import Carrot from "../components/Carrot";
 import Cucumber from "../components/Cucumber";
+import Header from "@/components/common/Header";
+import ThreeDBack from "../components/ThreeDBack";
+
+const GLOBAL_Y_OFFSET = -0.3;
 
 const RADIUS = 0.5;
 const HEIGHT = 0.25;
@@ -42,10 +46,14 @@ const ingredientComponents = {
 const displayed = shareList.map((name, i) => ({
   name,
   Component: ingredientComponents[name as keyof typeof ingredientComponents],
-  dishPos: [positions[i][0], HEIGHT, positions[i][1]] as const,
+  dishPos: [
+    positions[i][0],
+    HEIGHT + GLOBAL_Y_OFFSET,
+    positions[i][1],
+  ] as const,
   foodPos: [
     positions[i][0],
-    HEIGHT + FOOD_HEIGHT_OFFSET,
+    HEIGHT + FOOD_HEIGHT_OFFSET + GLOBAL_Y_OFFSET,
     positions[i][1],
   ] as const,
 }));
@@ -53,12 +61,18 @@ const displayed = shareList.map((name, i) => ({
 export default function ShareBoxPage() {
   return (
     <main className="w-full h-screen">
+      <Header />
+      <h1 className="text-2xl text-center my-4">다훈님의 나눔함</h1>
       <Canvas camera={{ position: [0, 2, 2], fov: 50 }}>
         <ambientLight intensity={0.5} />
         <directionalLight position={[3, 5, 5]} intensity={0.8} />
-        <pointLight position={[0, 3, 0]} intensity={10} color="white" />
+        <pointLight position={[0, 2, 0]} intensity={10} color="white" />
         <spotLight position={[-2, 5, 2]} angle={0.3} penumbra={1} />
-        <ThreeDTable scale={1.5} position={[0, 0, 0]} />
+
+        <ThreeDBack scale={0.6} position={[0, -0.3, -2]} />
+
+        {/* 테이블  */}
+        <ThreeDTable scale={1.5} position={[0, 0 + GLOBAL_Y_OFFSET, 0]} />
 
         {/* 접시 */}
         {displayed.map(({ dishPos }, idx) => (
@@ -71,7 +85,7 @@ export default function ShareBoxPage() {
 
         <OrbitControls
           enablePan={true}
-          enableZoom={true}
+          enableZoom={false}
           enableRotate={true}
           minPolarAngle={Math.PI / 3}
           maxPolarAngle={Math.PI / 3}
