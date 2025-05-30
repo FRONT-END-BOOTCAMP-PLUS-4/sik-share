@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 import "swiper/css";
@@ -19,12 +20,14 @@ export default function Carousel({ images }: CarouselProps) {
         slidesPerView={1}
         className="!pb-0"
       >
-        {images.map((src, index) => (
-          <SwiperSlide key={index}>
-            <img
+        {images.map((src) => (
+          <SwiperSlide key={src}>
+            <Image
+              width={400}
+              height={260}
               src={src}
-              alt={`slide-${index}`}
-              className="w-full h-[260px] object-cover rounded-lg"
+              alt={`slide-${src}`}
+              className="w-full h-[260px] object-fill rounded-lg"
             />
           </SwiperSlide>
         ))}

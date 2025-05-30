@@ -19,12 +19,15 @@ const badgeVariants = cva(
           "text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
         warning: "badge-bold bg-[var(--warning)] rounded-[6px]",
         isDday: "badge-bold bg-[var(--light-green-300)] rounded-[6px]",
-        review: "badge-sm bg-[var(--light-green-300)] rounded-[6px]",
+        review:
+          "badge-sm bg-[var(--light-green-300)] rounded-[6px] px-1.5 [&>svg]:size-3",
         done: "badge-bold bg-zinc-400 rounded-[6px]",
         location: "badge-medium bg-zinc-600 rounded-[15px]",
         share: "badge-medium bg-[var(--secondary)] rounded-[15px]",
         groupbuy: "badge-medium bg-[var(--orange)] rounded-[15px]",
         locate: "badge-bold bg-[var(--white-o5)] text-zinc-900 rounded-[15px]",
+        reserve: "bg-zinc-500 caption px-2.5 py-[3px]",
+        shareComplete: "bg-primary px-3 py-2 badge-bold",
       },
     },
     defaultVariants: {

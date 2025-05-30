@@ -9,10 +9,9 @@ import { authOptions } from "@/lib/authOptions";
 
 export async function GET(
   req: NextRequest,
-  context: { params: { chatId: string } }
+  {params}: { params: Promise<{ chatId: string }> }
 ) {
-  const params = await context.params;
-  const chatId = Number(params.chatId);
+  const { chatId } = await params;
 
   const session = await getServerSession(authOptions);
 
@@ -30,8 +29,8 @@ export async function GET(
 
   try {
     const [messages, info] = await Promise.all([
-      messagesUsecase.execute(chatId, session.user.id),
-      infoUsecase.execute(chatId),
+      messagesUsecase.execute(Number(chatId), session.user.id),
+      infoUsecase.execute(Number(chatId)),
     ]);
 
     return NextResponse.json({

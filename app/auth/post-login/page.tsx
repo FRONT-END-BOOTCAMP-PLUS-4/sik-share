@@ -35,9 +35,5 @@ export default function PostLoginPage() {
     checkUser();
   }, [status, session, router]);
 
-  return (
-    <section className="flex justify-center items-center h-[calc(100vh-171px)]">
-      <Loading />{" "}
-    </section>
-  );
+  return <Loading />;
 }

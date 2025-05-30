@@ -26,7 +26,7 @@ export default function Profile({
         alt="프로필 이미지"
         width={46}
         height={46}
-        className="w-[46px] h-[46px] border-1 border-zinc-100 rounded-full"
+        className="min-w-[46px] h-[46px] border-1 border-zinc-100 rounded-full object-cover"
       />
       <div className="flex justify-between w-full">
         <div>

@@ -1,12 +1,10 @@
 "use client";
-
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import LoadingLottie from "../lotties/LoadingLottie";
 
 export default function Loading({ children }: { children?: React.ReactNode }) {
   return (
-    <section>
+    <section className="flex justify-center items-center h-dvh">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

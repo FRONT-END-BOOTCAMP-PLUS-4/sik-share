@@ -50,6 +50,7 @@ async function main() {
   }
 
   const now = new Date();
+  const formattedDate = now.toISOString().substring(0, 10).replace(/-/g, "");
 
   for (const item of shareItems) {
     const imageUrls = ITEM_IMAGE_MAP[item.name];

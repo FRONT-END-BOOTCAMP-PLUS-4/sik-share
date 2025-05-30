@@ -7,6 +7,9 @@ export class PrismaShareImageRepository implements ShareImageRepository {
   constructor() {
     this.prisma = new PrismaClient();
   }
+  update(images: Partial<ShareImage>[]): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
 
   async save(images: ShareImage[]): Promise<void> {
     await this.prisma.shareImage.createMany({data : images});
@@ -17,5 +20,12 @@ export class PrismaShareImageRepository implements ShareImageRepository {
       where : {shareId},
       orderBy : {order: 'asc'}
     })
+  }
+
+  async replace(images: ShareImage[]): Promise<void> {
+    const tx = await this.prisma.$transaction([
+      this.prisma.shareImage.deleteMany({ where: { shareId: images[0].shareId } }),
+      this.prisma.shareImage.createMany({ data: images }),
+    ]);
   }
 }

@@ -27,10 +27,23 @@ export class PrismaUserRepository implements UserRepository {
     });
   }
 
+  async findById(id : string) : Promise<User | null> {
+    return await this.prisma.user.findUnique({
+      where : { id },
+    })
+  }
+
   async update(user: Partial<User>): Promise<User> {
+    if (user.id) {
+      return await this.prisma.user.update({
+        where: { id: user.id },
+        data: user,
+      });
+    }
+
     return await this.prisma.user.update({
-      where: { publicId: user.publicId },
-      data: user,
+        where: { publicId: user.publicId },
+        data: user,
     });
   }
 }
