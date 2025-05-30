@@ -9,7 +9,6 @@ const prisma = new PrismaClient({
 });
 
 const TEST_USER_ID = "7a070f84-fc74-4a6a-82db-6ddd4b602263";
-const TEST_NEIGHBORHOOD_ID = 1;
 
 const ITEM_IMAGE_MAP: Record<string, string[]> = {
   "바나나" :[
@@ -44,22 +43,29 @@ const STATUS_ACTIVE = 0;
 
 async function main() {
   const shareItems = await prisma.shareItem.findMany();
+  const neighborhoods = await prisma.neighborhood.findMany();
+
+  if (neighborhoods.length === 0) {
+    throw new Error("❌ 생성된 동네가 없습니다. 먼저 Neighborhood 데이터를 추가하세요.");
+  }
 
   const now = new Date();
   const formattedDate = now.toISOString().substring(0, 10).replace(/-/g, "");
 
   for (const item of shareItems) {
     const imageUrls = ITEM_IMAGE_MAP[item.name];
+    const neighborhood = neighborhoods[Math.floor(Math.random() * neighborhoods.length)];
+
     const share = await prisma.share.create({
       data: {
         shareItemId: item.id,
-        neighborhoodId: TEST_NEIGHBORHOOD_ID,
+        neighborhoodId: neighborhood.id,
         ownerId: TEST_USER_ID,
-        title: `[더미] ${item.name} 나눔_${formattedDate}`,
-        description: `테스트용 ${item.name} 나눔입니다.`,
-        lat: 37.4784,
-        lng: 126.9516,
-        locationNote: "봉천역 근처",
+        title: `${item.name} 나눔합니다~!~!`,
+        description: `부모님께서 ${item.name} 한 박스를 보내주셨는데\n너무 많아서 나눠요~\n 오늘~내일 저녁에 시간 가능합니다`,
+        lat: neighborhood.lat,
+        lng: neighborhood.lng,
+        locationNote: `${neighborhood.name}동 oo공원 근처`,
         status: STATUS_ACTIVE,
         createdAt: now,
         meetingDate: null,

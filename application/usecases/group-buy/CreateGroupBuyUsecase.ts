@@ -1,9 +1,11 @@
+import { GroupBuyChatParticipantRepository } from './../../../domain/repositories/chat/GroupBuyChatParticipantRepository';
 import type { GroupBuyImageRepository } from "@/domain/repositories/group-buy/GroupBuyImageRepository";
 import type { GroupBuyRepository } from "@/domain/repositories/group-buy/GroupBuyRepository";
 import type { ImageStorageRepository } from "@/domain/repositories/ImageStorageRepository";
 import type { NeighborhoodRepository } from "@/domain/repositories/NeighborhoodRepository";
 import type { CreateGroupBuyDto } from "./dto/CreateGroupBuyDto";
 import type { GroupBuyParticipantRepository } from "@/domain/repositories/group-buy/GroupBuyParticipantRepository";
+import { GroupBuyChatRepository } from '@/domain/repositories/chat/GroupBuyChatRepository';
 
 export class CreateGroupBuyUsecase {
   constructor(
@@ -12,6 +14,8 @@ export class CreateGroupBuyUsecase {
     private groupBuyImageRepo: GroupBuyImageRepository,
     private imageStorageRepo: ImageStorageRepository,
     private groupBuyParticipantRepo: GroupBuyParticipantRepository,
+    private groupBuyChatRepo: GroupBuyChatRepository,
+    private groupBuyChatParticipantRepo: GroupBuyChatParticipantRepository
   ) {}
 
   async execute(groupBuy: CreateGroupBuyDto) {
@@ -56,5 +60,8 @@ export class CreateGroupBuyUsecase {
       userId: groupBuy.organizerId,
       groupBuyId: result.id,
     });
+
+    const chat = await this.groupBuyChatRepo.save(result.id);
+    await this.groupBuyChatParticipantRepo.save(chat.id, groupBuy.organizerId);
   }
 }
