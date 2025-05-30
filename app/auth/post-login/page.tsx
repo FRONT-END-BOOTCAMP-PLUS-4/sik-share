@@ -10,29 +10,11 @@ export default function PostLoginPage() {
   const router = useRouter();
 
   useEffect(() => {
-    if (status === "loading" || status !== "authenticated") return;
-
-    const checkUser = async () => {
-      try {
-        const res = await fetch("/api/users/exist", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: session.user.email }),
-        });
-
-        const data = await res.json();
-
-        if (data.exists) {
-          router.replace("/map");
-        } else {
-          router.replace("/auth/onboarding");
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    checkUser();
+    if (status === "loading") return;
+    if (status === "authenticated") {
+      if (session?.user.publicId) router.push("/map");
+      else router.push("/auth/onboarding");
+    }
   }, [status, session, router]);
 
   return <Loading />;

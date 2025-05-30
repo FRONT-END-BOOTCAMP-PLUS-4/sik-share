@@ -1,15 +1,18 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import KakaoMap from "@/components/common/KakaoMap";
 import SubHeader from "@/components/common/SubHeader";
 import ButtonSection from "./components/ButtonSection";
-import { signIn, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Loading from "@/components/common/Loading";
+import { toast } from "sonner";
 
 export default function OnboardingPage() {
   const { data: session, status, update } = useSession();
   const router = useRouter();
+
   const [location, setLocation] = useState<{
     address: string;
     neighborhoodName: string;
@@ -52,6 +55,20 @@ export default function OnboardingPage() {
       console.error(err);
     }
   };
+
+  useEffect(() => {
+    if (status === "authenticated" && session?.user?.publicId) {
+      toast.warning("잘못된 접근입니다.");
+      router.back();
+      return;
+    }
+  }, [status, session, router]);
+
+  if (
+    status === "loading" ||
+    (status === "authenticated" && session?.user?.publicId)
+  )
+    return <Loading />;
 
   return (
     <>
