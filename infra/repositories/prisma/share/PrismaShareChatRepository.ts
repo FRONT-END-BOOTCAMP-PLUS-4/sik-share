@@ -2,8 +2,12 @@ import { PrismaClient } from "@/prisma/generated";
 import type { ShareChatRepository } from "@/domain/repositories/share/ShareChatRepository";
 
 export class PrismaShareChatRepository implements ShareChatRepository {
-  findChatIdByGroupBuyId(postId: number): unknown {
-      throw new Error("Method not implemented.");
+  async findChatIdByShareId(shareId: number): Promise<{ id: number } | null> {
+    const chat = await this.prisma.shareChat.findFirst({
+      where: { shareId },
+      select: { id: true },
+    });
+    return chat;
   }
   private prisma = new PrismaClient();
 

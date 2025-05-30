@@ -14,13 +14,22 @@ export class PrismaShareChatParticipantRepository implements ShareChatParticipan
   }
 
   async saveMany(data: { chatId: number; userId: string }[]): Promise<void> {
-  await this.prisma.shareChatParticipant.createMany({
-    data: data.map(({ chatId, userId }) => ({
-      shareChatId: chatId,
-      userId,
-    })),
-    skipDuplicates: true,
-  });
-}
+    await this.prisma.shareChatParticipant.createMany({
+      data: data.map(({ chatId, userId }) => ({
+        shareChatId: chatId,
+        userId,
+      })),
+      skipDuplicates: true,
+    });
+  }
 
+  async find({ chatId, userId }: { chatId: number; userId: string }): Promise<boolean> {
+    const found = await this.prisma.shareChatParticipant.findFirst({
+      where: {
+        shareChatId: chatId,
+        userId,
+      },
+    });
+    return !!found;
+  }
 }

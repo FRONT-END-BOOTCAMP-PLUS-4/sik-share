@@ -74,15 +74,9 @@ export function DetailFooter({
       });
 
       const data = await res.json();
-
       console.log(data);
 
-      if (!res.ok) {
-        throw new Error(data?.error || "참여 중 오류가 발생했습니다.");
-      }
-
-      toast.success("참여가 완료되었습니다!");
-      router.refresh();
+      router.push(`/chat/${data.chatId}/shares`);
     } catch (error: unknown) {
       if (error instanceof Error) {
         toast.error(error.message);
@@ -114,7 +108,7 @@ export function DetailFooter({
               onClick={handleJoin}
               disabled={isLoading}
             >
-              {isLoading ? "참여 중..." : "참여하기"}
+              {isLoading ? "참여 중..." : "채팅하기"}
             </Button>
           )
         ) : (

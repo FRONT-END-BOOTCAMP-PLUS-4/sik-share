@@ -15,16 +15,29 @@ export class CreateJoinUsecase {
   ) {}
 
   async execute(dto: CreateJoinDto): Promise<{ chatId?: number }> {
-    if (dto.type === "share") {      
-      const { id: chatId } = await this.shareChatRepo.create({ shareId: dto.postId });
+    if (dto.type === "share") {
+        let chat = await this.shareChatRepo.findChatIdByShareId(dto.postId);
+        if (!chat) {
+          chat = await this.shareChatRepo.create({ shareId: dto.postId });
+        }
+        const chatId = (chat as { id: number }).id;
 
-      await this.shareChatParticipantRepo.saveMany([
-        { chatId, userId: dto.userId },
-        { chatId, userId: await this.shareChatRepo.getOwnerId(dto.postId) },
-      ]);
+        const already = await this.shareChatParticipantRepo.find({
+          chatId,
+          userId: dto.userId,
+        });
+        if (already) {
+          return { chatId };
+        }
 
-      return { chatId };
+        await this.shareChatParticipantRepo.saveMany([
+          { chatId, userId: dto.userId },
+          { chatId, userId: await this.shareChatRepo.getOwnerId(dto.postId) },
+        ]);
+
+        return { chatId };
     }
+
 
     if (dto.type === "groupbuy") {
       await this.groupBuyParticipantRepo.save({
@@ -32,20 +45,18 @@ export class CreateJoinUsecase {
         userId: dto.userId,
       });
 
-      // 같이장보기 채팅방 찾기
       const chat = await this.groupBuyChatRepo.findByGroupBuyId(dto.postId);
       if (chat) {
-        // 필요하다면 참여자 테이블에도 추가
-        const already = await this.groupBuyChatParticipantRepo.find({
+        await this.groupBuyChatParticipantRepo.find({
           chatId: chat.id,
           userId: dto.userId,
         });
-        if (!already) {
-          await this.groupBuyChatParticipantRepo.save({
-            chatId: chat.id,
-            userId: dto.userId,
-          });
-        }
+
+        await this.groupBuyChatParticipantRepo.save({
+        chatId: chat.id,
+        userId: dto.userId,
+        });
+        
         return { chatId: chat.id };
       }
       return {};
