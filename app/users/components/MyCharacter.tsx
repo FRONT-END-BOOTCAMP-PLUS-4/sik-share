@@ -2,8 +2,7 @@
 
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import NanumiA from "@/app/users/components/model/NanumiA";
-import NanumiB from "@/app/users/components/model/NanumiB";
+import Nanumi from "@/app/users/components/model/Nanumi";
 
 interface MyCharacterProps {
   grade: string;
@@ -19,8 +18,7 @@ export default function MyCharacter({ grade }: MyCharacterProps) {
           <pointLight position={[0, 3, 0]} intensity={10} color="white" />
           <spotLight position={[-2, 5, 2]} angle={0.3} penumbra={1} />
 
-          <NanumiA />
-          {/* <NanumiB /> */}
+          <Nanumi level={grade} />
 
           <OrbitControls
             enableZoom={false}
