@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import Carousel from "@/components/common/shares/Carousel";
+import Carousel from "./ShareBoxCarousel";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -11,36 +11,45 @@ import {
 } from "@/components/ui/drawer";
 import Content from "@/components/common/shares/Content";
 import KakaoMapDetail from "@/components/details/KakaoMapDetail";
+import { useRouter } from "next/navigation";
 
 interface BottomSheetProps {
   open: boolean;
-  onOpenChange: (open: boolean) => void;
+  action: (open: boolean) => void;
   title: string;
   image: string;
   description: string;
-  timeLeft?: string;
+  remainingHours: string;
   shareItem?: string;
   lat?: number;
   lng?: number;
   location?: string;
+  id: number;
 }
 
 export default function BottomSheet({
   open,
-  onOpenChange,
+  action,
   title,
   image,
   description,
-  timeLeft,
+  remainingHours,
   shareItem,
   lat,
   lng,
   location,
+  id,
 }: BottomSheetProps) {
+  const router = useRouter();
+
+  const goDetailPage = (shareId: number) => {
+    router.push(`/share/${shareId}`);
+  };
+
   return (
-    <Drawer open={open} onOpenChange={onOpenChange}>
+    <Drawer open={open} onOpenChange={action}>
       <DrawerContent>
-        <div className="mx-auto w-full max-w-sm overflow-y-auto">
+        <div className="mx-auto w-full max-w-sm overflow-y-auto scrollbar-hide">
           <DrawerTitle className="title-md mt-9 mb-4">{title}</DrawerTitle>
           <Carousel
             images={
@@ -49,16 +58,26 @@ export default function BottomSheet({
           />
           <Content
             shareItem={shareItem || ""}
-            timeLeft={timeLeft || ""}
+            remainingHours={remainingHours || ""}
             description={description}
           />
           {lat && lng && location && (
-            <KakaoMapDetail lat={lat} lng={lng} location={location} />
+            <KakaoMapDetail
+              width="361px"
+              height="136px"
+              lat={lat}
+              lng={lng}
+              location={location}
+            />
           )}
         </div>
         <DrawerFooter className="border-t">
-          <Button variant="joinFullBtn" size="lg">
-            나눔 신청하기
+          <Button
+            variant="joinFullBtn"
+            size="lg"
+            onClick={() => goDetailPage(id)}
+          >
+            자세히 보기
           </Button>
         </DrawerFooter>
       </DrawerContent>

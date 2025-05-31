@@ -69,14 +69,16 @@ export class PrismaChatListRepository implements ChatListRepository {
           other?.user.shareScore ?? 36.5,
           lastMessage?.content ?? null,
           lastMessage?.createdAt ?? null,
-          unreadCount
+          unreadCount,
         );
-      })
+      }),
     );
   }
 
   // 단체채팅방(공동장보기) 리스트
-  async getGroupBuyChatListByUserId(userId: string): Promise<GroupBuyChatListDto[]> {
+  async getGroupBuyChatListByUserId(
+    userId: string,
+  ): Promise<GroupBuyChatListDto[]> {
     const participants = await prisma.groupBuyChatParticipant.findMany({
       where: { userId },
       include: {
@@ -133,11 +135,11 @@ export class PrismaChatListRepository implements ChatListRepository {
             lastMsg ? lastMsg.content : null,
             lastMsg ? lastMsg.createdAt : null,
             participantCount,
-            "together"
+            "together",
           ),
           unreadCount, // 이 필드가 프론트에서 필요하다면 Dto 정의도 수정
         };
-      })
+      }),
     );
 
     // 🟢 최신 메시지 기준으로 정렬
