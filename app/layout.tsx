@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import RobotLottie from "@/components/lotties/RobotLottie";
+import LayoutLottie from "@/components/lotties/LayoutLottie";
 import { SessionProvider } from "@/components/common/SessionProvider";
 import Script from "next/script";
 import { Toaster } from "@/components/ui/sonner";
@@ -55,7 +55,7 @@ export default function RootLayout({
                       <p>와 함께 공유하세요!</p>
                     </div>
                   </div>
-                  <RobotLottie />
+                  <LayoutLottie />
                 </div>
               </div>
             </section>
