@@ -1,7 +1,7 @@
 import { useGLTF } from "@react-three/drei";
 
 interface NanumiProps {
-  level: string; //"Leaf" | "Sucus" | "Flower" | "Flower" | "Flower"
+  level: string; //"Sprout" | "Sucus" | "Leaf" | "Flower" | "Fruit"
 }
 
 export default function Nanumi({ level }: NanumiProps) {
