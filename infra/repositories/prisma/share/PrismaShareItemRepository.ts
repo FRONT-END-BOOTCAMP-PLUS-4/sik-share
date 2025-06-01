@@ -1,4 +1,4 @@
-import type { ShareItemRepository } from "@/domain/repositories/share/ShareItemRepository";
+import type {  ShareItemRepository } from "@/domain/repositories/share/ShareItemRepository";
 import { type ShareItem, PrismaClient } from "@/prisma/generated";
 
 export class PrismaShareItemRepository implements ShareItemRepository {
@@ -8,7 +8,11 @@ export class PrismaShareItemRepository implements ShareItemRepository {
     this.prisma = new PrismaClient();
   }
 
-  async findAll(): Promise<ShareItem[]> {
-    return await this.prisma.shareItem.findMany();
+  async findAvailableItems(excludeIds?: number[]): Promise<ShareItem[]> {
+    return await this.prisma.shareItem.findMany({
+      where: excludeIds?.length 
+        ? { id : {notIn : excludeIds}}
+        : undefined,
+    });
   }
 }

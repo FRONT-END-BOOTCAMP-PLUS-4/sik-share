@@ -122,12 +122,21 @@ export default function CreateSharePage() {
                 <FormSelect
                   name="shareItem"
                   label="나눔 품목"
-                  placeholder="나누고 싶은 품목을 선택해주세요."
+                  placeholder={
+                    shareItems.length
+                      ? "나누고 싶은 품목을 선택해주세요."
+                      : "선택할 수 있는 항목이 없어요"
+                  }
                   options={shareItems.map((item) => ({
                     label: item.name,
                     value: item.id,
                   }))}
-                  rules={{ required: "나눔 품목을 선택해주세요." }}
+                  disabled={!shareItems.length}
+                  rules={{
+                    required: shareItems.length
+                      ? "나눔 품목을 선택해주세요."
+                      : "24시간 이내 등록한 항목은 다시 선택할 수 없어요.",
+                  }}
                 />
                 <FormDetail
                   name="description"

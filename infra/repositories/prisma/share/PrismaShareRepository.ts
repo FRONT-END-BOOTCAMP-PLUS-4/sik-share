@@ -148,4 +148,14 @@ export class PrismaShareRepository implements ShareRepository {
       where: { id },
     });
   }
+
+  async findRecentShares(userId: string, withinHours: number): Promise<Share[]>{
+    const threshold = new Date(Date.now() - withinHours * 60 * 60 * 1000)
+    return await this.prisma.share.findMany({
+      where:{
+        ownerId : userId,
+        createdAt: { gte : threshold}
+      }
+    });
+  }
 }
