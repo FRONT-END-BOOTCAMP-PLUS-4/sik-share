@@ -42,6 +42,7 @@ return messages.map((msg) => {
     msg.content,
     msg.createdAt.toISOString(),
     msg.readCount,
+    msg.senderId,
   );
 });
   }

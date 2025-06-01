@@ -9,5 +9,6 @@ export class ChatMessageListDto {
     public message: string,
     public time: string,
     public readCount?: number,
+    public senderId?: string, 
   ) {}
 }

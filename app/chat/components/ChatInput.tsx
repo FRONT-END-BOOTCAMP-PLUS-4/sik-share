@@ -3,18 +3,24 @@
 import { useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Send } from "lucide-react";
-import socket from "@/lib/socket";
+
+interface Message {
+  chatId: string;
+  senderId: string;
+  content: string;
+  createdAt: string;
+}
 
 interface ChatInputProps {
   chatId: string;
   senderId: string;
-  onSend: (message: any) => void;
+  action: (message: Message) => void;
 }
 
 export default function ChatInput({
   chatId,
   senderId,
-  onSend,
+  action,
 }: ChatInputProps) {
   const [text, setText] = useState("");
 
@@ -29,7 +35,8 @@ export default function ChatInput({
       content: trimmed,
       createdAt: new Date().toISOString(),
     };
-    onSend(msg);
+    action(msg);
+    console.log("Sending message:", msg);
     setText("");
   };
 

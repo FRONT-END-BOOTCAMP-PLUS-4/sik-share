@@ -26,9 +26,7 @@ export default function ChatList({
   type,
   imageUrl,
   groupBuyTitle,
-  title,
   nickname,
-  totalPeople,
   temperature,
   lastMessageAt,
   lastMessage,
@@ -77,7 +75,7 @@ export default function ChatList({
               </>
             )}
             <p className="label !text-zinc-400">
-              {lastMessageAt && lastMessageAt.trim()
+              {lastMessageAt?.trim()
                 ? dayjs(lastMessageAt).locale("ko").format("A h:mm")
                 : ""}
             </p>

@@ -27,7 +27,6 @@ export default function ChatHeader(props: ChatHeaderProps) {
         <X />
       </Link>
 
-      {/* 1:1 채팅 헤더 */}
       {props.type === "share" && (
         <div className="flex items-center gap-2">
           <Image
@@ -47,8 +46,6 @@ export default function ChatHeader(props: ChatHeaderProps) {
           </div>
         </div>
       )}
-
-      {/* 단체 채팅 헤더 */}
       {props.type === "together" && (
         <div className="flex flex-col justify-center items-center h-[38px]">
           <span className="body-md">{props.title}</span>
