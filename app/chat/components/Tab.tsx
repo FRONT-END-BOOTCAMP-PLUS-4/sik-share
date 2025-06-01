@@ -32,7 +32,11 @@ export default function Tab({
   setActiveTab,
 }: TabProps) {
   return (
-    <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+    <Tabs
+      value={activeTab}
+      onValueChange={setActiveTab}
+      className="w-full mb-14"
+    >
       <TabsList>
         <TabsTrigger value="share">나눔</TabsTrigger>
         <TabsTrigger value="together">같이 장보기</TabsTrigger>
