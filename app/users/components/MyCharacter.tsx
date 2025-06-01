@@ -1,8 +1,9 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
+import { Environment, OrbitControls } from "@react-three/drei";
 import Nanumi from "@/app/users/components/model/Nanumi";
+import Ground from "@/app/users/components/model/Ground";
 
 interface MyCharacterProps {
   grade: string;
@@ -10,18 +11,27 @@ interface MyCharacterProps {
 
 export default function MyCharacter({ grade }: MyCharacterProps) {
   return (
-    <div className="h-[calc(100%-74px)] flex items-center justify-center">
+    <div className="h-full flex items-center justify-center">
       <div style={{ width: "100%", height: "100%" }}>
         <Canvas camera={{ fov: 20 }}>
-          <ambientLight intensity={0.5} />
-          <directionalLight position={[3, 5, 5]} intensity={0.8} />
-          <pointLight position={[0, 3, 0]} intensity={10} color="white" />
-          <spotLight position={[-2, 5, 2]} angle={0.3} penumbra={1} />
+          <Environment preset="sunset" background={false} />
+          <ambientLight intensity={0.5} color="white" />
+          <directionalLight position={[5, 2, 3]} intensity={0.2} />
+          <pointLight
+            position={[0, 2, 0]}
+            intensity={0.7}
+            distance={5}
+            decay={2}
+            color="#ffd966"
+          />
+          <hemisphereLight args={["#ffe8a3", "#51e9eb", 0.3]} />
 
+          <Ground />
           <Nanumi level={grade} />
 
           <OrbitControls
             enableZoom={false}
+            // enableRotate={false}
             minDistance={10}
             maxDistance={10}
             minPolarAngle={Math.PI / 2.8}

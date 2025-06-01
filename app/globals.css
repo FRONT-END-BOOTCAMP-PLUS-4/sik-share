@@ -349,25 +349,25 @@ body {
 }
 
 /* grade-bg 프로필 배경*/
-.grade-Angel {
-  background: #EEAECA;
-  background: radial-gradient(circle,rgba(238, 174, 202, 1) 0%, rgba(148, 187, 233, 1) 100%);
-}
 .grade-Fruit {
-  background: #3F5EFB;
-  background: radial-gradient(circle, rgba(63, 94, 251, 1) 0%, rgba(252, 70, 107, 1) 100%);
+  background: #ffe8a3;
+  background: radial-gradient(circle,#ffe8a3 35%,rgb(255, 196, 222) 60%, rgb(156, 202, 255) 100%);
 }
 .grade-Flower {
-  background: #2A7B9B;
-  background: radial-gradient(circle, rgba(42, 123, 155, 1) 0%, rgba(87, 199, 133, 1) 50%, rgba(237, 221, 83, 1) 100%);
-}
-.grade-Sucus {
-  background: #833AB4;
-  background: radial-gradient(circle, rgba(131, 58, 180, 1) 0%, rgba(253, 29, 29, 1) 50%, rgba(252, 176, 69, 1) 100%);
+  background: #ffe8a3;
+  background: radial-gradient(circle,#ffe8a3 40%,rgb(151, 238, 187) 55%, #6efaff 80%,  #53ceff 99%);
 }
 .grade-Leaf {
-  background: #FFD455;
-  background: radial-gradient(circle,rgba(255, 212, 85, 1) 24%, rgba(151, 219, 14, 1) 99%);
+  background: #ffe8a3;
+  background: radial-gradient(circle,#ffe8a3 30%,rgb(128, 255, 181) 67%, #46f9ff 99%);
+}
+.grade-Sucus {
+   background: #ffe8a3;
+  background: radial-gradient(circle,#ffe8a3 24%, #51ebba 99%);
+}
+.grade-Sprout {
+  background: #ffe8a3;
+  background: radial-gradient(circle,#ffedb9 24%, rgb(173, 255, 189) 99%);
 }
 
 /* maplibre */

@@ -11,6 +11,8 @@ import UserLocation from "@/app/users/components/UserLocation";
 import ShareScore from "@/app/users/components/ShareScore";
 import MyCharacter from "@/app/users/components/MyCharacter";
 import { useUserInfo } from "@/app/users/hooks/useUserInfo";
+import MyPoint from "../components/MyPoint";
+import { cn } from "@/lib/utils";
 
 interface User {
   neighborhoodName: string;
@@ -51,19 +53,26 @@ export default function userPage() {
   if (loading) return <Loading />;
   if (!user) return <div>유저 정보를 찾을 수 없습니다.</div>;
 
-  const levelbyScore = getScoreVisual(user.score);
+  const levelbyScore = getScoreVisual(10);
 
   return (
     <>
       <Header />
       <div className={`h-[calc(100vh-108px)] grade-${levelbyScore.grade}`}>
-        <section className="h-1/2 px-4 py-6">
-          <div className="flex justify-end items-center">
-            {/* <MyPoint /> */}
-            <UserLocation
-              isMyAccount={isMyAccount}
-              location={user.neighborhoodName}
-            />
+        <section className="h-1/2 relative">
+          <div className="w-full absolute px-4 py-6">
+            <div
+              className={cn(
+                "flex items-center justify-end",
+                !isMyAccount && "justify-between",
+              )}
+            >
+              {!isMyAccount && <MyPoint />}
+              <UserLocation
+                isMyAccount={isMyAccount}
+                location={user.neighborhoodName}
+              />
+            </div>
           </div>
           <MyCharacter grade={levelbyScore.grade} />
           <ShareScore score={user.score} />

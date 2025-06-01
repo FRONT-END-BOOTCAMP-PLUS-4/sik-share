@@ -1,9 +1,9 @@
 const scoreGradeMap = [
-  { min: 80, grade: "Angel", memberBadge: "이 구역의 천사 나누미" },
-  { min: 60, grade: "Fruit", memberBadge: "마을의 공유 달인" },
-  { min: 40, grade: "Flower", memberBadge: "든든한 밥친구" },
+  { min: 80, grade: "Fruit", memberBadge: "이 구역의 천사 나누미" },
+  { min: 60, grade: "Flower", memberBadge: "마을의 공유 달인" },
+  { min: 40, grade: "Leaf", memberBadge: "든든한 밥친구" },
   { min: 20, grade: "Sucus", memberBadge: "동네 나눔 메이트" },
-  { min: 0, grade: "Leaf", memberBadge: "새로운 식샤 패밀리" },
+  { min: 0, grade: "Sprout", memberBadge: "새로운 식샤 패밀리" },
 ];
 
 export function getScoreVisual(score: number) {
