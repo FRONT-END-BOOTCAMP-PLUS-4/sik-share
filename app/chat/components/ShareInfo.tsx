@@ -31,23 +31,19 @@ export default function ShareInfo({
   chatId,
   onMeetingDateChange,
 }: ShareInfoProps) {
-  // meetingDate는 서버에서 내려주는 걸 기준으로 함
   const [date, setDate] = useState<Date | undefined>();
   const [open, setOpen] = useState(false);
 
-  // status를 state로 관리 (API 요청 후 최신값 set 필요)
   const [status, setStatus] = useState<number>(info.status);
   const [reservedDate, setReservedDate] = useState<Date | null>(
     info.meetingDate ? new Date(info.meetingDate) : null,
   );
 
-  // 예약 Dialog 열고 닫기
   const handleOpenChange = (nextOpen: boolean) => {
     if (!nextOpen) setDate(undefined);
     setOpen(nextOpen);
   };
 
-  // 예약하기 (만남 날짜 확정)
   const updateMeetingDate = async (chatId: string, meetingDate: Date) => {
     const res = await fetch(`/api/chat/${chatId}/shares/confirm`, {
       method: "PATCH",
@@ -60,7 +56,6 @@ export default function ShareInfo({
     return await res.json();
   };
 
-  // 나눔 완료 처리
   const completeShare = async (chatId: string) => {
     const res = await fetch(`/api/chat/${chatId}/shares/complete`, {
       method: "PATCH",
@@ -73,33 +68,26 @@ export default function ShareInfo({
     return await res.json();
   };
 
-  // 날짜 확정 버튼
   const handleComplete = async () => {
     if (date) {
       try {
         await updateMeetingDate(chatId, date);
         setReservedDate(date);
-        setStatus(1); // 예약중으로 변경
+        setStatus(1);
         setOpen(false);
         onMeetingDateChange?.(date);
-      } catch (e) {
-        console.error("날짜 업데이트 실패:", e);
-      }
+      } catch (e) {}
     }
   };
 
-  // 나눔 완료 버튼
   const handleShareComplete = async () => {
     try {
       await completeShare(chatId);
       setStatus(2);
       setOpen(false);
-    } catch (e) {
-      console.error("나눔 완료 처리 실패:", e);
-    }
+    } catch (e) {}
   };
 
-  // 날짜 포맷
   const formatDate = (date: Date) => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -107,10 +95,8 @@ export default function ShareInfo({
     return `${year}-${month}-${day}`;
   };
 
-  // 조건부 버튼/뱃지 렌더링
   let actionButton = null;
   if (status === 0) {
-    // 진행중: 예약하기 버튼
     actionButton = (
       <Dialog open={open} onOpenChange={handleOpenChange}>
         <DialogTrigger asChild>
@@ -171,7 +157,6 @@ export default function ShareInfo({
       </Dialog>
     );
   } else if (status === 2) {
-    // 완료: 나눔완료 뱃지
     actionButton = (
       <Badge
         variant="shareComplete"

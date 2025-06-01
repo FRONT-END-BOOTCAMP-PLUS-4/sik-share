@@ -45,8 +45,6 @@ export class GetShareListUsecase {
       ));
     }
     catch (e) {
-      console.error("DTO 변환 에러:", e, "실제 share 값:", shares);
-      throw e;
     }
   }
 }

@@ -6,7 +6,6 @@ import { GroupBuyChatListDto } from "@/application/usecases/chat/dto/GroupBuyCha
 const prisma = new PrismaClient();
 
 export class PrismaChatListRepository implements ChatListRepository {
-  // 1:1 나눔 채팅방 리스트
   async findChatListByUserId(userId: string): Promise<ShareChatListItemDto[]> {
     const chats = await prisma.shareChat.findMany({
       where: {
@@ -51,7 +50,6 @@ export class PrismaChatListRepository implements ChatListRepository {
         const me = chat.participants.find((p) => p.user.id === userId);
         const other = chat.participants.find((p) => p.user.id !== userId);
 
-        // 안읽은 메시지 개수 (상대방이 보낸 것 중 내가 안 읽은 것)
         const unreadCount = await prisma.shareChatMessage.count({
           where: {
             shareChatId: chat.id,
@@ -75,7 +73,6 @@ export class PrismaChatListRepository implements ChatListRepository {
     );
   }
 
-  // 단체채팅방(공동장보기) 리스트
   async getGroupBuyChatListByUserId(
     userId: string,
   ): Promise<GroupBuyChatListDto[]> {
@@ -101,7 +98,6 @@ export class PrismaChatListRepository implements ChatListRepository {
       },
     });
 
-    // 각 채팅방별로 unreadCount 포함시켜 반환
     const chatList = await Promise.all(
       participants.map(async (participant) => {
         const chat = participant.groupBuyChat;
@@ -109,7 +105,6 @@ export class PrismaChatListRepository implements ChatListRepository {
         const lastMsg = chat.messages[0];
         const mainImage = groupBuy.images[0]?.url ?? null;
 
-        // 🟢 안읽은 메시지 개수 (내가 안 읽은 메시지)
         const unreadCount = await prisma.groupBuyChatMessage.count({
           where: {
             groupBuyChatId: chat.id,
@@ -118,14 +113,11 @@ export class PrismaChatListRepository implements ChatListRepository {
           },
         });
 
-        // 채팅방 참여자 수
         const participantCount = await prisma.groupBuyChatParticipant.count({
           where: { groupBuyChatId: chat.id },
         });
 
-        // 필요하면 GroupBuyChatListDto에 unreadCount 필드도 추가!
-        // 아래에 unreadCount 같이 반환
-        // (GroupBuyChatListDto에 unreadCount: number 추가 필요)
+
         return {
           ...new GroupBuyChatListDto(
             chat.id,
@@ -137,12 +129,11 @@ export class PrismaChatListRepository implements ChatListRepository {
             participantCount,
             "together",
           ),
-          unreadCount, // 이 필드가 프론트에서 필요하다면 Dto 정의도 수정
+          unreadCount,
         };
       }),
     );
 
-    // 🟢 최신 메시지 기준으로 정렬
     chatList.sort((a, b) => {
       const aDate = a.lastMessageAt ? new Date(a.lastMessageAt).getTime() : 0;
       const bDate = b.lastMessageAt ? new Date(b.lastMessageAt).getTime() : 0;

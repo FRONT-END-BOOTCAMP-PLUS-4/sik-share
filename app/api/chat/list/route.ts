@@ -14,7 +14,6 @@ export async function GET(req: NextRequest) {
 
   const repo = new PrismaChatListRepository();
 
-  // 쿼리 파라미터 분기
   const { searchParams } = new URL(req.url);
   const type = searchParams.get("type");
 
@@ -36,7 +35,6 @@ export async function GET(req: NextRequest) {
       groupBuyChats,
     });
   } catch (err) {
-    console.error("채팅 리스트 불러오기 실패:", err);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

@@ -19,7 +19,6 @@ export async function PATCH(
 
     return NextResponse.json({ message: "success" }, { status: 200 });
   } catch (e) {
-    console.error("Error updating meeting date:", e);
     return NextResponse.json(
       { message: (e as Error).message },
       { status: 500 },

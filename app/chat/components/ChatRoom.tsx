@@ -177,12 +177,9 @@ export default function ChatRoom({
 
   const formattedMessages = session?.user?.id
     ? messages.map((msg) => {
-        console.log("before format:", msg);
         return toFormattedMessage(msg, session.user.id);
       })
     : [];
-
-  console.log("formattedMessages:", formattedMessages);
 
   return (
     <div className="flex flex-col h-full">

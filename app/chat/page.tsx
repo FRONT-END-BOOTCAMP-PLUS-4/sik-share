@@ -6,9 +6,8 @@ import socket from "@/lib/socket";
 import Footer from "@/components/common/Footer";
 import { useSession } from "next-auth/react";
 
-// 🔵 나눔(1:1) 채팅방 타입
 interface ShareChatListItem {
-  chatId: number;
+  chatId: string;
   imageUrl: string;
   nickname: string;
   temperature: number;
@@ -16,11 +15,11 @@ interface ShareChatListItem {
   lastMessageAt: string;
   unreadCount: number;
   type: "share";
+  participantCount: number;
 }
 
-// 🔵 단체(같이 장보기) 채팅방 타입
 interface GroupBuyChatListItem {
-  chatId: number;
+  chatId: string;
   groupBuyId: number;
   groupBuyTitle: string;
   groupBuyImages: string[];
@@ -37,7 +36,6 @@ export default function ChatList() {
   const [activeTab, setActiveTab] = useState("share");
   const { data: session } = useSession();
 
-  // 🟢 1. 최초 나눔(share) 채팅방 목록 불러오기
   useEffect(() => {
     fetch("/api/chat/list?type=share")
       .then((res) => res.json())
@@ -49,13 +47,11 @@ export default function ChatList() {
       });
   }, []);
 
-  // 🟢 2. 최초 같이 장보기(together) 채팅방 목록 불러오기
   useEffect(() => {
     if (activeTab === "together" && togetherData.length === 0) {
       fetch("/api/chat/list?type=together")
         .then((res) => res.json())
         .then((data) => {
-          // 최신 메시지 기준으로 정렬
           data.sort((a: GroupBuyChatListItem, b: GroupBuyChatListItem) =>
             (b.lastMessageAt || "") > (a.lastMessageAt || "") ? 1 : -1,
           );
@@ -64,14 +60,11 @@ export default function ChatList() {
     }
   }, [activeTab, togetherData.length]);
 
-  // 🟢 3. 실시간 목록 소켓 구독
   useEffect(() => {
     if (!session?.user?.id) return;
 
-    // 채팅목록 실시간 구독
     socket.emit("subscribeChatList", { userId: session.user.id });
 
-    // 나눔 채팅 목록 업데이트 핸들러
     function handleShareUpdate(
       update: Partial<ShareChatListItem> & { chatId: number; type?: "share" },
     ) {
@@ -94,7 +87,6 @@ export default function ChatList() {
       });
     }
 
-    // 단체(같이 장보기) 채팅 목록 업데이트 핸들러
     function handleTogetherUpdate(
       update: Partial<GroupBuyChatListItem> & {
         chatId: number;
@@ -123,7 +115,6 @@ export default function ChatList() {
     socket.on("chatListUpdate", handleShareUpdate);
     socket.on("groupBuyChatListUpdate", handleTogetherUpdate);
 
-    // 클린업
     return () => {
       socket.emit("unsubscribeChatList", { userId: session.user.id });
       socket.off("chatListUpdate", handleShareUpdate);

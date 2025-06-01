@@ -1,5 +1,8 @@
-import { GroupBuyChatParticipant } from '@/prisma/generated';
+import type { GroupBuyChatParticipant } from "@/prisma/generated";
 
-export interface GroupBuyChatParticipantRepository{
-  save(groupBuyChatId: number, userId: string) : Promise<GroupBuyChatParticipant>
+export interface GroupBuyChatParticipantRepository {
+  save(
+    groupBuyChatId: number,
+    userId: string,
+  ): Promise<GroupBuyChatParticipant>;
 }

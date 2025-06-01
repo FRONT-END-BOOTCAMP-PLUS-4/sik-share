@@ -15,8 +15,8 @@ interface ChatListProps {
   nickname?: string;
   totalPeople?: number;
   temperature?: number;
-  lastMessageAt: string;
-  lastMessage: string;
+  lastMessageAt: string | null;
+  lastMessage: string | null;
   unreadCount: number;
   participantCount: number;
 }

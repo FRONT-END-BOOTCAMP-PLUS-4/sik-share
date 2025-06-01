@@ -9,6 +9,7 @@ interface Message {
   senderId: string;
   content: string;
   createdAt: string;
+  readCount: number;
 }
 
 interface ChatInputProps {
@@ -34,9 +35,9 @@ export default function ChatInput({
       senderId,
       content: trimmed,
       createdAt: new Date().toISOString(),
+      readCount: 0,
     };
     action(msg);
-    console.log("Sending message:", msg);
     setText("");
   };
 

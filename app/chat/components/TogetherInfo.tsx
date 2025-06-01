@@ -54,9 +54,7 @@ export default function TogetherInfo({
       await completeTogether(chatId);
       setStatus(2);
       setOpen(false);
-    } catch (e) {
-      console.error("나눔 완료 처리 실패:", e);
-    }
+    } catch (e) {}
   };
 
   return (
@@ -92,7 +90,6 @@ export default function TogetherInfo({
       </div>
       <div className="self-center">
         {status === 2 ? (
-          // status가 2면 "장보기 완료" 뱃지/텍스트만 보여줌
           <Badge
             variant="reserve"
             className="self-center text-white w-fit h-fit bold ml-auto px-3 py-2"

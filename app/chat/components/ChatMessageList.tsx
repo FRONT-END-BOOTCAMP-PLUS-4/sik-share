@@ -20,8 +20,6 @@ interface ChatMessageListProps {
 export default function ChatMessageList({ messages }: ChatMessageListProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  console.log("ChatMessageList messages:", messages);
-
   // 의존성 배열에 messages를 추가하여 메시지가 변경될 때마다 스크롤을 맨 아래로 이동을 구현했지만,
   // 하지만 biome는 messages가 실제로 직접 effect 안에서 쓰이지 않으니 꼭 필요하냐고 물어봄.
   useEffect(() => {
@@ -47,7 +45,7 @@ export default function ChatMessageList({ messages }: ChatMessageListProps) {
           readCount={msg.readCount ?? 0}
           count={msg.count}
           time={msg.time}
-          senderId={msg.senderId}
+          senderId={msg.senderId ?? undefined}
         />
       ))}
     </div>

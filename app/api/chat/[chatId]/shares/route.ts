@@ -27,7 +27,6 @@ export async function GET(
     const chatDetail = await usecase.execute(Number(chatId), session.user.id);
     return NextResponse.json(chatDetail);
   } catch (err) {
-    console.error("메시지 불러오기 실패:", err);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
