@@ -10,8 +10,8 @@ import Profile from "@/app/users/components/Profile";
 import UserLocation from "@/app/users/components/UserLocation";
 import ShareScore from "@/app/users/components/ShareScore";
 import MyCharacter from "@/app/users/components/MyCharacter";
+import ShareBoxButton from "@/app/users/components/ShareBoxButton";
 import { useUserInfo } from "@/app/users/hooks/useUserInfo";
-import MyPoint from "../components/MyPoint";
 import { cn } from "@/lib/utils";
 
 interface User {
@@ -53,21 +53,21 @@ export default function userPage() {
   if (loading) return <Loading />;
   if (!user) return <div>유저 정보를 찾을 수 없습니다.</div>;
 
-  const levelbyScore = getScoreVisual(10);
+  const levelbyScore = getScoreVisual(user.score);
 
   return (
     <>
       <Header />
       <div className={`h-[calc(100vh-108px)] grade-${levelbyScore.grade}`}>
         <section className="h-1/2 relative">
-          <div className="w-full absolute px-4 py-6">
+          <div className="w-full absolute px-4 py-6 z-10">
             <div
               className={cn(
                 "flex items-center justify-end",
                 !isMyAccount && "justify-between",
               )}
             >
-              {!isMyAccount && <MyPoint />}
+              {!isMyAccount && <ShareBoxButton publicId={publicId} />}
               <UserLocation
                 isMyAccount={isMyAccount}
                 location={user.neighborhoodName}
