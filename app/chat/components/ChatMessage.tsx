@@ -39,7 +39,7 @@ export default function ChatMessage({
             height={36}
             alt="profile"
             src={imageUrl}
-            className="rounded-full"
+            className="w-[36px] h-[36px] object-fill rounded-full"
           />
           <div className="flex flex-col">
             <div className="body-sm mb-3">{nickname}</div>
