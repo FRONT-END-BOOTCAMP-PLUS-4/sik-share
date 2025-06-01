@@ -40,6 +40,7 @@ export default function GroupBuyEditPage() {
     loading: detailLoading,
     error,
   } = useGroupBuyFormDetail(Number(groupBuyId));
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [imagesToLoad, setImagesToLoad] = useState<string[]>([]);
   const [showMapModal, setShowMapModal] = useState(false);
@@ -102,6 +103,7 @@ export default function GroupBuyEditPage() {
 
   const onSubmit = async () => {
     try {
+      setIsSubmitting(true);
       const values = form.getValues();
 
       const formData = new FormData();
@@ -130,6 +132,7 @@ export default function GroupBuyEditPage() {
           errorData?.message ||
           "알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요.";
         toast.error(message);
+        setIsSubmitting(false);
         return;
       }
 
@@ -143,6 +146,7 @@ export default function GroupBuyEditPage() {
     } catch (error) {
       console.error("장보기 수정 중 오류 발생:", error);
       toast.error("네트워크 오류가 발생했습니다. 다시 시도해주세요.");
+      setIsSubmitting(false);
     }
   };
 
@@ -211,7 +215,9 @@ export default function GroupBuyEditPage() {
                   inputClassName="cursor-pointer"
                   rules={{ required: "장보기 희망 장소를 설정해주세요." }}
                 />
-                <FormButton onClick={() => {}}>수정 완료</FormButton>
+                <FormButton disabled={isSubmitting} onClick={() => {}}>
+                  수정 완료
+                </FormButton>
               </form>
             </Form>
           </section>
