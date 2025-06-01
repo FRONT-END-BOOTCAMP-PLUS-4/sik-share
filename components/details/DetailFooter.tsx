@@ -19,13 +19,13 @@ interface DetailFooterProps {
   isOwner: boolean;
   type: "share" | "groupbuy";
   isDday?: number;
-  status: number;
+  status?: number;
   remainingHours?: number;
   meetingDate?: string;
   memberCount?: number;
   maxMember?: number;
-  postId: number;
-  userId: string;
+  postId?: number;
+  userId?: string;
 }
 
 export function DetailFooter({
@@ -46,7 +46,7 @@ export function DetailFooter({
   const groupStatus = getGroupStatus({
     type,
     isDday,
-    status,
+    status: status ?? 0,
     remainingHours,
     meetingDate,
     memberCount,

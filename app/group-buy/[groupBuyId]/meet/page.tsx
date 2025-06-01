@@ -23,7 +23,7 @@ export default function GroupBuyMeetPage() {
         lng={lng}
         location={location}
       />
-      <DetailFooter isOwner={isOwner} />
+      <DetailFooter isOwner={isOwner ?? false} type={"groupbuy"} />
     </div>
   );
 }
