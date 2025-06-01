@@ -5,6 +5,7 @@ export default function ForbiddenPage() {
   return (
     <div className="h-screen flex flex-col items-center justify-center px-4">
       <ForbiddenLottie />
+      <h3 className="title-md">403 Forbidden</h3>
       <p className="mt-2 text-base text-gray-600">
         식재료에 접근할 수 있는 권한이 없어요 😅
       </p>
