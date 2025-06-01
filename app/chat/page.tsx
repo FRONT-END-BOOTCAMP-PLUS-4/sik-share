@@ -22,7 +22,7 @@ interface GroupBuyChatListItem {
   chatId: string;
   groupBuyId: number;
   groupBuyTitle: string;
-  groupBuyImages: string[];
+  imageUrl: string[];
   lastMessage: string | null;
   lastMessageAt: string | null;
   participantCount: number;
@@ -55,6 +55,7 @@ export default function ChatList() {
           data.sort((a: GroupBuyChatListItem, b: GroupBuyChatListItem) =>
             (b.lastMessageAt || "") > (a.lastMessageAt || "") ? 1 : -1,
           );
+          console.log("togetherData", data);
           setTogetherData(data);
         });
     }

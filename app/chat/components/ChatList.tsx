@@ -51,7 +51,11 @@ export default function ChatList({
         <Image
           width={40}
           height={40}
-          src={imageUrl ?? "/assets/images/example/thumbnail.png"}
+          src={
+            Array.isArray(imageUrl)
+              ? imageUrl[0] || "/assets/images/example/thumbnail.png"
+              : imageUrl || "/assets/images/example/thumbnail.png"
+          }
           className="w-[40px] h-[40px] border-1 border-zinc-100 rounded-full"
           alt="profile"
         />

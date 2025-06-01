@@ -3,7 +3,7 @@ export class GroupBuyChatListDto {
     public chatId: number,
     public groupBuyId: number,
     public groupBuyTitle: string,
-    public groupBuyImages: string[],
+    public imageUrl: string[],
     public lastMessage: string | null,
     public lastMessageAt: Date | null,
     public participantCount: number,

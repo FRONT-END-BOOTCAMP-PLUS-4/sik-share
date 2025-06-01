@@ -35,7 +35,7 @@ export default function Tab({
     <Tabs
       value={activeTab}
       onValueChange={setActiveTab}
-      className="w-full mb-14"
+      className="w-full mb-26"
     >
       <TabsList>
         <TabsTrigger value="share">나눔</TabsTrigger>
