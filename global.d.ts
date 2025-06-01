@@ -6,6 +6,12 @@ declare global {
   }
   interface Window {
     kakao: unknown;
-    Kakao: unknown;
+    Kakao?: {
+      isInitialized: () => boolean;
+      init: (key?: string) => void;
+      Share: {
+        sendDefault: (options: unknown) => void;
+      };
+    };
   }
 }
