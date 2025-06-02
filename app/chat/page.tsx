@@ -8,7 +8,7 @@ import { useSession } from "next-auth/react";
 
 interface ShareChatListItem {
   chatId: string;
-  imageUrl: string;
+  imageUrl: string[];
   nickname: string;
   temperature: number;
   lastMessage: string;

@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "motion/react";
 interface ChatListProps {
   chatId: string;
   type: "share" | "together";
-  imageUrl?: string;
+  imageUrl?: string[];
   groupBuyTitle?: string;
   title?: string;
   nickname?: string;
