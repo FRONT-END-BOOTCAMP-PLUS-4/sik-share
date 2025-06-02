@@ -1,7 +1,9 @@
 import { useGLTF } from "@react-three/drei";
 
-export default function Carrot() {
+type ThreeDDishProps = JSX.IntrinsicElements["group"];
+
+export default function Carrot(props: ThreeDDishProps) {
   const { scene } = useGLTF("/assets/3D/carrot.gltf");
 
-  return <primitive object={scene} scale={0.4} position={[-0.7, -0.3, -0.3]} />;
+  return <primitive object={scene} {...props} />;
 }

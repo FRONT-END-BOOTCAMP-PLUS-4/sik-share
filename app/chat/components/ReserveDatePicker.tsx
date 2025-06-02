@@ -5,7 +5,6 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 
@@ -38,13 +37,11 @@ export function ReserveDatePicker({
       </PopoverTrigger>
       <PopoverContent className="p-0 w-auto">
         <Calendar
-          mode="single"
-          selected={value}
+          selected={value ?? null}
           onSelect={(date) => {
-            onChange(date);
+            onChange(date ?? undefined);
             setOpen(false);
           }}
-          initialFocus
         />
       </PopoverContent>
     </Popover>

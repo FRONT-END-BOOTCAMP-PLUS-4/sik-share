@@ -1,7 +1,9 @@
 import { useGLTF } from "@react-three/drei";
 
-export default function Onion() {
+type ThreeDDishProps = JSX.IntrinsicElements["group"];
+
+export default function Onion(props: ThreeDDishProps) {
   const { scene } = useGLTF("/assets/3D/onion.gltf");
 
-  return <primitive object={scene} scale={0.3} position={[-0.1, -0.3, 0.2]} />;
+  return <primitive object={scene} {...props} />;
 }

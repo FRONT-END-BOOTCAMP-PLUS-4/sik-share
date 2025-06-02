@@ -15,8 +15,8 @@ interface ChatListProps {
   nickname?: string;
   totalPeople?: number;
   temperature?: number;
-  lastMessageAt: string;
-  lastMessage: string;
+  lastMessageAt: string | null;
+  lastMessage: string | null;
   unreadCount: number;
   participantCount: number;
 }
@@ -26,9 +26,7 @@ export default function ChatList({
   type,
   imageUrl,
   groupBuyTitle,
-  title,
   nickname,
-  totalPeople,
   temperature,
   lastMessageAt,
   lastMessage,
@@ -53,7 +51,11 @@ export default function ChatList({
         <Image
           width={40}
           height={40}
-          src={imageUrl ?? "/assets/images/example/thumbnail.png"}
+          src={
+            Array.isArray(imageUrl)
+              ? imageUrl[0] || "/assets/images/example/thumbnail.png"
+              : imageUrl || "/assets/images/example/thumbnail.png"
+          }
           className="w-[40px] h-[40px] border-1 border-zinc-100 rounded-full"
           alt="profile"
         />
@@ -77,7 +79,7 @@ export default function ChatList({
               </>
             )}
             <p className="label !text-zinc-400">
-              {lastMessageAt && lastMessageAt.trim()
+              {lastMessageAt?.trim()
                 ? dayjs(lastMessageAt).locale("ko").format("A h:mm")
                 : ""}
             </p>

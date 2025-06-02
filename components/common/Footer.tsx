@@ -35,6 +35,13 @@ export default function Footer() {
         return;
       }
       router.push(`/users/${session?.user.publicId}`);
+    } else if (key === "share-box") {
+      if (status === "loading") return;
+      if (status === "unauthenticated") {
+        router.push("/login");
+        return;
+      }
+      router.push(`/share-box/${session?.user.publicId}`);
     } else {
       router.push(`/${key}`);
     }

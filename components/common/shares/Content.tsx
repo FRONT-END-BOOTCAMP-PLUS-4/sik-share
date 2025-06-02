@@ -5,13 +5,13 @@ import { useState } from "react";
 
 export interface ContentProps {
   shareItem: string;
-  timeLeft: string;
+  remainingHours: string;
   description: string;
 }
 
 export default function Content({
   shareItem,
-  timeLeft,
+  remainingHours,
   description,
 }: ContentProps) {
   const [expanded, setExpanded] = useState(false);
@@ -26,7 +26,7 @@ export default function Content({
         <div className="flex flex-row justify-center items-start text-center gap-1 text-zinc-500">
           <ClockFading size={16} strokeWidth={1} />
           <p className="caption">
-            <span className="text-[var(--warning)]">{timeLeft}</span>
+            <span className="text-[var(--warning)]">{remainingHours}</span>
             시간 남음
           </p>
         </div>

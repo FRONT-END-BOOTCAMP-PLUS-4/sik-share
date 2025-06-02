@@ -27,7 +27,6 @@ export default function ChatHeader(props: ChatHeaderProps) {
         <X />
       </Link>
 
-      {/* 1:1 채팅 헤더 */}
       {props.type === "share" && (
         <div className="flex items-center gap-2">
           <Image
@@ -47,12 +46,12 @@ export default function ChatHeader(props: ChatHeaderProps) {
           </div>
         </div>
       )}
-
-      {/* 단체 채팅 헤더 */}
       {props.type === "together" && (
-        <div className="flex flex-col justify-center items-center h-[38px]">
-          <span className="body-md">{props.title}</span>
-          <div className="flex items-center gap-[2px]">
+        <div className="flex flex-col items-center justify-center h-[38px] flex-1 min-w-0">
+          <span className="body-md truncate w-[227px] block">
+            {props.title}
+          </span>
+          <div className="flex items-center justify-center gap-[2px]">
             <UsersRound className="w-4 h-4" />
             <span className="badge-medium">{props.participantCount}</span>
           </div>

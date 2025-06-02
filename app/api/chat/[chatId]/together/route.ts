@@ -38,7 +38,6 @@ export async function GET(
       info,
     });
   } catch (err) {
-    console.error("단체채팅 메시지 조회 실패:", err);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

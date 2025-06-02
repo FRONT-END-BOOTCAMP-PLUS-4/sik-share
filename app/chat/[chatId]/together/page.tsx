@@ -4,12 +4,22 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import ChatRoom from "../../components/ChatRoom";
 
+interface TogetherInfo {
+  title: string;
+  locationNote?: string;
+  imageUrl?: string;
+  meetingDate?: string;
+  participantCount?: number;
+  status: number;
+  senderId?: string;
+}
+
 export default function TogetherChat() {
   const params = useParams();
   const chatId = params.chatId as string;
 
   const [messages, setMessages] = useState([]);
-  const [info, setInfo] = useState<any>(null);
+  const [info, setInfo] = useState<TogetherInfo | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -52,6 +62,7 @@ export default function TogetherChat() {
         participantCount: info.participantCount,
         status: info.status,
       }}
+      senderId={info.senderId || ""}
     />
   );
 }

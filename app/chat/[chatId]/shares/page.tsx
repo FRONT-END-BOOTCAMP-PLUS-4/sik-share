@@ -3,6 +3,7 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import ChatRoom from "../../components/ChatRoom";
+import { useSession } from "next-auth/react";
 
 interface ChatMessage {
   id: number;
@@ -12,12 +13,23 @@ interface ChatMessage {
   message: string;
   time: string;
   readCount: number;
+  senderId?: string | null;
+  tempId?: string;
+  count?: number;
+  createdAt: string;
+  sender?: {
+    nickname: string;
+    imageUrl: string;
+    profileUrl?: string;
+  };
+  content: string;
 }
 
 interface OtherUser {
   nickname: string;
   imageUrl: string;
   temperature: number;
+  profileUrl?: string;
 }
 
 interface ShareInfo {
@@ -27,6 +39,8 @@ interface ShareInfo {
 }
 
 export default function ShareChat() {
+  const { data: session } = useSession();
+
   const params = useParams();
   const chatId = params.chatId as string;
 
@@ -62,9 +76,25 @@ export default function ShareChat() {
     <ChatRoom
       type="share"
       chatId={chatId}
-      messages={chatData.messages}
-      otherUser={chatData.otherUser}
+      messages={chatData.messages.map((msg) => ({
+        id: msg.id,
+        senderId: msg.senderId ?? "system",
+        content: msg.message ?? "",
+        createdAt: msg.time ?? new Date().toISOString(),
+        sender: {
+          nickname: msg.nickname ?? "",
+          imageUrl: msg.imageUrl ?? "",
+          profileUrl: msg.imageUrl ?? "",
+        },
+        readCount: msg.readCount ?? 0,
+      }))}
+      otherUser={{
+        ...chatData.otherUser,
+        profileUrl:
+          chatData.otherUser.profileUrl || chatData.otherUser.imageUrl || "",
+      }}
       shareInfo={chatData.shareInfo}
+      senderId={session?.user?.id || ""}
     />
   );
 }
