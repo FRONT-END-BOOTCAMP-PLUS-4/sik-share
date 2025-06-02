@@ -87,7 +87,7 @@ export default function ShareBoxPage() {
       .then((res) => res.json())
       .then((data) => {
         setShareList(data);
-        console.log("Fetched share list:", data);
+        console.log("Share List Data:", data);
       });
   }, [publicId]);
 
@@ -97,7 +97,6 @@ export default function ShareBoxPage() {
       .then((res) => res.json())
       .then((data) => {
         setUserInfo(data);
-        console.log("Fetched user Info:", data);
       });
   }, [publicId]);
 
@@ -150,7 +149,7 @@ export default function ShareBoxPage() {
     />
   );
   return (
-    <main className="w-full h-[80vh]">
+    <main className="w-full h-[calc(100vh-56px)]">
       <Header />
       <h1 className="text-2xl text-center my-4">
         {userInfo ? `${userInfo.nickname} 님의 공유함` : "공유함"}
@@ -187,7 +186,7 @@ export default function ShareBoxPage() {
         open={!!selectedItem}
         action={(open) => !open && setSelectedItem(null)}
         title={selectedItem?.title || ""}
-        image={selectedItem?.image || ""}
+        imageUrls={selectedItem?.imageUrls || []}
         description={selectedItem?.description || ""}
         remainingHours={selectedItem?.remainingHours || ""}
         shareItem={selectedItem?.name || ""}

@@ -17,7 +17,7 @@ interface BottomSheetProps {
   open: boolean;
   action: (open: boolean) => void;
   title: string;
-  image: string;
+  imageUrls: string[];
   description: string;
   remainingHours: string;
   shareItem?: string;
@@ -31,7 +31,7 @@ export default function BottomSheet({
   open,
   action,
   title,
-  image,
+  imageUrls,
   description,
   remainingHours,
   shareItem,
@@ -49,11 +49,13 @@ export default function BottomSheet({
   return (
     <Drawer open={open} onOpenChange={action}>
       <DrawerContent>
-        <div className="mx-auto w-full max-w-sm overflow-y-auto scrollbar-hide">
-          <DrawerTitle className="title-md mt-9 mb-4">{title}</DrawerTitle>
+        <div className="mx-auto w-full max-w-sm overflow-y-auto scrollbar-hide mb-6">
+          <DrawerTitle className="title-md mt-8 mb-4">{title}</DrawerTitle>
           <Carousel
             images={
-              image ? [image] : ["/assets/images/example/default-profile.png"]
+              imageUrls.length > 0
+                ? imageUrls
+                : ["/assets/images/example/default-profile.png"]
             }
           />
           <Content
@@ -63,7 +65,7 @@ export default function BottomSheet({
           />
           {lat && lng && location && (
             <KakaoMapDetail
-              width="361px"
+              width="384px"
               height="136px"
               lat={lat}
               lng={lng}

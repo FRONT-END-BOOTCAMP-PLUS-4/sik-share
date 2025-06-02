@@ -55,7 +55,6 @@ export default function ChatList() {
           data.sort((a: GroupBuyChatListItem, b: GroupBuyChatListItem) =>
             (b.lastMessageAt || "") > (a.lastMessageAt || "") ? 1 : -1,
           );
-          console.log("togetherData", data);
           setTogetherData(data);
         });
     }

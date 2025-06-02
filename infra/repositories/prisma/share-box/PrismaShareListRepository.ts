@@ -9,10 +9,15 @@ export class PrismaShareListRepository implements ShareListRepository {
   }
 
   async findById(userId: string): Promise<ShareWithRelations[]> {
+    const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+
     return await this.prisma.share.findMany({
       where: {
         ownerId: userId,
         status: { not: 2 },
+        createdAt: {
+          gte: twentyFourHoursAgo,
+        },
       },
       include: {
         images: true,
