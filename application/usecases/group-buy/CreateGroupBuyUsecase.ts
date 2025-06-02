@@ -1,4 +1,4 @@
-import type { GroupBuyChatParticipantRepository } from "./../../../domain/repositories/chat/GroupBuyChatParticipantRepository";
+import type { GroupBuyChatParticipantRepository } from "@/domain/repositories/chat/GroupBuyChatParticipantRepository";
 import type { GroupBuyImageRepository } from "@/domain/repositories/group-buy/GroupBuyImageRepository";
 import type { GroupBuyRepository } from "@/domain/repositories/group-buy/GroupBuyRepository";
 import type { ImageStorageRepository } from "@/domain/repositories/ImageStorageRepository";
