@@ -10,7 +10,9 @@ import Profile from "@/app/users/components/Profile";
 import UserLocation from "@/app/users/components/UserLocation";
 import ShareScore from "@/app/users/components/ShareScore";
 import MyCharacter from "@/app/users/components/MyCharacter";
+import ShareBoxButton from "@/app/users/components/ShareBoxButton";
 import { useUserInfo } from "@/app/users/hooks/useUserInfo";
+import { cn } from "@/lib/utils";
 
 interface User {
   neighborhoodName: string;
@@ -57,13 +59,20 @@ export default function userPage() {
     <>
       <Header />
       <div className={`h-[calc(100vh-108px)] grade-${levelbyScore.grade}`}>
-        <section className="h-1/2 px-4 py-6">
-          <div className="flex justify-end items-center">
-            {/* <MyPoint /> */}
-            <UserLocation
-              isMyAccount={isMyAccount}
-              location={user.neighborhoodName}
-            />
+        <section className="h-1/2 relative">
+          <div className="w-full absolute px-4 py-6 z-10">
+            <div
+              className={cn(
+                "flex items-center justify-end",
+                !isMyAccount && "justify-between",
+              )}
+            >
+              {!isMyAccount && <ShareBoxButton publicId={publicId} />}
+              <UserLocation
+                isMyAccount={isMyAccount}
+                location={user.neighborhoodName}
+              />
+            </div>
           </div>
           <MyCharacter grade={levelbyScore.grade} />
           <ShareScore score={user.score} />
