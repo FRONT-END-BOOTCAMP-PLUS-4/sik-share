@@ -1,6 +1,7 @@
 import Image from "next/image";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
+import Link from "next/link";
 
 interface ChatMessageProps {
   type: "me" | "other" | "system";
@@ -11,6 +12,7 @@ interface ChatMessageProps {
   time?: string;
   count?: number;
   senderId?: string;
+  chatId?: string;
 }
 
 export default function ChatMessage({
@@ -21,6 +23,7 @@ export default function ChatMessage({
   readCount = 0,
   time = "",
   count,
+  chatId,
   senderId,
 }: ChatMessageProps) {
   const displayCount =
@@ -86,12 +89,12 @@ export default function ChatMessage({
             <p className="caption text-zinc-500 mb-2 text-center">
               나눔이 완료되었다면, 후기 작성 어때요?
             </p>
-            <a
-              href="/chat"
+            <Link
+              href={`/review/${chatId}/new`}
               className="badge-bold text-secondary underline text-[16px] font-bold cursor-pointer"
             >
               후기 작성 바로가기
-            </a>
+            </Link>
           </div>
         </div>
       )}

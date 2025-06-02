@@ -22,6 +22,7 @@ interface Message {
   };
   readCount: number;
   count?: number;
+  chatId?: string;
 }
 
 interface TogetherInfoProps {
@@ -66,6 +67,7 @@ interface FormattedMessage {
   time: string;
   count?: number;
   senderId?: string | null;
+  chatId?: string;
 }
 
 function toFormattedMessage(
@@ -211,7 +213,7 @@ export default function ChatRoom({
           chatId={chatId}
         />
       )}
-      <ChatMessageList messages={formattedMessages} />
+      <ChatMessageList messages={formattedMessages} chatId={chatId} />
       <ChatInput
         chatId={chatId}
         senderId={session?.user.id ?? ""}
