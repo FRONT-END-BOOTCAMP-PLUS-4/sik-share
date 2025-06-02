@@ -58,6 +58,7 @@ export class PrismaShareRepository implements ShareRepository {
         owner: {
           select: {
             id: true,
+            publicId: true,
             nickname: true,
             profileUrl: true,
             shareScore: true,
@@ -94,6 +95,7 @@ export class PrismaShareRepository implements ShareRepository {
       title: share.title,
       desc: share.description,
       organizerId: share.owner.id,
+      organizerPublicId: String(share.owner.publicId),
       organizerNickname: share.owner.nickname,
       organizerProfileUrl: share.owner.profileUrl ?? "",
       organizerShareScore: share.owner.shareScore,
