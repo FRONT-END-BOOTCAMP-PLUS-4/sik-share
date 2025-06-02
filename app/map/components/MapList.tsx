@@ -140,7 +140,7 @@ export function MapList({ selectedId }: MapListProps) {
   const { items, loading, ref } = useInfiniteScroll<ListItem>({
     fetcher,
     itemsPerPage: 20,
-    delay: 2000,
+    delay: 1000,
     deps: [filterType, selectedId],
   });
 
