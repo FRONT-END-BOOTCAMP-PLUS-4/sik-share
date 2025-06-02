@@ -16,7 +16,7 @@ import {
 interface TogetherInfoProps {
   chatId: string;
   title: string;
-  imageUrl?: string;
+  imageUrl?: string[];
   meetingDate?: string;
   locationNote?: string;
   status: number;

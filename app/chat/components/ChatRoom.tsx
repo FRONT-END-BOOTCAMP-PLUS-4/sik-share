@@ -28,7 +28,7 @@ interface Message {
 interface TogetherInfoProps {
   chatId?: string;
   title: string;
-  imageUrl?: string;
+  imageUrl?: string[];
   locationNote?: string;
   meetingDate?: string;
   participantCount?: number;
@@ -48,7 +48,7 @@ interface ChatRoomProps {
   shareInfo?: {
     title: string;
     locationNote: string;
-    imageUrl: string;
+    imageUrl: string[];
     meetingDate?: string;
     status?: number;
   };
