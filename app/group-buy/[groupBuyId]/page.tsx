@@ -19,6 +19,7 @@ interface GroupBuyData {
   title: string;
   desc: string;
   organizerId: string;
+  organizerPublicId: string;
   organizerNickname: string;
   organizerProfileUrl: string;
   organizerShareScore: number;
@@ -115,6 +116,7 @@ export default function GroupBuyPage() {
           nickname={groupBuy.organizerNickname}
           profileUrl={groupBuy.organizerProfileUrl}
           shareScore={groupBuy.organizerShareScore}
+          id={groupBuy.organizerPublicId}
           numberOfParticipants={groupBuy.currentParticipantCount}
           capacity={groupBuy.capacity}
           participantProfileUrls={groupBuy.participantProfileUrls}
