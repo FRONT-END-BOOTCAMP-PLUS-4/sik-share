@@ -24,27 +24,23 @@ export class GetShareListUsecase {
 
     const shares = await this.shareListRepository.findById(user.id);
 
-    try {
-        return shares.map((share: ShareWithRelations) => new GetShareListDto(
-        share.id,
-        share.title,
-        share.description,
-        share.ownerId,
-        share.owner?.nickname ?? "",
-        share.owner?.profileUrl ?? "",
-        share.owner?.shareScore ?? 0,
-        share.createdAt,
-        share.locationNote,
-        share.lat,
-        share.lng,
-        share.shareItem?.name ?? "",
-        share.images?.map((img) => img.url) ?? [],
-        share.neighborhood?.name ?? "",
-        calcRemainingHours(share.createdAt),
-        share.status
-      ));
-    }
-    catch (e) {
-    }
+    return shares.map((share: ShareWithRelations) => new GetShareListDto(
+    share.id,
+    share.title,
+    share.description,
+    share.ownerId,
+    share.owner?.nickname ?? "",
+    share.owner?.profileUrl ?? "",
+    share.owner?.shareScore ?? 0,
+    share.createdAt,
+    share.locationNote,
+    share.lat,
+    share.lng,
+    share.shareItem?.name ?? "",
+    share.images?.map((img) => img.url) ?? [],
+    share.neighborhood?.name ?? "",
+    calcRemainingHours(share.createdAt),
+    share.status
+  ));
   }
 }

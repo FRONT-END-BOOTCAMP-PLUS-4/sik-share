@@ -5,10 +5,9 @@ import { PrismaShareListRepository } from "@/infra/repositories/prisma/share-box
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { publicId: string } }
+  { params }: { params: Promise<{publicId : string}> }
 ) {
   const { publicId } = await params;
-  console.log("Public ID:", publicId);
 
   const parsedPublicId = Number(publicId);
   if (Number.isNaN(parsedPublicId) || parsedPublicId <= 0) {

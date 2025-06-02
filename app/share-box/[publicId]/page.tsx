@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import type { ThreeEvent } from "@react-three/fiber";
 import ThreeDTable from "../components/ThreeDTable";
 import Footer from "@/components/common/Footer";
 import ThreeDDish from "../components/ThreeDDish";
@@ -34,6 +33,13 @@ interface ShareListItem {
   neighborhoodName: string;
   remainingHours: string;
   status: number;
+}
+
+interface UserInfo {
+  id: string;
+  nickname: string;
+  profileUrl: string | null;
+  shareScore: number;
 }
 
 interface DisplayItem extends ShareListItem {
@@ -70,6 +76,7 @@ const scaleMap = {
 export default function ShareBoxPage() {
   const [selectedItem, setSelectedItem] = useState<DisplayItem | null>(null);
   const [shareList, setShareList] = useState<ShareListItem[]>([]);
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
 
   const params = useParams();
   const publicId = params.publicId;
@@ -81,6 +88,16 @@ export default function ShareBoxPage() {
       .then((data) => {
         setShareList(data);
         console.log("Fetched share list:", data);
+      });
+  }, [publicId]);
+
+  useEffect(() => {
+    if (!publicId) return;
+    fetch(`/api/share-box/${publicId}/info`)
+      .then((res) => res.json())
+      .then((data) => {
+        setUserInfo(data);
+        console.log("Fetched user Info:", data);
       });
   }, [publicId]);
 
@@ -136,7 +153,7 @@ export default function ShareBoxPage() {
     <main className="w-full h-[80vh]">
       <Header />
       <h1 className="text-2xl text-center my-4">
-        {shareList[0]?.organizerNickname ?? ""}님의 공유함
+        {userInfo ? `${userInfo.nickname} 님의 공유함` : "공유함"}
       </h1>
       <Canvas camera={{ position: [0, 2, 2], fov: 50 }}>
         <ambientLight intensity={0.5} />
