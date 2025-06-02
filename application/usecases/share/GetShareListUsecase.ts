@@ -1,4 +1,4 @@
-import type { ShareRepository } from "@/domain/repositories/ShareRepository";
+import type { ShareRepository } from "@/domain/repositories/share/ShareRepository";
 import { GetShareListDto } from "./dto/GetShareListDto";
 
 export class GetShareListUsecase {

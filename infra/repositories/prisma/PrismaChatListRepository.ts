@@ -109,7 +109,7 @@ export class PrismaChatListRepository implements ChatListRepository {
           where: {
             groupBuyChatId: chat.id,
             senderId: { not: userId },
-            GroupBuyChatMessageRead: { none: { userId } },
+            groupBuyChatMessageRead: { none: { userId } },
           },
         });
 

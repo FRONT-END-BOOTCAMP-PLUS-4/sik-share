@@ -4,7 +4,12 @@ import FormDetail from "@/components/common/register/FormDetail";
 import SubHeader from "@/components/common/SubHeader";
 import { Form } from "@/components/ui/form";
 import { useSession } from "next-auth/react";
-import { notFound, useRouter, useSearchParams } from "next/navigation";
+import {
+  notFound,
+  useParams,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 import { useForm } from "react-hook-form";
 import useShortReviewOptions from "./hooks/useShortReviewOptions";
 import Loading from "@/components/common/Loading";
@@ -44,10 +49,9 @@ const ratingOptions = [
 
 export default function CreateReviewPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
 
-  const shareId = searchParams.get("shareId");
+  const { shareId } = useParams<{ shareId: string }>();
   const userId = session?.user.id;
   if (!shareId) notFound();
 

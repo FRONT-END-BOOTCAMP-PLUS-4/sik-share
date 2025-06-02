@@ -20,14 +20,14 @@ export class GetShareFormDetailUsecase {
     }
 
     return {
-      shareItem: data.desiredItemName!,
-      title: data.title!,
-      description: data.desc!,
-      neighborhoodName: data.neighborhoodName!,
-      locationNote: data.locationNote!,
-      lat: data.lat!,
-      lng: data.lng!,
-      images: data.imageUrls!,
+      shareItem: data.desiredItemName ?? "",
+      title: data.title ?? "",
+      description: data.desc ?? "",
+      neighborhoodName: data.neighborhoodName ?? "",
+      locationNote: data.locationNote ?? "",
+      lat: data.lat ?? 0,
+      lng: data.lng ?? 0,
+      images: data.imageUrls ?? [],
     };
   }
 }

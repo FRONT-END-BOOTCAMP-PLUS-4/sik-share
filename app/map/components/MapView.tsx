@@ -56,9 +56,9 @@ export function MapView() {
           },
         }));
 
-        const geojson = {
+        const geojson: GeoJSON.FeatureCollection = {
           type: "FeatureCollection",
-          features,
+          features: features as GeoJSON.Feature[],
         };
 
         const map = new maplibregl.Map({
@@ -115,18 +115,6 @@ export function MapView() {
 
         map.on("mouseenter", "clusters", (e) => {
           map.getCanvas().style.cursor = "pointer";
-
-          // mouseenter시 클러스터 name 적용하기
-          // const features = map.queryRenderedFeatures(e.point, {
-          //   layers: ["clusters"],
-          // });
-
-          // if (features.length > 0) {
-          //   const feature = features[0];
-          //   const name = feature.properties?.name;
-
-          //   setSelectedName(name);
-          // }
         });
 
         map.on("mouseleave", "clusters", () => {
@@ -143,13 +131,35 @@ export function MapView() {
           if (!features.length) return;
 
           let nearestFeature = features[0];
-          let minDist = distance(center, features[0].geometry.coordinates);
+          let minDist = 0;
+
+          if (
+            features[0].geometry.type === "Point" &&
+            Array.isArray((features[0].geometry as GeoJSON.Point).coordinates)
+          ) {
+            minDist = distance(
+              center,
+              (features[0].geometry as GeoJSON.Point).coordinates as [
+                number,
+                number,
+              ],
+            );
+          }
 
           for (let i = 1; i < features.length; i++) {
-            const dist = distance(center, features[i].geometry.coordinates);
-            if (dist < minDist) {
-              minDist = dist;
-              nearestFeature = features[i];
+            const geom = features[i].geometry;
+            if (
+              geom.type === "Point" &&
+              Array.isArray((geom as GeoJSON.Point).coordinates)
+            ) {
+              const dist = distance(
+                center,
+                (geom as GeoJSON.Point).coordinates as [number, number],
+              );
+              if (dist < minDist) {
+                minDist = dist;
+                nearestFeature = features[i];
+              }
             }
           }
 
