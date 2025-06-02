@@ -25,9 +25,8 @@ export async function middleware(req: NextRequest) {
   if(pathname === "/login" && token){
     return NextResponse.redirect(new URL('/map', req.url));
   }
-
-  // 회원가입 미완료 사용자 처리
-  if (token && !token.publicId && pathname !== "/auth/onboarding") {
+  //회원가입 미완료 사용자 처리
+  if (!isApiRoute && token && !token.publicId && pathname !== "/auth/onboarding" ) {
     return NextResponse.redirect(new URL("/auth/onboarding", req.url));
   }
 

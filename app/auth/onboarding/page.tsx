@@ -17,6 +17,7 @@ export default function OnboardingPage() {
     address: string;
     neighborhoodName: string;
   } | null>(null);
+  const [hasUpdated, setHasUpdated] = useState(false);
 
   const onSelect = useCallback((address: string, neighborhoodName: string) => {
     setLocation({ address, neighborhoodName });
@@ -49,20 +50,21 @@ export default function OnboardingPage() {
       });
 
       await update({ forceRefresh: true });
+      setHasUpdated(true);
       router.replace("/map");
-      router.refresh();
     } catch (err) {
       console.error(err);
     }
   };
 
   useEffect(() => {
+    if (hasUpdated) return;
     if (status === "authenticated" && session?.user?.publicId) {
       toast.warning("잘못된 접근입니다.");
-      router.back();
+      router.replace("/map");
       return;
     }
-  }, [status, session, router]);
+  }, [status, session, router, hasUpdated]);
 
   if (
     status === "loading" ||
