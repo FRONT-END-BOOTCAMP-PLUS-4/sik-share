@@ -34,6 +34,7 @@ export function MapView() {
 
   const session = useSession();
   const userId = session.data?.user.publicId;
+  console.log(userId);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
@@ -41,9 +42,9 @@ export function MapView() {
       try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/map`);
         const { clusters } = await res.json();
-        const userInfo = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/users?id=${userId}`,
-        );
+        // const userInfo = await fetch(
+        //   `${process.env.NEXT_PUBLIC_API_URL}/api/users?id=${userId}`,
+        // );
 
         type ClusterLocation = {
           id: number;
@@ -77,7 +78,7 @@ export function MapView() {
           container: mapContainer.current || "",
           style: `https://api.maptiler.com/maps/basic/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`,
           center: [126.9534602, 37.4779619], // [lng, lat]
-          zoom: 15,
+          zoom: 13,
         });
 
         mapRef.current = map;
