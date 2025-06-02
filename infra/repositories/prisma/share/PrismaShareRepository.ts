@@ -4,6 +4,7 @@ import type {
 } from "@/domain/repositories/share/ShareRepository";
 import type { GetShareDetailDto } from "@/application/usecases/share/dto/GetShareDetailDto";
 import { type Prisma, PrismaClient, type Share } from "@/prisma/generated";
+import { subHours } from "date-fns";
 
 export class PrismaShareRepository implements ShareRepository {
   private prisma: PrismaClient;
@@ -116,8 +117,14 @@ export class PrismaShareRepository implements ShareRepository {
     limit: number,
     neighborhoodId: number
   ): Promise<(Partial<Share> & { thumbnailUrl: string | null })[]> {
+    const now = new Date();
+    const oneHourAgo = subHours(now, 23);
+
     const shares = await this.prisma.share.findMany({
-      where: { neighborhoodId },
+      where: { neighborhoodId,
+        createdAt: { gte: oneHourAgo },
+        status: { not: 2 }
+      },
       orderBy: { createdAt: "desc" },
       skip: offset,
       take: limit,

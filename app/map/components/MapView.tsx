@@ -33,7 +33,8 @@ export function MapView() {
   const mapRef = useRef<maplibregl.Map | null>(null);
 
   const session = useSession();
-  console.log(session.data?.user.publicId);
+  const userId = session.data?.user.publicId;
+  console.log(userId);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
@@ -41,20 +42,32 @@ export function MapView() {
       try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/map`);
         const { clusters } = await res.json();
+        // const userInfo = await fetch(
+        //   `${process.env.NEXT_PUBLIC_API_URL}/api/users?id=${userId}`,
+        // );
 
-        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-        const features = clusters.map((loc: any) => ({
-          type: "Feature",
-          geometry: {
-            type: "Point",
-            coordinates: [loc.lng, loc.lat],
-          },
-          properties: {
-            id: loc.id,
-            count: loc.count,
-            name: loc.name,
-          },
-        }));
+        type ClusterLocation = {
+          id: number;
+          count: number;
+          name: string;
+          lng: number;
+          lat: number;
+        };
+
+        const features = clusters
+          .filter((loc: ClusterLocation) => loc.count > 0)
+          .map((loc: ClusterLocation) => ({
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: [loc.lng, loc.lat],
+            },
+            properties: {
+              id: loc.id,
+              count: loc.count,
+              name: loc.name,
+            },
+          }));
 
         const geojson: GeoJSON.FeatureCollection = {
           type: "FeatureCollection",
@@ -65,7 +78,7 @@ export function MapView() {
           container: mapContainer.current || "",
           style: `https://api.maptiler.com/maps/basic/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`,
           center: [126.9534602, 37.4779619], // [lng, lat]
-          zoom: 15,
+          zoom: 13,
         });
 
         mapRef.current = map;

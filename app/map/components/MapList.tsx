@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback } from "react";
+import { useRef, useCallback } from "react";
 import { useInfiniteScroll } from "@/hooks/useInfinityScroll";
 import { useMapFilterStore } from "@/stores/useMapFilterStore";
 import { ListCard } from "@/components/common/ListCard";
@@ -39,6 +39,8 @@ type ListItem = ShareItem | GroupBuyItem;
 export function MapList({ selectedId }: MapListProps) {
   const { filterType } = useMapFilterStore();
 
+  const cacheRef = useRef<Map<string, ListItem[]>>(new Map());
+
   const fetcher = useCallback(
     async (page: number, itemsPerPage: number) => {
       if (selectedId === null) return [];
@@ -49,38 +51,69 @@ export function MapList({ selectedId }: MapListProps) {
         neighborhoodId: String(selectedId),
       });
 
+      const getCacheKey = (type: string) =>
+        `${type}:${selectedId}:${page}:${itemsPerPage}`;
+
       const fetchShare = async () => {
+        const cacheKey = getCacheKey("share");
+        if (cacheRef.current.has(cacheKey)) {
+          return cacheRef.current.get(cacheKey) as ShareItem[];
+        }
         const res = await fetch(`/api/map/share?${params.toString()}`);
         if (!res.ok) return [];
         const data = await res.json();
-        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-        return data.shares.map((item: any) => ({
-          id: item.id,
-          src: item.thumbnailUrl || "",
-          alt: item.title,
-          title: item.title,
-          location: item.locationNote,
-          timeLeftInHours: item.timeLeftInHours,
-          type: "share",
-        }));
+        const mapped = data.shares.map(
+          (item: {
+            id: number;
+            thumbnailUrl?: string;
+            title: string;
+            locationNote: string;
+            timeLeftInHours: number;
+          }) => ({
+            id: item.id,
+            src: item.thumbnailUrl || "",
+            alt: item.title,
+            title: item.title,
+            location: item.locationNote,
+            timeLeftInHours: item.timeLeftInHours,
+            type: "share",
+          }),
+        );
+        cacheRef.current.set(cacheKey, mapped);
+        return mapped;
       };
 
       const fetchGroupBuy = async () => {
+        const cacheKey = getCacheKey("groupbuy");
+        if (cacheRef.current.has(cacheKey)) {
+          return cacheRef.current.get(cacheKey) as GroupBuyItem[];
+        }
         const res = await fetch(`/api/map/group-buy?${params.toString()}`);
         if (!res.ok) return [];
         const data = await res.json();
-        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-        return data.groupbuy.map((item: any) => ({
-          id: item.id,
-          src: item.thumbnailUrl || "",
-          alt: item.title,
-          title: item.title,
-          location: item.locationNote,
-          meetingDate: item.meetingDate,
-          type: "groupbuy",
-          currentUser: item.currentUser,
-          maxUser: item.maxUser,
-        }));
+        const mapped = data.groupbuy.map(
+          (item: {
+            id: number;
+            thumbnailUrl?: string;
+            title: string;
+            locationNote: string;
+            meetingDate: string;
+            currentUser: number;
+            maxUser: number;
+          }) => ({
+            id: item.id,
+            src: item.thumbnailUrl || "",
+            alt: item.title,
+            title: item.title,
+            location: item.locationNote,
+            meetingDate: item.meetingDate,
+            type: "groupbuy",
+            currentUser: item.currentUser,
+            maxUser: item.maxUser,
+          }),
+        );
+        cacheRef.current.set(cacheKey, mapped);
+        return mapped;
       };
 
       try {
@@ -107,7 +140,7 @@ export function MapList({ selectedId }: MapListProps) {
   const { items, loading, ref } = useInfiniteScroll<ListItem>({
     fetcher,
     itemsPerPage: 20,
-    delay: 2000,
+    delay: 1000,
     deps: [filterType, selectedId],
   });
 
@@ -115,7 +148,7 @@ export function MapList({ selectedId }: MapListProps) {
     <div className="max-h-[55vh] min-h-[55vh] overflow-y-auto border-t-1">
       {items.map((item, i) => (
         <Link
-          href={`/${item.type === "groupbuy" ? "group-buy" : "share"}/${item.id}`} // item.id -> API 로직 변경 후 나눔, 장보기 id 값으로 수정해야함
+          href={`/${item.type === "groupbuy" ? "group-buy" : "share"}/${item.id}`}
           key={`${item.id} - ${i}`}
         >
           <ListCard
