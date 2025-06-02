@@ -7,7 +7,7 @@ import ChatRoom from "../../components/ChatRoom";
 interface TogetherInfo {
   title: string;
   locationNote?: string;
-  imageUrl?: string;
+  imageUrl?: string[];
   meetingDate?: string;
   participantCount?: number;
   status: number;

@@ -48,7 +48,7 @@ interface ChatRoomProps {
   shareInfo?: {
     title: string;
     locationNote: string;
-    imageUrl: string[];
+    imageUrl: string[] | [];
     meetingDate?: string;
     status?: number;
   };
