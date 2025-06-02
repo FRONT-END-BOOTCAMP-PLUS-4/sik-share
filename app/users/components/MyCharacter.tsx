@@ -12,7 +12,7 @@ interface MyCharacterProps {
 export default function MyCharacter({ grade }: MyCharacterProps) {
   return (
     <div className="h-full flex items-center justify-center">
-      <div style={{ width: "100%", height: "100%" }}>
+      <div className="w-full h-full">
         <Canvas camera={{ fov: 20 }}>
           <Environment preset="sunset" background={false} />
           <ambientLight intensity={0.5} color="white" />
@@ -31,7 +31,6 @@ export default function MyCharacter({ grade }: MyCharacterProps) {
 
           <OrbitControls
             enableZoom={false}
-            // enableRotate={false}
             minDistance={10}
             maxDistance={10}
             minPolarAngle={Math.PI / 2.8}
