@@ -17,13 +17,18 @@ export async function middleware(req: NextRequest) {
     PUBLIC_PAGE_REGEX.some((regex) => regex.test(pathname));
   const isPublicApi =
     PUBLIC_API_PATHS.some((path) => pathname.startsWith(path)) ||
-    (/^\/api\/group-buy\/\d+$/.test(pathname) && req.method === "GET");
+    (/^\/api\/group-buys\/\d+$/.test(pathname) && req.method === "GET");
   
   const token = await getToken({ req });
   
   // 로그인한 유저 /login 접근 시 /map으로 이동
   if(pathname === "/login" && token){
     return NextResponse.redirect(new URL('/map', req.url));
+  }
+
+  // 회원가입 미완료 사용자 처리
+  if (token && !token.publicId && pathname !== "/auth/onboarding") {
+    return NextResponse.redirect(new URL("/auth/onboarding", req.url));
   }
 
   // 페이지 보호

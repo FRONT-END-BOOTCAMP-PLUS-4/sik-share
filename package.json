@@ -24,8 +24,6 @@
     "@radix-ui/react-visually-hidden": "^1.2.2",
     "@react-three/drei": "^10.0.7",
     "@react-three/fiber": "^9.1.2",
-    "@splinetool/react-spline": "^4.0.0",
-    "@splinetool/runtime": "^1.9.97",
     "@supabase/supabase-js": "^2.49.4",
     "@tailwindcss/line-clamp": "^0.4.4",
     "add": "^2.0.6",

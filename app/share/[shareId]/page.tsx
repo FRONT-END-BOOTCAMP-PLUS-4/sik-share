@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { differenceInCalendarDays } from "date-fns";
 import { MapPin, Salad, ClockFading } from "lucide-react";
 import { useSessionStore } from "@/stores/useSessionStore";
 import SubHeader from "@/components/common/SubHeader";
@@ -56,6 +55,12 @@ export default function GroupBuyPage() {
     const fetchData = async () => {
       try {
         const res = await fetch(`/api/shares/${shareId}`);
+
+        if (res.status === 404) {
+          router.replace("/not-found");
+          return;
+        }
+
         const json = await res.json();
         setShare(json.data);
       } catch (error) {
@@ -63,7 +68,7 @@ export default function GroupBuyPage() {
       }
     };
     fetchData();
-  }, [shareId]);
+  }, [shareId, router]);
 
   useEffect(() => {
     if (!session.data || !share) {
@@ -147,6 +152,8 @@ export default function GroupBuyPage() {
         type={"share"}
         status={share.status}
         remainingHours={share.remainingHours}
+        postId={share.id}
+        userId={session.data?.user?.id ?? ""}
       />
     </div>
   );

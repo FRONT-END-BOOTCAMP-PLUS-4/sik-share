@@ -2,12 +2,13 @@
 
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
-export default function RobotLottie() {
+export default function NotFoundLottie() {
   return (
     <div>
       <DotLottieReact
-        className="w-full"
-        src="/assets/lotties/Robot.lottie"
+        src="/assets/lotties/NotFound.lottie"
+        className="w-[200px] h-[200px]"
+        speed={1.3}
         loop
         autoplay
       />

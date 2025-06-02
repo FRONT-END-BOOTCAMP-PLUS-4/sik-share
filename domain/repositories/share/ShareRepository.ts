@@ -21,4 +21,5 @@ export interface ShareRepository {
   ): Promise<(Partial<Share> & { thumbnailUrl: string | null })[]>;
   update(share: Partial<Share>): Promise<Share>;
   softDelete(id:number):Promise<void>;
+  findRecentShares(userId: string, withinHours: number) : Promise<Share[]>
 }

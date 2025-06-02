@@ -32,7 +32,6 @@ export default function KakaoMap({ onSelect }: KakaoMapProps) {
         (result, status) => {
           if (status === window.kakao.maps.services.Status.OK) {
             const addr = result.find((r) => r.region_type === "H");
-            console.log(addr);
             if (addr)
               onSelect(addr.address_name, addr.region_3depth_name, {
                 lat: newCenter.getLat(),

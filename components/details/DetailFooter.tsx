@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Share2 } from "lucide-react";
 import {
@@ -9,16 +12,20 @@ import {
 } from "@/components/ui/dialog";
 import ShareButton from "./ShareButton";
 import { getGroupStatus } from "@/utils/groupStatus";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 interface DetailFooterProps {
   isOwner: boolean;
-  type: string;
+  type: "share" | "groupbuy";
   isDday?: number;
-  status: number;
+  status?: number;
   remainingHours?: number;
   meetingDate?: string;
   memberCount?: number;
   maxMember?: number;
+  postId?: number;
+  userId?: string;
 }
 
 export function DetailFooter({
@@ -30,11 +37,16 @@ export function DetailFooter({
   meetingDate,
   memberCount,
   maxMember,
+  postId,
+  userId,
 }: DetailFooterProps) {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
   const groupStatus = getGroupStatus({
     type,
     isDday,
-    status,
+    status: status ?? 0,
     remainingHours,
     meetingDate,
     memberCount,
@@ -47,6 +59,36 @@ export function DetailFooter({
     groupStatus === "SHARE_DONE";
 
   const isFull = groupStatus === "FULL";
+
+  const handleJoin = async () => {
+    setIsLoading(true);
+    try {
+      const res = await fetch("/api/join", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId,
+          postId,
+          type,
+        }),
+      });
+
+      const data = await res.json();
+      console.log(data);
+
+      router.push(
+        `/chat/${data.chatId}/${type === "share" ? "shares" : "together"}`,
+      );
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("참여 중 오류가 발생했습니다.");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Dialog>
@@ -61,8 +103,14 @@ export function DetailFooter({
               모집 완료
             </Button>
           ) : (
-            <Button variant="joinFullBtn" size="lg" className="w-[85%]">
-              참여하기
+            <Button
+              variant="joinFullBtn"
+              size="lg"
+              className="w-[85%]"
+              onClick={handleJoin}
+              disabled={isLoading}
+            >
+              {isLoading ? "참여 중..." : "채팅하기"}
             </Button>
           )
         ) : (

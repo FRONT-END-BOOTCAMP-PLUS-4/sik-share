@@ -13,7 +13,7 @@ const reasonMap: Record<string, string> = {
 
 export default function useValidateReviewWritable(
   shareId: number,
-  writerId: string,
+  writerId: string | undefined,
 ) {
   const [recipientId, setRecipientId] = useState<string | null>(null);
   const [recipientNickname, setRecipientNickname] = useState<string | null>(null);
@@ -53,7 +53,7 @@ export default function useValidateReviewWritable(
     }
 
     validate();
-  }, [shareId, writerId, router]);
+  }, [shareId, writerId, router, session]);
 
   return {
     recipientId,
