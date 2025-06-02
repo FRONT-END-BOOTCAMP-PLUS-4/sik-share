@@ -31,7 +31,7 @@ export default function ShareInfo({
   chatId,
   onMeetingDateChange,
 }: ShareInfoProps) {
-  console.log("ShareInfo rendered", info);
+
   const [date, setDate] = useState<Date | undefined>();
   const [open, setOpen] = useState(false);
 
