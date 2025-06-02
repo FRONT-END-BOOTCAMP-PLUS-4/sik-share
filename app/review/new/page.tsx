@@ -148,9 +148,7 @@ export default function CreateReviewPage() {
                   placeholder="여기에 적어주세요. (선택사항)"
                   labelClassName="font-bold"
                 />
-                <FormButton disabled={isSubmitting} onClick={() => {}}>
-                  작성 완료
-                </FormButton>
+                <FormButton disabled={isSubmitting}>작성 완료</FormButton>
               </form>
             </Form>
           </section>

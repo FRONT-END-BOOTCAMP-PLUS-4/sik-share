@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 
 interface ButtonSectionProps {
-  onClick: () => void;
+  onClick?: () => void;
   disabled?: boolean;
   children: React.ReactNode;
 }

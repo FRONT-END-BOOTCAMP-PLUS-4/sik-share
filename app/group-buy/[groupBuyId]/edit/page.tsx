@@ -214,9 +214,7 @@ export default function GroupBuyEditPage() {
                   inputClassName="cursor-pointer"
                   rules={{ required: "장보기 희망 장소를 설정해주세요." }}
                 />
-                <FormButton disabled={isSubmitting} onClick={() => {}}>
-                  수정 완료
-                </FormButton>
+                <FormButton disabled={isSubmitting}>수정 완료</FormButton>
               </form>
             </Form>
           </section>

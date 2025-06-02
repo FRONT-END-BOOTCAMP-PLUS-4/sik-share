@@ -157,9 +157,7 @@ export default function CreateSharePage() {
                   inputClassName="cursor-pointer"
                   rules={{ required: "나눔 희망 장소를 설정해주세요." }}
                 />
-                <FormButton disabled={isSubmitting} onClick={() => {}}>
-                  작성 완료
-                </FormButton>
+                <FormButton disabled={isSubmitting}>작성 완료</FormButton>
               </form>
             </Form>
           </section>
