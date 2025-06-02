@@ -33,7 +33,7 @@ export class PrismaClusterRepository implements ClusterRepository {
         const groupBuyCount = await this.prisma.groupBuy.count({
           where: {
             neighborhoodId: n.id,
-            createdAt: { gte: oneHourAgo },
+            meetingDate: { gte: now },
             status: { not: 1 },
           },
         });
