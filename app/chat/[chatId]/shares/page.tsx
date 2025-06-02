@@ -35,7 +35,7 @@ interface OtherUser {
 interface ShareInfo {
   title: string;
   locationNote: string;
-  imageUrl: string;
+  imageUrl: string[];
 }
 
 export default function ShareChat() {
