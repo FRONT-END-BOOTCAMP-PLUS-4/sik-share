@@ -82,7 +82,13 @@ return messages.map((msg) => {
 
   async findShareInfoByChatId(
   chatId: number
-): Promise<{ title: string; thumbnailUrl: string; locationNote: string; meetingDate?: string; status: number }> {
+): Promise<{
+  title: string;
+  imageUrl: string[];
+  locationNote: string;
+  meetingDate?: string;
+  status: number;
+}> {
   const shareChat = await prisma.shareChat.findUnique({
     where: { id: chatId },
     select: { shareId: true },
@@ -108,19 +114,22 @@ return messages.map((msg) => {
     throw new Error("해당 나눔 정보를 찾을 수 없습니다.");
   }
 
-  const image = await prisma.shareImage.findFirst({
+  const images = await prisma.shareImage.findMany({
     where: { shareId },
     select: { url: true },
     orderBy: { id: "asc" },
   });
 
+  const imageUrl = images.length > 0
+    ? images.map((img) => img.url)
+    : ["/assets/images/example/thumbnail.png"];
+
   return {
     title: share.title,
     locationNote: share.locationNote ?? "장소 정보 없음",
-    thumbnailUrl: image?.url ?? "/assets/images/example/thumbnail.png",
+    imageUrl,
     meetingDate: share.meetingDate ? share.meetingDate.toISOString() : undefined,
     status: share.status,
   };
 }
-
 }

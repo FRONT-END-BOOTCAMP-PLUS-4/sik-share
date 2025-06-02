@@ -19,7 +19,7 @@ interface ShareInfoProps {
   info: {
     title: string;
     locationNote: string;
-    imageUrl: string;
+    imageUrl: string[];
     meetingDate?: string;
     status: number;
   };
@@ -31,6 +31,7 @@ export default function ShareInfo({
   chatId,
   onMeetingDateChange,
 }: ShareInfoProps) {
+
   const [date, setDate] = useState<Date | undefined>();
   const [open, setOpen] = useState(false);
 
@@ -171,10 +172,10 @@ export default function ShareInfo({
     <div className="flex flex-col gap-3 px-4 py-2 border-b">
       <div className="flex w-full items-center gap-2">
         <Image
-          src={info.imageUrl || "/assets/images/example/thumbnail.png"}
+          src={info.imageUrl[0] || "/assets/images/example/thumbnail.png"}
           width={48}
           height={48}
-          className="rounded-sm"
+          className="rounded-sm w-[48px] h-[48px] object-full"
           alt="shareImage"
         />
         <div className="flex flex-col flex-1 min-w-0">
