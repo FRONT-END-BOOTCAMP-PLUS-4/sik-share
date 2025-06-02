@@ -34,7 +34,9 @@ export default function CreateSharePage() {
 
   const userId = session?.user.id;
 
-  const { shareItems, loading, error } = useShareItmes(); //에러는 토스트로
+  const { shareItems, loading } = useShareItmes();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const form = useForm<ShareForm>({
     mode: "onSubmit",
     defaultValues: {
@@ -53,6 +55,7 @@ export default function CreateSharePage() {
 
   const onSubmit = async () => {
     try {
+      setIsSubmitting(true);
       const values = form.getValues();
 
       const formData = new FormData();
@@ -80,6 +83,7 @@ export default function CreateSharePage() {
           errorData?.message ||
           "알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요.";
         toast.error(message);
+        setIsSubmitting(false);
         return;
       }
 
@@ -89,10 +93,10 @@ export default function CreateSharePage() {
           router.back();
         },
       });
-      router.back();
     } catch (error) {
       console.error("나눔 등록 중 오류 발생:", error);
       toast.error("네트워크 오류가 발생했습니다. 다시 시도해주세요.");
+      setIsSubmitting(false);
     }
   };
 
@@ -122,12 +126,21 @@ export default function CreateSharePage() {
                 <FormSelect
                   name="shareItem"
                   label="나눔 품목"
-                  placeholder="나누고 싶은 품목을 선택해주세요."
+                  placeholder={
+                    shareItems.length
+                      ? "나누고 싶은 품목을 선택해주세요."
+                      : "선택할 수 있는 항목이 없어요"
+                  }
                   options={shareItems.map((item) => ({
                     label: item.name,
                     value: item.id,
                   }))}
-                  rules={{ required: "나눔 품목을 선택해주세요." }}
+                  disabled={!shareItems.length}
+                  rules={{
+                    required: shareItems.length
+                      ? "나눔 품목을 선택해주세요."
+                      : "24시간 이내 등록한 항목은 다시 선택할 수 없어요.",
+                  }}
                 />
                 <FormDetail
                   name="description"
@@ -144,7 +157,7 @@ export default function CreateSharePage() {
                   inputClassName="cursor-pointer"
                   rules={{ required: "나눔 희망 장소를 설정해주세요." }}
                 />
-                <FormButton onClick={() => {}}>작성 완료</FormButton>
+                <FormButton disabled={isSubmitting}>작성 완료</FormButton>
               </form>
             </Form>
           </section>
