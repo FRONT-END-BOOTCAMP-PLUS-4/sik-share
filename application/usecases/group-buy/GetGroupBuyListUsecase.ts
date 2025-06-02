@@ -1,4 +1,4 @@
-import type { GroupBuyRepository } from "@/domain/repositories/GroupBuyRepository";
+import type { GroupBuyRepository } from "@/domain/repositories/group-buy/GroupBuyRepository";
 import { GetGroupBuyListDto } from "./dto/GetGroupBuyListDto";
 
 export class GetGroupBuyListUsecase {

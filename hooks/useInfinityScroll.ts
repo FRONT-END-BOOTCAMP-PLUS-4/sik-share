@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
-// import throttle from "lodash.throttle";
+import throttle from "lodash.throttle";
 
 interface UseInfiniteScrollOptions<T> {
   fetcher: (page: number, itemsPerPage: number) => Promise<T[]>;
