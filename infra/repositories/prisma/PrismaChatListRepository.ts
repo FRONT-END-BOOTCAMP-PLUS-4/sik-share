@@ -54,7 +54,7 @@ export class PrismaChatListRepository implements ChatListRepository {
           where: {
             shareChatId: chat.id,
             senderId: { not: userId },
-            ShareChatMessageRead: {
+            shareChatMessageRead: {
               none: { userId },
             },
           },

@@ -211,7 +211,7 @@ model ShareChatMessage {
   readCount            Int                    @default(1)
   sender               User                   @relation(fields: [senderId], references: [id])
   shareChat            ShareChat              @relation(fields: [shareChatId], references: [id])
-  ShareChatMessageRead ShareChatMessageRead[]
+  shareChatMessageRead ShareChatMessageRead[]
 }
 
 model ShareChatParticipant {
