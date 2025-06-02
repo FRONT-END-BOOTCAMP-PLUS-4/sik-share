@@ -87,7 +87,6 @@ export default function ShareBoxPage() {
       .then((res) => res.json())
       .then((data) => {
         setShareList(data);
-        console.log("Fetched share list:", data);
       });
   }, [publicId]);
 
@@ -97,7 +96,6 @@ export default function ShareBoxPage() {
       .then((res) => res.json())
       .then((data) => {
         setUserInfo(data);
-        console.log("Fetched user Info:", data);
       });
   }, [publicId]);
 
