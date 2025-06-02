@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import FormDetail from "@/components/common/register/FormDetail";
 import SubHeader from "@/components/common/SubHeader";
 import { Form } from "@/components/ui/form";

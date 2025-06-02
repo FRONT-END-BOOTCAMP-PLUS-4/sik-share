@@ -31,16 +31,16 @@ model User {
   publicId                 Int                       @unique @default(autoincrement())
   grouBuys                 GroupBuy[]
   groupBuyChatMessages     GroupBuyChatMessage[]
-  GroupBuyChatMessageRead  GroupBuyChatMessageRead[]
+  groupBuyChatMessageRead  GroupBuyChatMessageRead[]
   groupBuyChatParticipants GroupBuyChatParticipant[]
   groupBuyParticipants     GroupBuyParticipant[]
   receivedReviews          Review[]                  @relation("ReceivedReview")
   writtenReviews           Review[]                  @relation("WrittenReview")
   ownedShares              Share[]                   @relation("OwnedShare")
   receivedShares           Share[]                   @relation("ReceivedShare")
-  ShareApplication         ShareApplication[]
+  shareApplication         ShareApplication[]
   shareChatMessages        ShareChatMessage[]
-  ShareChatMessageRead     ShareChatMessageRead[]
+  shareChatMessageRead     ShareChatMessageRead[]
   shareChatParticipants    ShareChatParticipant[]
   neighborhood             Neighborhood              @relation(fields: [neighborhoodId], references: [id])
 }
@@ -104,7 +104,7 @@ model Share {
   owner            User               @relation("OwnedShare", fields: [ownerId], references: [id])
   recipient        User?              @relation("ReceivedShare", fields: [recipientId], references: [id])
   shareItem        ShareItem          @relation(fields: [shareItemId], references: [id])
-  ShareApplication ShareApplication[]
+  shareApplication ShareApplication[]
   chats            ShareChat[]
   images           ShareImage[]
 }
@@ -169,7 +169,7 @@ model GroupBuyChatMessage {
   count                   Int
   groupBuyChat            GroupBuyChat              @relation(fields: [groupBuyChatId], references: [id])
   sender                  User                      @relation(fields: [senderId], references: [id])
-  GroupBuyChatMessageRead GroupBuyChatMessageRead[]
+  groupBuyChatMessageRead GroupBuyChatMessageRead[]
 }
 
 model GroupBuyChatParticipant {
@@ -211,7 +211,7 @@ model ShareChatMessage {
   readCount            Int                    @default(1)
   sender               User                   @relation(fields: [senderId], references: [id])
   shareChat            ShareChat              @relation(fields: [shareChatId], references: [id])
-  ShareChatMessageRead ShareChatMessageRead[]
+  shareChatMessageRead ShareChatMessageRead[]
 }
 
 model ShareChatParticipant {
@@ -240,8 +240,8 @@ model ShareApplication {
   userId    String
   shareId   Int
   createdAt DateTime @default(now())
-  Share     Share    @relation(fields: [shareId], references: [id])
-  User      User     @relation(fields: [userId], references: [id])
+  share     Share    @relation(fields: [shareId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 
   @@unique([userId, shareId])
 }

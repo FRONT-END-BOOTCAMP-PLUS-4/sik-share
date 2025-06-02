@@ -20,16 +20,16 @@ export class GetGroupBuyFormDetailUsecase {
     }
 
     return{
-      title: data.title!,
-      description: data.desc!,
-      capacity : data.capacity!,
-      neighborhoodName: data.neighborhoodName!,
-      locationNote : data.locationNote!,
-      lat: data.lat!,
-      lng: data.lng!,
-      desiredItem: data.desiredItem!,
-      meetingDate: data.meetingDate!,
-      images: data.imageUrls!,
+      title: data.title ?? "",
+      description: data.desc ?? "",
+      capacity : data.capacity ?? 2,
+      neighborhoodName: data.neighborhoodName ?? "",
+      locationNote : data.locationNote ?? "",
+      lat: data.lat ?? 0,
+      lng: data.lng ?? 0,
+      desiredItem: data.desiredItem ?? "",
+      meetingDate: data.meetingDate ?? new Date(),
+      images: data.imageUrls ?? [],
     }
   }
 }
