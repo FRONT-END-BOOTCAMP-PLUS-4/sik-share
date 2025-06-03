@@ -154,7 +154,8 @@ export class PrismaShareRepository implements ShareRepository {
     return await this.prisma.share.findMany({
       where:{
         ownerId : userId,
-        createdAt: { gte : threshold}
+        createdAt: { gte : threshold },
+        deletedAt: null
       }
     });
   }
