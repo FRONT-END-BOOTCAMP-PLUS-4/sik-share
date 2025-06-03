@@ -41,6 +41,29 @@ export default function ChatList({
     router.push(path);
   };
 
+  console.log("ChatList rendered", {
+    chatId,
+    type,
+    imageUrl,
+    groupBuyTitle,
+    nickname,
+    temperature,
+    lastMessageAt,
+    lastMessage,
+    unreadCount,
+    participantCount,
+  });
+
+  function getImageUrl(img: string | string[] | undefined | null) {
+    if (Array.isArray(img)) {
+      return img[0] ?? "";
+    }
+    if (typeof img === "string") {
+      return img;
+    }
+    return "";
+  }
+
   return (
     <div
       onClick={handleClick}
@@ -49,13 +72,13 @@ export default function ChatList({
     >
       <div className="flex items-center gap-2">
         <Image
+          src={
+            getImageUrl(imageUrl)?.startsWith("http")
+              ? getImageUrl(imageUrl)
+              : "/assets/images/example/thumbnail.png"
+          }
           width={40}
           height={40}
-          src={
-            Array.isArray(imageUrl)
-              ? imageUrl[0] || "/assets/images/example/thumbnail.png"
-              : imageUrl || "/assets/images/example/thumbnail.png"
-          }
           className="w-[40px] h-[40px] border-1 border-zinc-100 rounded-full"
           alt="profile"
         />

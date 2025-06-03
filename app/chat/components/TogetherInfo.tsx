@@ -61,7 +61,11 @@ export default function TogetherInfo({
     <div className="flex items-start gap-3 px-4 py-2 border-b">
       <div className="flex-shrink-0">
         <Image
-          src={imageUrl ?? "/assets/images/example/thumbnail.png"}
+          src={
+            imageUrl && imageUrl.length > 0
+              ? imageUrl[0]
+              : "/assets/images/example/thumbnail.png"
+          }
           width={64}
           height={64}
           alt="장보기 이미지"
