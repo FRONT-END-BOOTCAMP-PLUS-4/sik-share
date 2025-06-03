@@ -18,6 +18,7 @@ export default function OnboardingPage() {
     neighborhoodName: string;
   } | null>(null);
   const [hasUpdated, setHasUpdated] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const onSelect = useCallback((address: string, neighborhoodName: string) => {
     setLocation({ address, neighborhoodName });
@@ -29,13 +30,23 @@ export default function OnboardingPage() {
       return;
     }
 
-    if (status === "loading") return;
+    const isAvailable = location.address.split(" ")[1] === "관악구";
+
+    if (!isAvailable) {
+      toast.error("식샤는 관악구에서만 가능합니다.");
+      return;
+    }
+
+    if (status === "loading") {
+      return;
+    }
 
     if (status !== "authenticated") {
       router.replace("/login");
       return;
     }
 
+    setIsSubmitting(true);
     try {
       const res = await fetch("/api/users/signup", {
         method: "POST",
@@ -49,10 +60,17 @@ export default function OnboardingPage() {
         }),
       });
 
+      if (!res.ok) {
+        setIsSubmitting(false);
+        toast.error("잠시 후 다시 시도해주세요");
+      }
+
       await update({ forceRefresh: true });
       setHasUpdated(true);
       router.replace("/map");
     } catch (err) {
+      setIsSubmitting(false);
+      toast.error("잠시 후 다시 시도해주세요");
       console.error(err);
     }
   };
@@ -82,7 +100,7 @@ export default function OnboardingPage() {
       />
       <section className="h-[calc(100vh-180px)] flex flex-col">
         <KakaoMap onSelect={onSelect} />
-        <ButtonSection onClick={onClick} />
+        <ButtonSection onClick={onClick} disabled={isSubmitting} />
       </section>
     </>
   );

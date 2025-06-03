@@ -4,12 +4,7 @@ import FormDetail from "@/components/common/register/FormDetail";
 import SubHeader from "@/components/common/SubHeader";
 import { Form } from "@/components/ui/form";
 import { useSession } from "next-auth/react";
-import {
-  notFound,
-  useParams,
-  useRouter,
-  useSearchParams,
-} from "next/navigation";
+import { notFound, useParams, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import useShortReviewOptions from "./hooks/useShortReviewOptions";
 import Loading from "@/components/common/Loading";
