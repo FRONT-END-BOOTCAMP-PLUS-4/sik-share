@@ -1,6 +1,9 @@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import ChatListItem from "./ChatList";
 import { motion, AnimatePresence } from "motion/react";
+import Image from "next/image";
+import Loading from "@/components/common/Loading";
+import { LoadingFoodLottie } from "@/components/lotties/LoadingFoodLottie";
 
 interface ChatListProps {
   chatId: string;
@@ -22,6 +25,8 @@ interface ChatListProps {
 interface TabProps {
   shareData: ChatListProps[];
   togetherData: ChatListProps[];
+  isShareLoading: boolean;
+  isTogetherLoading: boolean;
   activeTab: string;
   setActiveTab: (tab: string) => void;
 }
@@ -29,6 +34,8 @@ interface TabProps {
 export default function Tab({
   shareData,
   togetherData,
+  isShareLoading,
+  isTogetherLoading,
   activeTab,
   setActiveTab,
 }: TabProps) {
@@ -44,34 +51,52 @@ export default function Tab({
       </TabsList>
       <TabsContent value="share">
         <AnimatePresence>
-          {shareData.map((chat) => (
-            <motion.div
-              key={chat.chatId}
-              layout
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -30 }}
-              transition={{ duration: 0.25 }}
-            >
-              <ChatListItem {...chat} />
-            </motion.div>
-          ))}
+          {isShareLoading ? (
+            <LoadingFoodLottie />
+          ) : shareData.length === 0 ? (
+            <div className="w-full flex flex-col justify-center items-center py-12 text-zinc-400">
+              <p className="mt-6">참여한 나눔이 없어요</p>
+            </div>
+          ) : (
+            shareData.map((chat) => (
+              <motion.div
+                key={chat.chatId}
+                layout
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -30 }}
+                transition={{ duration: 0.25 }}
+              >
+                <ChatListItem {...chat} />
+              </motion.div>
+            ))
+          )}
         </AnimatePresence>
       </TabsContent>
       <TabsContent value="together">
         <AnimatePresence>
-          {togetherData.map((chat) => (
-            <motion.div
-              key={chat.chatId ?? chat.id ?? chat.title}
-              layout
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -30 }}
-              transition={{ duration: 0.25 }}
-            >
-              <ChatListItem {...chat} />
-            </motion.div>
-          ))}
+          {isTogetherLoading ? (
+            <div className="w-full py-12 text-center text-zinc-400">
+              로딩 중...
+            </div>
+          ) : togetherData.length === 0 ? (
+            <div className="flex flex-col items-center py-12 text-zinc-400">
+              <p className="mt-6">참여한 같이 장보기가 없어요</p>
+            </div>
+          ) : (
+            togetherData.map((chat) => (
+              <motion.div
+                key={chat.chatId ?? chat.id ?? chat.title}
+                layout
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -30 }}
+                transition={{ duration: 0.25 }}
+              >
+                <ChatListItem {...chat} />
+              </motion.div>
+            ))
+          )}
         </AnimatePresence>
       </TabsContent>
     </Tabs>
