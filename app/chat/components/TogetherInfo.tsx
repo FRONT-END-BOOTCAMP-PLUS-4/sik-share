@@ -57,11 +57,24 @@ export default function TogetherInfo({
     } catch (e) {}
   };
 
+  function getImageUrl(img: string | string[] | undefined | null) {
+    if (Array.isArray(img)) {
+      return img[0] ?? "";
+    }
+    if (typeof img === "string") {
+      return img;
+    }
+    return "";
+  }
   return (
     <div className="flex items-start gap-3 px-4 py-2 border-b">
       <div className="flex-shrink-0">
         <Image
-          src={imageUrl ?? "/assets/images/example/thumbnail.png"}
+          src={
+            getImageUrl(imageUrl)?.startsWith("http")
+              ? getImageUrl(imageUrl)
+              : "/assets/images/example/thumbnail.png"
+          }
           width={64}
           height={64}
           alt="장보기 이미지"
