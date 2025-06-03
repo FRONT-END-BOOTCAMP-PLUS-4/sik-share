@@ -25,4 +25,8 @@ export class PrismaGroupBuyImageRepository implements GroupBuyImageRepository {
       this.prisma.groupBuyImage.createMany({ data: images }),
     ]);
   }
+
+  async deleteByGroupBuyId(groupBuyId : number) : Promise<void>{
+    await this.prisma.groupBuyImage.deleteMany({ where : { groupBuyId }})
+  }
 }

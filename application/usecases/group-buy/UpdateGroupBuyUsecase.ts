@@ -27,6 +27,8 @@ export class UpdateGroupBuyUsecase {
       description : groupBuy.description,
     });
 
+
+
     const images = await Promise.all(
       groupBuy.images.map(async (image, idx) => {
         const imageUrl = await this.imageStorageRepo.uploadPostImage(
@@ -44,6 +46,8 @@ export class UpdateGroupBuyUsecase {
       })
     );
 
-    await this.groupBuyImageRepo.replace(images);
+    
+    if(images.length) await this.groupBuyImageRepo.replace(images);
+    else await this.groupBuyImageRepo.deleteByGroupBuyId(groupBuy.groupBuyId);
   }
 }

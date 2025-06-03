@@ -68,7 +68,7 @@ export default function EditAddressPage() {
           선택해주세요.`}
         DescSubText="어디로 변경할까요? 식샤는 관악구에서만 가능해요."
       />
-      <section className="h-[calc(100vh-180px)] flex flex-col">
+      <section className="h-[calc(100svh-227px)] flex flex-col">
         <KakaoMap onSelect={onSelect} />
         <div className="absolute bottom-0 z-50 w-full py-3 px-4 bg-white border-t-1 border-zinc-300">
           <Button variant="joinFullBtn" size="lg" onClick={onClick}>

@@ -58,9 +58,9 @@ export default function userPage() {
   return (
     <>
       <Header />
-      <div className={`h-[calc(100vh-108px)] grade-${levelbyScore.grade}`}>
+      <div className={`h-[calc(100svh-108px)] grade-${levelbyScore.grade}`}>
         <section className="h-1/2 relative">
-          <div className="w-full absolute px-4 py-6 z-10">
+          <div className="w-full absolute px-4 py-6 z-5">
             <div
               className={cn(
                 "flex items-center justify-end",

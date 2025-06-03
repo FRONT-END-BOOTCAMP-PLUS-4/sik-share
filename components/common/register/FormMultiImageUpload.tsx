@@ -29,22 +29,24 @@ export default function FormMultiImageUpload({
   name,
   rules,
 }: FormMultiImageUploadProps) {
-  const { setValue, trigger, getValues } = useFormContext();
+  const { setValue } = useFormContext();
   const watchedFiles = useWatch({ name });
 
   const [files, setFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   // 초기값 설정
   useEffect(() => {
     if (
+      !isInitialized &&
       Array.isArray(watchedFiles) &&
-      watchedFiles.length > 0 &&
-      files.length === 0
+      watchedFiles.length > 0
     ) {
       setFiles(watchedFiles);
+      setIsInitialized(true);
     }
-  }, [watchedFiles, files.length]);
+  }, [watchedFiles, isInitialized]);
 
   // 이미지 미리보기 URL 생성
   useEffect(() => {
@@ -59,9 +61,12 @@ export default function FormMultiImageUpload({
   }, [files]);
 
   useEffect(() => {
-    setValue(name, files, { shouldValidate: false });
-    if (files.length > 0) trigger(name);
-  }, [files, name, setValue, trigger]);
+    if (isInitialized) {
+      setValue(name, files, { shouldValidate: true });
+    } else {
+      setValue(name, files, { shouldValidate: false });
+    }
+  }, [files, name, setValue, isInitialized]);
 
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;

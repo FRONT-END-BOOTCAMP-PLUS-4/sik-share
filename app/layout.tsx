@@ -59,9 +59,8 @@ export default function RootLayout({
                 </div>
               </div>
             </section>
-
-            <section className="relative safe-container w-full min-h-screen mx-auto bg-white sm:border-t sm:border-x sm:border-zinc-300 max-w-[var(--space-mobileMax)]">
-              <main className="md:w-full">{children}</main>
+            <section className="relative safe-container overflow-auto w-full min-h-svh mx-auto bg-white sm:border-t sm:border-x sm:border-zinc-300 max-w-[var(--space-mobileMax)]">
+              <main className="md:w-full h-svh">{children}</main>
               <div className="h-auto" id="drawer-customPortal" />
               <Toaster position="bottom-center" richColors />
             </section>

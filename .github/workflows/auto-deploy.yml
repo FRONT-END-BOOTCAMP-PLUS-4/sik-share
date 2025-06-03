@@ -1,0 +1,27 @@
+name: "auto-deploy for dev"
+
+on:
+  push:
+    branches: [ "dev" ]
+
+jobs:
+  build:
+    runs-on: [self-hosted, sikshare-server]
+
+    steps:
+      - name: Build Next.js Project
+        run: echo "Build Next.js Project"
+
+  test:
+    runs-on: [self-hosted, sikshare-server]
+
+    steps:
+      - name: Test Next.js Project
+        run: echo "Test Next.js Project"
+        
+  deploy:
+    runs-on: [self-hosted, sikshare-server]
+    
+    steps:
+    - name: Deploy Next.js Project
+      run: /home/sikshare/www/sik-share/next-app-update.sh

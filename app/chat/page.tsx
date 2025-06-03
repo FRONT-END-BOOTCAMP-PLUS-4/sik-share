@@ -34,10 +34,13 @@ interface GroupBuyChatListItem {
 export default function ChatList() {
   const [shareData, setShareData] = useState<ShareChatListItem[]>([]);
   const [togetherData, setTogetherData] = useState<GroupBuyChatListItem[]>([]);
+  const [isShareLoading, setIsShareLoading] = useState(true);
+  const [isTogetherLoading, setIsTogetherLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("share");
   const { data: session } = useSession();
 
   useEffect(() => {
+    setIsShareLoading(true);
     fetch("/api/chat/list?type=share")
       .then((res) => res.json())
       .then((data) => {
@@ -45,11 +48,13 @@ export default function ChatList() {
           (b.lastMessageAt || "") > (a.lastMessageAt || "") ? 1 : -1,
         );
         setShareData(data);
-      });
+      })
+      .finally(() => setIsShareLoading(false));
   }, []);
 
   useEffect(() => {
     if (activeTab === "together" && togetherData.length === 0) {
+      setIsTogetherLoading(true);
       fetch("/api/chat/list?type=together")
         .then((res) => res.json())
         .then((data) => {
@@ -57,7 +62,8 @@ export default function ChatList() {
             (b.lastMessageAt || "") > (a.lastMessageAt || "") ? 1 : -1,
           );
           setTogetherData(data);
-        });
+        })
+        .finally(() => setIsTogetherLoading(false));
     }
   }, [activeTab, togetherData.length]);
 
@@ -131,6 +137,8 @@ export default function ChatList() {
       <Tab
         shareData={shareData}
         togetherData={togetherData}
+        isShareLoading={isShareLoading}
+        isTogetherLoading={isTogetherLoading}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
       />
