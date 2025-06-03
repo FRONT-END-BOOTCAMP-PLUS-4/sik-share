@@ -19,7 +19,7 @@ export default function MyCharacter({ grade }: MyCharacterProps) {
         src={`https://jxehepesvdmpvgnpxoxn.supabase.co/storage/v1/object/public/3d-model/${grade}.png`}
         alt="로딩 이미지"
         className={cn(
-          "object-contain w-full h-full absolute opacity-100 transition-opacity duration-500",
+          "object-contain w-full h-full absolute opacity-100 transition-opacity duration-350",
           isLoaded && "opacity-0",
         )}
       />
