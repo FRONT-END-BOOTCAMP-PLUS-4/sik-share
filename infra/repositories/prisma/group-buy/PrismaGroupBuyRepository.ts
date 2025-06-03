@@ -174,4 +174,23 @@ async getList(
       where: { id: groupBuy.id as number}
     })
   }
+
+  async getFormDetail(groupBuyId: number) {
+    return await this.prisma.groupBuy.findUnique({
+      where : { id: groupBuyId },
+      include : {
+        images: {
+          orderBy: { order: "asc" },
+          select: {
+            url: true,
+          },
+        },
+        neighborhood: {
+          select : {
+            name: true
+          }
+        }
+      }
+    })
+  }
 }

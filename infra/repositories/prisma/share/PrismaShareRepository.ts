@@ -161,8 +161,33 @@ export class PrismaShareRepository implements ShareRepository {
     return await this.prisma.share.findMany({
       where:{
         ownerId : userId,
-        createdAt: { gte : threshold}
+        createdAt: { gte : threshold },
+        deletedAt: null
       }
     });
+  }
+
+  async getFormDetail(shareId : number){
+    return await this.prisma.share.findUnique({
+      where : { id: shareId },
+      include : {
+        images : { 
+          orderBy: { order: "asc" }, 
+          select : { 
+            url: true 
+          }
+        },
+        neighborhood : {
+          select : { 
+            name: true 
+          }
+        },
+        shareItem : {
+          select : {
+            name: true
+          }
+        }
+      }
+    })
   }
 }

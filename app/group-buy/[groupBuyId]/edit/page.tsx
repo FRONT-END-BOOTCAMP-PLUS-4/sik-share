@@ -80,12 +80,7 @@ export default function GroupBuyEditPage() {
   });
 
   useEffect(() => {
-    if (
-      !filesLoading &&
-      !detailLoading &&
-      groupBuyFormDetail &&
-      files.length > 0
-    ) {
+    if (!filesLoading && !detailLoading && groupBuyFormDetail) {
       form.reset({
         title: groupBuyFormDetail.title,
         description: groupBuyFormDetail.description,

@@ -7,6 +7,22 @@ export interface GetUserGroupbuys {
     itemsPerPage: number,
 }
 
+type GroupBuyFormDetail = Prisma.GroupBuyGetPayload<{
+  include: {
+    images: {
+      select: {
+        url: true;
+      };
+    };
+    neighborhood: {
+      select: {
+        name: true;
+      };
+    };
+  };
+}>;
+
+
 export interface GroupBuyRepository {
   save(groupBuy: Partial<GroupBuy>): Promise<GroupBuy>;
   getUserGroupbuys(shares: GetUserGroupbuys): Promise<(GroupBuy & {participants:number, thumbnailUrl: string})[]>;
@@ -19,4 +35,5 @@ export interface GroupBuyRepository {
   ): Promise<(Partial<GroupBuy> & { thumbnailUrl: string | null, currentUser: number, maxUser: number })[]>;
   softDelete(id: number): Promise<void>;
   update(groupBuy: Partial<GroupBuy>): Promise<GroupBuy>;
+  getFormDetail(groupBuyId: number) : Promise<GroupBuyFormDetail | null>
 }
