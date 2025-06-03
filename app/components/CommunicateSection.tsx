@@ -12,7 +12,7 @@ export default function CommunicateSection() {
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="relative w-full h-[25vh] flex justify-center items-center"
       >
-        <div className="absolute top-0 left-10 flex flex-col title-md">
+        <div className="absolute top-0 left-10 xs:left-5 flex flex-col title-md">
           <div className="flex flex-col gap-2">
             <p className="title-md">이웃과 소통하기</p>
             <div className="flex flex-col body-md !font-light !leading-none text-zinc-400">
