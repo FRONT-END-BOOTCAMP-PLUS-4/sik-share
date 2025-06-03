@@ -8,10 +8,20 @@ jobs:
   build:
     runs-on: [self-hosted, sikshare-server]
 
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x]
+    steps:
+      - name: Build Next.js Project
+        run: echo "Build Next.js Project"
+
+  test:
+    runs-on: [self-hosted, sikshare-server]
 
     steps:
+      - name: Test Next.js Project
+        run: echo "Test Next.js Project"
+        
+  deploy:
+    runs-on: [self-hosted, sikshare-server]
+    
+    steps:
     - name: Deploy Next.js Project
-      run: ~/next-app-update.sh
+      run: /home/ncafe/www/sik-share/next-app-update.sh
