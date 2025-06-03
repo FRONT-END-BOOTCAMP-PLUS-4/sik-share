@@ -163,6 +163,7 @@ export function DetailFooter({
         type={type === "share" ? "share" : "group-buy"}
         isDialogOpen={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
+        onDelete={() => router.push("/map")}
       />
     </>
   );
