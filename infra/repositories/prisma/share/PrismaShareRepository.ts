@@ -193,4 +193,7 @@ export class PrismaShareRepository implements ShareRepository {
       }
     })
   }
+  async countAll(): Promise<number> {
+    return this.prisma.share.count();
+  }
 }
