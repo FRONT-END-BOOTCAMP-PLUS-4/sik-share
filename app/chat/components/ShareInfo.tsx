@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { ReserveDatePicker } from "./ReserveDatePicker";
 import { Badge } from "@/components/ui/badge";
+import { useSession } from "next-auth/react";
 
 interface ShareInfoProps {
   chatId: string;
@@ -31,14 +32,15 @@ export default function ShareInfo({
   chatId,
   onMeetingDateChange,
 }: ShareInfoProps) {
-
   const [date, setDate] = useState<Date | undefined>();
   const [open, setOpen] = useState(false);
-
   const [status, setStatus] = useState<number>(info.status);
   const [reservedDate, setReservedDate] = useState<Date | null>(
     info.meetingDate ? new Date(info.meetingDate) : null,
   );
+
+  const { data: session } = useSession();
+  const myUserId = session?.user?.id;
 
   const handleOpenChange = (nextOpen: boolean) => {
     if (!nextOpen) setDate(undefined);
@@ -57,13 +59,13 @@ export default function ShareInfo({
     return await res.json();
   };
 
-  const completeShare = async (chatId: string) => {
+  const completeShare = async (chatId: string, myUserId: string) => {
     const res = await fetch(`/api/chat/${chatId}/shares/complete`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ chatId }),
+      body: JSON.stringify({ chatId, myUserId }),
     });
     if (!res.ok) throw new Error("나눔 완료 처리 실패");
     return await res.json();
@@ -82,8 +84,12 @@ export default function ShareInfo({
   };
 
   const handleShareComplete = async () => {
+    if (!myUserId) {
+      alert("로그인 정보가 없습니다. 다시 로그인 해주세요.");
+      return;
+    }
     try {
-      await completeShare(chatId);
+      await completeShare(chatId, myUserId);
       setStatus(2);
       setOpen(false);
     } catch (e) {}

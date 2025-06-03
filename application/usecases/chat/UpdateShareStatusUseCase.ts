@@ -7,6 +7,7 @@ export class UpdateShareStatusUseCase {
   async execute(dto: UpdateShareStatusDto): Promise<void> {
     await this.shareChatRepository.updateShareStatus(
       dto.chatId
+      ,dto.myUserId,
     );
   }
 }

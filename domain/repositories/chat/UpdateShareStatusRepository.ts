@@ -1,3 +1,3 @@
 export interface UpdateShareStatusRepository {
-  updateShareStatus(chatId: number): Promise<void>;
+  updateShareStatus(chatId: number, myUserId: string): Promise<void>;
 }

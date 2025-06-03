@@ -7,6 +7,7 @@ export async function PATCH(
   { params }: { params: Promise<{ chatId: string }> }
 ) {
   const { chatId } = await params;
+  const { myUserId } = await req.json();
 
   try {
     const repository = new PrismaUpdateShareStatusRepository();
@@ -14,14 +15,15 @@ export async function PATCH(
 
     await useCase.execute({
       chatId: Number(chatId),
+      myUserId,
       status: 2,
     });
 
     await fetch("https://port-0-sik-share-server-m61t9knhb5c1f236.sel4.cloudtype.app/api/share-complete-message", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ chatId }),
-  });
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ chatId }),
+    });
 
     return NextResponse.json({ message: "success" }, { status: 200 });
   } catch (e) {
