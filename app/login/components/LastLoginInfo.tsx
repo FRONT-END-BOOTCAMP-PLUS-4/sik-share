@@ -15,7 +15,7 @@ export default function LastLoginInfo() {
 
   return (
     <div className="flex justify-center">
-      <div className="inline-flex w-fit justify-center gap-2 border rounded-[30px] py-1.5 px-2">
+      <div className="inline-flex w-fit justify-center gap-2 border rounded-[30px] py-1.5 px-4">
         <Image
           src={`/assets/images/social/${provider}.svg`}
           alt="naver"
