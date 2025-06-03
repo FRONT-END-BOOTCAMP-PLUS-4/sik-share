@@ -127,7 +127,7 @@ export default function GroupBuyPage() {
         </section>
 
         <section className="mt-4">
-          <p>{share.desc}</p>
+          <p className="whitespace-pre-line">{share.desc}</p>
         </section>
 
         <section className="flex flex-col h-[200px] mt-4 mb-[58px]">
