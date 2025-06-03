@@ -45,7 +45,7 @@ export default function EndSection() {
           </div>
           <div className="flex flex-wrap justify-center gap-6">
             {stats.map(({ id, label, value }) => {
-              const count = useCountUp(value, startCount, 1);
+              const count = useCountUp(value ?? 0, startCount, 1);
 
               return (
                 <div
