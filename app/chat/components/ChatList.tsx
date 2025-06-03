@@ -19,6 +19,7 @@ interface ChatListProps {
   lastMessage: string | null;
   unreadCount: number;
   participantCount: number;
+  thumbnailUrl?: string;
 }
 
 export default function ChatList({
@@ -32,6 +33,7 @@ export default function ChatList({
   lastMessage,
   unreadCount,
   participantCount,
+  thumbnailUrl,
 }: ChatListProps) {
   const router = useRouter();
 
@@ -58,17 +60,26 @@ export default function ChatList({
       className="cursor-pointer w-full h-[71px] p-4 flex justify-between items-center border-b hover:bg-zinc-50 transition"
     >
       <div className="flex items-center gap-2">
-        <Image
-          src={
-            getImageUrl(imageUrl)?.startsWith("http")
-              ? getImageUrl(imageUrl)
-              : "/assets/images/example/thumbnail.png"
-          }
-          width={40}
-          height={40}
-          className="w-[40px] h-[40px] border-1 border-zinc-100 rounded-full"
-          alt="profile"
-        />
+        <div className="relative w-[40px] h-[40px]">
+          <Image
+            src={
+              getImageUrl(imageUrl)?.startsWith("http")
+                ? getImageUrl(imageUrl)
+                : "/assets/images/example/thumbnail.png"
+            }
+            width={40}
+            height={40}
+            className="w-[40px] h-[40px] border border-zinc-100 rounded-full"
+            alt="profile"
+          />
+          <Image
+            src={thumbnailUrl || "/assets/images/example/thumbnail.png"}
+            width={20}
+            height={20}
+            className="w-[20px] h-[20px] absolute right-0 bottom-0 w-4 h-4 rounded-[4px] border border-white shadow-md"
+            alt="badge"
+          />
+        </div>
         <div className="flex flex-col">
           <div className="flex items-center gap-1">
             {type === "together" && (

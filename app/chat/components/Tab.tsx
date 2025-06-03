@@ -16,6 +16,7 @@ interface ChatListProps {
   unreadCount: number;
   participantCount: number;
   id?: string;
+  thumbnailUrl?: string;
 }
 
 interface TabProps {
