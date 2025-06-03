@@ -209,6 +209,7 @@
 body {
   font-family: "GyeonggiTitle", sans-serif;
   background: var(--light-green-50);
+  overflow: hidden;
 }
 
 /* font style */
