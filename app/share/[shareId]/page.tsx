@@ -18,6 +18,7 @@ interface ShareData {
   title: string;
   desc: string;
   organizerId: string;
+  organizerPublicId: string;
   organizerNickname: string;
   organizerProfileUrl: string;
   organizerShareScore: number;
@@ -81,6 +82,8 @@ export default function GroupBuyPage() {
 
   if (!share) return <Loading />;
 
+  console.log(share);
+
   return (
     <div className="relative min-h-screen">
       <SubHeader />
@@ -106,6 +109,7 @@ export default function GroupBuyPage() {
           nickname={share.organizerNickname}
           profileUrl={share.organizerProfileUrl}
           shareScore={share.organizerShareScore}
+          id={share.organizerPublicId}
         />
 
         <section className="text-zinc-500 caption mt-2">
@@ -123,7 +127,7 @@ export default function GroupBuyPage() {
         </section>
 
         <section className="mt-4">
-          <p>{share.desc}</p>
+          <p className="whitespace-pre-line">{share.desc}</p>
         </section>
 
         <section className="flex flex-col h-[200px] mt-4 mb-[58px]">

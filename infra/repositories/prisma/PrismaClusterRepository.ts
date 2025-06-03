@@ -26,6 +26,7 @@ export class PrismaClusterRepository implements ClusterRepository {
           where: {
             neighborhoodId: n.id,
             createdAt: { gte: oneHourAgo },
+            deletedAt: null,
             status: { not: 2 },
           },
         });
@@ -34,6 +35,7 @@ export class PrismaClusterRepository implements ClusterRepository {
           where: {
             neighborhoodId: n.id,
             meetingDate: { gte: now },
+            deletedAt: null,
             status: { not: 1 },
           },
         });

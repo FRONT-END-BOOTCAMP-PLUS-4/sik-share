@@ -19,6 +19,7 @@ interface GroupBuyData {
   title: string;
   desc: string;
   organizerId: string;
+  organizerPublicId: string;
   organizerNickname: string;
   organizerProfileUrl: string;
   organizerShareScore: number;
@@ -115,6 +116,7 @@ export default function GroupBuyPage() {
           nickname={groupBuy.organizerNickname}
           profileUrl={groupBuy.organizerProfileUrl}
           shareScore={groupBuy.organizerShareScore}
+          id={groupBuy.organizerPublicId}
           numberOfParticipants={groupBuy.currentParticipantCount}
           capacity={groupBuy.capacity}
           participantProfileUrls={groupBuy.participantProfileUrls}
@@ -132,7 +134,7 @@ export default function GroupBuyPage() {
         </section>
 
         <section className="mt-4">
-          <p>{groupBuy.desc}</p>
+          <p className="whitespace-pre-line">{groupBuy.desc}</p>
         </section>
 
         <section className="flex flex-col h-[200px] mt-4 mb-[58px]">

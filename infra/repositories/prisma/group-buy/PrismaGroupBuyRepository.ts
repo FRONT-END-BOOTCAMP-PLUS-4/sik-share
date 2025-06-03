@@ -54,11 +54,12 @@ export class PrismaGroupBuyRepository implements GroupBuyRepository {
 
   async getDetail(id: number): Promise<Partial<GetGroupBuyDetailDto> | null> {
   const groupBuy = await this.prisma.groupBuy.findUnique({
-    where: { id },
+    where: { id, deletedAt: null },
     include: {
       organizer: {
         select: {
           id: true,
+          publicId: true,
           nickname: true,
           profileUrl: true,
           shareScore: true,
@@ -98,6 +99,7 @@ export class PrismaGroupBuyRepository implements GroupBuyRepository {
     title: groupBuy.title,
     desc: groupBuy.description,
     organizerId: groupBuy.organizer.id,
+    organizerPublicId: String(groupBuy.organizer.publicId),
     organizerNickname: groupBuy.organizer.nickname,
     organizerProfileUrl: groupBuy.organizer.profileUrl ?? "",
     organizerShareScore: groupBuy.organizer.shareScore,
@@ -125,7 +127,7 @@ async getList(
     maxUser: number;
   })[]> {
     const groupBuyList = await this.prisma.groupBuy.findMany({
-      where: { neighborhoodId },
+      where: { neighborhoodId, deletedAt: null },
       orderBy: { meetingDate: "desc" },
       skip: offset,
       take: limit,
