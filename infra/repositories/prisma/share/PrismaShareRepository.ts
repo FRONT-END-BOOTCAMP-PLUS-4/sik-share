@@ -54,7 +54,7 @@ export class PrismaShareRepository implements ShareRepository {
 
   async getDetail(id: number): Promise<Partial<GetShareDetailDto> | null> {
     const share = await this.prisma.share.findUnique({
-      where: { id },
+      where: { id, deletedAt: null },
       include: {
         owner: {
           select: {
@@ -123,6 +123,7 @@ export class PrismaShareRepository implements ShareRepository {
     const shares = await this.prisma.share.findMany({
       where: { neighborhoodId,
         createdAt: { gte: oneHourAgo },
+        deletedAt: null,
         status: { not: 2 }
       },
       orderBy: { createdAt: "desc" },
