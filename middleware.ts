@@ -8,6 +8,8 @@ const PUBLIC_API_PATHS = [
   "/api/auth",
   "/api/users/exist",
   "/api/users/signup",
+  "/api/shares/count",
+  "/api/group-buys/count",
 ];
 
 export async function middleware(req: NextRequest) {
