@@ -62,7 +62,7 @@ export default function UsersNav({
   });
 
   return (
-    <div className="max-h-[calc(100%-74px)] overflow-auto">
+    <div className="max-h-[calc(100%-64px)] overflow-auto">
       <ul className="h-full pb-6">{navItems}</ul>
     </div>
   );

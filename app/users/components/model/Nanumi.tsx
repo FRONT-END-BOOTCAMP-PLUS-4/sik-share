@@ -5,11 +5,17 @@ import type * as THREE from "three";
 
 interface NanumiProps {
   level: string; //"Sprout" | "Sucus" | "Leaf" | "Flower" | "Fruit"
+  onLoaded?: () => void;
 }
 
-export default function Nanumi({ level }: NanumiProps) {
+export default function Nanumi({ level, onLoaded }: NanumiProps) {
   const { scene } = useGLTF(
     `https://jxehepesvdmpvgnpxoxn.supabase.co/storage/v1/object/public/3d-model/nanumi_${level}.glb`,
+    true,
+    undefined,
+    () => {
+      onLoaded?.();
+    },
   );
 
   const ref = useRef<THREE.Object3D>(null);
