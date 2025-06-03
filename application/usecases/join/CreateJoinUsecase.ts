@@ -16,52 +16,48 @@ export class CreateJoinUsecase {
 
   async execute(dto: CreateJoinDto): Promise<{ chatId?: number }> {
     if (dto.type === "share") {
-        let chat = await this.shareChatRepo.findChatIdByShareId(dto.postId);
-        if (!chat) {
-          chat = await this.shareChatRepo.create({ shareId: dto.postId });
-        }
-        const chatId = (chat as { id: number }).id;
+      const candidateRooms = await this.shareChatRepo.findByShareId(dto.postId) as Array<{ id: number; participants: Array<{ userId: number }> }>;
+      const ownerId = await this.shareChatRepo.getOwnerId(dto.postId);
 
-        const already = await this.shareChatParticipantRepo.find({
-          chatId,
-          userId: dto.userId,
-        });
-        if (already) {
-          return { chatId };
-        }
+      const myRoom = candidateRooms.find(
+        (room) =>
+          room.participants.length === 2 &&
+          room.participants.some((p: { userId: number }) => p.userId === Number(dto.userId)) &&
+          room.participants.some((p: { userId: number }) => p.userId === Number(ownerId))
+      );
+      if (myRoom) {
+        return { chatId: myRoom.id };
+      }
 
-        await this.shareChatParticipantRepo.saveMany([
-          { chatId, userId: dto.userId },
-          { chatId, userId: await this.shareChatRepo.getOwnerId(dto.postId) },
-        ]);
-
-        return { chatId };
+      const chat = await this.shareChatRepo.create({ shareId: dto.postId });
+      await this.shareChatParticipantRepo.saveMany([
+        { chatId: chat.id, userId: dto.userId },
+        { chatId: chat.id, userId: ownerId },
+      ]);
+      return { chatId: chat.id };
     }
 
-
     if (dto.type === "groupbuy") {
-        
-        const chat = await this.groupBuyChatRepo.findByGroupBuyId(dto.postId);
-        if (chat) {
-            const already = await this.groupBuyChatParticipantRepo.find({
-                chatId: chat.id,
-                userId: dto.userId,
-            });
-            
-            if (already) {
-                return { chatId: chat.id };
-            }
-            
-        await this.groupBuyParticipantRepo.save({
-            groupBuyId: dto.postId,
-            userId: dto.userId,
+      const chat = await this.groupBuyChatRepo.findByGroupBuyId(dto.postId);
+      if (chat) {
+        const already = await this.groupBuyChatParticipantRepo.find({
+          chatId: chat.id,
+          userId: dto.userId,
         });
-        
+
+        if (already) {
+          return { chatId: chat.id };
+        }
+
+        await this.groupBuyParticipantRepo.save({
+          groupBuyId: dto.postId,
+          userId: dto.userId,
+        });
+
         await this.groupBuyChatParticipantRepo.save({
           chatId: chat.id,
           userId: dto.userId,
         });
-        
       }
       return { chatId: chat ? chat.id : undefined };
     }
@@ -69,3 +65,4 @@ export class CreateJoinUsecase {
     throw new Error("잘못된 타입입니다");
   }
 }
+

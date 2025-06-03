@@ -1,16 +1,32 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import CartLottie from "@/components/lotties/CartLottie";
 import FoodLottie from "@/components/lotties/FoodLottie";
 
 export default function ScrollSection() {
+  const [containerReady, setContainerReady] = useState(false);
+  const containerRef = useRef<HTMLElement | null>(null);
   const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
+
+  useEffect(() => {
+    const el = document.getElementById("scroll-container");
+    if (el) {
+      containerRef.current = el;
+      setContainerReady(true);
+    }
+  }, []);
+
+  const { scrollYProgress } = useScroll(
+    containerReady
+      ? {
+          container: containerRef,
+          target: ref,
+          offset: ["start end", "end start"],
+        }
+      : {},
+  );
 
   const offset = 250;
   const char1X = useTransform(scrollYProgress, [0, 1], [0, offset]);
