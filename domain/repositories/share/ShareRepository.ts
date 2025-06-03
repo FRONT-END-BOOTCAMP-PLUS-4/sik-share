@@ -7,6 +7,26 @@ export interface GetUserShares {
     itemsPerPage: number,
 }
 
+type ShareFormDetail = Prisma.ShareGetPayload<{
+  include: {
+    images : {
+      select : {
+        url: true;
+      }
+    };
+    neighborhood: {
+      select : {
+        name: true
+      }
+    }
+    shareItem : {
+      select : {
+        name: true
+      }
+    }
+  }
+}>
+
 export interface ShareRepository {
   save(share: Partial<Share>): Promise<Share>;
   getUserShares(shares: GetUserShares): Promise<(Share & {thumbnailUrl: string | null})[]>;
@@ -22,4 +42,5 @@ export interface ShareRepository {
   update(share: Partial<Share>): Promise<Share>;
   softDelete(id:number):Promise<void>;
   findRecentShares(userId: string, withinHours: number) : Promise<Share[]>
+  getFormDetail(shareId: number) : Promise<ShareFormDetail | null>
 }

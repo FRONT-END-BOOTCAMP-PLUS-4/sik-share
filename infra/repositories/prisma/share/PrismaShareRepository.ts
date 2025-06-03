@@ -158,4 +158,28 @@ export class PrismaShareRepository implements ShareRepository {
       }
     });
   }
+
+  async getFormDetail(shareId : number){
+    return await this.prisma.share.findUnique({
+      where : { id: shareId },
+      include : {
+        images : { 
+          orderBy: { order: "asc" }, 
+          select : { 
+            url: true 
+          }
+        },
+        neighborhood : {
+          select : { 
+            name: true 
+          }
+        },
+        shareItem : {
+          select : {
+            name: true
+          }
+        }
+      }
+    })
+  }
 }
