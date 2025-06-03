@@ -155,7 +155,8 @@ export class PrismaShareRepository implements ShareRepository {
       where:{
         ownerId : userId,
         createdAt: { gte : threshold },
-        deletedAt: null
+        deletedAt: null,
+        status: { not: 2 },
       }
     });
   }
