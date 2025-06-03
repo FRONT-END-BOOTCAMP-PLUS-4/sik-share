@@ -1,10 +1,13 @@
 "use client";
 
 import { motion } from "motion/react";
-import IntroLottie from "@/components/lotties/IntroLottie";
 import { Button } from "@/components/ui/button";
+import IntroLottie from "@/components/lotties/IntroLottie";
+import { useRouter } from "next/navigation";
 
 export default function HeroSection() {
+  const router = useRouter();
+
   return (
     <section>
       <motion.div
@@ -14,15 +17,14 @@ export default function HeroSection() {
         className="w-full flex flex-col justify-center items-center"
       >
         <IntroLottie />
-        <div className="flex flex-col items-center gap-6 title-md !font-medium">
+        <div className="flex flex-col items-center gap-6 title-md !font-medium w-full">
           <div className="flex flex-col items-center">
             <p>1인 가구를 위한</p>
             <p>식재료 공유 플랫폼</p>
           </div>
-          <div className="flex flex-col items-center gap-1.5">
-            <Button className="w-full">시작하기</Button>
-            <Button className="w-full" variant="outline">
-              이미 계정이 있습니다
+          <div className="flex flex-col items-center gap-1.5 w-full">
+            <Button className="w-2/5" onClick={() => router.push("/map")}>
+              시작하기
             </Button>
           </div>
         </div>
