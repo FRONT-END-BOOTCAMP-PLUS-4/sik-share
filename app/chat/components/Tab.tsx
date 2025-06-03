@@ -81,7 +81,7 @@ export default function Tab({
             </div>
           ) : togetherData.length === 0 ? (
             <div className="flex flex-col items-center py-12 text-zinc-400">
-              <p className="mt-6">참여한 같이장보기가 없어요</p>
+              <p className="mt-6">참여한 같이 장보기가 없어요</p>
             </div>
           ) : (
             togetherData.map((chat) => (
