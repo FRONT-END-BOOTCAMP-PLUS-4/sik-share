@@ -1,0 +1,17 @@
+name: "auto-deploy for dev"
+
+on:
+  push:
+    branches: [ "dev" ]
+
+jobs:
+  build:
+    runs-on: [self-hosted, sikshare-server]
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
+
+    steps:
+    - name: Deploy Next.js Project
+      run: ~/next-app-update.sh
