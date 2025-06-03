@@ -36,7 +36,7 @@ export default function Content({
               expanded ? "h-auto" : "h-[50px] line-clamp-2 overflow-hidden"
             }
           >
-            <span className="body-md">{description}</span>
+            <span className="body-md whitespace-pre-line">{description}</span>
           </div>
 
           <button
