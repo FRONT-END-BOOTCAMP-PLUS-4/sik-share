@@ -8,5 +8,6 @@ export class ShareChatListItemDto {
     public lastMessageAt: Date,
     public unreadCount: number,
     public type: "share" = "share",
+    public thumbnailUrl?: string,
   ) {}
 }

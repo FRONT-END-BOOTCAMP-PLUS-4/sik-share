@@ -30,7 +30,11 @@ export class PrismaChatListRepository implements ChatListRepository {
             },
           },
         },
-        share: true,
+        share: {
+          include: {
+            images: true,
+          },
+        },
       },
     });
 
@@ -47,7 +51,6 @@ export class PrismaChatListRepository implements ChatListRepository {
     return Promise.all(
       chats.map(async (chat) => {
         const lastMessage = chat.messages[0];
-        const me = chat.participants.find((p) => p.user.id === userId);
         const other = chat.participants.find((p) => p.user.id !== userId);
 
         const unreadCount = await prisma.shareChatMessage.count({
@@ -60,6 +63,10 @@ export class PrismaChatListRepository implements ChatListRepository {
           },
         });
 
+        const thumbnailUrl =
+          chat.share?.images?.[0]?.url ??
+          "/assets/images/example/thumbnail.png";
+
         return new ShareChatListItemDto(
           chat.id,
           other?.user.profileUrl ?? "/assets/images/example/thumbnail.png",
@@ -68,6 +75,8 @@ export class PrismaChatListRepository implements ChatListRepository {
           lastMessage?.content ?? null,
           lastMessage?.createdAt ?? null,
           unreadCount,
+          "share",
+          thumbnailUrl,
         );
       }),
     );
@@ -116,7 +125,6 @@ export class PrismaChatListRepository implements ChatListRepository {
         const participantCount = await prisma.groupBuyChatParticipant.count({
           where: { groupBuyChatId: chat.id },
         });
-
 
         return {
           ...new GroupBuyChatListDto(
