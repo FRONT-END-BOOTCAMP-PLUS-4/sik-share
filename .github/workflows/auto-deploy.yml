@@ -24,4 +24,4 @@ jobs:
     
     steps:
     - name: Deploy Next.js Project
-      run: /home/ncafe/www/sik-share/next-app-update.sh
+      run: /home/sikshare/www/sik-share/next-app-update.sh
