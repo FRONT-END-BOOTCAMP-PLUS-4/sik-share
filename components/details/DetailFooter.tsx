@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import ShareButton from "./ShareButton";
 import { getGroupStatus } from "@/utils/groupStatus";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 interface DetailFooterProps {
@@ -90,6 +90,26 @@ export function DetailFooter({
     }
   };
 
+  const pathname = usePathname();
+  const segment = pathname.split("/");
+  const pathId = segment[segment.length - 1];
+
+  const handleModify = () => {
+    router.push(`${pathname}/edit`);
+  };
+
+  const handleDelete = async () => {
+    const ok = window.confirm("정말 삭제하시겠습니까?");
+    if (!ok) return;
+
+    await fetch(
+      `/api/${type === "share" ? "shares" : "group-buys"}/${pathId}`,
+      {
+        method: "DELETE",
+      },
+    );
+  };
+
   return (
     <Dialog>
       <footer className="z-10 fixed bottom-0 mx-auto w-full max-w-[calc(var(--space-mobileMax)-2px)] bg-white flex justify-around items-center min-h-[var(--space-header)] px-4 py-2 shadow-[var(--bottom-nav-shadow)]">
@@ -115,13 +135,19 @@ export function DetailFooter({
           )
         ) : (
           <div className="flex justify-between w-[85%]">
-            <Button variant="joinBtn" size="lg" className="w-[49%]">
+            <Button
+              variant="joinBtn"
+              size="lg"
+              className="w-[49%]"
+              onClick={handleModify}
+            >
               수정하기
             </Button>
             <Button
               variant="outline"
               size="lg"
               className="!border-1 border-[var(--dark-green)] w-[49%] button-lg !text-[var(--dark-green)]"
+              onClick={handleDelete}
             >
               삭제하기
             </Button>
