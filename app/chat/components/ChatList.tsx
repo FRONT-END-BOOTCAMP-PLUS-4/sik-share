@@ -41,19 +41,6 @@ export default function ChatList({
     router.push(path);
   };
 
-  console.log("ChatList rendered", {
-    chatId,
-    type,
-    imageUrl,
-    groupBuyTitle,
-    nickname,
-    temperature,
-    lastMessageAt,
-    lastMessage,
-    unreadCount,
-    participantCount,
-  });
-
   function getImageUrl(img: string | string[] | undefined | null) {
     if (Array.isArray(img)) {
       return img[0] ?? "";

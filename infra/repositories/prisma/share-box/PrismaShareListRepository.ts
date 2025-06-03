@@ -15,6 +15,7 @@ export class PrismaShareListRepository implements ShareListRepository {
       where: {
         ownerId: userId,
         status: { not: 2 },
+        deletedAt: null,
         createdAt: {
           gte: twentyFourHoursAgo,
         },
