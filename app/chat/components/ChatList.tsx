@@ -73,13 +73,16 @@ export default function ChatList({
             alt="profile"
           />
           {type === "share" && (
-            <Image
-              src={thumbnailUrl || "/assets/images/example/thumbnail.png"}
-              width={20}
-              height={20}
-              className="w-[20px] h-[20px] absolute right-0 bottom-0 rounded-[4px] border border-white shadow-md"
-              alt="badge"
-            />
+            <>
+              <div className="absolute right-0 bottom-0 w-[23px] h-[23px] rounded-[4px] bg-white z-0" />
+              <Image
+                src={thumbnailUrl || "/assets/images/example/thumbnail.png"}
+                width={23}
+                height={23}
+                className="w-[23px] h-[23px] absolute right-0 bottom-0 rounded-[4px] border border-white shadow-md z-10"
+                alt="badge"
+              />
+            </>
           )}
         </div>
         <div className="flex flex-col">
