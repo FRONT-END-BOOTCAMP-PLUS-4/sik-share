@@ -49,8 +49,8 @@ export default function BottomSheet({
   return (
     <Drawer open={open} onOpenChange={action}>
       <DrawerContent>
-        <div className="mx-auto w-full max-w-sm overflow-y-auto scrollbar-hide mb-6">
-          <DrawerTitle className="title-md mt-8 mb-4">{title}</DrawerTitle>
+        <div className="w-full px-4 overflow-y-auto scrollbar-hide pb-6">
+          <DrawerTitle className="title-md mt-2 mb-4">{title}</DrawerTitle>
           <Carousel
             images={
               imageUrls.length > 0
@@ -65,7 +65,6 @@ export default function BottomSheet({
           />
           {lat && lng && location && (
             <KakaoMapDetail
-              width="384px"
               height="136px"
               lat={lat}
               lng={lng}
