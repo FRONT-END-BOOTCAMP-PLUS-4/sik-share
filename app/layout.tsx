@@ -4,6 +4,7 @@ import LayoutLottie from "@/components/lotties/LayoutLottie";
 import { SessionProvider } from "@/components/common/SessionProvider";
 import Script from "next/script";
 import { Toaster } from "@/components/ui/sonner";
+import ServiceWorkerRegister from "@/components/common/serviceWorkerRegister";
 
 export const metadata: Metadata = {
   title: "함께 나누는 따뜻한 식생활",
@@ -11,10 +12,10 @@ export const metadata: Metadata = {
   openGraph: {
     title: "식샤 그룹모임에 함께해요!",
     description: "근처 이웃과 식재료를 나누어요!",
-    url: "http://localhost:3000",
+    url: "https://sik-share.com",
     images: [
       {
-        url: "http://localhost:3000/favicon.ico",
+        url: "https://sik-share.com/favicon.ico",
         width: 300,
         height: 300,
         alt: "식샤 썸네일",
@@ -30,6 +31,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#22774E" />
+        <link rel="icon" href="/assets/images/sikshare-192x192.png" />
+        <link
+          rel="apple-touch-icon"
+          href="/assets/images/sikshare-192x192.png"
+        />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-title" content="식샤" />
+      </head>
       <body suppressHydrationWarning>
         <SessionProvider>
           <div className="flex items-center">
@@ -80,6 +93,8 @@ export default function RootLayout({
             strategy="beforeInteractive"
           />
         </SessionProvider>
+
+        <ServiceWorkerRegister />
       </body>
     </html>
   );
