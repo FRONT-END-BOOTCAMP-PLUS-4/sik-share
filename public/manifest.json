@@ -4,20 +4,20 @@
   "start_url": ".",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#59c2ff",
+  "theme_color": "#22774E",
   "icons": [
     {
-      "src": "/assets/logo-192.png",
+      "src": "/assets/images/sikshare-192x192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/assets/logo-512.png",
+      "src": "/assets/images/sikshare-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
   ],
-  "description": "식샤는 맛집, 레시피, 식사 기록을 공유하는 서비스입니다.",
+  "description": "함께 나누는 따뜻한 식생활, 식샤와 함께 나누어봐요",
   "lang": "ko",
   "scope": "/",
   "orientation": "portrait",

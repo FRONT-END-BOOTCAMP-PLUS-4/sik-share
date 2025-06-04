@@ -45,3 +45,7 @@ next-env.d.ts
 
 # deploy
 next-app-update.sh
+
+#pwa
+/public/sw.js
+/public/workbox-*.js
