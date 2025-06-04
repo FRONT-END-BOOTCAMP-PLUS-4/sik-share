@@ -5,6 +5,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 import { PrismaChatMessageRepository } from "@/infra/repositories/prisma/PrismaChatMessageListRepository";
 import { GetShareChatListUsecase } from "@/application/usecases/chat/GetShareChatListUsecase";
+import { PrismaUpdateMeetingDateRepository } from "@/infra/repositories/prisma/PrismaUpdateMeetingDateRepository";
 
 export async function GET(
   req: NextRequest,
@@ -28,5 +29,25 @@ export async function GET(
     return NextResponse.json(chatDetail);
   } catch (err) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+  }
+}
+
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: Promise<{ chatId: string }> }
+) {
+  const { chatId } = await params;
+  const { meetingDate, myUserId } = await req.json();
+
+  try {
+    const repository = new PrismaUpdateMeetingDateRepository();
+    await repository.updateMeetingDate(Number(chatId), new Date(meetingDate), myUserId);
+
+    return NextResponse.json({ message: "success" }, { status: 200 });
+  } catch (e) {
+    return NextResponse.json(
+      { message: (e as Error).message },
+      { status: 500 },
+    );
   }
 }

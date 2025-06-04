@@ -10,5 +10,7 @@ export class ChatMessageListDto {
     public time: string,
     public readCount?: number,
     public senderId?: string, 
+    public onwerId?: string,
+    public recipientId?: string | null,
   ) {}
 }

@@ -13,15 +13,20 @@ import {
 } from "@/components/ui/dialog";
 import { ReserveDatePicker } from "./ReserveDatePicker";
 import { Badge } from "@/components/ui/badge";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 interface ShareInfoProps {
   chatId: string;
   info: {
+    id: number;
     title: string;
     locationNote: string;
     imageUrl: string[];
     meetingDate?: string;
     status: number;
+    ownerId: string;
+    recipientId: string | null;
   };
   onMeetingDateChange?: (date: Date) => void;
 }
@@ -31,59 +36,70 @@ export default function ShareInfo({
   chatId,
   onMeetingDateChange,
 }: ShareInfoProps) {
-
   const [date, setDate] = useState<Date | undefined>();
   const [open, setOpen] = useState(false);
-
   const [status, setStatus] = useState<number>(info.status);
   const [reservedDate, setReservedDate] = useState<Date | null>(
     info.meetingDate ? new Date(info.meetingDate) : null,
   );
+
+  const { data: session } = useSession();
+  const myUserId = session?.user?.id;
 
   const handleOpenChange = (nextOpen: boolean) => {
     if (!nextOpen) setDate(undefined);
     setOpen(nextOpen);
   };
 
-  const updateMeetingDate = async (chatId: string, meetingDate: Date) => {
+  const updateMeetingDate = async (
+    chatId: string,
+    meetingDate: Date,
+    myUserId: string,
+  ) => {
     const res = await fetch(`/api/chat/${chatId}/shares/confirm`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ meetingDate }),
+      body: JSON.stringify({ meetingDate, myUserId }),
     });
     if (!res.ok) throw new Error("날짜 업데이트 실패");
     return await res.json();
   };
 
-  const completeShare = async (chatId: string) => {
+  const completeShare = async (chatId: string, myUserId: string) => {
     const res = await fetch(`/api/chat/${chatId}/shares/complete`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ chatId }),
+      body: JSON.stringify({ chatId, myUserId }),
     });
     if (!res.ok) throw new Error("나눔 완료 처리 실패");
     return await res.json();
   };
 
   const handleComplete = async () => {
-    if (date) {
+    if (date && myUserId) {
       try {
-        await updateMeetingDate(chatId, date);
+        await updateMeetingDate(chatId, date, myUserId);
         setReservedDate(date);
         setStatus(1);
         setOpen(false);
         onMeetingDateChange?.(date);
       } catch (e) {}
+    } else if (!myUserId) {
+      alert("로그인 정보가 없습니다. 다시 로그인 해주세요.");
     }
   };
 
   const handleShareComplete = async () => {
+    if (!myUserId) {
+      alert("로그인 정보가 없습니다. 다시 로그인 해주세요.");
+      return;
+    }
     try {
-      await completeShare(chatId);
+      await completeShare(chatId, myUserId);
       setStatus(2);
       setOpen(false);
     } catch (e) {}
@@ -97,7 +113,7 @@ export default function ShareInfo({
   };
 
   let actionButton = null;
-  if (status === 0) {
+  if (status === 0 && myUserId === info.ownerId) {
     actionButton = (
       <Dialog open={open} onOpenChange={handleOpenChange}>
         <DialogTrigger asChild>
@@ -126,7 +142,7 @@ export default function ShareInfo({
         </DialogContent>
       </Dialog>
     );
-  } else if (status === 1) {
+  } else if (status === 1 && myUserId === info.ownerId) {
     actionButton = (
       <Dialog open={open} onOpenChange={handleOpenChange}>
         <DialogTrigger asChild>
@@ -157,7 +173,7 @@ export default function ShareInfo({
         </DialogContent>
       </Dialog>
     );
-  } else if (status === 2) {
+  } else if (status === 2 && myUserId === info.ownerId) {
     actionButton = (
       <Badge
         variant="shareComplete"
@@ -171,30 +187,39 @@ export default function ShareInfo({
   return (
     <div className="flex flex-col gap-3 px-4 py-2 border-b">
       <div className="flex w-full items-center gap-2">
-        <Image
-          src={info.imageUrl[0] || "/assets/images/example/thumbnail.png"}
-          width={48}
-          height={48}
-          className="rounded-sm w-[48px] h-[48px] object-full"
-          alt="shareImage"
-        />
-        <div className="flex flex-col flex-1 min-w-0">
-          <p className="body-md truncate">{info.title}</p>
-          <div className="flex flex-row text-caption gap-[2px]">
-            <MapPin className="w-4 h-4" />
-            <p className="text-xs text-zinc-500 truncate">
-              {info.locationNote}
-            </p>
+        <Link
+          href={`/share/${info.id}`}
+          className="flex items-center gap-2 flex-1 min-w-0"
+        >
+          <Image
+            src={info.imageUrl[0] || "/assets/images/example/thumbnail.png"}
+            width={48}
+            height={48}
+            className="rounded-sm w-[48px] h-[48px] object-full"
+            alt="shareImage"
+          />
+          <div className="flex flex-col flex-1 min-w-0">
+            <p className="body-md truncate">{info.title}</p>
+            <div className="flex flex-row text-caption gap-[2px]">
+              <MapPin className="w-4 h-4" />
+              <p className="text-xs text-zinc-500 truncate">
+                {info.locationNote}
+              </p>
+            </div>
           </div>
-        </div>
+        </Link>
         {actionButton}
       </div>
-      {reservedDate && (
-        <Badge variant="reserve" className="text-white flex items-center gap-2">
-          <InfoIcon />
-          <p>{formatDate(reservedDate)}</p>
-        </Badge>
-      )}
+      {reservedDate &&
+        (myUserId === info.ownerId || myUserId === info.recipientId) && (
+          <Badge
+            variant="reserve"
+            className="text-white flex items-center gap-2"
+          >
+            <InfoIcon />
+            <p>{formatDate(reservedDate)}</p>
+          </Badge>
+        )}
     </div>
   );
 }

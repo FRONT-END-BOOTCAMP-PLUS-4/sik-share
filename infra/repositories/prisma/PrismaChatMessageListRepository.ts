@@ -83,11 +83,14 @@ return messages.map((msg) => {
   async findShareInfoByChatId(
   chatId: number
 ): Promise<{
+  id: number;
   title: string;
   imageUrl: string[];
   locationNote: string;
   meetingDate?: string;
   status: number;
+  ownerId: string;
+  recipientId: string | null;
 }> {
   const shareChat = await prisma.shareChat.findUnique({
     where: { id: chatId },
@@ -103,10 +106,13 @@ return messages.map((msg) => {
   const share = await prisma.share.findUnique({
     where: { id: shareId },
     select: {
+      id: true,
       title: true,
       locationNote: true,
       meetingDate: true,
       status: true,
+      ownerId: true,
+      recipientId: true,
     },
   });
 
@@ -125,11 +131,14 @@ return messages.map((msg) => {
     : ["/assets/images/example/thumbnail.png"];
 
   return {
+    id: share.id,
     title: share.title,
     locationNote: share.locationNote ?? "장소 정보 없음",
     imageUrl,
     meetingDate: share.meetingDate ? share.meetingDate.toISOString() : undefined,
     status: share.status,
+    ownerId: share.ownerId,
+    recipientId: share.recipientId,
   };
 }
 }

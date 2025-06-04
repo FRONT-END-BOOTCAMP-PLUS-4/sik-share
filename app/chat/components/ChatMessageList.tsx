@@ -12,16 +12,19 @@ interface FormattedMessage {
   count?: number;
   senderId?: string | null;
   chatId?: string;
+  shareId?: number;
 }
 
 interface ChatMessageListProps {
   messages: FormattedMessage[];
   chatId: string;
+  shareId?: number;
 }
 
 export default function ChatMessageList({
   messages,
   chatId,
+  shareId,
 }: ChatMessageListProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   // 의존성 배열에 messages를 추가하여 메시지가 변경될 때마다 스크롤을 맨 아래로 이동을 구현했지만,
@@ -51,6 +54,7 @@ export default function ChatMessageList({
           time={msg.time}
           senderId={msg.senderId ?? undefined}
           chatId={msg.chatId ?? chatId}
+          shareId={shareId}
         />
       ))}
     </div>

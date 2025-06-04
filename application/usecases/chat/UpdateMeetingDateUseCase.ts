@@ -8,7 +8,7 @@ export class UpdateMeetingDateUseCase {
     await this.shareChatRepository.updateMeetingDate(
       dto.chatId,
       dto.meetingDate,
-      dto.status,
+      dto.myUserId,
     );
   }
 }

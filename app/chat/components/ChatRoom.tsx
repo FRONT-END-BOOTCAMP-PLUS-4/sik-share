@@ -46,11 +46,14 @@ interface ChatRoomProps {
     temperature: number;
   };
   shareInfo?: {
+    id: number;
     title: string;
     locationNote: string;
     imageUrl: string[] | [];
     meetingDate?: string;
     status?: number;
+    ownerId: string;
+    recipientId: string | null;
   };
   togetherInfo?: TogetherInfoProps;
   senderId: string;
@@ -213,7 +216,11 @@ export default function ChatRoom({
           chatId={chatId}
         />
       )}
-      <ChatMessageList messages={formattedMessages} chatId={chatId} />
+      <ChatMessageList
+        messages={formattedMessages}
+        chatId={chatId}
+        shareId={shareInfo?.id}
+      />
       <ChatInput
         chatId={chatId}
         senderId={session?.user.id ?? ""}
