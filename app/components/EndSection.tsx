@@ -1,17 +1,31 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Handshake, ShoppingCart } from "lucide-react";
 import { motion } from "motion/react";
-import { useState } from "react";
 import { useCountUp } from "@/hooks/useCountUp";
 
-const stats = [
-  { id: 1, label: "나눔 완료", value: 1000 },
-  { id: 2, label: "같이 장보기", value: 1000 },
-];
-
 export default function EndSection() {
+  const [shareCount, setShareCount] = useState<number | null>(null);
+  const [groupBuyCount, setGroupBuyCount] = useState<number | null>(null);
   const [startCount, setStartCount] = useState(false);
+
+  const stats = [
+    { id: 1, label: "식재료 나눔", value: shareCount },
+    { id: 2, label: "같이 장보기", value: groupBuyCount },
+  ];
+
+  useEffect(() => {
+    fetch("/api/shares/count")
+      .then((res) => res.json())
+      .then((data) => setShareCount(data.count))
+      .catch(() => setShareCount(0));
+
+    fetch("/api/group-buys/count")
+      .then((res) => res.json())
+      .then((data) => setGroupBuyCount(data.count))
+      .catch(() => setGroupBuyCount(0));
+  }, []);
 
   return (
     <section className="pb-24 -mt-[100px]">
@@ -31,7 +45,7 @@ export default function EndSection() {
           </div>
           <div className="flex flex-wrap justify-center gap-6">
             {stats.map(({ id, label, value }) => {
-              const count = useCountUp(value, startCount, 1);
+              const count = useCountUp(value ?? 0, startCount, 1);
 
               return (
                 <div

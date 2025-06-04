@@ -15,11 +15,7 @@ import { MapList } from "./MapList";
 import { MapListSelect } from "./MapListSelect";
 import { useMapFilterStore } from "@/stores/useMapFilterStore";
 import { Badge } from "@/components/ui/badge";
-import DropdownButton, {
-  type DropdownOption,
-} from "@/components/common/DropdownButton";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 
 export function MapView() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -42,9 +38,6 @@ export function MapView() {
       try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/map`);
         const { clusters } = await res.json();
-        // const userInfo = await fetch(
-        //   `${process.env.NEXT_PUBLIC_API_URL}/api/users?id=${userId}`,
-        // );
 
         type ClusterLocation = {
           id: number;
@@ -220,34 +213,12 @@ export function MapView() {
     };
   }, []);
 
-  const router = useRouter();
-
-  const options: DropdownOption[] = [
-    {
-      id: "group-buy",
-      label: "같이 장보기",
-      onClick: () => {
-        router.push("/register/group-buy");
-      },
-    },
-    {
-      id: "share",
-      label: "나눔",
-      onClick: () => {
-        router.push("/register/share");
-      },
-    },
-  ];
-
   return (
     <>
       <div className="relative">
         <div ref={mapContainer} className="w-full h-[calc(100vh-56px)]" />
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-50">
+        <div className="absolute top-16 left-1/2 -translate-x-1/2 z-50">
           <Badge variant="location">{`관악구 ${selectedName}`}</Badge>
-        </div>
-        <div className="flex flex-col gap-3 mb-5 absolute bottom-12 right-4 z-50">
-          <DropdownButton options={options} type="register" align="top" />
         </div>
       </div>
 

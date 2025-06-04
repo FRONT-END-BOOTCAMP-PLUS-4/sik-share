@@ -43,4 +43,5 @@ export interface ShareRepository {
   softDelete(id:number):Promise<void>;
   findRecentShares(userId: string, withinHours: number) : Promise<Share[]>
   getFormDetail(shareId: number) : Promise<ShareFormDetail | null>
+  countAll(): Promise<number>;
 }

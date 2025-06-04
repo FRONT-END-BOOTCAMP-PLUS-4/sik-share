@@ -36,4 +36,5 @@ export interface GroupBuyRepository {
   softDelete(id: number): Promise<void>;
   update(groupBuy: Partial<GroupBuy>): Promise<GroupBuy>;
   getFormDetail(groupBuyId: number) : Promise<GroupBuyFormDetail | null>
+  countAll(): Promise<number>;
 }

@@ -195,4 +195,7 @@ async getList(
       }
     })
   }
+  async countAll(): Promise<number> {
+    return this.prisma.groupBuy.count();
+  }
 }
