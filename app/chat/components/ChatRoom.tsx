@@ -216,7 +216,11 @@ export default function ChatRoom({
           chatId={chatId}
         />
       )}
-      <ChatMessageList messages={formattedMessages} chatId={chatId} />
+      <ChatMessageList
+        messages={formattedMessages}
+        chatId={chatId}
+        shareId={shareInfo?.id}
+      />
       <ChatInput
         chatId={chatId}
         senderId={session?.user.id ?? ""}

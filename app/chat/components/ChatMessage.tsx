@@ -13,6 +13,7 @@ interface ChatMessageProps {
   count?: number;
   senderId?: string;
   chatId?: string;
+  shareId?: number;
 }
 
 export default function ChatMessage({
@@ -24,6 +25,7 @@ export default function ChatMessage({
   time = "",
   count,
   chatId,
+  shareId,
   senderId,
 }: ChatMessageProps) {
   const displayCount =
@@ -90,7 +92,7 @@ export default function ChatMessage({
               나눔이 완료되었다면, 후기 작성 어때요?
             </p>
             <Link
-              href={`/review/${chatId}/new`}
+              href={`/review/${shareId}/new`}
               className="badge-bold text-secondary underline text-[16px] font-bold cursor-pointer"
             >
               후기 작성 바로가기
