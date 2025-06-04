@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Image from "next/image";
-import { InfoIcon, MapPin } from "lucide-react";
+import { Clock4Icon, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -215,10 +215,10 @@ export default function ShareInfo({
 
   return (
     <div className="flex flex-col gap-3 px-4 py-2 border-b">
-      <div className="flex w-full items-center gap-2">
+      <div className="flex w-full items-start gap-2">
         <Link
           href={`/share/${info.id}`}
-          className="flex items-center gap-2 flex-1 min-w-0"
+          className="flex items-center gap-2 flex-1 min-w-0 cursor-pointer"
         >
           <Image
             src={info.imageUrl[0] || "/assets/images/example/thumbnail.png"}
@@ -228,7 +228,7 @@ export default function ShareInfo({
             alt="shareImage"
           />
           <div className="flex flex-col flex-1 min-w-0">
-            <p className="body-md truncate">{info.title}</p>
+            <p className="body-md truncate mb-[5px]">{info.title}</p>
             <div className="flex flex-row text-caption gap-[2px]">
               <MapPin className="w-4 h-4" />
               <p className="text-xs text-zinc-500 truncate">
@@ -245,7 +245,7 @@ export default function ShareInfo({
             variant="reserve"
             className="text-white flex items-center gap-2"
           >
-            <InfoIcon />
+            <Clock4Icon />
             <p>{formatDate(reservedDate)}</p>
           </Badge>
         )}

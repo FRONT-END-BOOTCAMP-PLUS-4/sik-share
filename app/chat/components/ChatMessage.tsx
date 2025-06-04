@@ -48,11 +48,11 @@ export default function ChatMessage({
           />
           <div className="flex flex-col">
             <div className="body-sm mb-3">{nickname}</div>
-            <div className="flex items-center gap-1">
+            <div className="flex items-end gap-1">
               <div className="mb-1 bg-zinc-200 body-sm rounded-[25px] rounded-tl-none px-4 py-3 max-w-[220px] break-words">
                 {message}
               </div>
-              <div className="flex flex-col items-start justify-center">
+              <div className="flex flex-col items-end justify-end">
                 {displayCount !== null && (
                   <div className="label text-primary">{displayCount}</div>
                 )}
