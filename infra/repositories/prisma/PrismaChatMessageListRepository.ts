@@ -91,6 +91,7 @@ return messages.map((msg) => {
   status: number;
   ownerId: string;
   recipientId: string | null;
+  deletedAt: Date | null;
 }> {
   const shareChat = await prisma.shareChat.findUnique({
     where: { id: chatId },
@@ -113,6 +114,7 @@ return messages.map((msg) => {
       status: true,
       ownerId: true,
       recipientId: true,
+      deletedAt: true,
     },
   });
 
@@ -139,6 +141,7 @@ return messages.map((msg) => {
     status: share.status,
     ownerId: share.ownerId,
     recipientId: share.recipientId,
+    deletedAt: share.deletedAt,
   };
 }
 }

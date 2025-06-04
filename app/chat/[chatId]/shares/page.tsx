@@ -39,6 +39,7 @@ interface ShareInfo {
   imageUrl: string[];
   ownerId: string;
   recipientId: string | null;
+  deltedAt?: Date | null;
 }
 
 export default function ShareChat() {

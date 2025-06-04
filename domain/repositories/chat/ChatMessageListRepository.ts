@@ -25,5 +25,6 @@ export interface ChatMessageRepository {
     status: number;
     ownerId: string;
     recipientId: string | null;
+    deletedAt: Date | null;
   }>;
 }

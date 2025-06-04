@@ -14,6 +14,7 @@ export class ChatDetailDto {
       locationNote: string;
       meetingDate?: string;
       status: number;
+      ownerId: string;
     }
   ) {}
 }
