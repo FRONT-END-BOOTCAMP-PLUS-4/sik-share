@@ -37,6 +37,8 @@ export function HistorySection({
       );
       const data = await res.json();
 
+      console.log("data--- :", data);
+
       return data.result;
     },
     [publicId, currentTab, type],
@@ -102,7 +104,7 @@ export function HistorySection({
   return (
     <>
       <SubHeader titleText={title} />
-      <section className="pt-4">
+      <section>
         <Tabs
           value={currentTab}
           className="w-full"
@@ -110,10 +112,16 @@ export function HistorySection({
             setCurrentTab(val);
           }}
         >
-          <TabsList className="w-full">{TabList}</TabsList>
+          <TabsList className="w-full max-w-[428px] pt-4 fixed bg-white z-10">
+            {TabList}
+          </TabsList>
 
           {tabValues.map((tab) => (
-            <TabsContent key={tab.value} value={tab.value}>
+            <TabsContent
+              key={tab.value}
+              value={tab.value}
+              className="pt-[55px]"
+            >
               {type === "share" &&
                 tabType === "status" &&
                 tab.value === "expired" && (

@@ -79,7 +79,7 @@ export function HistoryItemList({
       <div ref={refTarget} className="h-4/5" />
       {loading && <LoadingFoodLottie />}
       {items.length !== 0 && !hasMore && (
-        <p className="pt-8 text-center text-gray-400">
+        <p className="pt-8 text-center text-gray-400 pb-8">
           모든 항목을 불러왔어요.
         </p>
       )}
