@@ -146,9 +146,9 @@ export default function ShareEditPage() {
       {filesLoading || detailLoading || !shareFormDetail ? (
         <Loading />
       ) : (
-        <>
+        <div className="relative h-svh flex flex-col">
           <SubHeader titleText="나눔 수정하기" iconType="close" />
-          <section className="h-[calc(100vh-124px)] py-6 px-4 overflow-auto scrollbar-hide">
+          <section className="flex-1 pb-[88px] py-6 px-4 overflow-auto scrollbar-hide">
             <Form {...form}>
               <form
                 className="flex flex-col gap-4"
@@ -193,7 +193,7 @@ export default function ShareEditPage() {
               </form>
             </Form>
           </section>
-        </>
+        </div>
       )}
       {showMapModal && (
         <LocationSelectModal

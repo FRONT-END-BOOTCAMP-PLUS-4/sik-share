@@ -26,7 +26,7 @@ export default function LocationSelectModal({
 }: LocationSelectModalProps) {
   const [mounted, setMounted] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
-  const [ address, setAddress ] = useState("")
+  const [address, setAddress] = useState("");
   const [selectedLocation, setSelectedLocation] = useState<LocationData>({
     locationNote: "",
     locationAddress: "",
@@ -58,13 +58,13 @@ export default function LocationSelectModal({
   );
 
   const handleButtonClick = () => {
-    if(!selectedLocation.locationAddress){
-      toast.error('지도를 움직여 위치를 선택해주세요.');
+    if (!selectedLocation.locationAddress) {
+      toast.error("지도를 움직여 위치를 선택해주세요.");
       return;
     }
-    
-    if(address.split(' ')[1] !== '관악구'){
-      toast.error('식샤는 관악구에서만 가능합니다.');
+
+    if (address.split(" ")[1] !== "관악구") {
+      toast.error("식샤는 관악구에서만 가능합니다.");
       return;
     }
 
@@ -85,7 +85,7 @@ export default function LocationSelectModal({
 
   return (
     <>
-      <div className="absolute top-0 w-full h-full">
+      <div className="relative h-svh flex flex-col">
         <SubHeader
           iconType="close"
           DescTitleText={`만나고 싶은 장소를
@@ -93,7 +93,7 @@ export default function LocationSelectModal({
           DescSubText="모두가 찾을 수 있는 공공 장소가 좋아요!"
           onClick={onClose}
         />
-        <section className=" flex flex-col h-[calc(100vh-170px)]">
+        <section className="flex flex-col flex-1">
           <KakaoMap onSelect={handleLocationSelect} />
           <FormButton onClick={handleButtonClick}>선택 완료</FormButton>
         </section>

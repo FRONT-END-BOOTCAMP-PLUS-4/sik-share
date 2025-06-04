@@ -118,13 +118,13 @@ export default function CreateReviewPage() {
       {reviewOptionLoading || validationLoading || !recipientNickname ? (
         <Loading />
       ) : (
-        <>
+        <div className="relative h-svh flex flex-col">
           <SubHeader
             DescTitleText={`${recipientNickname}님과의
         나눔은 어땠나요?`}
             DescSubText="남겨주신 후기는 상대방의 프로필에 공개돼요."
           />
-          <section className="h-[calc(100vh-170px)] py-6 px-4 overflow-auto scrollbar-hide">
+          <section className="flex-1 py-6 px-4 overflow-auto scrollbar-hide pb-[88px]">
             <Form {...form}>
               <form
                 className="flex flex-col gap-6"
@@ -151,7 +151,7 @@ export default function CreateReviewPage() {
               </form>
             </Form>
           </section>
-        </>
+        </div>
       )}
     </>
   );
