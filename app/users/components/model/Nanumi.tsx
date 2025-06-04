@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import type * as THREE from "three";
@@ -18,11 +18,19 @@ export default function Nanumi({ level, onLoaded }: NanumiProps) {
     },
   );
 
+  const hasFiredRef = useRef(false);
+
+  useEffect(() => {
+    if (scene && !hasFiredRef.current) {
+      hasFiredRef.current = true;
+      onLoaded?.();
+    }
+  }, [scene, onLoaded]);
+
   const ref = useRef<THREE.Object3D>(null);
   const [isBouncing, setIsBouncing] = useState(false);
   const [startTime, setStartTime] = useState(0);
 
-  // 클릭 이벤트 핸들러
   const handleClick = () => {
     setIsBouncing(true);
     setStartTime(performance.now() / 1000);
@@ -34,7 +42,7 @@ export default function Nanumi({ level, onLoaded }: NanumiProps) {
       if (t < 2) {
         ref.current.position.y = -0.51 + Math.sin(t * 9) * 0.05;
       } else {
-        ref.current.position.y = -0.51; // 초기화
+        ref.current.position.y = -0.51;
         setIsBouncing(false);
       }
     }
