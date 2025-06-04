@@ -82,8 +82,6 @@ export default function GroupBuyPage() {
 
   if (!share) return <Loading />;
 
-  console.log(share);
-
   return (
     <div className="relative min-h-screen">
       <SubHeader />

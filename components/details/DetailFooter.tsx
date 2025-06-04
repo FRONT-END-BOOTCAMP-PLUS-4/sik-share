@@ -76,7 +76,6 @@ export function DetailFooter({
       });
 
       const data = await res.json();
-      console.log(data);
 
       router.push(
         `/chat/${data.chatId}/${type === "share" ? "shares" : "together"}`,

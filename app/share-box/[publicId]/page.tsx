@@ -87,7 +87,6 @@ export default function ShareBoxPage() {
       .then((res) => res.json())
       .then((data) => {
         setShareList(data);
-        console.log("Share List Data:", data);
       });
   }, [publicId]);
 

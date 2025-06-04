@@ -30,7 +30,6 @@ export function MapView() {
 
   const session = useSession();
   const userId = session.data?.user.publicId;
-  console.log(userId);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
