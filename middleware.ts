@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 
 
-const PUBLIC_PAGE_REGEX = [/^\/group-buy\/\d+$/];
+const PUBLIC_PAGE_REGEX = [/^\/group-buy\/\d+$/, /^\/share\/\d+$/];
 const PUBLIC_PAGE_PATHS = ["/login"];
 const PUBLIC_API_PATHS = [
   "/api/auth",
@@ -19,7 +19,8 @@ export async function middleware(req: NextRequest) {
     PUBLIC_PAGE_REGEX.some((regex) => regex.test(pathname));
   const isPublicApi =
     PUBLIC_API_PATHS.some((path) => pathname.startsWith(path)) ||
-    (/^\/api\/group-buys\/\d+$/.test(pathname) && req.method === "GET");
+    (/^\/api\/group-buys\/\d+$/.test(pathname) && req.method === "GET") ||
+    (/^\/api\/shares\/\d+$/.test(pathname) && req.method === "GET");
   
   const token = await getToken({ req });
   

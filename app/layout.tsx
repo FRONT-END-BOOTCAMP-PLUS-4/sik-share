@@ -62,7 +62,7 @@ export default function RootLayout({
 
             <section
               id="scroll-container"
-              className="relative safe-container overflow-auto w-full h-svh mx-auto bg-white sm:border-t sm:border-x sm:border-zinc-300 max-w-[var(--space-mobileMax)]"
+              className="relative safe-container overflow-auto w-full h-svh mx-auto bg-white sm:border-t sm:border-x sm:border-zinc-300 max-w-[var(--space-mobileMax)] scrollbar-hide"
             >
               <main className="md:w-full h-auto">{children}</main>
               <div className="h-auto" id="drawer-customPortal" />

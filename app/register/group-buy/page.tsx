@@ -106,7 +106,7 @@ export default function CreateGroupBuyPage() {
   return (
     <>
       <SubHeader titleText="같이 장보기 등록하기" iconType="close" />
-      <section className="h-[calc(100vh-124px)] py-6 px-4">
+      <section className="h-[calc(100vh-124px)] py-6 px-4 overflow-auto scrollbar-hide">
         <Form {...form}>
           <form
             className="flex flex-col gap-4"
