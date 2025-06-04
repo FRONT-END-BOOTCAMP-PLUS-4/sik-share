@@ -9,7 +9,7 @@ export async function PATCH(
   const { chatId } = await params;
 
   try {
-    const { meetingDate } = await req.json();
+    const { meetingDate, myUserId } = await req.json();
 
     if (!meetingDate) {
       return NextResponse.json(
@@ -24,6 +24,7 @@ export async function PATCH(
     await useCase.execute({
       chatId: Number(chatId),
       meetingDate: new Date(meetingDate),
+      myUserId,
       status: 1,
     });
 
