@@ -10,7 +10,7 @@ export default function MapSection() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="relative w-full h-[25vh] flex justify-center items-center"
+        className="relative w-full h-[25vh] flex justify-center items-center mt-20"
       >
         <MapLottie />
         <div className="absolute right-15 flex flex-col gap-2 title-md">

@@ -44,7 +44,7 @@ export default function ScrollSection() {
   );
 
   return (
-    <section ref={ref} className="relative h-[50vh] -mt-[50px] bg-white">
+    <section ref={ref} className="relative h-[40vh] -mt-[50px] bg-white">
       <div className="flex flex-col text-center gap-2">
         <p className="title-md">같이 장보기</p>
         <div className="body-md !font-light !leading-none text-zinc-400">
