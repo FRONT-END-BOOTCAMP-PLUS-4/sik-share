@@ -38,7 +38,7 @@ export default function ChatMessageList({
   return (
     <div
       ref={scrollRef}
-      className="w-full px-4 py-4 flex flex-col gap-4 h-[calc(100vh-240px)] overflow-y-scroll"
+      className="w-full px-4 py-4 flex flex-col gap-4 h-full overflow-y-scroll"
     >
       {messages.map((msg, index) => (
         <ChatMessage

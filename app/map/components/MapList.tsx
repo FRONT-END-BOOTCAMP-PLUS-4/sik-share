@@ -145,7 +145,7 @@ export function MapList({ selectedId }: MapListProps) {
   });
 
   return (
-    <div className="max-h-[55vh] min-h-[55vh] overflow-y-auto border-t-1">
+    <div className="overflow-y-auto border-t-1">
       {items.map((item, i) => (
         <Link
           href={`/${item.type === "groupbuy" ? "group-buy" : "share"}/${item.id}`}

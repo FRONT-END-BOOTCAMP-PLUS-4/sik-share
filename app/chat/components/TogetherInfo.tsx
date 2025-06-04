@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { MapPin, Clock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import dayjs from "dayjs";
 import {
   Dialog,
   DialogTrigger,
@@ -34,16 +35,6 @@ export default function TogetherInfo({
 }: TogetherInfoProps) {
   const [status, setStatus] = useState<number>(initialStatus);
   const [open, setOpen] = useState(false);
-
-  console.log("TogetherInfo", {
-    chatId,
-    title,
-    imageUrl,
-    meetingDate,
-    locationNote,
-    status: initialStatus,
-    deletedAt,
-  });
 
   const handleOpenChange = (nextOpen: boolean) => {
     setOpen(nextOpen);
@@ -134,21 +125,16 @@ export default function TogetherInfo({
           width={64}
           height={64}
           alt="장보기 이미지"
-          className="rounded-md"
+          className="rounded-md border border-zinc-100"
         />
       </div>
       <div className="flex flex-col flex-1 min-w-0 self-center">
-        <p className="badge-md truncate">{title}</p>
+        <p className="body-md truncate mb-[5px]">{title}</p>
         <div className="flex items-center caption text-zinc-500 gap-5">
           <div className="flex items-center gap-1">
             <Clock className="w-4 h-4" />
             <span>
-              {meetingDate
-                ? new Date(meetingDate).toLocaleString("ko-KR", {
-                    dateStyle: "medium",
-                    timeStyle: "short",
-                  })
-                : "미정"}
+              {meetingDate ? dayjs(meetingDate).format("YYYY-MM-DD") : "미정"}
             </span>
           </div>
           <div className="flex items-center gap-1">
@@ -157,7 +143,7 @@ export default function TogetherInfo({
           </div>
         </div>
       </div>
-      <div className="self-center">
+      <div>
         {status === 2 ? (
           <Badge
             variant="reserve"

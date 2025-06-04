@@ -85,11 +85,11 @@ export default function ChatList({
             </>
           )}
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col max-w-[300px]">
           <div className="flex items-center gap-1">
             {type === "together" && (
               <>
-                <p className="body-md w-[180px] overflow-hidden text-ellipsis whitespace-nowrap">
+                <p className="body-md max-w-[180px] overflow-hidden text-ellipsis whitespace-nowrap">
                   {groupBuyTitle}
                 </p>
                 <div className="flex flex-row gap-[2px]">
@@ -110,7 +110,7 @@ export default function ChatList({
                 : ""}
             </p>
           </div>
-          <p className="caption !text-zinc-500">{lastMessage}</p>
+          <p className="caption !text-zinc-500 truncate">{lastMessage}</p>
         </div>
       </div>
       {unreadCount > 0 && (

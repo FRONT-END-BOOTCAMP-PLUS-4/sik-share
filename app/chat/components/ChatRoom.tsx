@@ -188,7 +188,7 @@ export default function ChatRoom({
     : [];
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-svh">
       {type === "together" && togetherInfo ? (
         <ChatHeader
           type="together"

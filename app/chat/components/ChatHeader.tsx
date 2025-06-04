@@ -52,8 +52,10 @@ export default function ChatHeader(props: ChatHeaderProps) {
             {props.title}
           </span>
           <div className="flex items-center justify-center gap-[2px]">
-            <UsersRound className="w-4 h-4" />
-            <span className="badge-medium">{props.participantCount}</span>
+           <UsersRound className="w-4 h-4" strokeWidth={1} />
+            <span className="label text-zinc-500">
+              {props.participantCount}
+            </span>
           </div>
         </div>
       )}
