@@ -5,6 +5,7 @@ import ScrollSection from "@/app/components/ScrollSection";
 import EndSection from "./components/EndSection";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
+import AddAppButton from "@/components/common/AddAppButton";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
         <CommunicateSection />
         <ScrollSection />
         <EndSection />
+        <AddAppButton />
       </div>
       <Footer />
     </>

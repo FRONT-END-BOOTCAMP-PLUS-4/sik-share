@@ -1,7 +1,7 @@
 {
   "name": "식샤",
   "short_name": "식샤",
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#22774E",
