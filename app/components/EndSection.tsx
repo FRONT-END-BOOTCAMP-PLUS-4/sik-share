@@ -28,9 +28,9 @@ export default function EndSection() {
   }, []);
 
   return (
-    <section className="pb-24 -mt-[100px]">
+    <section className="pb-24 -mt-[30px] mb-[100px]">
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 0 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ amount: 1 }}
         onViewportEnter={() => setStartCount(true)}
