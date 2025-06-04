@@ -53,7 +53,9 @@ export default function ChatHeader(props: ChatHeaderProps) {
           </span>
           <div className="flex items-center justify-center gap-[2px]">
             <UsersRound className="w-4 h-4" />
-            <span className="badge-medium">{props.participantCount}</span>
+            <span className="label color zinc-500">
+              {props.participantCount}
+            </span>
           </div>
         </div>
       )}

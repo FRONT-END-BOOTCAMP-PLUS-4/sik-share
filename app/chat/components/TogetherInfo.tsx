@@ -125,7 +125,7 @@ export default function TogetherInfo({
           width={64}
           height={64}
           alt="장보기 이미지"
-          className="rounded-md"
+          className="rounded-md border border-zinc-100"
         />
       </div>
       <div className="flex flex-col flex-1 min-w-0 self-center">

@@ -224,7 +224,7 @@ export default function ShareInfo({
             src={info.imageUrl[0] || "/assets/images/example/thumbnail.png"}
             width={48}
             height={48}
-            className="rounded-sm w-[48px] h-[48px] object-full"
+            className="rounded-sm w-[48px] h-[48px] object-full border border-zinc-100"
             alt="shareImage"
           />
           <div className="flex flex-col flex-1 min-w-0">
