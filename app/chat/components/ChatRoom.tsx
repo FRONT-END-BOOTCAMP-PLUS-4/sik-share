@@ -46,6 +46,7 @@ interface ChatRoomProps {
     temperature: number;
   };
   shareInfo?: {
+    id: number;
     title: string;
     locationNote: string;
     imageUrl: string[] | [];

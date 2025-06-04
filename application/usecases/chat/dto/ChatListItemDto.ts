@@ -9,5 +9,6 @@ export class ShareChatListItemDto {
     public unreadCount: number,
     public type: "share" = "share",
     public thumbnailUrl?: string,
+    public id?: number,
   ) {}
 }

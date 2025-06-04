@@ -14,10 +14,12 @@ import {
 import { ReserveDatePicker } from "./ReserveDatePicker";
 import { Badge } from "@/components/ui/badge";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 interface ShareInfoProps {
   chatId: string;
   info: {
+    id: number;
     title: string;
     locationNote: string;
     imageUrl: string[];
@@ -185,22 +187,27 @@ export default function ShareInfo({
   return (
     <div className="flex flex-col gap-3 px-4 py-2 border-b">
       <div className="flex w-full items-center gap-2">
-        <Image
-          src={info.imageUrl[0] || "/assets/images/example/thumbnail.png"}
-          width={48}
-          height={48}
-          className="rounded-sm w-[48px] h-[48px] object-full"
-          alt="shareImage"
-        />
-        <div className="flex flex-col flex-1 min-w-0">
-          <p className="body-md truncate">{info.title}</p>
-          <div className="flex flex-row text-caption gap-[2px]">
-            <MapPin className="w-4 h-4" />
-            <p className="text-xs text-zinc-500 truncate">
-              {info.locationNote}
-            </p>
+        <Link
+          href={`/share/${info.id}`}
+          className="flex items-center gap-2 flex-1 min-w-0"
+        >
+          <Image
+            src={info.imageUrl[0] || "/assets/images/example/thumbnail.png"}
+            width={48}
+            height={48}
+            className="rounded-sm w-[48px] h-[48px] object-full"
+            alt="shareImage"
+          />
+          <div className="flex flex-col flex-1 min-w-0">
+            <p className="body-md truncate">{info.title}</p>
+            <div className="flex flex-row text-caption gap-[2px]">
+              <MapPin className="w-4 h-4" />
+              <p className="text-xs text-zinc-500 truncate">
+                {info.locationNote}
+              </p>
+            </div>
           </div>
-        </div>
+        </Link>
         {actionButton}
       </div>
       {reservedDate &&

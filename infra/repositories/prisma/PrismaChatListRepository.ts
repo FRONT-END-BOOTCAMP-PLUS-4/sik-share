@@ -77,6 +77,7 @@ export class PrismaChatListRepository implements ChatListRepository {
           unreadCount,
           "share",
           thumbnailUrl,
+          chat.share?.id ?? null,
         );
       }),
     );

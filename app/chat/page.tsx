@@ -17,6 +17,7 @@ interface ShareChatListItem {
   type: "share";
   participantCount: number;
   thumbnailUrl?: string;
+  id?: string;
 }
 
 interface GroupBuyChatListItem {
