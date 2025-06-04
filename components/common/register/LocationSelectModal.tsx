@@ -85,7 +85,7 @@ export default function LocationSelectModal({
 
   return (
     <>
-      <div className="relative h-svh flex flex-col">
+      <div className="absolute h-svh flex flex-col w-full top-0">
         <SubHeader
           iconType="close"
           DescTitleText={`만나고 싶은 장소를
@@ -93,7 +93,7 @@ export default function LocationSelectModal({
           DescSubText="모두가 찾을 수 있는 공공 장소가 좋아요!"
           onClick={onClose}
         />
-        <section className="flex flex-col flex-1">
+        <section className=" flex flex-col flex-1 overflow-auto">
           <KakaoMap onSelect={handleLocationSelect} />
           <FormButton onClick={handleButtonClick}>선택 완료</FormButton>
         </section>
