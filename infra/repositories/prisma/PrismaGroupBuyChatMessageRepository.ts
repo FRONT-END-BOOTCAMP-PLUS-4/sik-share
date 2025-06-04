@@ -37,6 +37,7 @@ export class PrismaGroupBuyChatMessageRepository implements GroupBuyChatMessageR
     participantCount: number;
     locationNote: string;
     status: number;
+    deletedAt?: Date | null;
   }> {
     const chat = await prisma.groupBuyChat.findUnique({
       where: { id: chatId },
@@ -61,6 +62,7 @@ export class PrismaGroupBuyChatMessageRepository implements GroupBuyChatMessageR
       participantCount: chat.participants.length,
       locationNote: groupBuy.locationNote,
       status: groupBuy.status,
+      deletedAt: groupBuy.deletedAt,
     };
   }
 }

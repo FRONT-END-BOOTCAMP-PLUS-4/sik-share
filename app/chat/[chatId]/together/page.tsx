@@ -12,6 +12,7 @@ interface TogetherInfo {
   participantCount?: number;
   status: number;
   senderId?: string;
+  deletedAt?: Date | null;
 }
 
 export default function TogetherChat() {
@@ -61,6 +62,7 @@ export default function TogetherChat() {
         meetingDate: info.meetingDate,
         participantCount: info.participantCount,
         status: info.status,
+        deletedAt: info.deletedAt || null,
       }}
       senderId={info.senderId || ""}
     />

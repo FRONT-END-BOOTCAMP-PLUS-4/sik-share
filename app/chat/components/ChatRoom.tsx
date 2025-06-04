@@ -33,6 +33,7 @@ interface TogetherInfoProps {
   meetingDate?: string;
   participantCount?: number;
   status: number;
+  deletedAt?: Date | null;
 }
 
 interface ChatRoomProps {
@@ -205,6 +206,7 @@ export default function ChatRoom({
           meetingDate={togetherInfo.meetingDate}
           locationNote={togetherInfo.locationNote}
           status={togetherInfo.status}
+          deletedAt={togetherInfo.deletedAt}
         />
       )}
       {type === "share" && shareInfo && (

@@ -20,6 +20,7 @@ interface TogetherInfoProps {
   meetingDate?: string;
   locationNote?: string;
   status: number;
+  deletedAt?: Date | null;
 }
 
 export default function TogetherInfo({
@@ -29,9 +30,20 @@ export default function TogetherInfo({
   meetingDate,
   locationNote,
   status: initialStatus,
+  deletedAt,
 }: TogetherInfoProps) {
   const [status, setStatus] = useState<number>(initialStatus);
   const [open, setOpen] = useState(false);
+
+  console.log("TogetherInfo", {
+    chatId,
+    title,
+    imageUrl,
+    meetingDate,
+    locationNote,
+    status: initialStatus,
+    deletedAt,
+  });
 
   const handleOpenChange = (nextOpen: boolean) => {
     setOpen(nextOpen);
@@ -66,6 +78,50 @@ export default function TogetherInfo({
     }
     return "";
   }
+
+  if (deletedAt) {
+    return (
+      <div className="flex h-[99px] items-start gap-3 px-4 py-2 border-b opacity-30">
+        <div className="flex-shrink-0">
+          <Image
+            src={
+              getImageUrl(imageUrl)?.startsWith("http")
+                ? getImageUrl(imageUrl)
+                : "/assets/images/example/thumbnail.png"
+            }
+            width={64}
+            height={64}
+            alt="장보기 이미지"
+            className="rounded-md"
+          />
+        </div>
+        <div className="flex flex-col justify-center min-w-0 itmes-center">
+          <div className="flex gap-2 text-center items-center">
+            <p className="body-md">삭제됨</p>
+            <p className="body-md truncate !font-light">{title}</p>
+          </div>
+          <div className="flex items-center caption text-zinc-500 gap-5">
+            <div className="flex items-center gap-1">
+              <Clock className="w-4 h-4" />
+              <span>
+                {meetingDate
+                  ? new Date(meetingDate).toLocaleString("ko-KR", {
+                      dateStyle: "medium",
+                      timeStyle: "short",
+                    })
+                  : "미정"}
+              </span>
+            </div>
+            <div className="flex items-center gap-1">
+              <MapPin className="w-4 h-4" />
+              <span>{locationNote ?? "장소 미정"}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex items-start gap-3 px-4 py-2 border-b">
       <div className="flex-shrink-0">
