@@ -51,6 +51,8 @@ interface ChatRoomProps {
     imageUrl: string[] | [];
     meetingDate?: string;
     status?: number;
+    ownerId: string;
+    recipientId: string | null;
   };
   togetherInfo?: TogetherInfoProps;
   senderId: string;

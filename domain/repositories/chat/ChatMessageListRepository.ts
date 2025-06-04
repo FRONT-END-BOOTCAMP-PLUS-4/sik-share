@@ -23,5 +23,7 @@ export interface ChatMessageRepository {
     locationNote: string;
     meetingDate?: string;
     status: number;
+    ownerId: string;
+    recipientId: string | null;
   }>;
 }

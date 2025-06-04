@@ -23,6 +23,8 @@ interface ShareInfoProps {
     imageUrl: string[];
     meetingDate?: string;
     status: number;
+    ownerId: string;
+    recipientId: string | null;
   };
   onMeetingDateChange?: (date: Date) => void;
 }
@@ -47,13 +49,17 @@ export default function ShareInfo({
     setOpen(nextOpen);
   };
 
-  const updateMeetingDate = async (chatId: string, meetingDate: Date) => {
+  const updateMeetingDate = async (
+    chatId: string,
+    meetingDate: Date,
+    myUserId: string,
+  ) => {
     const res = await fetch(`/api/chat/${chatId}/shares/confirm`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ meetingDate }),
+      body: JSON.stringify({ meetingDate, myUserId }),
     });
     if (!res.ok) throw new Error("날짜 업데이트 실패");
     return await res.json();
@@ -72,14 +78,16 @@ export default function ShareInfo({
   };
 
   const handleComplete = async () => {
-    if (date) {
+    if (date && myUserId) {
       try {
-        await updateMeetingDate(chatId, date);
+        await updateMeetingDate(chatId, date, myUserId);
         setReservedDate(date);
         setStatus(1);
         setOpen(false);
         onMeetingDateChange?.(date);
       } catch (e) {}
+    } else if (!myUserId) {
+      alert("로그인 정보가 없습니다. 다시 로그인 해주세요.");
     }
   };
 
@@ -103,7 +111,7 @@ export default function ShareInfo({
   };
 
   let actionButton = null;
-  if (status === 0) {
+  if (status === 0 && myUserId === info.ownerId) {
     actionButton = (
       <Dialog open={open} onOpenChange={handleOpenChange}>
         <DialogTrigger asChild>
@@ -132,7 +140,7 @@ export default function ShareInfo({
         </DialogContent>
       </Dialog>
     );
-  } else if (status === 1) {
+  } else if (status === 1 && myUserId === info.ownerId) {
     actionButton = (
       <Dialog open={open} onOpenChange={handleOpenChange}>
         <DialogTrigger asChild>
@@ -163,7 +171,7 @@ export default function ShareInfo({
         </DialogContent>
       </Dialog>
     );
-  } else if (status === 2) {
+  } else if (status === 2 && myUserId === info.ownerId) {
     actionButton = (
       <Badge
         variant="shareComplete"
@@ -195,12 +203,16 @@ export default function ShareInfo({
         </div>
         {actionButton}
       </div>
-      {reservedDate && (
-        <Badge variant="reserve" className="text-white flex items-center gap-2">
-          <InfoIcon />
-          <p>{formatDate(reservedDate)}</p>
-        </Badge>
-      )}
+      {reservedDate &&
+        (myUserId === info.ownerId || myUserId === info.recipientId) && (
+          <Badge
+            variant="reserve"
+            className="text-white flex items-center gap-2"
+          >
+            <InfoIcon />
+            <p>{formatDate(reservedDate)}</p>
+          </Badge>
+        )}
     </div>
   );
 }
