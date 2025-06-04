@@ -101,7 +101,7 @@ export default function CreateReviewPage() {
       }
 
       toast.success("후기가 등록되었습니다.", {
-        duration: 2000,
+        duration: 1000,
         onAutoClose: () => {
           router.replace("/map");
         },

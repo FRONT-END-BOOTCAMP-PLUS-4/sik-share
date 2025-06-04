@@ -79,10 +79,20 @@ export default function FormMultiImageUpload({
 
     for (const file of newFiles) {
       if (file.size > MAX_SIZE) {
-        toast.error("파일 크기가 너무 큽니다. 50MB 이하로 업로드 해주세요.");
+        toast.error("크기가 5MB 이하의 사진만 업로드할 수 있습니다.");
         return;
       }
     }
+
+    const totalSize = [...files, ...newFiles].reduce(
+      (sum, file) => sum + file.size,
+      0,
+    );
+    if (totalSize > MAX_SIZE) {
+      toast.error("사진 전체 크기는 5MB를 넘을 수 없습니다.");
+      return;
+    }
+
     setFiles((prev) => [...prev, ...newFiles]);
   };
 

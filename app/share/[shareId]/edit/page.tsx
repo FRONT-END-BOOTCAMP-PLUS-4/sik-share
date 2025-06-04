@@ -129,7 +129,7 @@ export default function ShareEditPage() {
       }
 
       toast.success("나눔이 수정되었습니다", {
-        duration: 2000,
+        duration: 1000,
         onAutoClose: () => {
           router.back();
         },

@@ -73,7 +73,7 @@ export function FormImageUpload({
 
                       if (file.size > MAX_SIZE) {
                         toast.error(
-                          "파일 크기가 너무 큽니다. 50MB 이하로 업로드 해주세요.",
+                          "파일 크기가 너무 큽니다. 5MB 이하로 업로드 해주세요.",
                         );
                         return;
                       }
