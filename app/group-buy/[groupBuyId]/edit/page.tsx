@@ -132,7 +132,7 @@ export default function GroupBuyEditPage() {
       }
 
       toast.success("장보기가 수정되었습니다", {
-        duration: 2000,
+        duration: 1000,
         onAutoClose: () => {
           router.back();
         },

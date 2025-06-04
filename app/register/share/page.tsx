@@ -88,7 +88,7 @@ export default function CreateSharePage() {
       }
 
       toast.success("나눔이 등록되었습니다", {
-        duration: 2000,
+        duration: 1000,
         onAutoClose: () => {
           router.back();
         },

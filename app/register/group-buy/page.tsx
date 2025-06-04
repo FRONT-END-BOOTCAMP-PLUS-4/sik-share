@@ -91,7 +91,7 @@ export default function CreateGroupBuyPage() {
       }
 
       toast.success("같이 장보기가 등록되었습니다", {
-        duration: 2000,
+        duration: 1000,
         onAutoClose: () => {
           router.back();
         },
