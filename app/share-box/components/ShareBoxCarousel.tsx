@@ -18,7 +18,7 @@ export default function Carousel({ images }: CarouselProps) {
         pagination={{ clickable: true }}
         spaceBetween={20}
         slidesPerView={1}
-        className="!pb-0"
+        className="!pb-0 bg-black rounded-lg"
       >
         {images.map((src) => (
           <SwiperSlide key={src}>
@@ -27,7 +27,7 @@ export default function Carousel({ images }: CarouselProps) {
               height={260}
               src={src}
               alt={`slide-${src}`}
-              className="w-full h-[260px] object-fill rounded-lg"
+              className="w-full h-[260px] object-contain"
             />
           </SwiperSlide>
         ))}

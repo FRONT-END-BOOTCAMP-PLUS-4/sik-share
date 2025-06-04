@@ -38,7 +38,7 @@ export function ListCard({
           width={78}
           height={78}
           alt={thumbnailAlt}
-          className="rounded-md object-fill !h-[78px]"
+          className="rounded-md object-cover !h-[78px] border border-zinc50"
         />
       </div>
 
