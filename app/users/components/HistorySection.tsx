@@ -83,6 +83,22 @@ export function HistorySection({
     }));
   };
 
+  const TabList = tabValues.map((tab) => {
+    const key = tab.value === "group-buy" ? "groupbuy" : tab.value;
+    const count = counts[key];
+
+    return (
+      <TabsTrigger
+        key={tab.value}
+        value={tab.value}
+        className="flex-1 flex gap-1"
+      >
+        <div>{tab.label}</div>
+        <div>{count !== 0 ? count : ""}</div>
+      </TabsTrigger>
+    );
+  });
+
   return (
     <>
       <SubHeader titleText={title} />
@@ -94,24 +110,7 @@ export function HistorySection({
             setCurrentTab(val);
           }}
         >
-          <TabsList className="w-full">
-            {tabValues.map((tab) => (
-              <TabsTrigger
-                key={tab.value}
-                value={tab.value}
-                className="flex-1 flex gap-1"
-              >
-                <div>{tab.label}</div>
-                <div>
-                  {counts[tab.value] !== 0
-                    ? counts?.[
-                        tab.value === "group-buy" ? "groupbuy" : tab.value
-                      ]
-                    : ""}
-                </div>
-              </TabsTrigger>
-            ))}
-          </TabsList>
+          <TabsList className="w-full">{TabList}</TabsList>
 
           {tabValues.map((tab) => (
             <TabsContent key={tab.value} value={tab.value}>
