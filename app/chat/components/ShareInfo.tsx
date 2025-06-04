@@ -27,6 +27,7 @@ interface ShareInfoProps {
     status: number;
     ownerId: string;
     recipientId: string | null;
+    deletedAt?: Date | null;
   };
   onMeetingDateChange?: (date: Date) => void;
 }
@@ -181,6 +182,34 @@ export default function ShareInfo({
       >
         나눔완료
       </Badge>
+    );
+  }
+
+  if (info.deletedAt) {
+    return (
+      <div className="flex flex-col gap-3 px-4 py-2 border-b opacity-30">
+        <div className="flex w-full items-center gap-2">
+          <Image
+            src={info.imageUrl[0] || "/assets/images/example/thumbnail.png"}
+            width={48}
+            height={48}
+            className="rounded-sm w-[48px] h-[48px] object-full"
+            alt="shareImage"
+          />
+          <div className="flex flex-col flex-1 min-w-0">
+            <div className="flex gap-2 text-center items-center">
+              <p className="body-md">삭제됨</p>
+              <p className="body-md truncate !font-light">{info.title}</p>
+            </div>
+            <div className="flex flex-row text-caption gap-[2px]">
+              <MapPin className="w-4 h-4" />
+              <p className="text-xs text-zinc-500 truncate">
+                {info.locationNote}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
 

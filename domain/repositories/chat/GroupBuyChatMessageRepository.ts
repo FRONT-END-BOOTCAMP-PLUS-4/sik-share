@@ -13,5 +13,6 @@ export interface GroupBuyChatMessageRepository {
     imageUrl: string;
     participantCount: number;
     status: number;
+    deletedAt?: Date | null;
   }>;
 }

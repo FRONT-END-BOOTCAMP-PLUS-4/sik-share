@@ -48,7 +48,7 @@ export default function ChatHeader(props: ChatHeaderProps) {
       )}
       {props.type === "together" && (
         <div className="flex flex-col items-center justify-center h-[38px] flex-1 min-w-0">
-          <span className="body-md truncate w-[227px] block">
+          <span className="body-md truncate text-center w-[227px] block">
             {props.title}
           </span>
           <div className="flex items-center justify-center gap-[2px]">
