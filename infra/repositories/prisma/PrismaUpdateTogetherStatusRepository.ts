@@ -16,7 +16,7 @@ export class PrismaUpdateTogetherStatusRepository implements UpdateTogetherStatu
 
     await prisma.groupBuy.update({
       where: { id: chat.groupBuyId },
-      data: { status: 2 },
+      data: { status: 1 },
     });
   }
 }

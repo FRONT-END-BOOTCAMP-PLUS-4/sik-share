@@ -55,7 +55,7 @@ export default function TogetherInfo({
   const handleTogetherComplete = async () => {
     try {
       await completeTogether(chatId);
-      setStatus(2);
+      setStatus(1);
       setOpen(false);
     } catch (e) {}
   };
@@ -144,7 +144,7 @@ export default function TogetherInfo({
         </div>
       </div>
       <div>
-        {status === 2 ? (
+        {status === 1 ? (
           <Badge
             variant="reserve"
             className="self-center text-white w-fit h-fit bold ml-auto px-3 py-2"
