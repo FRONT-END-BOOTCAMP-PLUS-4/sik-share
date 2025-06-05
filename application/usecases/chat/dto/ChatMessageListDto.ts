@@ -1,0 +1,16 @@
+export type ChatSenderType = "me" | "other" | "system";
+
+export class ChatMessageListDto {
+  constructor(
+    public id: number,
+    public type: ChatSenderType,
+    public nickname: string,
+    public imageUrl: string,
+    public message: string,
+    public time: string,
+    public readCount?: number,
+    public senderId?: string, 
+    public onwerId?: string,
+    public recipientId?: string | null,
+  ) {}
+}

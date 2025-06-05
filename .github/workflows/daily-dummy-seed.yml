@@ -1,0 +1,31 @@
+name: Daily Dummy Seeder
+
+on:
+  schedule:
+    - cron: '0 15 * * *'
+  workflow_dispatch:
+
+jobs:
+  seed-dummy-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma Client
+        run: npx prisma generate
+
+
+      - name: Run daily dummy seeder
+        run: npx tsx --no-check --tsconfig tsconfig.seed.json seeds/seed-daily.ts
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}

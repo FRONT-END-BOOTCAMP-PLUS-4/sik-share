@@ -1,0 +1,247 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../prisma/generated"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Neighborhood {
+  id       Int        @id @default(autoincrement())
+  name     String     @unique
+  district String
+  lat      Float
+  lng      Float
+  grouBuys GroupBuy[]
+  shares   Share[]
+  users    User[]
+}
+
+model User {
+  id                       String                    @id @default(uuid())
+  neighborhoodId           Int
+  email                    String                    @unique
+  nickname                 String
+  profileUrl               String?
+  address                  String
+  createdAt                DateTime                  @default(now())
+  shareScore               Float                     @default(0)
+  publicId                 Int                       @unique @default(autoincrement())
+  grouBuys                 GroupBuy[]
+  groupBuyChatMessages     GroupBuyChatMessage[]
+  groupBuyChatMessageRead  GroupBuyChatMessageRead[]
+  groupBuyChatParticipants GroupBuyChatParticipant[]
+  groupBuyParticipants     GroupBuyParticipant[]
+  receivedReviews          Review[]                  @relation("ReceivedReview")
+  writtenReviews           Review[]                  @relation("WrittenReview")
+  ownedShares              Share[]                   @relation("OwnedShare")
+  receivedShares           Share[]                   @relation("ReceivedShare")
+  shareApplication         ShareApplication[]
+  shareChatMessages        ShareChatMessage[]
+  shareChatMessageRead     ShareChatMessageRead[]
+  shareChatParticipants    ShareChatParticipant[]
+  neighborhood             Neighborhood              @relation(fields: [neighborhoodId], references: [id])
+}
+
+model GroupBuy {
+  id             Int                   @id @default(autoincrement())
+  organizerId    String
+  neighborhoodId Int
+  title          String
+  capacity       Int
+  desiredItem    String
+  meetingDate    DateTime
+  createdAt      DateTime              @default(now())
+  locationNote   String
+  description    String
+  status         Int
+  lat            Float
+  lng            Float
+  deletedAt      DateTime?
+  neighborhood   Neighborhood          @relation(fields: [neighborhoodId], references: [id])
+  organizer      User                  @relation(fields: [organizerId], references: [id])
+  chats          GroupBuyChat[]
+  images         GroupBuyImage[]
+  participants   GroupBuyParticipant[]
+}
+
+model GroupBuyParticipant {
+  id         Int      @id @default(autoincrement())
+  userId     String
+  groupBuyId Int
+  createdAt  DateTime @default(now())
+  groupBuy   GroupBuy @relation(fields: [groupBuyId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+}
+
+model GroupBuyImage {
+  id         Int      @id @default(autoincrement())
+  groupBuyId Int
+  url        String
+  order      Int
+  groupBuy   GroupBuy @relation(fields: [groupBuyId], references: [id])
+}
+
+model Share {
+  id               Int                @id @default(autoincrement())
+  shareItemId      Int
+  neighborhoodId   Int
+  ownerId          String
+  recipientId      String?
+  title            String
+  createdAt        DateTime           @default(now())
+  meetingDate      DateTime?
+  lat              Float
+  lng              Float
+  locationNote     String
+  description      String
+  status           Int
+  deletedAt        DateTime?
+  reviews          Review[]
+  neighborhood     Neighborhood       @relation(fields: [neighborhoodId], references: [id])
+  owner            User               @relation("OwnedShare", fields: [ownerId], references: [id])
+  recipient        User?              @relation("ReceivedShare", fields: [recipientId], references: [id])
+  shareItem        ShareItem          @relation(fields: [shareItemId], references: [id])
+  shareApplication ShareApplication[]
+  chats            ShareChat[]
+  images           ShareImage[]
+}
+
+model ShareImage {
+  id      Int    @id @default(autoincrement())
+  shareId Int
+  url     String
+  order   Int
+  share   Share  @relation(fields: [shareId], references: [id])
+}
+
+model ShareItem {
+  id     Int     @id @default(autoincrement())
+  name   String  @unique
+  shares Share[]
+}
+
+model Review {
+  id          Int                 @id @default(autoincrement())
+  writerId    String
+  recipientId String
+  shareId     Int
+  grade       Int
+  content     String?
+  createdAt   DateTime            @default(now())
+  recipient   User                @relation("ReceivedReview", fields: [recipientId], references: [id])
+  share       Share               @relation(fields: [shareId], references: [id])
+  writer      User                @relation("WrittenReview", fields: [writerId], references: [id])
+  reviews     ReviewShortReview[]
+}
+
+model ReviewShortReview {
+  id                  Int               @id @default(autoincrement())
+  reviewId            Int
+  shortReviewOptionId Int
+  review              Review            @relation(fields: [reviewId], references: [id])
+  shortReviewOption   ShortReviewOption @relation(fields: [shortReviewOptionId], references: [id])
+}
+
+model ShortReviewOption {
+  id      Int                 @id @default(autoincrement())
+  content String
+  reviews ReviewShortReview[]
+}
+
+model GroupBuyChat {
+  id           Int                       @id @default(autoincrement())
+  groupBuyId   Int
+  createdAt    DateTime                  @default(now())
+  groupBuy     GroupBuy                  @relation(fields: [groupBuyId], references: [id])
+  messages     GroupBuyChatMessage[]
+  participants GroupBuyChatParticipant[]
+}
+
+model GroupBuyChatMessage {
+  id                      Int                       @id @default(autoincrement())
+  senderId                String
+  groupBuyChatId          Int
+  content                 String
+  createdAt               DateTime                  @default(now())
+  count                   Int
+  groupBuyChat            GroupBuyChat              @relation(fields: [groupBuyChatId], references: [id])
+  sender                  User                      @relation(fields: [senderId], references: [id])
+  groupBuyChatMessageRead GroupBuyChatMessageRead[]
+}
+
+model GroupBuyChatParticipant {
+  id             Int          @id @default(autoincrement())
+  userId         String
+  groupBuyChatId Int
+  joinedAt       DateTime     @default(now())
+  lastReadItemId Int?
+  groupBuyChat   GroupBuyChat @relation(fields: [groupBuyChatId], references: [id])
+  user           User         @relation(fields: [userId], references: [id])
+}
+
+model GroupBuyChatMessageRead {
+  id        Int                 @id @default(autoincrement())
+  messageId Int
+  userId    String
+  readAt    DateTime            @default(now())
+  message   GroupBuyChatMessage @relation(fields: [messageId], references: [id])
+  user      User                @relation(fields: [userId], references: [id])
+
+  @@unique([messageId, userId])
+}
+
+model ShareChat {
+  id           Int                    @id @default(autoincrement())
+  shareId      Int
+  createdAt    DateTime               @default(now())
+  share        Share                  @relation(fields: [shareId], references: [id])
+  messages     ShareChatMessage[]
+  participants ShareChatParticipant[]
+}
+
+model ShareChatMessage {
+  id                   Int                    @id @default(autoincrement())
+  senderId             String
+  shareChatId          Int
+  content              String
+  createdAt            DateTime               @default(now())
+  readCount            Int                    @default(1)
+  sender               User                   @relation(fields: [senderId], references: [id])
+  shareChat            ShareChat              @relation(fields: [shareChatId], references: [id])
+  shareChatMessageRead ShareChatMessageRead[]
+}
+
+model ShareChatParticipant {
+  id             Int       @id @default(autoincrement())
+  userId         String
+  shareChatId    Int
+  joinedAt       DateTime  @default(now())
+  lastReadItemId Int?
+  shareChat      ShareChat @relation(fields: [shareChatId], references: [id])
+  user           User      @relation(fields: [userId], references: [id])
+}
+
+model ShareChatMessageRead {
+  id        Int              @id @default(autoincrement())
+  messageId Int
+  userId    String
+  readAt    DateTime         @default(now())
+  message   ShareChatMessage @relation(fields: [messageId], references: [id])
+  user      User             @relation(fields: [userId], references: [id])
+
+  @@unique([messageId, userId])
+}
+
+model ShareApplication {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  shareId   Int
+  createdAt DateTime @default(now())
+  share     Share    @relation(fields: [shareId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, shareId])
+}
