@@ -83,7 +83,7 @@ export default function TogetherInfo({
             width={64}
             height={64}
             alt="장보기 이미지"
-            className="rounded-md"
+            className="w-[64px] h-[64px] rounded-md border border-zinc-100"
           />
         </div>
         <div className="flex flex-col justify-center min-w-0 itmes-center">
@@ -125,7 +125,7 @@ export default function TogetherInfo({
           width={64}
           height={64}
           alt="장보기 이미지"
-          className="rounded-md border border-zinc-100"
+          className="w-[64px] h-[64px] rounded-md border border-zinc-100"
         />
       </div>
       <div className="flex flex-col flex-1 min-w-0 self-center">
