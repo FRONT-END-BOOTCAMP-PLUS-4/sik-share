@@ -16,22 +16,30 @@ export class CreateJoinUsecase {
 
   async execute(dto: CreateJoinDto): Promise<{ chatId?: number }> {
     if (dto.type === "share") {
-      const candidateRooms = await this.shareChatRepo.findByShareId(dto.postId) as Array<{ id: number; participants: Array<{ userId: number }> }>;
-      const ownerId = await this.shareChatRepo.getOwnerId(dto.postId);
+      const myUserId = String(dto.userId);
+      const ownerId = String(await this.shareChatRepo.getOwnerId(dto.postId));
 
+      // 후보방 전부 가져오기 (userId는 string)
+      const candidateRooms = (await this.shareChatRepo.findByShareId(dto.postId)) as Array<{
+        id: number;
+        participants: Array<{ userId: string }>;
+      }>;
+
+      // 내 방이 있는지 검사 (참여자 2명, 본인/개설자 둘 다 들어있으면)
       const myRoom = candidateRooms.find(
         (room) =>
           room.participants.length === 2 &&
-          room.participants.some((p: { userId: number }) => p.userId === Number(dto.userId)) &&
-          room.participants.some((p: { userId: number }) => p.userId === Number(ownerId))
+          room.participants.some((p) => p.userId === myUserId) &&
+          room.participants.some((p) => p.userId === ownerId)
       );
       if (myRoom) {
         return { chatId: myRoom.id };
       }
 
+      // 없으면 새로 생성
       const chat = await this.shareChatRepo.create({ shareId: dto.postId });
       await this.shareChatParticipantRepo.saveMany([
-        { chatId: chat.id, userId: dto.userId },
+        { chatId: chat.id, userId: myUserId },
         { chatId: chat.id, userId: ownerId },
       ]);
       return { chatId: chat.id };
@@ -58,11 +66,13 @@ export class CreateJoinUsecase {
           chatId: chat.id,
           userId: dto.userId,
         });
+
+        return { chatId: chat.id };
       }
-      return { chatId: chat ? chat.id : undefined };
+      // 만약 채팅방이 없다면(이상 상황), chatId 없이 리턴
+      return {};
     }
 
     throw new Error("잘못된 타입입니다");
   }
 }
-
