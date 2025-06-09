@@ -25,6 +25,8 @@ export class UpdateGroupBuyUsecase {
       lng : groupBuy.lng,
       locationNote : groupBuy.locationNote,
       description : groupBuy.description,
+      meetingDate: groupBuy.meetingDate,
+      desiredItem: groupBuy.desiredItem
     });
 
 
