@@ -38,7 +38,6 @@ model User {
   writtenReviews           Review[]                  @relation("WrittenReview")
   ownedShares              Share[]                   @relation("OwnedShare")
   receivedShares           Share[]                   @relation("ReceivedShare")
-  shareApplication         ShareApplication[]
   shareChatMessages        ShareChatMessage[]
   shareChatMessageRead     ShareChatMessageRead[]
   shareChatParticipants    ShareChatParticipant[]
@@ -104,7 +103,6 @@ model Share {
   owner            User               @relation("OwnedShare", fields: [ownerId], references: [id])
   recipient        User?              @relation("ReceivedShare", fields: [recipientId], references: [id])
   shareItem        ShareItem          @relation(fields: [shareItemId], references: [id])
-  shareApplication ShareApplication[]
   chats            ShareChat[]
   images           ShareImage[]
 }
@@ -235,13 +233,3 @@ model ShareChatMessageRead {
   @@unique([messageId, userId])
 }
 
-model ShareApplication {
-  id        Int      @id @default(autoincrement())
-  userId    String
-  shareId   Int
-  createdAt DateTime @default(now())
-  share     Share    @relation(fields: [shareId], references: [id])
-  user      User     @relation(fields: [userId], references: [id])
-
-  @@unique([userId, shareId])
-}
