@@ -1,10 +1,10 @@
 # <img width="1920" alt="sikshare-readme" src="https://github.com/user-attachments/assets/02051137-b27d-465e-98b1-b8e848554c08" />
 
-> **식샤 -  1인 가구를 위한 식자재 공유 플랫폼**
-> [sik-share.com](https://sik-share.com)
+> **식샤 -  1인 가구를 위한 식자재 공유 플랫폼** <br/>
+> [sik-share.com](https://sik-share.com) <br/>
 > 개발 기간 : 25.05.07 ~ 25.06.04 (1차 개발 완료)
 
-**📎 테스트 계정 (구글로그인) **
+**📎 테스트 계정 (구글로그인)**
 - 이메일 : sikshare.dev@gmail.com
 - 비밀번호 : 5t6y7u8i!
 
@@ -31,17 +31,21 @@
 **"이웃과 함께 나누며, 까다로운 식자재 관리까지 한번에!"**  
 
 🤔 기획 의도 :
-<img width="100%" src="https://github.com/user-attachments/assets/52489682-161f-46a7-a718-d73526705aa1" alt="기획의도01">
 - 1인 가구의 증가로 개인화된 생활, 각박한 현대 사회 속 이웃과의 단절, 소통 부재 해결
-<img width="100%" src="https://github.com/user-attachments/assets/f6088932-22e7-46dc-bf13-e2de306f887f" alt="기획의도02">
-- 가파른 물가 상승에 따른 체감 장바구니 부담의 해소 필요
 
+<img width="100%" src="https://github.com/user-attachments/assets/52489682-161f-46a7-a718-d73526705aa1" alt="기획의도01"/>
+
+- 가파른 물가 상승에 따른 체감 장바구니 부담의 해소 필요
+<img width="100%" src="https://github.com/user-attachments/assets/f6088932-22e7-46dc-bf13-e2de306f887f" alt="기획의도02"/>
+
+<br/>
 
 🙋 타겟 사용자 :
 - 큰 단위의 삭자재 구매가 어려운 1인 가구
 - 이웃과 소통하며 남는 식자재도 소비하고 싶은 이용자
 - 1인 가구가 많이 살고 있는 관악구를 중심으로 기획
 
+<br/>
 
 🎯 주요 목표:
 
