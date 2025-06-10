@@ -1,5 +1,54 @@
-<img src=".github/images/cover.png">
+# <img width="1920" alt="sikshare-readme" src="https://github.com/user-attachments/assets/02051137-b27d-465e-98b1-b8e848554c08" />
 
-<br />
+> **식샤 -  1인 가구를 위한 식자재 공유 플랫폼**
+> [sik-share.com](https://sik-share.com)
+> 개발 기간 : 25.05.07 ~ 25.06.04 (1차 개발 완료)
 
-<img src=".github/images/1.png">
+**📎 테스트 계정 (구글로그인) **
+- 이메일 : sikshare.dev@gmail.com
+- 비밀번호 : 5t6y7u8i!
+
+<br/>
+
+
+### 🥗 Team Sik-Share
+
+|  이름  | 역할                                                                      |
+| :---- | :------------------------------------------------------------------------ |
+| 김다훈 [@hoon95](https://github.com/hoon95) | **PM, 발표 및 자료 제작** <br/> - 아이디어 발의 / 기초 기획 고안 <br/> - 메인 페이지 / 동네 지도 시스템 개발 <br/> - 나눔·같이장보기 상세조회 및 참여 개발 |
+| 박은지 [@EJ-99](https://github.com/EJ-99) | **DB 설계** <br/> - 로그인 / 회원가입 인증 개발 <br/> - 나눔·장보기 등록 및 수정 개발 <br/> - 후기 작성 개발 |
+| 서현우 [@Harang-Dev](https://github.com/Harang-Dev) | **웹소켓 서버 구축** <br/> - 1:1 나눔 채팅, 1:N 같이 장보기 채팅 시스템 개발 <br/> - 3D 나눔함 개발 |
+| 송하 [@poan1221](https://github.com/poan1221) | **디자인 / 공통 스타일 구성** <br/> - 마이페이지 회원 정보 조회·수정 개발 및 3D 캐릭터 제작 <br/> - 작성, 참여 내역, 후기 조회 개발 <br/> - 배포 및 PWA  관련 설정 | 
+
+
+👉 [Team Wiki](https://github.com/FRONT-END-BOOTCAMP-PLUS-4/sik-share/wiki)
+
+
+<br/>
+
+## 🛠️ 프로젝트 소개
+
+**"이웃과 함께 나누며, 까다로운 식자재 관리까지 한번에!"**  
+
+🤔 기획 의도 :
+<img width="100%" src="https://github.com/user-attachments/assets/52489682-161f-46a7-a718-d73526705aa1" alt="기획의도01">
+- 1인 가구의 증가로 개인화된 생활, 각박한 현대 사회 속 이웃과의 단절, 소통 부재 해결
+<img width="100%" src="https://github.com/user-attachments/assets/f6088932-22e7-46dc-bf13-e2de306f887f" alt="기획의도02">
+- 가파른 물가 상승에 따른 체감 장바구니 부담의 해소 필요
+
+
+🙋 타겟 사용자 :
+- 큰 단위의 삭자재 구매가 어려운 1인 가구
+- 이웃과 소통하며 남는 식자재도 소비하고 싶은 이용자
+- 1인 가구가 많이 살고 있는 관악구를 중심으로 기획
+
+
+🎯 주요 목표:
+
+- 식자재 나눔·같이 장보기 등록 및 공유
+- 3D 나눔함을 통해 등록된 나눔을 직접적으로 확인
+- 내 주변에 있는 나눔·같이 장보기를 지도 맵 클러스터를 통해 조회
+- 나눔·같이 장보기 신청 후, 채팅을 통한 의사소통 및 만남 예약
+- 나눔 지수에 따른 캐릭터 성장 및 마이페이지 내 사용자의 내역 조회
+
+ <br/>
