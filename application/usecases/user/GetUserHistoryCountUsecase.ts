@@ -57,11 +57,10 @@ export class GetUserHistoryCountUsecase {
         this.shareRepo.getCount({ recipientId: user?.id, deletedAt : null, }),
         this.groupbuyRepo.getCount({
           deletedAt : null,
-          participants: {
-            some: {
-              userId: user?.id,
-            },
-          },
+          AND: [
+            { organizerId: { not: user?.id } },
+            { participants: { some: { userId: user?.id } } }
+          ]
         }),
       ]);
       return { share, groupbuy };

@@ -47,11 +47,10 @@ export class GetUserParticipationsUsecase {
     } else {
       const where = {
         deletedAt : null,
-        participants: {
-          some : {
-            userId: user?.id,
-          }
-        }
+        AND: [
+          { organizerId: { not: user?.id } },
+          { participants: { some: { userId: user?.id } } }
+        ]
       };
   
       const data = await this.groupbuyRepo.getUserGroupbuys({
