@@ -32,9 +32,11 @@
 
 🤔 **기획 의도**
 - 1인 가구의 증가로 개인화된 생활, 각박한 현대 사회 속 이웃과의 단절, 소통 부재 해결
+
 ![기획의도](https://github.com/user-attachments/assets/52489682-161f-46a7-a718-d73526705aa1)
 
 - 가파른 물가 상승에 따른 체감 장바구니 부담의 해소 필요
+
 ![기획의도02](https://github.com/user-attachments/assets/f6088932-22e7-46dc-bf13-e2de306f887f)
 
 🙋 **타겟 사용자**
@@ -118,4 +120,5 @@
 React Hooks 활용 커스텀 캐싱
 - 개선 전 : 탭 전환마다 동일한 fetch 요청 발생 → 불필요한 네트워크 낭비, 사용자 입장에서도 로딩 지연 발생
 - 개선 후 : 탭 별 데이터를 Key-Value 형태로 메모리에 캐싱 → 동일한 selectedId에 대해서는 API 재요청 없이 즉시 렌더링
+
 ![데이터 캐싱](https://github.com/user-attachments/assets/609bc86c-6578-4b2b-a234-8a85ff777fbe)
