@@ -65,7 +65,7 @@ export default function ChatList({
             src={
               getImageUrl(imageUrl)?.startsWith("http")
                 ? getImageUrl(imageUrl)
-                : "/assets/images/example/thumbnail.png"
+                : "/assets/images/example/default-group-buys-thumbnail.png"
             }
             width={40}
             height={40}

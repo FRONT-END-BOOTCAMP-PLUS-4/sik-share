@@ -14,7 +14,7 @@ export async function PATCH(
 
     await useCase.execute({
       chatId: Number(chatId),
-      status: 2,
+      status: 1,
     });
 
     return NextResponse.json({ message: "success" }, { status: 200 });

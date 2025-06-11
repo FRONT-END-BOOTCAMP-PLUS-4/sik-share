@@ -55,7 +55,7 @@ export default function TogetherInfo({
   const handleTogetherComplete = async () => {
     try {
       await completeTogether(chatId);
-      setStatus(2);
+      setStatus(1);
       setOpen(false);
     } catch (e) {}
   };
@@ -78,12 +78,12 @@ export default function TogetherInfo({
             src={
               getImageUrl(imageUrl)?.startsWith("http")
                 ? getImageUrl(imageUrl)
-                : "/assets/images/example/thumbnail.png"
+                : "/assets/images/example/default-group-buys-thumbnail.png"
             }
             width={64}
             height={64}
             alt="장보기 이미지"
-            className="rounded-md"
+            className="w-[64px] h-[64px] rounded-md border border-zinc-100"
           />
         </div>
         <div className="flex flex-col justify-center min-w-0 itmes-center">
@@ -120,12 +120,12 @@ export default function TogetherInfo({
           src={
             getImageUrl(imageUrl)?.startsWith("http")
               ? getImageUrl(imageUrl)
-              : "/assets/images/example/thumbnail.png"
+              : "/assets/images/example/default-group-buys-thumbnail.png"
           }
           width={64}
           height={64}
           alt="장보기 이미지"
-          className="rounded-md border border-zinc-100"
+          className="w-[64px] h-[64px] rounded-md border border-zinc-100"
         />
       </div>
       <div className="flex flex-col flex-1 min-w-0 self-center">
@@ -144,7 +144,7 @@ export default function TogetherInfo({
         </div>
       </div>
       <div>
-        {status === 2 ? (
+        {status === 1 ? (
           <Badge
             variant="reserve"
             className="self-center text-white w-fit h-fit bold ml-auto px-3 py-2"
