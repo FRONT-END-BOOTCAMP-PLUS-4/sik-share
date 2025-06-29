@@ -127,7 +127,13 @@ async getList(
     maxUser: number;
   })[]> {
     const groupBuyList = await this.prisma.groupBuy.findMany({
-      where: { neighborhoodId, deletedAt: null },
+      where: { 
+        neighborhoodId, 
+        deletedAt: null, 
+        meetingDate: {
+          gte: new Date(),
+        }
+      },
       orderBy: { meetingDate: "desc" },
       skip: offset,
       take: limit,
